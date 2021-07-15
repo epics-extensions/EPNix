@@ -1,0 +1,143 @@
+{
+  "R3.14.1": {
+    "sha256": "1nfq1b4ghjncdnirwg2ym5lk57n1q8d33h6c30w9026xhpn6kq8z"
+  },
+  "R3.14.10": {
+    "sha256": "017p3dl4fssrqiph3vdp193lwkml7lfy553f7nkrybi422z2kxnd"
+  },
+  "R3.14.11": {
+    "sha256": "1yfnvvi4plkw33lc8hwla0xlp5z9ii1bz9l0b295wgyzdmb4wvkk"
+  },
+  "R3.14.12": {
+    "sha256": "1173y90vlg3rpng73j9kknca7n2rr3k2513snpmy6bv9c0n8pysh"
+  },
+  "R3.14.12.1": {
+    "sha256": "0pzb2awcw991zkkq45k0v0vvnqvgkrmf8y42ny17gwn06z84fvbm"
+  },
+  "R3.14.12.2": {
+    "sha256": "1zrkbdy91dqmyrwyfgmdkiihq7ndx22agivbxjyffy3ijqwgss68"
+  },
+  "R3.14.12.3": {
+    "sha256": "125iyl6h9ayhqh227lk5ll7pn2xaqplv8dp541447wffyslpihjd"
+  },
+  "R3.14.12.4": {
+    "sha256": "1rk5y199jwlilpjlr4nng8r55pmr6m4gi9vn68l7vbb8w4c03xd0"
+  },
+  "R3.14.12.5": {
+    "sha256": "197ai8h0f0n140wp96m6lpvni02i87xba6k7xwkcmvh7dxl15hpj"
+  },
+  "R3.14.12.6": {
+    "sha256": "1ddg0z2hj3amr7sc7iaqlggh4a79mds2qg8rdzrg1kivkrzvb2jx"
+  },
+  "R3.14.12.7": {
+    "sha256": "1kyr99cbh230snn05xch49fqk4c7wd7myj3yac47v48x0zgb7bdk"
+  },
+  "R3.14.12.8": {
+    "sha256": "1spij01dfmjiss1c20rnamz6fa12jd181k8h234pz8dzm73xfvri"
+  },
+  "R3.14.2": {
+    "sha256": "1hxgca02c020bviyabrmsmcn5n62248n0pj6a0gczngscm52g8wf"
+  },
+  "R3.14.3": {
+    "sha256": "1h9288z0k036jn0mcr5b1ifrxgbgdv4cql7cxlm2fnizvw5l9i4m"
+  },
+  "R3.14.4": {
+    "sha256": "0p2v1lr8fkv0q1bl9ag3ypmb9zf0r2qax4wli4r5jqiavhqn3xsy"
+  },
+  "R3.14.5": {
+    "sha256": "1qqprcnp9rmxnziqyrivmn07gx7rgddzl1wan51adspqj8hy8bbb"
+  },
+  "R3.14.6": {
+    "sha256": "1bjpp6ih1jh73h5jlsana37r0crkxkjs4gcz63hiqawnxc4bcgbd"
+  },
+  "R3.14.7": {
+    "sha256": "0a5spvi0496w80n3k53n90qmq67qka8dpkdl9ap2j9i36l56z74w"
+  },
+  "R3.14.8": {
+    "sha256": "1jgff8a214y66jswmrkrhw12k0rmrzazba136kdf8iqsiivimbqk"
+  },
+  "R3.14.8.1": {
+    "sha256": "0jqvaabscq6ac8p92nm9v2x3m7hk39pk63mln8jbi3s064nwpkfm"
+  },
+  "R3.14.8.2": {
+    "sha256": "0yafhkmapf8jma0dxqw7laraddf0yp4xaz61rzms6b2mymvgv3b9"
+  },
+  "R3.14.9": {
+    "sha256": "1id7rhs0sr881wiy8c1g6rmd9k6jjyb65psw9ldm4hxyd5m4wkcb"
+  },
+  "R3.15.0.1": {
+    "sha256": "098bf1v9rvl6ca668bfb6znzzb24z2rv7cdsx555vgbq1vi3qm62"
+  },
+  "R3.15.0.2": {
+    "sha256": "0aysfqrmrcrq2pdw1jzzlwcvg4d68gb2y3n9irp0ridk1mh9j3wp"
+  },
+  "R3.15.1": {
+    "sha256": "0y84ba89v5dq11b5h6k86069j6n15w6mckf3m5isn5b7b7vkh36a"
+  },
+  "R3.15.2": {
+    "sha256": "06w0nxzqwmxyjssb81b6xg2fbk4a30n797s9irg5a0m805n65d8x"
+  },
+  "R3.15.3": {
+    "sha256": "1byjhdpldm6c6ca1765wbmp2k8vmkgw31737mar794b4m6c8p9c9"
+  },
+  "R3.15.4": {
+    "sha256": "025s7z64j2rxydbg96j80qh9ji98yg1qn597d7a4qk47fgykq34k"
+  },
+  "R3.15.5": {
+    "sha256": "0a1qbqjla9i50l5cmfi0j656mabvcqvlzl1ckny0r0bmszh95ys5"
+  },
+  "R3.15.6": {
+    "sha256": "1xq91pq7sv09dczz0id39yhqvv339jmn5mp9rp6rs9rl5kc5l9jq"
+  },
+  "R3.15.7": {
+    "sha256": "1lry1h5yb3z13pvz9yqgpz6cavjw93dz5g0prh98f0hapy6q8c8y"
+  },
+  "R3.15.8": {
+    "sha256": "14yny123qhc4yz8jyr1mwj870qyyv69azydx8rqadf0d268hvzpl"
+  },
+  "R3.15.9": {
+    "sha256": "1q1s46vcsadwlyvcv5qipbkidgmshlk3r2vf75x426qs46c9qr21"
+  },
+  "R3.16.0.1": {
+    "sha256": "1l7cbyyfydjxm6ri2fzml58cnw4rk6yv6rrr4c5bgz8y4qhmcq9d"
+  },
+  "R3.16.1": {
+    "sha256": "0clklg96z28q48908yirnk8plhj8wr1q3hr1jm5rh37jn9rxxp7w"
+  },
+  "R3.16.2": {
+    "sha256": "0s78p7fz58vp9j3qzjyqvj3jd1naqikfvrqpa7v5bhr46ganx8mx"
+  },
+  "R7.0.1": {
+    "sha256": "16qj5x2vzkjqs1aciipcdjx4gc0x7rf97jsk62lj3n6jnqwmzqaq"
+  },
+  "R7.0.1.1": {
+    "sha256": "0yamw1v7b8352bl1apv8nvfk41iynh08cn76mjwpghdmpcvzh2vz"
+  },
+  "R7.0.2": {
+    "sha256": "0mnlm1anbyb58h5lqiw44jbx11r2mlfkcgsycqpnqcfbb8jikml7"
+  },
+  "R7.0.2.1": {
+    "sha256": "0zjv6pi8djzzaypaa20xmia3rzaazka91s17n71ncwj6gqdmsg16"
+  },
+  "R7.0.2.2": {
+    "sha256": "10fwz37wqps8ndza4kxc5nh0bi0qhqzx07acrs401ja7gc76c3w2"
+  },
+  "R7.0.3": {
+    "sha256": "0bvss5grbs2885pwl0n3825gm7jksc5wpvmb3pncwjihqfkpih0q"
+  },
+  "R7.0.3.1": {
+    "sha256": "1xd2fmzshw8g5mm9g4m5qkmvmr6xn36d9cqmh1m2z5503g57fk69"
+  },
+  "R7.0.4": {
+    "sha256": "13g3p9c5kq1ld2zc0d3yfgasx7alfvb4lp2wmh2916x4rbyvyc27"
+  },
+  "R7.0.4.1": {
+    "sha256": "19wyzkdbligb9jgs9mayir35mlydkiswlvwrip80m63l7lb8d4zm"
+  },
+  "R7.0.5": {
+    "sha256": "1vzivgbpc6a6v1plxb75zjz15y410iz12lx622nj2xkw7i1wgnc1"
+  },
+  "R7.0.6": {
+    "sha256": "1b4svjfjjxgd1q0bgw6hzmjp7d5rrkgqxxdib2kzn8vm7njsvkp6"
+  }
+}
