@@ -5,7 +5,10 @@
 
 import json
 import os
+import re
 import subprocess
+
+from typing import Optional
 
 from absl import app
 from absl import flags
@@ -13,9 +16,9 @@ from absl import logging
 
 import semver
 
-REPO = "https://git.launchpad.net/epics-base"
+REPO = "https://github.com/epics-modules/asyn.git"
 # See: https://github.com/npm/node-semver#versions
-VERSION_REQ = "~3 >=3.14 || ~7"
+VERSION_REQ = ">=4"
 
 FLAGS = flags.FLAGS
 
@@ -25,13 +28,34 @@ flags.DEFINE_string("out", "", "Output path for versions.json.")
 def find_versions_json() -> str:
     if FLAGS.out:
         return FLAGS.out
-    try_paths = ["pkgs/epics/base/versions.json", "versions.json"]
+    try_paths = ["pkgs/support/asyn/versions.json", "versions.json"]
     for path in try_paths:
         if os.path.exists(path):
             return path
     raise Exception(
         "Couldn't figure out where to write versions.json; try specifying --out"
     )
+
+
+def sanitize_tag(tag: str) -> Optional[str]:
+    # Only official releases
+    if not tag.startswith("R"):
+        return None
+
+    # Remove the "R", and make a semver compatible version
+    cleaned_tag = tag[1:]
+
+    # No prereleases, beta, or release candidates
+    if re.search("[a-zA-Z]", cleaned_tag):
+        return None
+
+    parts = cleaned_tag.split("-")
+
+    if len(parts) < 3:
+        parts.append("0")
+
+    return ".".join(parts)
+
 
 
 def list_remote_tags() -> str:
@@ -49,18 +73,11 @@ def list_remote_tags() -> str:
         else:
             tag = line[line.rfind("/") + 1 : end]
 
-        # Only official releases, no prereleases, beta, or release candidates
-        if not tag.startswith("R") or tag.count("-") > 0:
-            continue
-
         # Remove the "R", and make a semver compatible version
-        cleaned_tag = tag[1:]
-        if cleaned_tag.count(".") >= 3:
-            loc = 0
-            for i in range(3):
-                loc = cleaned_tag.find(".", loc + 1)
+        cleaned_tag = sanitize_tag(tag)
 
-            cleaned_tag = cleaned_tag[:loc]
+        if not cleaned_tag:
+            continue
 
         if semver.satisfies(cleaned_tag, VERSION_REQ):
             tags.add(tag)

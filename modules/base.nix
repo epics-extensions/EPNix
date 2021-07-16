@@ -1,19 +1,13 @@
-{ config, lib, epnixPkgs, epnixLib, ... }:
+{ config, lib, pkgs, epnixPkgs, epnixLib, ... }:
 
 with lib;
 
 let
   cfg = config.epnix.base;
-  settingsFormat = epnixLib.formats.make {};
+  settingsFormat = epnixLib.formats.make { };
 in
 {
   options.epnix.base = {
-    enable = mkOption {
-      default = true;
-      type = types.bool;
-      description = "Whether to install epics-base in the EPICS distribution source tree";
-    };
-
     version = mkOption {
       default = "7.0.6";
       type = types.str;
@@ -26,20 +20,40 @@ in
       description = "Package to use for epics-base. Defaults to the official distribution with the given version";
     };
 
-    config = mkOption {
+    releaseConfig = mkOption {
+      default = { };
+      description = "Configuration installed as RELEASE";
+      type = types.submodule {
+        freeformType = settingsFormat.type;
+        options = { };
+      };
+    };
+
+    siteConfig = mkOption {
       default = { };
       description = "Configuration installed as CONFIG_SITE";
       type = types.submodule {
         freeformType = settingsFormat.type;
-        options = {
-
-        };
+        options = { };
       };
     };
   };
 
+  # TODO: this is hacky
+  config.epnix.base.releaseConfig = {
+    "EPICS_BASE:" = "$(out)/epics-base";
+    "SUPPORT:" = "$(out)/support";
+  };
+
+  config.epnix.buildConfig = {
+    nativeBuildInputs = with pkgs; [ perl ];
+    buildInputs = with pkgs; [ readline ];
+  };
+
   config.epnix.source.dirs."epics-base" = {
     src = cfg.package;
-    copyFiles."configure/CONFIG_SITE.local".src = settingsFormat.generate "epics-base-CONFIG_SITE.local" cfg.config;
+    patches = [ ../pkgs/epics/base/use-env-substitution-in-checkRelease.patch ];
+    copyFiles."configure/RELEASE.local".src = settingsFormat.generate "epics-base-RELEASE.local" cfg.releaseConfig;
+    copyFiles."configure/CONFIG_SITE.local".src = settingsFormat.generate "epics-base-CONFIG_SITE.local" cfg.siteConfig;
   };
 }

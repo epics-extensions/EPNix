@@ -3,12 +3,18 @@
 with lib;
 {
   make = {}: {
-    type = types.attrsOf types.str;
+    type = with types; attrsOf (nullOr str);
     generate = name: value:
       pkgs.runCommand name
         {
           nativeBuildInputs = [ pkgs.gnumake ];
-          value = generators.toKeyValue { } value;
+          value = generators.toKeyValue
+            {
+              mkKeyValue = k: v:
+                if v == null then "undefine ${k}"
+                else generators.mkKeyValueDefault { } "=" k v;
+            }
+            value;
           passAsFile = [ "value" ];
         } ''
         cp "$valuePath" "$out"

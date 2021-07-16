@@ -21,7 +21,13 @@
         };
 
         checks = {
-          base-source = (epnixDistribution { }).source;
+          base-source = (epnixDistribution {
+            epnix.support.asyn.enable = true;
+          }).source;
+
+          base-build = (epnixDistribution {
+            epnix.support.asyn.enable = true;
+          }).build;
         };
       }));
 }

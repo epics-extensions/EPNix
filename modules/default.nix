@@ -31,7 +31,11 @@ let
 
       ./assertions.nix
       ./base.nix
+      ./build.nix
       ./source.nix
+
+      ./support/asyn.nix
+      ./support/synApps.nix
     ];
   };
 
@@ -48,5 +52,5 @@ in
   inherit (eval) pkgs options;
   inherit config;
 
-  inherit (config.epnix.build) source;
+  inherit (config.epnix.build) build source;
 }
