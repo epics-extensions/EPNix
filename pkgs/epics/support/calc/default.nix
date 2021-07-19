@@ -1,8 +1,9 @@
 { lib
 , mkEpicsPackage
-, fetchFromGitHub
-, version ? "2.16"
+, fetchgit
+, version ? "3-7-4"
 , sha256 ? ""
+, epics
 , local_config_site ? { }
 , local_release ? { }
 }:
@@ -12,16 +13,17 @@ let
   hash = if sha256 != "" then sha256 else versions.${version}.sha256;
 in
 mkEpicsPackage {
-  pname = "ipac";
+  pname = "calc";
   inherit version;
-  varname = "IPAC";
+  varname = "CALC";
 
   inherit local_config_site local_release;
 
-  src = fetchFromGitHub {
-    owner = "epics-modules";
-    repo = "ipac";
-    rev = version;
+  buildInputs = with epics.support; [ sscan ];
+
+  src = fetchgit {
+    url = "https://github.com/epics-modules/calc.git";
+    rev = "R${version}";
     sha256 = hash;
   };
 }

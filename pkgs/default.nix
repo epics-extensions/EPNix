@@ -10,9 +10,12 @@ recurseIntoAttrs rec {
     base = callPackage ./epics/base { };
     support = recurseIntoAttrs {
       asyn = callPackage ./epics/support/asyn { };
+      calc = callPackage ./epics/support/calc { };
       ipac = callPackage ./epics/support/ipac { };
       seq = callPackage ./epics/support/seq { };
-      synApps = callPackage ./epics/support/synApps { };
+      sscan = callPackage ./epics/support/sscan { };
+      StreamDevice = callPackage ./epics/support/StreamDevice { };
+      #synApps = callPackage ./epics/support/synApps { };
     };
   };
 }
