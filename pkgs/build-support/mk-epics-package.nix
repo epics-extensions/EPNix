@@ -17,6 +17,10 @@ let
   # remove non standard attributes that cannot be coerced to strings
   overridable = builtins.removeAttrs attrs [ "local_config_site" "local_release" ];
   generateConf = (epnixLib.formats.make { }).generate;
+
+  # Undefine the SUPPORT variable here, since there is no single "support"
+  # directory and this variable is a source of conflicts between RELEASE files
+  my_local_release = local_release // { SUPPORT = null; };
 in
 stdenv.mkDerivation (overridable // {
   nativeBuildInputs = nativeBuildInputs ++ [ perl ];
@@ -41,7 +45,7 @@ stdenv.mkDerivation (overridable // {
 
   preBuild = ''
     cp -fv --no-preserve=mode "${generateConf "${pname}-CONFIG_SITE.local" local_config_site}" configure/CONFIG_SITE.local
-    cp -fv --no-preserve=mode "${generateConf "${pname}-RELEASE.local" local_release}" configure/RELEASE.local
+    cp -fv --no-preserve=mode "${generateConf "${pname}-RELEASE.local" my_local_release}" configure/RELEASE.local
 
     # set to empty if unset
     : ''${EPICS_COMPONENTS=}
