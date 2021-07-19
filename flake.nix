@@ -7,16 +7,19 @@
   outputs = { self, nixpkgs, flake-utils }:
     with flake-utils.lib;
     (eachSystem defaultSystems (system:
-      let pkgs = nixpkgs.legacyPackages.${system}; in
+      let
+        overlay = import ./pkgs;
+        pkgs = import nixpkgs.outPath { inherit system; overlays = [ overlay ]; };
+      in
       rec {
 
-        packages = flattenTree (import ./pkgs { inherit pkgs; });
+        packages = flattenTree (pkgs.recurseIntoAttrs { inherit (pkgs) epics; });
 
-        lib = import ./lib { inherit pkgs; inherit (pkgs) lib; };
+        lib = pkgs.epnixLib;
 
+        /*
         epnixDistribution = configuration: import ./modules {
           inherit configuration pkgs;
-          epnixPkgs = packages;
           epnixLib = lib;
         };
 
@@ -29,5 +32,6 @@
             epnix.support.asyn.enable = true;
           }).build;
         };
+        */
       }));
 }

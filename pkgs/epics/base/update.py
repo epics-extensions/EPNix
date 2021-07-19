@@ -63,7 +63,7 @@ def list_remote_tags() -> str:
             cleaned_tag = cleaned_tag[:loc]
 
         if semver.satisfies(cleaned_tag, VERSION_REQ):
-            tags.add(tag)
+            tags.add(tag[1:])
 
     return tags
 

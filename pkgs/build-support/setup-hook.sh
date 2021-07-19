@@ -1,0 +1,1 @@
+export "EPICS_COMPONENTS=${EPICS_COMPONENTS:+${EPICS_COMPONENTS}:}@varname@=@out@"

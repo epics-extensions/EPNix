@@ -1,8 +1,9 @@
 { lib
 , mkEpicsPackage
-, fetchgit
-, version ? "7.0.6"
+, fetchFromGitHub
+, version ? "2.16"
 , sha256 ? ""
+, re2c
 , local_config_site ? { }
 , local_release ? { }
 }:
@@ -12,17 +13,18 @@ let
   hash = if sha256 != "" then sha256 else versions.${version}.sha256;
 in
 mkEpicsPackage {
-  pname = "epics-base";
+  pname = "ipac";
   inherit version;
-  varname = "EPICS_BASE";
+  varname = "IPAC";
 
   inherit local_config_site local_release;
 
-  isEpicsBase = true;
+  nativeBuildInputs = [];
 
-  src = fetchgit {
-    url = "https://git.launchpad.net/epics-base";
-    rev = "R${version}";
+  src = fetchFromGitHub {
+    owner = "epics-modules";
+    repo = "ipac";
+    rev = version;
     sha256 = hash;
   };
 }

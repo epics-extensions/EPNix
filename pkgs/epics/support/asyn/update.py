@@ -80,7 +80,7 @@ def list_remote_tags() -> str:
             continue
 
         if semver.satisfies(cleaned_tag, VERSION_REQ):
-            tags.add(tag)
+            tags.add(tag[1:])
 
     return tags
 
