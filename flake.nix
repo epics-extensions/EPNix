@@ -17,6 +17,10 @@
 
         lib = pkgs.epnixLib;
 
+        checks = {
+          top-simple = pkgs.callPackage ./test/top-simple { };
+        };
+
         /*
         epnixDistribution = configuration: import ./modules {
           inherit configuration pkgs;
