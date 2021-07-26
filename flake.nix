@@ -17,24 +17,27 @@
 
         lib = pkgs.epnixLib;
 
-        checks = {
-          top-simple = pkgs.callPackage ./test/top-simple { };
-        };
-
-        /*
         epnixDistribution = configuration: import ./modules {
           inherit configuration pkgs;
           epnixLib = lib;
         };
 
         checks = {
+          top-simple = pkgs.callPackage ./test/top-simple { };
+          base-build = (epnixDistribution {
+            epnix = {
+              support.asyn.enable = true;
+              applications.apps = [ ./test/top-simple/myExampleApp ];
+              boot.iocBoots = [ ./test/top-simple/iocBoot/iocmyExample ];
+            };
+          }).build;
+        };
+
+        /*
+        checks = {
           base-source = (epnixDistribution {
             epnix.support.asyn.enable = true;
           }).source;
-
-          base-build = (epnixDistribution {
-            epnix.support.asyn.enable = true;
-          }).build;
         };
         */
       }));

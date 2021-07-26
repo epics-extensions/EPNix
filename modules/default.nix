@@ -1,4 +1,4 @@
-{ configuration, pkgs, epnixPkgs, epnixLib, }:
+{ configuration, pkgs, epnixLib, }:
 
 let
   lib = pkgs.lib;
@@ -22,20 +22,24 @@ let
         config._module.args = let
           finalPkgs = pkgs.appendOverlays config.nixpkgs.overlays;
         in {
-          inherit epnixPkgs epnixLib;
+          inherit epnixLib;
+          basePkgs = pkgs;
           pkgs = finalPkgs;
         };
       })
 
       configuration
 
+      ./app.nix
       ./assertions.nix
       ./base.nix
+      ./boot.nix
       ./build.nix
-      ./source.nix
+      #./source.nix
+
+      ./support
 
       ./support/asyn.nix
-      ./support/synApps.nix
     ];
   };
 

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, epnixPkgs, epnixLib, ... }:
+{ basePkgs, config, lib, pkgs, epnixLib, ... }:
 
 with lib;
 
@@ -8,7 +8,7 @@ let
 in
 {
   options.epnix.support.asyn = {
-    enable = mkEnableOption "Whether to install asyn in the EPICS distribution support source tree";
+    enable = mkEnableOption "Whether to install asyn in this EPICS distribution";
 
     version = mkOption {
       default = "4-42";
@@ -17,11 +17,21 @@ in
     };
 
     package = mkOption {
-      default = epnixPkgs."epics/support/asyn".override { rev = "R${cfg.version}"; };
+      default = basePkgs.epics.support.asyn.override {
+        version = cfg.version;
+        local_config_site = cfg.siteConfig;
+        local_release = cfg.releaseConfig;
+      };
       type = types.package;
-      description = "Package to use for asyn. Defaults to the official distribution with the given version";
+      description = ''
+        Package to use for asyn.
+
+        Defaults to the official distribution with the given version and
+        configuration.
+      '';
     };
 
+    # TODO:
     withCalc = mkEnableOption "Enable Calc support";
     withIpac = mkEnableOption "Enable IPAC support";
     withSeq = mkEnableOption "Enable Seq support";
@@ -46,35 +56,16 @@ in
     };
   };
 
-  config.epnix.support.asyn = {
-    releaseConfig = {
-      # TODO: this is hacky
-      "EPICS_BASE:" = "$(out)/epics-base";
-      "SUPPORT:" = "$(out)/support";
-
-      CALC = if cfg.withCalc then "$(wildcard $(out)/support/synApps/support/calc-*/)" else null;
-      IPAC = if cfg.withIpac then "$(wildcard $(out)/support/synApps/support/ipac-*/)" else null;
-      SNCSEQ = if cfg.withSeq then "$(wildcard $(out)/support/synApps/support/seq-*/)" else null;
-      SSCAN = if cfg.withSscan then "$(wildcard $(out)/support/synApps/support/sscan-*/)" else null;
+  config.nixpkgs.overlays = [ (self: super: {
+    # TODO: make a function?
+    epics = (super.epics or {}) // {
+      support = (super.epics.support or {}) // {
+        asyn = cfg.package;
+      };
     };
+  }) ];
 
-    siteConfig = {
-      TIRPC = "YES";
-    };
-  };
-
-  config.epnix.buildConfig = {
-    nativeBuildInputs = with pkgs; [ pkg-config rpcsvc-proto ];
-    buildInputs = with pkgs; [ libtirpc ];
-  };
-
-  config.epnix.source.dirs."support/asyn" = mkIf cfg.enable {
-    src = cfg.package;
-    patches = [ ../../pkgs/epics/support/asyn/use-pkg-config.patch ];
-    copyFiles = {
-      "configure/RELEASE.local".src = settingsFormat.generate "asyn-RELEASE.local" cfg.releaseConfig;
-      "configure/CONFIG_SITE.local".src = settingsFormat.generate "asyn-CONFIG_SITE.local" cfg.siteConfig;
-    };
-    build.dependsOn = mkIf (cfg.withIpac || cfg.withSeq || cfg.withCalc || cfg.withSscan) [ "support/synApps" ];
-  };
+  config.epnix.support.modules = [
+    pkgs.epics.support.asyn
+  ];
 }

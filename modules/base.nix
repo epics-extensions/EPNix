@@ -1,4 +1,4 @@
-{ config, lib, pkgs, epnixPkgs, epnixLib, ... }:
+{ basePkgs, config, lib, epnixLib, ... }:
 
 with lib;
 
@@ -15,9 +15,18 @@ in
     };
 
     package = mkOption {
-      default = epnixPkgs."epics/base".override { rev = "R${cfg.version}"; };
+      default = basePkgs.epics.base.override {
+        version = cfg.version;
+        local_config_site = cfg.siteConfig;
+        local_release = cfg.releaseConfig;
+      };
       type = types.package;
-      description = "Package to use for epics-base. Defaults to the official distribution with the given version";
+      description = ''
+        Package to use for epics-base.
+
+        Defaults to the official distribution with the given version and given
+        RELEASE and CONFIG_SITE.
+      '';
     };
 
     releaseConfig = mkOption {
@@ -39,21 +48,9 @@ in
     };
   };
 
-  # TODO: this is hacky
-  config.epnix.base.releaseConfig = {
-    "EPICS_BASE:" = "$(out)/epics-base";
-    "SUPPORT:" = "$(out)/support";
-  };
-
-  config.epnix.buildConfig = {
-    nativeBuildInputs = with pkgs; [ perl ];
-    buildInputs = with pkgs; [ readline ];
-  };
-
-  config.epnix.source.dirs."epics-base" = {
-    src = cfg.package;
-    patches = [ ../pkgs/epics/base/use-env-substitution-in-checkRelease.patch ];
-    copyFiles."configure/RELEASE.local".src = settingsFormat.generate "epics-base-RELEASE.local" cfg.releaseConfig;
-    copyFiles."configure/CONFIG_SITE.local".src = settingsFormat.generate "epics-base-CONFIG_SITE.local" cfg.siteConfig;
-  };
+  config.nixpkgs.overlays = [ (self: super: {
+    epics = (super.epics or {}) // {
+      base = cfg.package;
+    };
+  }) ];
 }
