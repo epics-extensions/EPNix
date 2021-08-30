@@ -17,6 +17,12 @@ in
       type = types.str;
       default = "0.0.1";
     };
+
+    attrs = mkOption {
+      description = "Extra attributes to pass to the derivation";
+      type = types.attrs;
+      default = { };
+    };
   };
 
   config.epnix.build.topSource = pkgs.runCommand "epics-distribution-${cfg.flavor}-top-source" { } ''
@@ -38,17 +44,18 @@ in
   '';
 
   config.epnix.build.build =
-    pkgs.mkEpicsPackage {
+    pkgs.mkEpicsPackage ({
       pname = "epics-distribution-${cfg.flavor}";
       version = cfg.version;
       varname = "EPICS_DISTRIBUTION_${cfg.flavor}";
 
-      buildInputs = config.epnix.support.modules;
+      buildInputs = config.epnix.support.modules ++ (cfg.attrs.buildInputs or [ ]);
 
       src = config.epnix.build.topSource;
 
       postInstall = ''
         cp -rafv iocBoot "$out"
-      '';
-    };
+
+      '' + (cfg.attrs.postInstall or "");
+    } // (removeAttrs cfg.attrs [ "buildInputs" "postInstall" ]));
 }

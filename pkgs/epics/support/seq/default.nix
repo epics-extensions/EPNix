@@ -26,7 +26,7 @@ mkEpicsPackage {
   '';
 
   src = fetchzip {
-    url = "http://www-csr.bessy.de/control/SoftDist/sequencer/releases/seq-${version}.tar.gz";
+    url = "https://www-csr.bessy.de/control/SoftDist/sequencer/releases/seq-${version}.tar.gz";
     sha256 = hash;
   };
 }

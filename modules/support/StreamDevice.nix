@@ -3,39 +3,33 @@
 with lib;
 
 let
-  cfg = config.epnix.support.asyn;
+  cfg = config.epnix.support.StreamDevice;
   settingsFormat = epnixLib.formats.make { };
 in
 {
-  options.epnix.support.asyn = {
-    enable = mkEnableOption "Whether to install asyn in this EPICS distribution";
+  options.epnix.support.StreamDevice = {
+    enable = mkEnableOption "Whether to install StreamDevice in this EPICS distribution";
 
     version = mkOption {
-      default = "4-42";
+      default = "2.8.20";
       type = types.str;
-      description = "Version of asyn to install";
+      description = "Version of StreamDevice to install";
     };
 
     package = mkOption {
-      default = super: super.epics.support.asyn.override {
+      default = super: super.epics.support.StreamDevice.override {
         version = cfg.version;
         local_config_site = cfg.siteConfig;
         local_release = cfg.releaseConfig;
       };
       type = with types; functionTo package;
       description = ''
-        Package to use for asyn.
+        Package to use for StreamDevice.
 
         Defaults to the official distribution with the given version and
         configuration.
       '';
     };
-
-    # TODO:
-    withCalc = mkEnableOption "Enable Calc support";
-    withIpac = mkEnableOption "Enable IPAC support";
-    withSeq = mkEnableOption "Enable Seq support";
-    withSscan = mkEnableOption "Enable SSCAN support";
 
     releaseConfig = mkOption {
       default = { };
@@ -61,13 +55,18 @@ in
       # TODO: make a function?
       epics = (super.epics or {}) // {
         support = (super.epics.support or {}) // {
-          asyn = cfg.package super;
+          StreamDevice = cfg.package super;
         };
       };
     }) ];
 
-    epnix.support.modules = [
-      pkgs.epics.support.asyn
-    ];
+    epnix.support = {
+      # TODO: calc
+      asyn.enable = true;
+
+      modules = [
+        pkgs.epics.support.StreamDevice
+      ];
+    };
   };
 }

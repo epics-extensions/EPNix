@@ -3,6 +3,7 @@
 , fetchgit
 , version ? "7.0.6"
 , sha256 ? ""
+, readline
 , local_config_site ? { }
 , local_release ? { }
 }:
@@ -25,4 +26,8 @@ mkEpicsPackage {
     rev = "R${version}";
     sha256 = hash;
   };
+
+  propagatedBuildInputs = with lib; optional (versionOlder version "7.0.0") readline;
+
+  # TODO: find a way to "symlink" what is in ./bin/linux-x86_64 -> ./bin
 }

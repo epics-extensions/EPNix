@@ -1,4 +1,4 @@
-{ stdenv, lib, runCommand, perl, epics, epnixLib, ... }:
+{ stdenv, lib, runCommand, clang, perl, epics, epnixLib, ... }:
 
 { pname
 , varname
@@ -23,13 +23,15 @@ let
   my_local_release = local_release // { SUPPORT = null; };
 in
 stdenv.mkDerivation (overridable // {
-  nativeBuildInputs = nativeBuildInputs ++ [ perl ];
+  nativeBuildInputs = nativeBuildInputs ++ [ clang perl ];
   buildInputs = buildInputs ++ (optional (!isEpicsBase) [ epics.base ]);
 
   makeFlags = makeFlags ++ [
-    "CC=cc"
-    "CCC=g++"
-    "CXX=g++"
+    "GNU=NO"
+    "CMPLR_CLASS=clang"
+    "CC=clang"
+    "CCC=clang++"
+    "CXX=clang++"
     "AR=ar"
     "LD=ld"
     "RANLIB=ranlib"
