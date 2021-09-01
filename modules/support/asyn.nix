@@ -22,6 +22,13 @@ in
         local_config_site = cfg.siteConfig;
         local_release = cfg.releaseConfig;
       };
+      defaultText = literalExample ''
+        super: super.epics.support.asyn.override {
+          version = cfg.version;
+          local_config_site = cfg.siteConfig;
+          local_release = cfg.releaseConfig;
+        }
+      '';
       type = with types; functionTo package;
       description = ''
         Package to use for asyn.

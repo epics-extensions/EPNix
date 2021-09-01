@@ -20,6 +20,13 @@ in
         local_config_site = cfg.siteConfig;
         local_release = cfg.releaseConfig;
       };
+      defaultText = literalExample ''
+        super: super.epics.base.override {
+          version = cfg.version;
+          local_config_site = cfg.siteConfig;
+          local_release = cfg.releaseConfig;
+        }
+      '';
       type = with types; functionTo package;
       description = ''
         Package to use for epics-base.
