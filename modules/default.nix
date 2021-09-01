@@ -16,8 +16,6 @@ let
       })
 
       configuration
-
-      (import ./documentation.nix nixpkgs)
     ] ++ (import ./module-list.nix);
   };
 

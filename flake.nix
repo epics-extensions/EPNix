@@ -15,13 +15,16 @@
       rec {
 
         packages = flattenTree (pkgs.recurseIntoAttrs { inherit (pkgs) epics; }) // {
-          /*
-          manual = (import ./modules {
-            inherit nixpkgs pkgs;
+          manpage = (import ./modules {
+            inherit nixpkgs pkgs devshell;
             configuration = { };
             epnixLib = lib;
-          }).build.manual.manpages;
-          */
+          }).build.manpage;
+          doc-options-md = (import ./modules {
+            inherit nixpkgs pkgs devshell;
+            configuration = { };
+            epnixLib = lib;
+          }).build.doc-options-md;
         };
 
         lib = pkgs.epnixLib;

@@ -6,6 +6,7 @@
       ./build.nix
       ./common.nix
       ./devshell.nix
+      ./documentation.nix
       #./source.nix
 
       ./support

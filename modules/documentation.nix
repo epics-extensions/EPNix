@@ -1,25 +1,72 @@
-nixpkgs:
-
-{ config, lib, pkgs, ... }:
+{ config, lib, options, pkgs, ... }:
 
 with lib;
 
+let
+  visibleOptionDocs = filter (opt: opt.visible && !opt.internal) (optionAttrSetToDocList options);
+
+  toValue = value:
+    if value ? _type && value._type == "literalExample" then value.text
+    else generators.toPretty { } value;
+
+  toMarkdown = option:
+    ''
+      ## `${option.name}`
+
+      ${option.description}
+
+      ${optionalString (option ? default) ''
+        **Default value**:
+
+        ```nix
+        ${toValue option.default}
+        ```
+      ''}
+
+      **Type**: ${option.type}${optionalString option.readOnly " (read only)"}
+
+      ${optionalString (option ? example) ''
+        **Example**:
+
+        ```nix
+        ${toValue option.example}
+        ```
+      ''}
+
+      Declared in:
+
+      ${concatStringsSep "\n" (map (decl: "- ${decl}") option.declarations)}
+
+    '';
+
+  options-md = concatStringsSep "\n" (map toMarkdown visibleOptionDocs);
+in
 {
-  imports = [
-    "${nixpkgs}/nixos/modules/misc/meta.nix"
-  ];
+  config.epnix.build = {
+    doc-options-md = pkgs.writeText "options.md" options-md;
+    manpage = pkgs.runCommand "epnix-configuration.nix.5"
+      {
+        src = pkgs.writeText "epnix-configuration.nix.5.md" ''
+          % EPNIX-CONFIGURATION.NIX(5)
 
-  config.meta.doc = ./documentation.xml;
+          # NAME
 
-  config.epnix.build.manual = import "${nixpkgs}/nixos/doc/manual/default.nix" {
-    inherit config pkgs;
+          epnix-configuration.nix - EPNix configuration options
 
-    version = "";
-    revision = "";
+          # DESCRIPTION
 
-    options = evalModules {
-      modules = import ./module-list.nix;
-      args = config._module.args;
-    };
+          TODO
+
+          # OPTIONS
+
+          You can use the following options:
+
+          ${options-md}
+        '';
+
+        nativeBuildInputs = [ pkgs.pandoc ];
+      } ''
+      pandoc "$src" --from=markdown --to=man --standalone --output="$out"
+    '';
   };
 }
