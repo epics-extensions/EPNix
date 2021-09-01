@@ -15,7 +15,6 @@ recurseIntoAttrs rec {
       seq = callPackage ./epics/support/seq { };
       sscan = callPackage ./epics/support/sscan { };
       StreamDevice = callPackage ./epics/support/StreamDevice { };
-      #synApps = callPackage ./epics/support/synApps { };
     };
   };
 }
