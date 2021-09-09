@@ -19,12 +19,12 @@
             inherit nixpkgs pkgs devshell;
             configuration = { };
             epnixLib = lib;
-          }).build.manpage;
+          }).outputs.manpage;
           doc-options-md = (import ./modules {
             inherit nixpkgs pkgs devshell;
             configuration = { };
             epnixLib = lib;
-          }).build.doc-options-md;
+          }).outputs.doc-options-md;
         };
 
         lib = pkgs.epnixLib;
@@ -56,12 +56,10 @@
               ];
               boot.iocBoots = [ ./test/top-simple/iocBoot/iocmyExample ];
             };
-          }).build.build;
+          }).outputs.build;
         };
 
-        devShell = (epnixDistribution {
-          epnix.support.StreamDevice.enable = true;
-        }).build.devShell;
+        devShell = (epnixDistribution { }).outputs.devShell;
       })) // {
 
       };

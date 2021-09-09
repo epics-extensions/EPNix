@@ -16,7 +16,7 @@ with lib;
     default = { };
   };
 
-  config.epnix.build.devShell = config.devShell.devshell.shell;
+  config.epnix.outputs.devShell = config.devShell.devshell.shell;
   config.nixpkgs.overlays = [ devshell.overlay ];
 
   config.devShell.devshell.motd = ''

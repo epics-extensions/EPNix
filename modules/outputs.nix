@@ -25,7 +25,7 @@ in
     };
   };
 
-  config.epnix.build.topSource = pkgs.runCommand "epics-distribution-${cfg.flavor}-top-source" { } ''
+  config.epnix.outputs.topSource = pkgs.runCommand "epics-distribution-${cfg.flavor}-top-source" { } ''
     mkdir -p "$out"
 
     cp -rfv --no-preserve=mode "${pkgs.epics.base}/templates/makeBaseApp/top/configure" "$out"
@@ -43,7 +43,7 @@ in
     '') config.epnix.boot.iocBoots}
   '';
 
-  config.epnix.build.build =
+  config.epnix.outputs.build =
     pkgs.mkEpicsPackage ({
       pname = "epics-distribution-${cfg.flavor}";
       version = cfg.version;
@@ -51,7 +51,7 @@ in
 
       buildInputs = config.epnix.support.modules ++ (cfg.attrs.buildInputs or [ ]);
 
-      src = config.epnix.build.topSource;
+      src = config.epnix.outputs.topSource;
 
       postInstall = ''
         cp -rafv iocBoot "$out"

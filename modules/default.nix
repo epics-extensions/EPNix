@@ -32,5 +32,5 @@ in
   inherit (eval) pkgs options;
   inherit config;
 
-  inherit (config.epnix) build;
+  inherit (config.epnix) outputs;
 }

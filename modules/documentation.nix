@@ -42,7 +42,7 @@ let
   options-md = concatStringsSep "\n" (map toMarkdown visibleOptionDocs);
 in
 {
-  config.epnix.build = {
+  config.epnix.outputs = {
     doc-options-md = pkgs.writeText "options.md" options-md;
     manpage = pkgs.runCommand "epnix-configuration.nix.5"
       {
