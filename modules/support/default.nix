@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, epnixLib, ... }:
 
 with lib;
 let
@@ -8,7 +8,7 @@ in
   options.epnix.support = {
     modules = mkOption {
       default = [ ];
-      type = with types; listOf package;
+      type = types.listOf (epnixLib.types.strOrPackage pkgs);
       description = ''
         Support modules needed for this EPICS distribution.
       '';

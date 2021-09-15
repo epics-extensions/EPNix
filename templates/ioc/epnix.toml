@@ -1,0 +1,34 @@
+[epnix.buildConfig]
+# Put the name and version of your EPICS distribution here:
+# ---
+flavor = "custom"
+version = "0.0.1"
+
+[epnix.base]
+# You can choose the version of EPICS-base here:
+# ---
+#version = "3.16.2"
+
+[epnix.support]
+# Add one of the supported modules through its own option:
+# ---
+#StreamDevice.enable = true
+#StreamDevice.version = "2.8.20"
+
+# Or by specfying it here:
+# ---
+#modules = [ "epics.support.calc" ]
+
+[epnix.applications]
+# Add your applications:
+# ---
+#apps = [
+#	"./myProjectApp"
+#]
+
+[epnix.boot]
+# And your iocBoot directories:
+# ---
+#iocBoots = [
+#	"./iocBoot/iocmyProject"
+#]

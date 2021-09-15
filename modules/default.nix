@@ -10,13 +10,15 @@ let
             finalPkgs = pkgs.appendOverlays config.nixpkgs.overlays;
           in
           {
-            inherit epnixLib devshell;
+            inherit devshell;
             pkgs = finalPkgs;
           };
       })
 
       configuration
     ] ++ (import ./module-list.nix);
+
+    specialArgs = { inherit epnixLib; };
   };
 
   # From Robotnix

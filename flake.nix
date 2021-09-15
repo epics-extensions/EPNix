@@ -61,6 +61,11 @@
 
         devShell = (epnixDistribution { }).outputs.devShell;
       })) // {
+        templates.ioc = {
+          path = ./templates/ioc;
+          description = "Build an EPNix distribution IOC";
+        };
 
+        defaultTemplate = self.templates.ioc;
       };
 }
