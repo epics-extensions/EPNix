@@ -6,7 +6,7 @@
     follows = "epnix/nixpkgs";
   };
   inputs.flake-utils.url = "github:numtide/flake-utils";
-  inputs.epnix.url = "/home/minijackson/Documents/Dev/nix/epnix";
+  inputs.epnix.url = "git+ssh://git@drf-gitlab.cea.fr/rnicole/epnix.git";
 
   outputs = { self, nixpkgs, flake-utils, epnix }:
     let
