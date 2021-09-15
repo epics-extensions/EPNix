@@ -26,13 +26,19 @@ with lib;
 
   config.devShell.commands = [
     {
-      help = "used to format nix code";
+      package = pkgs.bear;
+      category = "development tools";
+    }
+    { package = pkgs.grc; }
+
+    {
+      help = "Format nix code";
       package = pkgs.nixpkgs-fmt;
       category = "development tools";
     }
 
     {
-      help = "used to format C/C++ code";
+      help = "Format C/C++ code";
       name = "clang-format";
       package = pkgs.clang-tools;
       category = "development tools";
@@ -50,6 +56,16 @@ with lib;
         for component in "''${components[@]}"; do
           echo "$component"
         done
+      '';
+      category = "EPNix commands";
+    }
+
+    {
+      help = "Show the configuration options manpage of the distribution";
+      name = "eman";
+      command = ''
+        manpage="$(nix build --no-link --json --no-write-lock-file '.#manpage' | ${pkgs.jq}/bin/jq -r '.[].outputs.out')"
+        man "$manpage"
       '';
       category = "EPNix commands";
     }
