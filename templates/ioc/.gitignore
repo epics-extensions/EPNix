@@ -1,5 +1,6 @@
 # Build artifacts
 /bin
+/db
 /dbd
 O.*/
 envPaths
