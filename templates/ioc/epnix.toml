@@ -32,3 +32,14 @@ version = "0.0.1"
 #iocBoots = [
 #	"./iocBoot/iocmyProject"
 #]
+
+# You can specify environment variables in your development shell like this:
+# ---
+
+#[[devShell.env]]
+#name = "EPICS_CA_ADDR_LIST"
+#value = "localhost"
+
+#[[devShell.env]]
+#name = "MY_VARIABLE"
+#value = "the_value"
