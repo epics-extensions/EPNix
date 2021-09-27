@@ -6,10 +6,12 @@
   inputs.devshell.url = "github:numtide/devshell";
 
   outputs = { self, nixpkgs, flake-utils, devshell }:
+    let
+      overlay = import ./pkgs;
+    in
     with flake-utils.lib;
-    (eachSystem [ "aarch64-linux" "x86_64-linux" ] (system:
+    ((eachSystem [ "aarch64-linux" "x86_64-linux" ] (system:
       let
-        overlay = import ./pkgs;
         pkgs = import nixpkgs.outPath { inherit system; overlays = [ overlay ]; };
       in
       rec {
@@ -61,11 +63,13 @@
 
         devShell = (epnixDistribution { }).outputs.devShell;
       })) // {
-        templates.ioc = {
-          path = ./templates/ioc;
-          description = "Build an EPNix distribution IOC";
-        };
+      inherit overlay;
 
-        defaultTemplate = self.templates.ioc;
+      templates.ioc = {
+        path = ./templates/ioc;
+        description = "Build an EPNix distribution IOC";
       };
+
+      defaultTemplate = self.templates.ioc;
+    });
 }
