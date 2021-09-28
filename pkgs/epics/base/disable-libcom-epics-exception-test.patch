@@ -1,0 +1,16 @@
+diff --git a/src/libCom/test/Makefile b/src/libCom/test/Makefile
+index cb3dab0de..6de92321e 100755
+--- a/src/libCom/test/Makefile
++++ b/src/libCom/test/Makefile
+@@ -171,11 +171,6 @@ epicsAtomicTest_SRCS += epicsAtomicTest.cpp
+ testHarness_SRCS += epicsAtomicTest.cpp
+ TESTS += epicsAtomicTest
+ 
+-TESTPROD_HOST += epicsExceptionTest
+-epicsExceptionTest_SRCS += epicsExceptionTest.cpp
+-testHarness_SRCS += epicsExceptionTest.cpp
+-TESTS += epicsExceptionTest
+-
+ TESTPROD_HOST += macDefExpandTest
+ macDefExpandTest_SRCS += macDefExpandTest.c
+ testHarness_SRCS += macDefExpandTest.c

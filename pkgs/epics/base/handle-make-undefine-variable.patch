@@ -1,0 +1,31 @@
+diff --git a/src/tools/EPICS/Release.pm b/src/tools/EPICS/Release.pm
+index 09381dfc8..f85bf46cb 100644
+--- a/src/tools/EPICS/Release.pm
++++ b/src/tools/EPICS/Release.pm
+@@ -9,6 +9,9 @@
+ 
+ use Carp;
+ 
++# Regex to recognize variable names allowed in a RELEASE file
++my $MVAR = qr/[A-Za-z_] [A-Za-z_0-9-]*/x;
++
+ #
+ # Parse all relevent configure/RELEASE* files and includes
+ #
+@@ -54,8 +57,15 @@ sub readRelease {
+         s/ \s+ $//x;            # Remove trailing whitespace
+         next if m/^ \s* $/x;    # Skip blank lines
+ 
++        # Handle "undefine <variable>"
++        my ($uvar) = m/^ undefine \s+ ($MVAR)/x;
++        if ($uvar ne '') {
++            delete $Rmacros->{$uvar};
++            next;
++        }
++
+         # Handle "<macro> = <path>" plus the := and ?= variants
+-        my ($macro, $op, $val) = m/^ \s* (\w+) \s* ([?:]?=) \s* (.*) /x;
++        my ($macro, $op, $val) = m/^ \s* ($MVAR) \s* ([?:]?=) \s* (.*) /x;
+         if ($macro ne '') {
+             $macro = 'TOP' if $macro =~ m/^ INSTALL_LOCATION /x;
+             if (exists $Rmacros->{$macro}) {
