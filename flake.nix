@@ -65,11 +65,11 @@
       })) // {
       inherit overlay;
 
-      templates.ioc = {
-        path = ./templates/ioc;
-        description = "Build an EPNix distribution IOC";
+      templates.top = {
+        path = ./templates/top;
+        description = "An EPNix TOP project";
       };
 
-      defaultTemplate = self.templates.ioc;
+      defaultTemplate = self.templates.top;
     });
 }
