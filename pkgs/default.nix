@@ -1,10 +1,10 @@
-self: super:
+final: prev:
 
-with super;
+with prev;
 recurseIntoAttrs rec {
   mkEpicsPackage = callPackage ./build-support/mk-epics-package.nix { };
 
-  epnixLib = import ../lib { pkgs = super; lib = super.lib; };
+  epnixLib = import ../lib { pkgs = prev; lib = prev.lib; };
 
   epics = recurseIntoAttrs {
     base = callPackage ./epics/base { };
