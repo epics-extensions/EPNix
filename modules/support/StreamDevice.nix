@@ -29,7 +29,7 @@ in
           local_release = cfg.releaseConfig;
         }
       '';
-      type = with types; functionTo package;
+      type = epnixLib.types.strOrFuncToPackage pkgs;
       description = ''
         Package to use for StreamDevice.
 
