@@ -29,6 +29,19 @@ in
     mkdir -p "$out"
 
     cp -rfv --no-preserve=mode "${pkgs.epics.base}/templates/makeBaseApp/top/configure" "$out"
+    ${# Include CONFIG_SITE.local and RELEASE.local in the top "template"
+      # Fixed by commit aa6e976f92d144b5143cf267d8b2781d3ec8b62b
+      optionalString (versionOlder pkgs.epics.base.version "3.15.5") ''
+        cat >> "$out/configure/CONFIG_SITE" <<'EOF'
+        -include $(TOP)/../CONFIG_SITE.local
+        -include $(TOP)/configure/CONFIG_SITE.local
+        EOF
+
+        cat >> "$out/configure/RELEASE" <<'EOF'
+        -include $(TOP)/../RELEASE.local
+        -include $(TOP)/configure/RELEASE.local
+        EOF
+      ''}
     cp -rfv "${pkgs.epics.base}/templates/makeBaseApp/top/Makefile" "$out"
 
     ${concatMapStringsSep "\n" (app: ''
