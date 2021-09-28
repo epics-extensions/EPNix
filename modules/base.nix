@@ -64,7 +64,8 @@ in
   ];
 
   config.devShell.devshell.packages = with pkgs; [
-    gnumake binutils
+    gnumake
+    binutils
   ];
 
   config.devShell.language.c.libraries = with pkgs; [
@@ -79,141 +80,146 @@ in
     source "${pkgs.epics.base}/nix-support/setup-hook"
   '';
 
-  config.devShell.commands = [
-    # Build tools
+  config.devShell.commands = mkMerge [
+    [
+      # Build tools
 
-    {
-      help = "Execute make with the relevant variables";
-      name = "emake";
-      command = ''
-        ${pkgs.gnumake}/bin/make \
-          "GNU=NO" \
-          "CMPLR_CLASS=clang" \
-          "CC=clang" \
-          "CCC=clang++" \
-          "CXX=clang++" \
-          "AR=ar" \
-          "LD=ld" \
-          "RANLIB=ranlib" \
-          "ARFLAGS=rc" \
-          "$@"
-      '';
-      category = "EPNix commands";
-    }
+      {
+        help = "Execute make with the relevant variables";
+        name = "emake";
+        command = ''
+          ${pkgs.gnumake}/bin/make \
+            "GNU=NO" \
+            "CMPLR_CLASS=clang" \
+            "CC=clang" \
+            "CCC=clang++" \
+            "CXX=clang++" \
+            "AR=ar" \
+            "LD=ld" \
+            "RANLIB=ranlib" \
+            "ARFLAGS=rc" \
+            "$@"
+        '';
+        category = "EPNix commands";
+      }
 
-    # Bootstrapping
+      # Bootstrapping
 
-    {
-      help = "Create a new EPICS App or IOC";
-      name = "makeBaseApp.pl";
-      command = ''
-        ${pkgs.epics.base}/bin/*/makeBaseApp.pl "$@"
-      '';
-      category = "EPICS bootstrapping commands";
-    }
+      {
+        help = "Create a new EPICS App or IOC";
+        name = "makeBaseApp.pl";
+        command = ''
+          ${pkgs.epics.base}/bin/*/makeBaseApp.pl "$@"
+        '';
+        category = "EPICS bootstrapping commands";
+      }
 
-    {
-      help = "Create a new EPICS extension directory";
-      name = "makeBaseExt.pl";
-      command = ''
-        ${pkgs.epics.base}/bin/*/makeBaseExt.pl "$@"
-      '';
-      category = "EPICS bootstrapping commands";
-    }
+      {
+        help = "Create a new EPICS extension directory";
+        name = "makeBaseExt.pl";
+        command = ''
+          ${pkgs.epics.base}/bin/*/makeBaseExt.pl "$@"
+        '';
+        category = "EPICS bootstrapping commands";
+      }
 
-    {
-      help = "Create a new EPICS API header";
-      name = "makeAPIheader.pl";
-      command = ''
-        ${pkgs.epics.base}/bin/*/makeAPIheader.pl "$@"
-      '';
-      category = "EPICS bootstrapping commands";
-    }
+      {
+        help = "Create a new EPICS API header";
+        name = "makeAPIheader.pl";
+        command = ''
+          ${pkgs.epics.base}/bin/*/makeAPIheader.pl "$@"
+        '';
+        category = "EPICS bootstrapping commands";
+      }
 
-    # Channel Access
+      # Channel Access
 
-    {
-      help = "Obtain a Process Variable value over Channel Access";
-      name = "caget";
-      command = ''
-        ${pkgs.epics.base}/bin/*/caget "$@"
-      '';
-      category = "EPICS Channel Access commands";
-    }
+      {
+        help = "Obtain a Process Variable value over Channel Access";
+        name = "caget";
+        command = ''
+          ${pkgs.epics.base}/bin/*/caget "$@"
+        '';
+        category = "EPICS Channel Access commands";
+      }
 
-    {
-      help = "Get information on a Process Variable over Channel Access";
-      name = "cainfo";
-      command = ''
-        ${pkgs.epics.base}/bin/*/cainfo "$@"
-      '';
-      category = "EPICS Channel Access commands";
-    }
+      {
+        help = "Get information on a Process Variable over Channel Access";
+        name = "cainfo";
+        command = ''
+          ${pkgs.epics.base}/bin/*/cainfo "$@"
+        '';
+        category = "EPICS Channel Access commands";
+      }
 
-    {
-      help = "Monitor a Process Variable over Channel Access";
-      name = "camonitor";
-      command = ''
-        ${pkgs.epics.base}/bin/*/camonitor "$@"
-      '';
-      category = "EPICS Channel Access commands";
-    }
+      {
+        help = "Monitor a Process Variable over Channel Access";
+        name = "camonitor";
+        command = ''
+          ${pkgs.epics.base}/bin/*/camonitor "$@"
+        '';
+        category = "EPICS Channel Access commands";
+      }
 
-    {
-      help = "Set a Process Variable value over Channel Access";
-      name = "caput";
-      command = ''
-        ${pkgs.epics.base}/bin/*/caput "$@"
-      '';
-      category = "EPICS Channel Access commands";
-    }
+      {
+        help = "Set a Process Variable value over Channel Access";
+        name = "caput";
+        command = ''
+          ${pkgs.epics.base}/bin/*/caput "$@"
+        '';
+        category = "EPICS Channel Access commands";
+      }
+    ]
 
-    # pvAccess
+    (mkIf (versionAtLeast pkgs.epics.base.version "7.0.0") [
 
-    {
-      help = "Get a Process Variable value over pvAccess";
-      name = "pvget";
-      command = ''
-        ${pkgs.epics.base}/bin/*/pvget "$@"
-      '';
-      category = "EPICS pvAccess commands";
-    }
+      # pvAccess
 
-    {
-      help = "Get information on a Process Variable over pvAccess";
-      name = "pvinfo";
-      command = ''
-        ${pkgs.epics.base}/bin/*/pvinfo "$@"
-      '';
-      category = "EPICS pvAccess commands";
-    }
+      {
+        help = "Get a Process Variable value over pvAccess";
+        name = "pvget";
+        command = ''
+          ${pkgs.epics.base}/bin/*/pvget "$@"
+        '';
+        category = "EPICS pvAccess commands";
+      }
 
-    {
-      help = "List Process Variables over pvAccess";
-      name = "pvlist";
-      command = ''
-        ${pkgs.epics.base}/bin/*/pvlist "$@"
-      '';
-      category = "EPICS pvAccess commands";
-    }
+      {
+        help = "Get information on a Process Variable over pvAccess";
+        name = "pvinfo";
+        command = ''
+          ${pkgs.epics.base}/bin/*/pvinfo "$@"
+        '';
+        category = "EPICS pvAccess commands";
+      }
 
-    {
-      help = "Monitor a Process Variable over pvAccess";
-      name = "pvmonitor";
-      command = ''
-        ${pkgs.epics.base}/bin/*/pvmonitor "$@"
-      '';
-      category = "EPICS pvAccess commands";
-    }
+      {
+        help = "List Process Variables over pvAccess";
+        name = "pvlist";
+        command = ''
+          ${pkgs.epics.base}/bin/*/pvlist "$@"
+        '';
+        category = "EPICS pvAccess commands";
+      }
 
-    {
-      help = "Set a Process Variable value over pvAccess";
-      name = "pvput";
-      command = ''
-        ${pkgs.epics.base}/bin/*/pvput "$@"
-      '';
-      category = "EPICS pvAccess commands";
-    }
+      {
+        help = "Monitor a Process Variable over pvAccess";
+        name = "pvmonitor";
+        command = ''
+          ${pkgs.epics.base}/bin/*/pvmonitor "$@"
+        '';
+        category = "EPICS pvAccess commands";
+      }
 
+      {
+        help = "Set a Process Variable value over pvAccess";
+        name = "pvput";
+        command = ''
+          ${pkgs.epics.base}/bin/*/pvput "$@"
+        '';
+        category = "EPICS pvAccess commands";
+      }
+
+    ])
   ];
 }
