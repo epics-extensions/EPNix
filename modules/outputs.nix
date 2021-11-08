@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, epnixLib, ... }:
 
 with lib;
 let
@@ -6,6 +6,7 @@ let
 in
 {
   options.epnix.buildConfig = {
+    # TODO: move into meta
     flavor = mkOption {
       description = "Name of the flavor of this EPICS distribution";
       type = types.str;
@@ -28,10 +29,10 @@ in
   config.epnix.outputs.topSource = pkgs.runCommand "epics-distribution-${cfg.flavor}-top-source" { } ''
     mkdir -p "$out"
 
-    cp -rfv --no-preserve=mode "${pkgs.epics.base}/templates/makeBaseApp/top/configure" "$out"
+    cp -rfv --no-preserve=mode "${pkgs.epnix.epics-base}/templates/makeBaseApp/top/configure" "$out"
     ${# Include CONFIG_SITE.local and RELEASE.local in the top "template"
       # Fixed by commit aa6e976f92d144b5143cf267d8b2781d3ec8b62b
-      optionalString (versionOlder pkgs.epics.base.version "3.15.5") ''
+      optionalString (versionOlder pkgs.epnix.epics-base.version "3.15.5") ''
         cat >> "$out/configure/CONFIG_SITE" <<'EOF'
         -include $(TOP)/../CONFIG_SITE.local
         -include $(TOP)/configure/CONFIG_SITE.local
@@ -42,17 +43,17 @@ in
         -include $(TOP)/configure/RELEASE.local
         EOF
       ''}
-    cp -rfv "${pkgs.epics.base}/templates/makeBaseApp/top/Makefile" "$out"
+    cp -rfv "${pkgs.epnix.epics-base}/templates/makeBaseApp/top/Makefile" "$out"
 
     ${concatMapStringsSep "\n" (app: ''
-      cp -rfv "${app}" "$out/${baseNameOf app}"
+      cp -rfv "${app}" "$out/${epnixLib.getName app}"
     '') config.epnix.applications.apps}
 
     mkdir -p "$out/iocBoot"
-    cp -rfv "${pkgs.epics.base}/templates/makeBaseApp/top/iocBoot/Makefile" "$out/iocBoot"
+    cp -rfv "${pkgs.epnix.epics-base}/templates/makeBaseApp/top/iocBoot/Makefile" "$out/iocBoot"
 
     ${concatMapStringsSep "\n" (boot: ''
-      cp -rfv "${boot}" "$out/iocBoot/${baseNameOf boot}"
+      cp -rfv "${boot}" "$out/iocBoot/${epnixLib.getName boot}"
     '') config.epnix.boot.iocBoots}
   '';
 

@@ -17,7 +17,7 @@ in
 
   config.devShell.devshell.startup = listToAttrs
     (map
-      (module: nameValuePair "epics/${module.pname}" {
+      (module: nameValuePair "epnix/${module.pname}" {
         text = ''
           source "${module}/nix-support/setup-hook"
         '';

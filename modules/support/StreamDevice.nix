@@ -17,13 +17,13 @@ in
     };
 
     package = mkOption {
-      default = super: super.epics.support.StreamDevice.override {
+      default = super: super.epnix.support.StreamDevice.override {
         version = cfg.version;
         local_config_site = cfg.siteConfig;
         local_release = cfg.releaseConfig;
       };
       defaultText = literalExample ''
-        super: super.epics.support.StreamDevice.override {
+        super: super.epnix.support.StreamDevice.override {
           version = cfg.version;
           local_config_site = cfg.siteConfig;
           local_release = cfg.releaseConfig;
@@ -60,8 +60,8 @@ in
   config = mkIf cfg.enable {
       nixpkgs.overlays = [ (self: super: {
       # TODO: make a function?
-      epics = (super.epics or {}) // {
-        support = (super.epics.support or {}) // {
+      epnix = (super.epnix or {}) // {
+        support = (super.epnix.support or {}) // {
           StreamDevice = cfg.package super;
         };
       };
@@ -72,7 +72,7 @@ in
       asyn.enable = true;
 
       modules = [
-        pkgs.epics.support.StreamDevice
+        pkgs.epnix.support.StreamDevice
       ];
     };
   };

@@ -17,13 +17,13 @@ in
     };
 
     package = mkOption {
-      default = super: super.epics.support.asyn.override {
+      default = super: super.epnix.support.asyn.override {
         version = cfg.version;
         local_config_site = cfg.siteConfig;
         local_release = cfg.releaseConfig;
       };
       defaultText = literalExample ''
-        super: super.epics.support.asyn.override {
+        super: super.epnix.support.asyn.override {
           version = cfg.version;
           local_config_site = cfg.siteConfig;
           local_release = cfg.releaseConfig;
@@ -66,15 +66,15 @@ in
   config = mkIf cfg.enable {
       nixpkgs.overlays = [ (self: super: {
       # TODO: make a function?
-      epics = (super.epics or {}) // {
-        support = (super.epics.support or {}) // {
+      epnix = (super.epnix or {}) // {
+        support = (super.epnix.support or {}) // {
           asyn = cfg.package super;
         };
       };
     }) ];
 
     epnix.support.modules = [
-      pkgs.epics.support.asyn
+      pkgs.epnix.support.asyn
     ];
   };
 }

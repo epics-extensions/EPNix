@@ -6,15 +6,16 @@ recurseIntoAttrs rec {
 
   epnixLib = import ../lib { pkgs = prev; lib = prev.lib; };
 
-  epics = recurseIntoAttrs {
-    base = callPackage ./epics/base { };
+  epnix = recurseIntoAttrs {
+    # TODO: rename into epics-base
+    epics-base = callPackage ./epnix/epics-base { };
     support = recurseIntoAttrs {
-      asyn = callPackage ./epics/support/asyn { };
-      calc = callPackage ./epics/support/calc { };
-      ipac = callPackage ./epics/support/ipac { };
-      seq = callPackage ./epics/support/seq { };
-      sscan = callPackage ./epics/support/sscan { };
-      StreamDevice = callPackage ./epics/support/StreamDevice { };
+      asyn = callPackage ./epnix/support/asyn { };
+      calc = callPackage ./epnix/support/calc { };
+      ipac = callPackage ./epnix/support/ipac { };
+      seq = callPackage ./epnix/support/seq { };
+      sscan = callPackage ./epnix/support/sscan { };
+      StreamDevice = callPackage ./epnix/support/StreamDevice { };
     };
   };
 }

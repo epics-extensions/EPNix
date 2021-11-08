@@ -3,11 +3,11 @@
 with lib;
 
 let
-  cfg = config.epnix.base;
+  cfg = config.epnix.epics-base;
   settingsFormat = epnixLib.formats.make { };
 in
 {
-  options.epnix.base = {
+  options.epnix.epics-base = {
     version = mkOption {
       default = "7.0.6";
       type = types.str;
@@ -15,13 +15,13 @@ in
     };
 
     package = mkOption {
-      default = super: super.epics.base.override {
+      default = super: super.epnix.epics-base.override {
         version = cfg.version;
         local_config_site = cfg.siteConfig;
         local_release = cfg.releaseConfig;
       };
       defaultText = literalExample ''
-        super: super.epics.base.override {
+        super: super.epnix.epics-base.override {
           version = cfg.version;
           local_config_site = cfg.siteConfig;
           local_release = cfg.releaseConfig;
@@ -57,8 +57,8 @@ in
 
   config.nixpkgs.overlays = [
     (self: super: {
-      epics = (super.epics or { }) // {
-        base = cfg.package super;
+      epnix = (super.epnix or { }) // {
+        epics-base = cfg.package super;
       };
     })
   ];
@@ -76,8 +76,8 @@ in
     readline
   ];
 
-  config.devShell.devshell.startup."epics/base".text = ''
-    source "${pkgs.epics.base}/nix-support/setup-hook"
+  config.devShell.devshell.startup."epnix/epics-base".text = ''
+    source "${pkgs.epnix.epics-base}/nix-support/setup-hook"
   '';
 
   config.devShell.commands = mkMerge [
@@ -109,7 +109,7 @@ in
         help = "Create a new EPICS App or IOC";
         name = "makeBaseApp.pl";
         command = ''
-          ${pkgs.epics.base}/bin/*/makeBaseApp.pl "$@"
+          ${pkgs.epnix.epics-base}/bin/*/makeBaseApp.pl "$@"
         '';
         category = "EPICS bootstrapping commands";
       }
@@ -118,7 +118,7 @@ in
         help = "Create a new EPICS extension directory";
         name = "makeBaseExt.pl";
         command = ''
-          ${pkgs.epics.base}/bin/*/makeBaseExt.pl "$@"
+          ${pkgs.epnix.epics-base}/bin/*/makeBaseExt.pl "$@"
         '';
         category = "EPICS bootstrapping commands";
       }
@@ -127,7 +127,7 @@ in
         help = "Create a new EPICS API header";
         name = "makeAPIheader.pl";
         command = ''
-          ${pkgs.epics.base}/bin/*/makeAPIheader.pl "$@"
+          ${pkgs.epnix.epics-base}/bin/*/makeAPIheader.pl "$@"
         '';
         category = "EPICS bootstrapping commands";
       }
@@ -138,7 +138,7 @@ in
         help = "Obtain a Process Variable value over Channel Access";
         name = "caget";
         command = ''
-          ${pkgs.epics.base}/bin/*/caget "$@"
+          ${pkgs.epnix.epics-base}/bin/*/caget "$@"
         '';
         category = "EPICS Channel Access commands";
       }
@@ -147,7 +147,7 @@ in
         help = "Get information on a Process Variable over Channel Access";
         name = "cainfo";
         command = ''
-          ${pkgs.epics.base}/bin/*/cainfo "$@"
+          ${pkgs.epnix.epics-base}/bin/*/cainfo "$@"
         '';
         category = "EPICS Channel Access commands";
       }
@@ -156,7 +156,7 @@ in
         help = "Monitor a Process Variable over Channel Access";
         name = "camonitor";
         command = ''
-          ${pkgs.epics.base}/bin/*/camonitor "$@"
+          ${pkgs.epnix.epics-base}/bin/*/camonitor "$@"
         '';
         category = "EPICS Channel Access commands";
       }
@@ -165,13 +165,13 @@ in
         help = "Set a Process Variable value over Channel Access";
         name = "caput";
         command = ''
-          ${pkgs.epics.base}/bin/*/caput "$@"
+          ${pkgs.epnix.epics-base}/bin/*/caput "$@"
         '';
         category = "EPICS Channel Access commands";
       }
     ]
 
-    (mkIf (versionAtLeast pkgs.epics.base.version "7.0.0") [
+    (mkIf (versionAtLeast pkgs.epnix.epics-base.version "7.0.0") [
 
       # pvAccess
 
@@ -179,7 +179,7 @@ in
         help = "Get a Process Variable value over pvAccess";
         name = "pvget";
         command = ''
-          ${pkgs.epics.base}/bin/*/pvget "$@"
+          ${pkgs.epnix.epics-base}/bin/*/pvget "$@"
         '';
         category = "EPICS pvAccess commands";
       }
@@ -188,7 +188,7 @@ in
         help = "Get information on a Process Variable over pvAccess";
         name = "pvinfo";
         command = ''
-          ${pkgs.epics.base}/bin/*/pvinfo "$@"
+          ${pkgs.epnix.epics-base}/bin/*/pvinfo "$@"
         '';
         category = "EPICS pvAccess commands";
       }
@@ -197,7 +197,7 @@ in
         help = "List Process Variables over pvAccess";
         name = "pvlist";
         command = ''
-          ${pkgs.epics.base}/bin/*/pvlist "$@"
+          ${pkgs.epnix.epics-base}/bin/*/pvlist "$@"
         '';
         category = "EPICS pvAccess commands";
       }
@@ -206,7 +206,7 @@ in
         help = "Monitor a Process Variable over pvAccess";
         name = "pvmonitor";
         command = ''
-          ${pkgs.epics.base}/bin/*/pvmonitor "$@"
+          ${pkgs.epnix.epics-base}/bin/*/pvmonitor "$@"
         '';
         category = "EPICS pvAccess commands";
       }
@@ -215,7 +215,7 @@ in
         help = "Set a Process Variable value over pvAccess";
         name = "pvput";
         command = ''
-          ${pkgs.epics.base}/bin/*/pvput "$@"
+          ${pkgs.epnix.epics-base}/bin/*/pvput "$@"
         '';
         category = "EPICS pvAccess commands";
       }

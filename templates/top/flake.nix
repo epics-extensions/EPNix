@@ -18,7 +18,7 @@
           #epnix.support.StreamDevice.enable = true;
 
           # Or by specfying it here:
-          #epnix.support.modules = [ pkgs.epics.support.calc ];
+          #epnix.support.modules = [ pkgs.epnix.support.calc ];
 
           # Add your applications:
           #epnix.applications.apps = [ ./myProjectApp ];

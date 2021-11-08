@@ -1,4 +1,4 @@
-{ stdenv, lib, runCommand, clang, perl, epics, epnixLib, ... }:
+{ stdenv, lib, runCommand, clang, perl, epnix, buildPackages, pkgsBuildBuild, ... }:
 
 { pname
 , varname
@@ -14,30 +14,30 @@
 
 with lib;
 let
+  inherit (buildPackages) epnixLib;
+
   # remove non standard attributes that cannot be coerced to strings
   overridable = builtins.removeAttrs attrs [ "local_config_site" "local_release" ];
   generateConf = (epnixLib.formats.make { }).generate;
 
-  # Undefine the SUPPORT variable here, since there is no single "support"
-  # directory and this variable is a source of conflicts between RELEASE files
-  my_local_release = local_release // { SUPPORT = null; };
+  # "build" as in Nix terminology (the build machine)
+  build_arch = epnixLib.toEpicsArch stdenv.buildPlatform;
+  # "host" as in Nix terminology (the machine which will run the generated code)
+  host_arch = epnixLib.toEpicsArch stdenv.hostPlatform;
 in
 stdenv.mkDerivation (overridable // {
-  nativeBuildInputs = nativeBuildInputs ++ [ clang perl ];
-  buildInputs = buildInputs ++ (optional (!isEpicsBase) [ epics.base ]);
+  strictDeps = true;
+
+  depsBuildBuild = [ buildPackages.stdenv.cc ];
+
+  nativeBuildInputs = nativeBuildInputs ++ [ perl ];
+  buildInputs = buildInputs ++ (optional (!isEpicsBase) [ epnix.epics-base ]);
 
   makeFlags = makeFlags ++ [
-    "GNU=NO"
-    "CMPLR_CLASS=clang"
-    "CC=clang"
-    "CCC=clang++"
-    "CXX=clang++"
-    "AR=ar"
-    "LD=ld"
-    "RANLIB=ranlib"
-    "ARFLAGS=rc"
     "INSTALL_LOCATION=${placeholder "out"}"
-  ];
+  ] ++ optional
+    (stdenv.buildPlatform != stdenv.hostPlatform)
+    "CROSS_COMPILER_TARGET_ARCHS=${host_arch}";
 
   setupHook = ./setup-hook.sh;
 
@@ -45,9 +45,55 @@ stdenv.mkDerivation (overridable // {
 
   dontConfigure = true;
 
-  preBuild = ''
-    cp -fv --no-preserve=mode "${generateConf "${pname}-CONFIG_SITE.local" local_config_site}" configure/CONFIG_SITE.local
-    cp -fv --no-preserve=mode "${generateConf "${pname}-RELEASE.local" my_local_release}" configure/RELEASE.local
+  # "build" as in Nix terminology (the build machine)
+  build_config_site = generateConf
+    "CONFIG_SITE.${build_arch}.${build_arch}"
+    (with buildPackages.stdenv; {
+      CC = "${cc.targetPrefix}cc";
+      CCC = "${cc.targetPrefix}c++";
+      CXX = "${cc.targetPrefix}c++";
+
+      AR = "${cc.bintools.targetPrefix}ar";
+      LD = "${cc.bintools.targetPrefix}ld";
+      RANLIB = "${cc.bintools.targetPrefix}ranlib";
+
+      ARFLAGS = "rc";
+    } // optionalAttrs stdenv.cc.isClang {
+      GNU = "NO";
+      CMPLR_CLASS = "clang";
+    });
+
+  # "host" as in Nix terminology (the machine which will run the generated code)
+  host_config_site = generateConf
+    "CONFIG_SITE.${build_arch}.${host_arch}"
+    (with stdenv; {
+      CC = "${cc.targetPrefix}cc";
+
+      CCC = if stdenv.cc.isClang then "${cc.targetPrefix}clang++" else "${cc.targetPrefix}c++";
+      CXX = if stdenv.cc.isClang then "${cc.targetPrefix}clang++" else "${cc.targetPrefix}c++";
+
+      AR = "${cc.bintools.targetPrefix}ar";
+      LD = "${cc.bintools.targetPrefix}ld";
+      RANLIB = "${cc.bintools.targetPrefix}ranlib";
+
+      ARFLAGS = "rc";
+    } // optionalAttrs stdenv.cc.isClang {
+      GNU = "NO";
+      CMPLR_CLASS = "clang";
+    });
+
+  local_config_site = generateConf "CONFIG_SITE.local" local_config_site;
+
+  # Undefine the SUPPORT variable here, since there is no single "support"
+  # directory and this variable is a source of conflicts between RELEASE files
+  local_release = generateConf "RELEASE.local" (local_release // { SUPPORT = null; });
+
+  preBuild = (optionalString isEpicsBase ''
+    cp -fv --no-preserve=mode "$build_config_site" configure/os/CONFIG_SITE.${build_arch}.${build_arch}
+    cp -fv --no-preserve=mode "$host_config_site" configure/os/CONFIG_SITE.${build_arch}.${host_arch}
+  '') + ''
+    cp -fv --no-preserve=mode "$local_config_site" configure/CONFIG_SITE.local
+    cp -fv --no-preserve=mode "$local_release" configure/RELEASE.local
 
     # set to empty if unset
     : ''${EPICS_COMPONENTS=}

@@ -4,7 +4,7 @@
 , fetchpatch
 , version ? "2-11-4"
 , sha256 ? ""
-, epics
+, epnix
 , local_config_site ? { }
 , local_release ? { }
 }:
@@ -20,7 +20,7 @@ mkEpicsPackage {
 
   inherit local_config_site local_release;
 
-  buildInputs = with epics.support; [ seq ];
+  buildInputs = with epnix.support; [ seq ];
 
   patches = [
     # Include shareLib.h, needed for recent base 7.0 where it is no longer indirectly included

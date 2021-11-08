@@ -16,7 +16,7 @@
       in
       rec {
 
-        packages = flattenTree (pkgs.recurseIntoAttrs { inherit (pkgs) epics; }) // {
+        packages = flattenTree (pkgs.recurseIntoAttrs { inherit (pkgs) epnix; }) // {
           manpage = (import ./modules {
             inherit nixpkgs pkgs devshell;
             configuration = { };
@@ -31,6 +31,7 @@
 
         lib = pkgs.epnixLib;
 
+        # TODO: move that into "lib"
         epnixDistribution = configuration: import ./modules {
           inherit configuration nixpkgs pkgs devshell;
           epnixLib = lib;
@@ -41,7 +42,7 @@
 
           base-build = (epnixDistribution {
             epnix = {
-              #base.version = "3.16.2";
+              #epics-base.version = "3.16.2";
               support.StreamDevice.enable = true;
               #support.asyn.version = "4-39";
               applications.apps = [

@@ -3,7 +3,7 @@
 , fetchgit
 , version ? "4-42"
 , sha256 ? ""
-, epics
+, epnix
 , pkg-config
 , rpcsvc-proto
 , libtirpc
@@ -26,7 +26,7 @@ mkEpicsPackage {
   };
 
   nativeBuildInputs = [ pkg-config rpcsvc-proto ];
-  buildInputs = [ libtirpc ] ++ (with epics.support; [ ipac seq ]);
+  buildInputs = [ libtirpc ] ++ (with epnix.support; [ ipac seq ]);
 
   patches = [ ./use-pkg-config.patch ];
 

@@ -3,7 +3,7 @@
 , fetchgit
 , version ? "2.8.20"
 , sha256 ? ""
-, epics
+, epnix
 , pcre
 , local_config_site ? { }
 , local_release ? { }
@@ -29,7 +29,7 @@ mkEpicsPackage {
     STREAM = null;
   };
 
-  buildInputs = [ pcre ] ++ (with epics.support; [ asyn calc sscan ]);
+  buildInputs = [ pcre ] ++ (with epnix.support; [ asyn calc sscan ]);
 
   patches = [ ./printf-only-string-literal.patch ];
 

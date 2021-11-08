@@ -1,4 +1,4 @@
-{ config, devshell, lib, pkgs, ... }:
+{ config, devshell, lib, pkgs, epnixLib, ... }:
 
 with lib;
 {
@@ -20,47 +20,13 @@ with lib;
   config.nixpkgs.overlays = [
     devshell.overlay
     (self: super: {
-      epnix-commands-lib = super.writeTextDir "/libexec/epnix/commands-lib.sh" ''
-        set -euo pipefail
-        IFS=$'\n\t'
-
-        tput() {
-          # If tput fails, it just means less colors
-          ${pkgs.ncurses}/bin/tput "$@" 2> /dev/null || true
-        }
-
-        NORMAL="$(tput sgr0)"
-        BOLD="$(tput bold)"
-
-        RED="$(tput setaf 1)"
-        GREEN="$(tput setaf 2)"
-        YELLOW="$(tput setaf 3)"
-        BLUE="$(tput setaf 4)"
-        PURPLE="$(tput setaf 5)"
-        CYAN="$(tput setaf 6)"
-        WHITE="$(tput setaf 7)"
-
-        echoe() {
-          echo "$@" >&2
-        }
-
-        info() {
-          echoe "$BOLD''${CYAN}Info: $WHITE$@$NORMAL"
-        }
-
-        warn() {
-          echoe "$BOLD''${YELLOW}Warning: $WHITE$@$NORMAL"
-        }
-
-        error() {
-          echoe "$BOLD''${RED}Error: $WHITE$@$NORMAL"
-        }
-
-        fatal() {
-          error "$@"
-          exit 1
-        }
-      '';
+      epnix-commands-lib =
+        super.writeTextDir
+          "/libexec/epnix/commands-lib.sh"
+          (builtins.readFile (pkgs.substituteAll {
+            src = ./devshell/commands-lib.sh;
+            inherit (pkgs) ncurses;
+          }));
     })
   ];
 
@@ -114,5 +80,72 @@ with lib;
       '';
       category = "EPNix commands";
     }
+
+    {
+      help = "Regenerate the 'configure/' directory, top-level Makefile, and subprojects";
+      name = "eregen";
+      command = ''
+        eregen-config
+        eregen-git
+      '';
+      category = "EPNix commands";
+    }
+
+    {
+      help = "Regenerate the 'configure/' directory, top-level Makefile";
+      name = "eregen-config";
+      command = ''
+        source "${pkgs.epnix-commands-lib}/libexec/epnix/commands-lib.sh"
+
+        toplevel="$(realpath -s .)"
+
+        if [[ ! -f "epnix.toml" ]]; then
+          fatal "Could not find 'epnix.toml' file. Are you in an EPNix project?"
+        fi
+
+        typeset -a old_files=()
+
+        if [ -f "$toplevel/Makefile" ]; then
+          old_files+=("$toplevel/Makefile")
+        fi
+
+        if [ -d "$toplevel/configure" ]; then
+          old_files+=("$toplevel/configure")
+        fi
+
+        if [ "''${#old_files[@]}" -ne 0 ]; then
+          info "Removing old toplevel files: ''${old_files[@]}"
+          rm --recursive --force --interactive=once --one-file-system "''${old_files[@]}"
+        fi
+
+        info "Regenerating toplevel files"
+        cp -rfv --no-preserve=mode "${pkgs.epnix.epics-base}/templates/makeBaseApp/top/configure" "$toplevel"
+        cp -rfv --no-preserve=mode "${pkgs.epnix.epics-base}/templates/makeBaseApp/top/Makefile" "$toplevel"
+
+        info "Adding EPICS components to 'configure/RELEASE.local'"
+        epics-components | tee "$toplevel/configure/RELEASE.local" >&2
+      '';
+
+      category = "EPNix commands";
+    }
+
+    {
+      help = "Check and clone subprojects";
+      name = "eregen-git";
+      command = builtins.readFile (pkgs.substituteAll {
+        src = ./devshell/eregen-git.sh;
+
+        inherit (pkgs) git jq zsh;
+
+        epnix_commands_lib = pkgs.epnix-commands-lib;
+        epics_base = pkgs.epnix.epics-base;
+
+        app_names = map (app: epnixLib.getAppName app) config.epnix.applications.apps;
+      });
+
+      category = "EPNix commands";
+    }
   ];
+
+  config.devShell.devshell.startup."eregen-git" = stringAfter [ "motd" ] "eregen-git";
 }

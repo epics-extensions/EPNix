@@ -3,7 +3,7 @@
 , fetchgit
 , version ? "3-7-4"
 , sha256 ? ""
-, epics
+, epnix
 , local_config_site ? { }
 , local_release ? { }
 }:
@@ -19,7 +19,7 @@ mkEpicsPackage {
 
   inherit local_config_site local_release;
 
-  buildInputs = with epics.support; [ sscan ];
+  buildInputs = with epnix.support; [ sscan ];
 
   src = fetchgit {
     url = "https://github.com/epics-modules/calc.git";
