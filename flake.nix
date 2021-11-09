@@ -1,18 +1,22 @@
 {
   description = "A Nix flake containing EPICS-related modules and packages";
 
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-21.05";
-  inputs.flake-utils.url = "github:numtide/flake-utils";
+  inputs.bash-lib = {
+    url = "github:minijackson/bash-lib";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
   inputs.devshell.url = "github:numtide/devshell";
+  inputs.flake-utils.url = "github:numtide/flake-utils";
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-21.05";
 
-  outputs = { self, nixpkgs, flake-utils, devshell }:
+  outputs = { self, bash-lib, devshell, flake-utils, nixpkgs, }:
     let
       overlay = import ./pkgs;
     in
     with flake-utils.lib;
     ((eachSystem [ "aarch64-linux" "x86_64-linux" ] (system:
       let
-        pkgs = import nixpkgs.outPath { inherit system; overlays = [ overlay ]; };
+        pkgs = import nixpkgs.outPath { inherit system; overlays = [ overlay bash-lib.overlay ]; };
       in
       rec {
 

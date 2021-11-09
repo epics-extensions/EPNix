@@ -1,5 +1,26 @@
 {
   "nodes": {
+    "bash-lib": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1636462353,
+        "narHash": "sha256-ZcFsEcX1jHyzRz1N5d6ahA+Ud1EyFXSgZsS9wDhCYPA=",
+        "owner": "minijackson",
+        "repo": "bash-lib",
+        "rev": "a7e41570dad064503e71de86bc0b9d145bfb32ac",
+        "type": "github"
+      },
+      "original": {
+        "owner": "minijackson",
+        "repo": "bash-lib",
+        "type": "github"
+      }
+    },
     "devshell": {
       "locked": {
         "lastModified": 1632436039,
@@ -16,6 +37,21 @@
       }
     },
     "flake-utils": {
+      "locked": {
+        "lastModified": 1634851050,
+        "narHash": "sha256-N83GlSGPJJdcqhUxSCS/WwW5pksYf3VP1M13cDRTSVA=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "c91f3de5adaf1de973b797ef7485e441a65b8935",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "flake-utils_2": {
       "locked": {
         "lastModified": 1631561581,
         "narHash": "sha256-3VQMV5zvxaVLvqqUrNz3iJelLw30mIVSfZmAaauM3dA=",
@@ -48,8 +84,9 @@
     },
     "root": {
       "inputs": {
+        "bash-lib": "bash-lib",
         "devshell": "devshell",
-        "flake-utils": "flake-utils",
+        "flake-utils": "flake-utils_2",
         "nixpkgs": "nixpkgs"
       }
     }

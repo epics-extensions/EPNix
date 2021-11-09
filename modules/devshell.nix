@@ -21,12 +21,11 @@ with lib;
     devshell.overlay
     (self: super: {
       epnix-commands-lib =
-        super.writeTextDir
-          "/libexec/epnix/commands-lib.sh"
-          (builtins.readFile (pkgs.substituteAll {
-            src = ./devshell/commands-lib.sh;
-            inherit (pkgs) ncurses;
-          }));
+        super.writeTextDir "/libexec/epnix/commands-lib.sh" ''
+          PATH="${makeBinPath (with pkgs; [ ncurses ])}''${PATH:+:$PATH}"
+
+          source "${pkgs.bash-lib}"
+        '';
     })
   ];
 
@@ -114,7 +113,7 @@ with lib;
         fi
 
         if [ "''${#old_files[@]}" -ne 0 ]; then
-          info "Removing old toplevel files: ''${old_files[@]}"
+          info "Removing old toplevel files:" "''${old_files[@]}"
           rm --recursive --force --interactive=once --one-file-system "''${old_files[@]}"
         fi
 
