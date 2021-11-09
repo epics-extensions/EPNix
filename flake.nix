@@ -8,8 +8,12 @@
   inputs.devshell.url = "github:numtide/devshell";
   inputs.flake-utils.url = "github:numtide/flake-utils";
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-21.05";
+  inputs.nix-module-doc = {
+    url = "git+ssh://git@drf-gitlab.cea.fr/rnicole/nix-module-doc.git";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
 
-  outputs = { self, bash-lib, devshell, flake-utils, nixpkgs, }:
+  outputs = { self, bash-lib, devshell, flake-utils, nixpkgs, ... } @ inputs:
     let
       overlay = import ./pkgs;
     in
@@ -21,23 +25,28 @@
       rec {
 
         packages = flattenTree (pkgs.recurseIntoAttrs { inherit (pkgs) epnix; }) // {
-          manpage = (import ./modules {
-            inherit nixpkgs pkgs devshell;
+          manpage = (import ./modules inputs {
+            inherit pkgs devshell;
             configuration = { };
             epnixLib = lib;
           }).outputs.manpage;
-          doc-options-md = (import ./modules {
-            inherit nixpkgs pkgs devshell;
+          doc-options-md = (import ./modules inputs {
+            inherit pkgs devshell;
             configuration = { };
             epnixLib = lib;
           }).outputs.doc-options-md;
+          mdbook = (import ./modules inputs {
+            inherit pkgs devshell;
+            configuration = { };
+            epnixLib = lib;
+          }).outputs.mdbook;
         };
 
         lib = pkgs.epnixLib;
 
         # TODO: move that into "lib"
-        epnixDistribution = configuration: import ./modules {
-          inherit configuration nixpkgs pkgs devshell;
+        epnixDistribution = configuration: import ./modules inputs {
+          inherit configuration pkgs devshell;
           epnixLib = lib;
         };
 
@@ -66,7 +75,9 @@
           }).outputs.build;
         };
 
-        devShell = (epnixDistribution { }).outputs.devShell;
+        devShell = (epnixDistribution {
+          devShell.commands = [ { package = pkgs.mdbook; } ];
+        }).outputs.devShell;
       })) // {
       inherit overlay;
 

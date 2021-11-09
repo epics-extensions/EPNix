@@ -1,7 +1,15 @@
-{ configuration, nixpkgs, pkgs, devshell, epnixLib, }:
+inputs:
+
+{ configuration, pkgs, devshell, epnixLib, }:
 
 let
   lib = pkgs.lib;
+
+  docParams = {
+    outputAttrPath = [ "epnix" "outputs" ];
+    optionsAttrPath = [ "epnix" "doc" ];
+  };
+
   eval = lib.evalModules {
     modules = [
       ({
@@ -16,6 +24,9 @@ let
       })
 
       configuration
+      (inputs.nix-module-doc.lib.modules.doc-options-md docParams)
+      (inputs.nix-module-doc.lib.modules.manpage docParams)
+      (inputs.nix-module-doc.lib.modules.mdbook docParams)
     ] ++ (import ./module-list.nix);
 
     specialArgs = { inherit epnixLib; };
