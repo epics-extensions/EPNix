@@ -139,7 +139,7 @@ with lib;
         epnix_commands_lib = pkgs.epnix-commands-lib;
         epics_base = pkgs.epnix.epics-base;
 
-        app_names = map (app: epnixLib.getAppName app) config.epnix.applications.apps;
+        app_names = map (app: epnixLib.getName app) config.epnix.applications.apps;
       });
 
       category = "EPNix commands";
