@@ -1,4 +1,5 @@
 { lib
+, epnixLib
 , mkEpicsPackage
 , fetchgit
 , fetchpatch
@@ -34,5 +35,12 @@ mkEpicsPackage {
     url = "https://github.com/epics-modules/sscan.git";
     rev = "R${version}";
     sha256 = hash;
+  };
+
+  meta = {
+    description = "Contains the sscan record and related software for systematically moving positioners, triggering detectors, and acquiring and storing resulting data";
+    homepage = "https://epics.anl.gov/bcda/synApps/sscan/sscan.html";
+    license = epnixLib.licenses.epics;
+    maintainers = with epnixLib.maintainers; [ minijackson ];
   };
 }

@@ -1,4 +1,5 @@
 { lib
+, epnixLib
 , mkEpicsPackage
 , fetchFromGitHub
 , version ? "2.16"
@@ -23,5 +24,12 @@ mkEpicsPackage {
     repo = "ipac";
     rev = version;
     sha256 = hash;
+  };
+
+  meta = {
+    description = "IPAC Carrier and Communication Module Drivers";
+    homepage = "https://github.com/epics-modules/ipac/wiki";
+    license = lib.licenses.lgpl21Plus;
+    maintainers = with epnixLib.maintainers; [ minijackson ];
   };
 }

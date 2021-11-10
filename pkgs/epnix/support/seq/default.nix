@@ -1,4 +1,5 @@
 { lib
+, epnixLib
 , mkEpicsPackage
 , fetchzip
 , version ? "2.2.6"
@@ -28,5 +29,12 @@ mkEpicsPackage {
   src = fetchzip {
     url = "https://www-csr.bessy.de/control/SoftDist/sequencer/releases/seq-${version}.tar.gz";
     sha256 = hash;
+  };
+
+  meta = {
+    description = "Provides the State Notation Language (SNL), a domain specific programming language";
+    homepage = "https://www-csr.bessy.de/control/SoftDist/sequencer/";
+    license = epnixLib.licenses.epics;
+    maintainers = with epnixLib.maintainers; [ minijackson ];
   };
 }

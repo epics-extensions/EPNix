@@ -1,4 +1,5 @@
 { lib
+, epnixLib
 , mkEpicsPackage
 , fetchgit
 , version ? "4-42"
@@ -34,5 +35,12 @@ mkEpicsPackage {
     url = "https://github.com/epics-modules/asyn.git";
     rev = "R${version}";
     sha256 = hash;
+  };
+
+  meta = {
+    description = "EPICS module for driver and device support";
+    homepage = "https://epics-modules.github.io/master/asyn/";
+    license = epnixLib.licenses.epics;
+    maintainers = with epnixLib.maintainers; [ minijackson ];
   };
 }

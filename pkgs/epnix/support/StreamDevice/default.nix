@@ -1,4 +1,5 @@
 { lib
+, epnixLib
 , mkEpicsPackage
 , fetchgit
 , version ? "2.8.20"
@@ -37,5 +38,12 @@ mkEpicsPackage {
     url = "https://github.com/paulscherrerinstitute/StreamDevice.git";
     rev = version;
     sha256 = hash;
+  };
+
+  meta = {
+    description = "A generic EPICS device support for devices with a \"byte stream\" based communication interface";
+    homepage = "https://paulscherrerinstitute.github.io/StreamDevice/";
+    license = lib.licenses.lgpl3Plus;
+    maintainers = with epnixLib.maintainers; [ minijackson ];
   };
 }

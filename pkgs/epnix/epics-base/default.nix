@@ -1,4 +1,5 @@
 { lib
+, epnixLib
 , mkEpicsPackage
 , fetchgit
 , fetchpatch
@@ -76,4 +77,10 @@ mkEpicsPackage {
   '';
 
   # TODO: find a way to "symlink" what is in ./bin/linux-x86_64 -> ./bin
+  meta = {
+    description = "The Experimental Physics and Industrial Control System";
+    homepage = "https://epics-controls.org/";
+    license = epnixLib.licenses.epics;
+    maintainers = with epnixLib.maintainers; [ minijackson ];
+  };
 }
