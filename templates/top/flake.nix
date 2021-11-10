@@ -10,29 +10,29 @@
 
   outputs = { self, nixpkgs, flake-utils, epnix }:
     let
-      myEpnixDistribution = system:
-        epnix.epnixDistribution.${system} ({ pkgs, epnixLib, ... }: {
-          imports = [ (epnixLib.importTOML ./epnix.toml) ];
+      myEpnixDistribution = { pkgs, epnixLib, ... }: {
+        imports = [ (epnixLib.importTOML ./epnix.toml) ];
 
-          # Add one of the supported modules through its own option:
-          #epnix.support.StreamDevice.enable = true;
+        # Add one of the supported modules through its own option:
+        #epnix.support.StreamDevice.enable = true;
 
-          # Or by specfying it here:
-          #epnix.support.modules = [ pkgs.epnix.support.calc ];
+        # Or by specfying it here:
+        #epnix.support.modules = [ pkgs.epnix.support.calc ];
 
-          # Add your applications:
-          #epnix.applications.apps = [ ./myProjectApp ];
+        # Add your applications:
+        #epnix.applications.apps = [ ./myProjectApp ];
 
-          # And your iocBoot directories:
-          #epnix.boot.iocBoots = [ ./iocBoot/iocmyProject ];
-        });
+        # And your iocBoot directories:
+        #epnix.boot.iocBoots = [ ./iocBoot/iocmyProject ];
+      };
     in
     # Add your supported systems here.
     # "x86_64-linux" should still be specified so that the development
     # environment can be built on your machine.
     flake-utils.lib.eachSystem [ "x86_64-linux" ] (system:
+      with epnix.lib;
       {
-        packages = (myEpnixDistribution system).outputs;
+        packages = (evalEpnixModules system myEpnixDistribution).outputs;
 
         defaultPackage = self.packages.${system}.build;
         devShell = self.packages.${system}.devShell;

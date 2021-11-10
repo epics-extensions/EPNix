@@ -16,10 +16,10 @@ with lib;
         Notable examples include:
 
         `build`
-          ~ The actual build of this distribution
+          ~ The actual build of this distribution.
 
         `manpage`
-          ~ A manpage of EPNix options
+          ~ A manpage of EPNix options.
 
         `mdbook`
           ~ The documentation book of the EPNix project, including your

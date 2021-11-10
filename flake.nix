@@ -1,3 +1,5 @@
+# TODO: leave only latest upstream supported versions of packages
+
 {
   description = "A Nix flake containing EPICS-related modules and packages";
 
@@ -15,7 +17,7 @@
 
   outputs = { self, bash-lib, devshell, flake-utils, nixpkgs, ... } @ inputs:
     let
-      overlay = import ./pkgs;
+      overlay = import ./pkgs self.lib;
     in
     with flake-utils.lib;
     ((eachSystem [ "aarch64-linux" "x86_64-linux" ] (system:
@@ -25,35 +27,14 @@
       rec {
 
         packages = flattenTree (pkgs.recurseIntoAttrs { inherit (pkgs) epnix; }) // {
-          manpage = (import ./modules inputs {
-            inherit pkgs devshell;
-            configuration = { };
-            epnixLib = lib;
-          }).outputs.manpage;
-          doc-options-md = (import ./modules inputs {
-            inherit pkgs devshell;
-            configuration = { };
-            epnixLib = lib;
-          }).outputs.doc-options-md;
-          mdbook = (import ./modules inputs {
-            inherit pkgs devshell;
-            configuration = { };
-            epnixLib = lib;
-          }).outputs.mdbook;
-        };
-
-        lib = pkgs.epnixLib;
-
-        # TODO: move that into "lib"
-        epnixDistribution = configuration: import ./modules inputs {
-          inherit configuration pkgs devshell;
-          epnixLib = lib;
+          manpage = self.lib.mkEpnixManPage system { };
+          mdbook = self.lib.mkEpnixMdBook system { };
         };
 
         checks = {
           top-simple = pkgs.callPackage ./test/top-simple { };
 
-          base-build = (epnixDistribution {
+          base-build = pkgs.epnixLib.mkEpnixBuild system {
             epnix = {
               #epics-base.version = "3.16.2";
               support.StreamDevice.enable = true;
@@ -72,14 +53,16 @@
               ];
               boot.iocBoots = [ ./test/top-simple/iocBoot/iocmyExample ];
             };
-          }).outputs.build;
+          };
         };
 
-        devShell = (epnixDistribution {
-          devShell.commands = [ { package = pkgs.mdbook; } ];
-        }).outputs.devShell;
+        devShell = pkgs.epnixLib.mkEpnixDevShell system {
+          devShell.commands = [{ package = pkgs.mdbook; }];
+        };
       })) // {
       inherit overlay;
+
+      lib = import ./lib { lib = nixpkgs.lib; inherit inputs; };
 
       templates.top = {
         path = ./templates/top;

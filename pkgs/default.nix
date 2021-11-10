@@ -1,10 +1,12 @@
+epnixLib:
+
 final: prev:
 
 with prev;
 recurseIntoAttrs rec {
-  mkEpicsPackage = callPackage ./build-support/mk-epics-package.nix { };
+  inherit epnixLib;
 
-  epnixLib = import ../lib { pkgs = prev; lib = prev.lib; };
+  mkEpicsPackage = callPackage ./build-support/mk-epics-package.nix { };
 
   epnix = recurseIntoAttrs {
     # TODO: rename into epics-base

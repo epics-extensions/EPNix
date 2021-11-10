@@ -1,4 +1,14 @@
-{ stdenv, lib, runCommand, clang, perl, epnix, buildPackages, pkgsBuildBuild, ... }:
+{ stdenv
+, lib
+, runCommand
+, clang
+, perl
+, epnix
+, buildPackages
+, pkgsBuildBuild
+, writeText
+, ...
+}:
 
 { pname
 , varname
@@ -47,7 +57,6 @@ stdenv.mkDerivation (overridable // {
 
   # "build" as in Nix terminology (the build machine)
   build_config_site = generateConf
-    "CONFIG_SITE.${build_arch}.${build_arch}"
     (with buildPackages.stdenv; {
       CC = "${cc.targetPrefix}cc";
       CCC = "${cc.targetPrefix}c++";
@@ -65,7 +74,6 @@ stdenv.mkDerivation (overridable // {
 
   # "host" as in Nix terminology (the machine which will run the generated code)
   host_config_site = generateConf
-    "CONFIG_SITE.${build_arch}.${host_arch}"
     (with stdenv; {
       CC = "${cc.targetPrefix}cc";
 
@@ -82,18 +90,35 @@ stdenv.mkDerivation (overridable // {
       CMPLR_CLASS = "clang";
     });
 
-  local_config_site = generateConf "CONFIG_SITE.local" local_config_site;
+  local_config_site = generateConf local_config_site;
 
   # Undefine the SUPPORT variable here, since there is no single "support"
   # directory and this variable is a source of conflicts between RELEASE files
-  local_release = generateConf "RELEASE.local" (local_release // { SUPPORT = null; });
+  local_release = generateConf (local_release // { SUPPORT = null; });
+
+  passAsFile = [
+    "build_config_site"
+    "host_config_site"
+    "local_config_site"
+    "local_release"
+  ];
 
   preBuild = (optionalString isEpicsBase ''
-    cp -fv --no-preserve=mode "$build_config_site" configure/os/CONFIG_SITE.${build_arch}.${build_arch}
-    cp -fv --no-preserve=mode "$host_config_site" configure/os/CONFIG_SITE.${build_arch}.${host_arch}
+    cp -fv --no-preserve=mode "$build_config_sitePath" configure/os/CONFIG_SITE.${build_arch}.${build_arch}
+    cp -fv --no-preserve=mode "$host_config_sitePath" configure/os/CONFIG_SITE.${build_arch}.${host_arch}
+
+    echo "=============================="
+    echo "CONFIG_SITE.${build_arch}.${build_arch}"
+    echo "------------------------------"
+    cat "configure/os/CONFIG_SITE.${build_arch}.${build_arch}"
+    echo "=============================="
+    echo "CONFIG_SITE.${build_arch}.${host_arch}"
+    echo "------------------------------"
+    cat "configure/os/CONFIG_SITE.${build_arch}.${host_arch}"
+
   '') + ''
-    cp -fv --no-preserve=mode "$local_config_site" configure/CONFIG_SITE.local
-    cp -fv --no-preserve=mode "$local_release" configure/RELEASE.local
+    cp -fv --no-preserve=mode "$local_config_sitePath" configure/CONFIG_SITE.local
+    cp -fv --no-preserve=mode "$local_releasePath" configure/RELEASE.local
 
     # set to empty if unset
     : ''${EPICS_COMPONENTS=}
@@ -104,6 +129,16 @@ stdenv.mkDerivation (overridable // {
       echo "$component"
       echo "$component" >> configure/RELEASE.local
     done
+
+    echo "=============================="
+    echo "CONFIG_SITE.local"
+    echo "------------------------------"
+    cat "configure/CONFIG_SITE.local"
+    echo "=============================="
+    echo "RELEASE.local"
+    echo "------------------------------"
+    cat "configure/RELEASE.local"
+    echo "------------------------------"
 
   '' + preBuild;
 })
