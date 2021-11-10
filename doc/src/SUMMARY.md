@@ -8,3 +8,4 @@
 	- [Glossary](./developer-guide/glossary.md)
 - [FAQ](./faq.md)
 - [Available options](./options.md)
+- [Available packages](./packages.md)
