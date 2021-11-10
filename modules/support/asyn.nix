@@ -8,7 +8,7 @@ let
 in
 {
   options.epnix.support.asyn = {
-    enable = mkEnableOption "Whether to install asyn in this EPICS distribution";
+    enable = mkEnableOption "asyn in this EPICS distribution";
 
     version = mkOption {
       default = "4-42";
@@ -39,10 +39,10 @@ in
     };
 
     # TODO:
-    withCalc = mkEnableOption "Enable Calc support";
-    withIpac = mkEnableOption "Enable IPAC support";
-    withSeq = mkEnableOption "Enable Seq support";
-    withSscan = mkEnableOption "Enable SSCAN support";
+    withCalc = mkEnableOption "Calc support for asyn";
+    withIpac = mkEnableOption "IPAC support for asyn";
+    withSeq = mkEnableOption "Seq support for asyn";
+    withSscan = mkEnableOption "SSCAN support for asyn";
 
     releaseConfig = mkOption {
       default = { };

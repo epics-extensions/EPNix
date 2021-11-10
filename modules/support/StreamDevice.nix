@@ -8,7 +8,7 @@ let
 in
 {
   options.epnix.support.StreamDevice = {
-    enable = mkEnableOption "Whether to install StreamDevice in this EPICS distribution";
+    enable = mkEnableOption "StreamDevice in this EPICS distribution";
 
     version = mkOption {
       default = "2.8.20";
