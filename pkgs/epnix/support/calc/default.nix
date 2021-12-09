@@ -1,31 +1,26 @@
 { lib
 , epnixLib
 , mkEpicsPackage
-, fetchgit
-, version ? "3-7-4"
-, sha256 ? ""
+, fetchFromGitHub
 , epnix
 , local_config_site ? { }
 , local_release ? { }
 }:
 
-let
-  versions = lib.importJSON ./versions.json;
-  hash = if sha256 != "" then sha256 else versions.${version}.sha256;
-in
-mkEpicsPackage {
+mkEpicsPackage rec {
   pname = "calc";
-  inherit version;
+  version = "3-7-4";
   varname = "CALC";
 
   inherit local_config_site local_release;
 
   buildInputs = with epnix.support; [ sscan ];
 
-  src = fetchgit {
-    url = "https://github.com/epics-modules/calc.git";
+  src = fetchFromGitHub {
+    owner = "epics-modules";
+    repo = "calc";
     rev = "R${version}";
-    sha256 = hash;
+    sha256 = "sha256-cZA9M60YAzCeBZB7amxQES6W4Bh1KFrm3ko7Js7Oa5I=";
   };
 
   meta = {

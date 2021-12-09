@@ -1,9 +1,7 @@
 { lib
 , epnixLib
 , mkEpicsPackage
-, fetchgit
-, version ? "4-42"
-, sha256 ? ""
+, fetchFromGitHub
 , epnix
 , pkg-config
 , rpcsvc-proto
@@ -13,8 +11,7 @@
 }:
 
 let
-  versions = lib.importJSON ./versions.json;
-  hash = if sha256 != "" then sha256 else versions.${version}.sha256;
+  version = "4-42";
 in
 mkEpicsPackage {
   pname = "asyn";
@@ -31,10 +28,11 @@ mkEpicsPackage {
 
   patches = [ ./use-pkg-config.patch ];
 
-  src = fetchgit {
-    url = "https://github.com/epics-modules/asyn.git";
+  src = fetchFromGitHub {
+    owner = "epics-modules";
+    repo = "asyn";
     rev = "R${version}";
-    sha256 = hash;
+    sha256 = "sha256-Q8s4gaI0YGWGS3xlNVNN+us3xcbEz9/+zdoiFIykZ2s=";
   };
 
   meta = {

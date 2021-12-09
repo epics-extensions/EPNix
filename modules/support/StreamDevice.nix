@@ -10,21 +10,13 @@ in
   options.epnix.support.StreamDevice = {
     enable = mkEnableOption "StreamDevice in this EPICS distribution";
 
-    version = mkOption {
-      default = "2.8.20";
-      type = types.str;
-      description = "Version of StreamDevice to install";
-    };
-
     package = mkOption {
       default = super: super.epnix.support.StreamDevice.override {
-        version = cfg.version;
         local_config_site = cfg.siteConfig;
         local_release = cfg.releaseConfig;
       };
       defaultText = literalExample ''
         super: super.epnix.support.StreamDevice.override {
-          version = cfg.version;
           local_config_site = cfg.siteConfig;
           local_release = cfg.releaseConfig;
         }
@@ -33,8 +25,7 @@ in
       description = ''
         Package to use for StreamDevice.
 
-        Defaults to the official distribution with the given version and
-        configuration.
+        Defaults to the official distribution with the given configuration.
       '';
     };
 

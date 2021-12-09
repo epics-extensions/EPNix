@@ -1,22 +1,16 @@
 { lib
 , epnixLib
 , mkEpicsPackage
-, fetchgit
+, fetchFromGitHub
 , fetchpatch
-, version ? "2-11-4"
-, sha256 ? ""
 , epnix
 , local_config_site ? { }
 , local_release ? { }
 }:
 
-let
-  versions = lib.importJSON ./versions.json;
-  hash = if sha256 != "" then sha256 else versions.${version}.sha256;
-in
-mkEpicsPackage {
+mkEpicsPackage rec {
   pname = "sscan";
-  inherit version;
+  version = "2-11-4";
   varname = "SSCAN";
 
   inherit local_config_site local_release;
@@ -31,10 +25,11 @@ mkEpicsPackage {
     })
   ];
 
-  src = fetchgit {
-    url = "https://github.com/epics-modules/sscan.git";
+  src = fetchFromGitHub {
+    owner = "epics-modules";
+    repo = "sscan";
     rev = "R${version}";
-    sha256 = hash;
+    sha256 = "sha256-Br/bH6hCUxdMlJSyMGv/DrALRs945GmgI6ZbssJQWk0=";
   };
 
   meta = {

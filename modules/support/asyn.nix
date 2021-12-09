@@ -10,21 +10,13 @@ in
   options.epnix.support.asyn = {
     enable = mkEnableOption "asyn in this EPICS distribution";
 
-    version = mkOption {
-      default = "4-42";
-      type = types.str;
-      description = "Version of asyn to install";
-    };
-
     package = mkOption {
       default = super: super.epnix.support.asyn.override {
-        version = cfg.version;
         local_config_site = cfg.siteConfig;
         local_release = cfg.releaseConfig;
       };
       defaultText = literalExample ''
         super: super.epnix.support.asyn.override {
-          version = cfg.version;
           local_config_site = cfg.siteConfig;
           local_release = cfg.releaseConfig;
         }
@@ -33,8 +25,7 @@ in
       description = ''
         Package to use for asyn.
 
-        Defaults to the official distribution with the given version and
-        configuration.
+        Defaults to the official distribution with the given configuration.
       '';
     };
 

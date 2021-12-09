@@ -1,9 +1,7 @@
 { lib
 , epnixLib
 , mkEpicsPackage
-, fetchgit
-, version ? "2.8.20"
-, sha256 ? ""
+, fetchFromGitHub
 , epnix
 , pcre
 , local_config_site ? { }
@@ -11,8 +9,7 @@
 }:
 
 let
-  versions = lib.importJSON ./versions.json;
-  hash = if sha256 != "" then sha256 else versions.${version}.sha256;
+  version = "2.8.20";
 in
 mkEpicsPackage {
   pname = "StreamDevice";
@@ -34,10 +31,11 @@ mkEpicsPackage {
 
   patches = [ ./printf-only-string-literal.patch ];
 
-  src = fetchgit {
-    url = "https://github.com/paulscherrerinstitute/StreamDevice.git";
+  src = fetchFromGitHub {
+    owner = "paulscherrerinstitute";
+    repo = "StreamDevice";
     rev = version;
-    sha256 = hash;
+    sha256 = "sha256-D4/jTn+LI12nRNV3Sun3Y/UP79nbERzEAp80D2/eUNQ=";
   };
 
   meta = {

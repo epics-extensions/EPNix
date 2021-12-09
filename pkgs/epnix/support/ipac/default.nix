@@ -12,9 +12,9 @@ let
   versions = lib.importJSON ./versions.json;
   hash = if sha256 != "" then sha256 else versions.${version}.sha256;
 in
-mkEpicsPackage {
+mkEpicsPackage rec {
   pname = "ipac";
-  inherit version;
+  version = "2.16";
   varname = "IPAC";
 
   inherit local_config_site local_release;
@@ -23,7 +23,7 @@ mkEpicsPackage {
     owner = "epics-modules";
     repo = "ipac";
     rev = version;
-    sha256 = hash;
+    sha256 = "sha256-J39oJ6taVpXlDlPB2tMlAZfpXqIyNzK8hhN9ndvDIbE=";
   };
 
   meta = {
