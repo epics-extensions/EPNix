@@ -11,7 +11,7 @@ recurseIntoAttrs rec {
   epnix = recurseIntoAttrs {
     # TODO: rename into epics-base
     epics-base = callPackage ./epnix/epics-base { };
-    support = {
+    support = recurseIntoAttrs {
       asyn = callPackage ./epnix/support/asyn { };
       calc = callPackage ./epnix/support/calc { };
       ipac = callPackage ./epnix/support/ipac { };
