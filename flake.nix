@@ -31,6 +31,8 @@
           mdbook = self.lib.mkEpnixMdBook system { };
         };
 
+        legacyPackages = pkgs;
+
         checks = {
           top-simple = pkgs.callPackage ./test/top-simple { };
 
@@ -55,10 +57,6 @@
             };
           };
         };
-
-        devShell = pkgs.epnixLib.mkEpnixDevShell system {
-          devShell.commands = [{ package = pkgs.mdbook; }];
-        };
       })) // {
       inherit overlay;
 
@@ -70,5 +68,10 @@
       };
 
       defaultTemplate = self.templates.top;
+
+      devShell.x86_64-linux = let pkgs = self.legacyPackages.x86_64-linux; in
+        pkgs.epnixLib.mkEpnixDevShell "x86_64-linux" {
+          devShell.commands = [{ package = pkgs.mdbook; }];
+        };
     });
 }
