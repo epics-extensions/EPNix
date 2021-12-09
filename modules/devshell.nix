@@ -81,6 +81,16 @@ with lib;
     }
 
     {
+      help = "Show the EPNix documentation book for the distribution";
+      name = "edoc";
+      command = ''
+        mdbook="$(nix build --no-link --json --no-write-lock-file '.#mdbook' | ${pkgs.jq}/bin/jq -r '.[].outputs.out')"
+        xdg-open "$mdbook/index.html"
+      '';
+      category = "EPNix commands";
+    }
+
+    {
       help = "Regenerate the 'configure/' directory, top-level Makefile, and subprojects";
       name = "eregen";
       command = ''
