@@ -1,7 +1,6 @@
 { stdenv
 , lib
 , runCommand
-, clang
 , perl
 , epnix
 , buildPackages
@@ -67,7 +66,7 @@ stdenv.mkDerivation (overridable // {
       RANLIB = "${cc.bintools.targetPrefix}ranlib";
 
       ARFLAGS = "rc";
-    } // optionalAttrs stdenv.cc.isClang {
+    } // optionalAttrs cc.isClang {
       GNU = "NO";
       CMPLR_CLASS = "clang";
     });
@@ -85,7 +84,7 @@ stdenv.mkDerivation (overridable // {
       RANLIB = "${cc.bintools.targetPrefix}ranlib";
 
       ARFLAGS = "rc";
-    } // optionalAttrs stdenv.cc.isClang {
+    } // optionalAttrs cc.isClang {
       GNU = "NO";
       CMPLR_CLASS = "clang";
     });
