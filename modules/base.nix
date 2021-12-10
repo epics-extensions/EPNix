@@ -68,12 +68,23 @@ in
     binutils
   ];
 
-  config.devShell.language.c.libraries = with pkgs; [
-    readline
-  ];
+  config.devShell.language.c = {
+    compiler = pkgs.gcc;
+    libraries = with pkgs; [
+      readline
+    ];
 
-  config.devShell.language.c.includes = with pkgs; [
-    readline
+    includes = with pkgs; [
+      readline
+    ];
+  };
+
+  config.devShell.env = [
+    # `CMD_...` are flags that we can set from the "command-line"
+    # We set these as environment variables, which should work since they are
+    # explicitely not instanciated in the Makefile hell.
+    { name = "CMD_CFLAGS"; value = "-fdiagnostics-color=always"; }
+    { name = "CMD_CXXFLAGS"; value = "-fdiagnostics-color=always"; }
   ];
 
   config.devShell.devshell.startup."epnix/epics-base".text = ''
@@ -82,27 +93,6 @@ in
 
   config.devShell.commands = mkMerge [
     [
-      # Build tools
-
-      {
-        help = "Execute make with the relevant variables";
-        name = "emake";
-        command = ''
-          ${pkgs.gnumake}/bin/make \
-            "GNU=NO" \
-            "CMPLR_CLASS=clang" \
-            "CC=clang" \
-            "CCC=clang++" \
-            "CXX=clang++" \
-            "AR=ar" \
-            "LD=ld" \
-            "RANLIB=ranlib" \
-            "ARFLAGS=rc" \
-            "$@"
-        '';
-        category = "EPNix commands";
-      }
-
       # Bootstrapping
 
       {
