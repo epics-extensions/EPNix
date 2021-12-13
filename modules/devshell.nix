@@ -141,20 +141,117 @@ with lib;
     {
       help = "Check and clone subprojects";
       name = "eregen-git";
-      command = builtins.readFile (pkgs.substituteAll {
-        src = ./devshell/eregen-git.sh;
+      command =
+        let
+          available = { inputs = config.epnix.inputs; };
 
-        inherit (pkgs) git jq zsh;
+          lockFile = importJSON "${available.inputs.self}/flake.lock";
+          lockedInputs = mapAttrs (name: node: lockFile.nodes.${node}) lockFile.nodes.${lockFile.root}.inputs;
 
-        epnix_commands_lib = pkgs.epnix-commands-lib;
-        epics_base = pkgs.epnix.epics-base;
+          cloneCommands = pipe config.epnix.applications.apps [
+            # Get those who are "inputs.something"
+            (filter (app: isString app && hasPrefix "inputs." app))
 
-        app_names = map (app: epnixLib.getName app) config.epnix.applications.apps;
-      });
+            # Fetch the metadata from the lock file
+            (map (inputName:
+              let name = last (splitString "." inputName);
+              in nameValuePair name lockedInputs.${name}))
+
+            # Generate a clone command for them
+            (map ({ name, value }:
+              let inherit (value.locked) type; in
+              if type == "git" then ''
+                if checkMissing "${name}"; then
+                  cloneGit "${name}" "${value.locked.url}" "${value.locked.ref}" "${value.locked.rev}"
+                fi
+              ''
+
+              else if type == "github" then ''
+                if checkMissing "${name}"; then
+                  cloneGitHub "${name}" "${value.locked.owner}" "${value.locked.repo}" "${value.original.ref or ""}" "${value.locked.rev}"
+                fi
+              ''
+              else ''warn "not cloning input '${name}', unsupported type '${type}'"''))
+
+            (concatStringsSep "\n")
+          ];
+
+        in
+        ''
+          source "${pkgs.epnix-commands-lib}/libexec/epnix/commands-lib.sh"
+
+          function checkMissing() {
+            local name="$1"
+
+            if [ -e "$name" ]; then
+              info "input '$name' already exists, skipping cloning"
+              info "" "  if you want to force clone this input,"
+              info "" "  simply remove the directory '$name' and re-run 'eregen-git'"
+              return 1
+            else
+              return 0
+            fi
+          }
+
+          function cloneGit() {
+            local name="$1"
+            local url="$2"
+            # may be empty
+            local wantedRef="$3"
+            local resolvedRev="$4"
+
+            local -a options=(--recurse-submodules)
+
+            if [ -n "$wantedRef" ]; then
+              options+=(--branch "$wantedRef")
+            fi
+
+            info "cloning '$name'"
+
+            if ! git clone "''${options[@]}" -- "$url" "$name"; then
+              error "clone of input '$name' failed"
+              return 1
+            fi
+
+            local actualRev="$(git -C "$name" rev-parse HEAD)"
+
+            if [[ "$resolvedRev" == "$actualRev" ]]; then
+              return 0
+            fi
+
+            if [ -z "$wantedRef" ]; then
+              wantedRef="$(git -C "$name" symbolic-ref --short HEAD)"
+            fi
+
+            warn "'flake.lock' is out-of-date for input '$name'"
+            warn "" "the 'flake.lock' file specifies that input '$name' is at commit:"
+            warn "" "   - ''${resolvedRev:1:7}"
+            warn "" "  but branch '$wantedRef' from upstream has moved to commit:"
+            warn "" "   - ''${actualRev:1:7}"
+            info "it is likely that your 'flake.lock' is several commits behind."
+            info "if you want to update your inputs, you can use one of the following commands:"
+            info "" "  # to updates all inputs"
+            info "" "  - nix flake update [--commit-lock-file]" "# updates all inputs"
+            info ""
+            info "" "  # to updates only this input"
+            info "" "  - nix flake lock --update-input '$name' [--commit-lock-file]"
+          }
+
+          function cloneGitHub() {
+            local name="$1"
+            local owner="$2"
+            local repo="$3"
+            # may be empty
+            local wantedRef="$3"
+            local resolvedRev="$4"
+
+            cloneGit "$name" "https://github.com/''${owner}/''${repo}.git" "$wantedRef" "$resolvedRev"
+          }
+
+          ${cloneCommands}
+        '';
 
       category = "EPNix commands";
     }
   ];
-
-  config.devShell.devshell.startup."eregen-git" = stringAfter [ "motd" ] "eregen-git";
 }
