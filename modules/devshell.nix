@@ -155,16 +155,22 @@ with lib;
             # Fetch the metadata from the lock file
             (map (inputName:
               let name = last (splitString "." inputName);
-              in nameValuePair name lockedInputs.${name}))
+              in
+              if hasAttr name lockedInputs
+              then nameValuePair name lockedInputs.${name}
+              else throw "input '${name}' specified in 'epnix.applications.apps' does not exist"))
 
             # Generate a clone command for them
             (map ({ name, value }:
               let inherit (value.locked) type; in
-              if type == "git" then ''
-                if checkMissing "${name}"; then
-                  cloneGit "${name}" "${value.locked.url}" "${value.locked.ref}" "${value.locked.rev}"
-                fi
-              ''
+              if type == "git" then
+                if value.locked.dir or "" != ""
+                then ''warn "for input '${name}', git repositories with the 'dir' option are not supported"''
+                else ''
+                  if checkMissing "${name}"; then
+                    cloneGit "${name}" "${value.locked.url}" "${value.locked.ref or ""}" "${value.locked.rev}"
+                  fi
+                ''
 
               else if type == "github" then ''
                 if checkMissing "${name}"; then
