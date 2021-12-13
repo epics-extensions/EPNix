@@ -60,7 +60,7 @@ in
 
   config.epnix.support.resolvedModules =
     let available = {
-      inputs = config.inputs;
+      inputs = config.epnix.inputs;
       pkgs = pkgs;
     };
     in

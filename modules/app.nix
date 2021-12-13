@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, epnixLib, lib, pkgs, ... }:
 
 with lib;
 
@@ -63,7 +63,7 @@ in
 
   config.epnix.applications.resolvedApps =
     let available = {
-      inputs = config.inputs;
+      inputs = config.epnix.inputs;
       pkgs = pkgs;
     };
     in
