@@ -20,9 +20,9 @@ in
         local_release = cfg.releaseConfig;
       };
       defaultText = literalExample ''
-        super: super.epnix."epics-base${cfg.releaseBranch}".override {
-          local_config_site = cfg.siteConfig;
-          local_release = cfg.releaseConfig;
+        super: super.epnix."epics-base''${releaseBranch}".override {
+          local_config_site = siteConfig;
+          local_release = releaseConfig;
         }
       '';
       type = epnixLib.types.strOrFuncToPackage pkgs;
