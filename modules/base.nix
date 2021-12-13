@@ -8,21 +8,19 @@ let
 in
 {
   options.epnix.epics-base = {
-    version = mkOption {
-      default = "7.0.6";
-      type = types.str;
-      description = "Version of epics-base to install";
+    releaseBranch = mkOption {
+      default = "7";
+      type = types.enum [ "7" "3" ];
+      description = "The release branch of epics-base to install";
     };
 
     package = mkOption {
-      default = super: super.epnix.epics-base.override {
-        version = cfg.version;
+      default = super: super.epnix."epics-base${cfg.releaseBranch}".override {
         local_config_site = cfg.siteConfig;
         local_release = cfg.releaseConfig;
       };
       defaultText = literalExample ''
-        super: super.epnix.epics-base.override {
-          version = cfg.version;
+        super: super.epnix."epics-base${cfg.releaseBranch}".override {
           local_config_site = cfg.siteConfig;
           local_release = cfg.releaseConfig;
         }
@@ -31,8 +29,8 @@ in
       description = ''
         Package to use for epics-base.
 
-        Defaults to the official distribution with the given version and given
-        RELEASE and CONFIG_SITE.
+        Defaults to the official distribution from the given release branch and
+        with the given RELEASE and CONFIG_SITE.
       '';
     };
 
