@@ -47,7 +47,7 @@ in
 
     ${concatMapStringsSep "\n" (app: ''
       cp -rfv "${app}" "$out/${epnixLib.getName app}"
-    '') config.epnix.applications.apps}
+    '') config.epnix.applications.resolvedApps}
 
     mkdir -p "$out/iocBoot"
     cp -rfv "${pkgs.epnix.epics-base}/templates/makeBaseApp/top/iocBoot/Makefile" "$out/iocBoot"
@@ -63,7 +63,7 @@ in
       version = cfg.version;
       varname = "EPICS_DISTRIBUTION_${cfg.flavor}";
 
-      buildInputs = config.epnix.support.modules ++ (cfg.attrs.buildInputs or [ ]);
+      buildInputs = config.epnix.support.resolvedModules ++ (cfg.attrs.buildInputs or [ ]);
 
       src = config.epnix.outputs.topSource;
 

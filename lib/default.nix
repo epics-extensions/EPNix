@@ -136,6 +136,14 @@ let
         }.${parsed.cpu.name} or (throw "Unsupported architecture: ${parsed.cpu.name}");
       in
       "${kernel}-${arch}";
+
+  resolveInput = { inputs, pkgs } @ available: input:
+    if isDerivation input then input
+    else if hasPrefix "/" input then input
+    else
+      let path = splitString "." input;
+      in { pname = last path; } // getAttrFromPath path available;
+
   };
 in
 self

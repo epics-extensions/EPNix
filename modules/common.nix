@@ -9,6 +9,16 @@ with lib;
       description = "Nixpkgs overlays to override the default packages used";
     };
 
+    epnix.inputs = mkOption {
+      description = ''
+        The flake inputs of your project.
+
+        This allows resolving things like `"inputs.myExampleApp"` in the
+        `epnix.applications.apps` configuration option.
+      '';
+      type = types.attrs;
+    };
+
     epnix.outputs = mkOption {
       description = ''
         Contains an attribute set of build-products for this distribution.
