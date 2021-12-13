@@ -8,10 +8,22 @@
   inputs.flake-utils.url = "github:numtide/flake-utils";
   inputs.epnix.url = "git+ssh://git@drf-gitlab.cea.fr/rnicole/epnix.git";
 
-  outputs = { self, nixpkgs, flake-utils, epnix }:
+  # Add your app inputs here:
+  # ---
+  #inputs.myExampleApp = {
+  #  url = "git+ssh://git@my-server.org/me/myExampleApp.git";
+  #  flake = false;
+  #};
+
+  outputs = { self, nixpkgs, flake-utils, epnix, ... } @ inputs:
     let
       myEpnixDistribution = { pkgs, epnixLib, ... }: {
         imports = [ (epnixLib.importTOML ./epnix.toml) ];
+
+        epnix.inputs = inputs;
+
+        # Set your EPNix options here, or in the ./epnix.toml file
+        # ---
 
         # Add one of the supported modules through its own option:
         #epnix.support.StreamDevice.enable = true;
@@ -20,13 +32,14 @@
         #epnix.support.modules = [ pkgs.epnix.support.calc ];
 
         # Add your applications:
-        #epnix.applications.apps = [ ./myProjectApp ];
+        #epnix.applications.apps = [ "inputs.myExampleApp" ];
 
         # And your iocBoot directories:
-        #epnix.boot.iocBoots = [ ./iocBoot/iocmyProject ];
+        #epnix.boot.iocBoots = [ ./iocBoot/iocmyExample ];
       };
     in
     # Add your supported systems here.
+    # ---
     # "x86_64-linux" should still be specified so that the development
     # environment can be built on your machine.
     flake-utils.lib.eachSystem [ "x86_64-linux" ] (system:

@@ -7,23 +7,22 @@ version = "0.0.1"
 [epnix.epics-base]
 # You can choose the version of EPICS-base here:
 # ---
-#version = "3.16.2"
+#releaseBranch = "3" # Defaults to "7"
 
 [epnix.support]
 # Add one of the supported modules through its own option:
 # ---
 #StreamDevice.enable = true
-#StreamDevice.version = "2.8.20"
 
 # Or by specfying it here:
 # ---
-#modules = [ "epnix.support.calc" ]
+#modules = [ "pkgs.epnix.support.calc" ]
 
 [epnix.applications]
 # Add your applications:
 # ---
 #apps = [
-#	"./myProjectApp"
+#	"inputs.myExampleApp"
 #]
 
 [epnix.boot]
