@@ -1,6 +1,25 @@
 { config, devshell, lib, pkgs, epnixLib, ... }:
 
 with lib;
+let
+  available = { inputs = config.epnix.inputs; };
+
+  lockFile = importJSON "${available.inputs.self}/flake.lock";
+  lockedInputs = mapAttrs (name: node: lockFile.nodes.${node}) lockFile.nodes.${lockFile.root}.inputs;
+
+  inputApps = pipe config.epnix.applications.apps [
+    # Get those who are "inputs.something"
+    (filter (app: isString app && hasPrefix "inputs." app))
+
+    # Fetch the metadata from the lock file
+    (map (inputName:
+      let name = last (splitString "." inputName);
+      in
+      if hasAttr name lockedInputs
+      then nameValuePair name lockedInputs.${name}
+      else throw "input '${name}' specified in 'epnix.applications.apps' does not exist"))
+  ];
+in
 {
   options.devShell = mkOption {
     description = ''
@@ -143,25 +162,8 @@ with lib;
       name = "eregen-git";
       command =
         let
-          available = { inputs = config.epnix.inputs; };
-
-          lockFile = importJSON "${available.inputs.self}/flake.lock";
-          lockedInputs = mapAttrs (name: node: lockFile.nodes.${node}) lockFile.nodes.${lockFile.root}.inputs;
-
-          cloneCommands = pipe config.epnix.applications.apps [
-            # Get those who are "inputs.something"
-            (filter (app: isString app && hasPrefix "inputs." app))
-
-            # Fetch the metadata from the lock file
-            (map (inputName:
-              let name = last (splitString "." inputName);
-              in
-              if hasAttr name lockedInputs
-              then nameValuePair name lockedInputs.${name}
-              else throw "input '${name}' specified in 'epnix.applications.apps' does not exist"))
-
-            # Generate a clone command for them
-            (map ({ name, value }:
+          cloneCommands = forEach inputApps
+            ({ name, value }:
               let inherit (value.locked) type; in
               if type == "git" then
                 if value.locked.dir or "" != ""
@@ -177,11 +179,7 @@ with lib;
                   cloneGitHub "${name}" "${value.locked.owner}" "${value.locked.repo}" "${value.original.ref or ""}" "${value.locked.rev}"
                 fi
               ''
-              else ''warn "not cloning input '${name}', unsupported type '${type}'"''))
-
-            (concatStringsSep "\n")
-          ];
-
+              else ''warn "not cloning input '${name}', unsupported type '${type}'"'');
         in
         ''
           source "${pkgs.epnix-commands-lib}/libexec/epnix/commands-lib.sh"
@@ -254,7 +252,36 @@ with lib;
             cloneGit "$name" "https://github.com/''${owner}/''${repo}.git" "$wantedRef" "$resolvedRev"
           }
 
-          ${cloneCommands}
+          ${concatStringsSep "\n" cloneCommands}
+        '';
+
+      category = "EPNix commands";
+    }
+
+    {
+      help = "Like 'nix' but uses the locally cloned applications";
+      name = "enix-local";
+      command =
+        let
+          findLocals = forEach inputApps
+            ({ name, value }:
+              ''
+                if [ -e "${name}" ]; then
+                  info "using local app:" "'${name}'"
+                  overrides+=(--override-input "${name}" "path:./${name}")
+                else
+                  info "app '${name}' is not present locally" "using the one specified in flake inputs"
+                fi
+              '');
+        in
+        ''
+          source "${pkgs.epnix-commands-lib}/libexec/epnix/commands-lib.sh"
+
+          typeset -a overrides=()
+
+          ${concatStringsSep "\n" findLocals}
+
+          nix "$@" "''${overrides[@]}"
         '';
 
       category = "EPNix commands";
