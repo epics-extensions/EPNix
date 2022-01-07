@@ -89,7 +89,13 @@ its Git version in the `flake.lock` file.
 
 You can test that your top builds by executing: `nix build -L`
 
+**Note:** as a rule of thumb, each time you modify the `epnix.toml` or
+`flake.nix`, you should leave and re-enter your development environment (`nix
+develop`).
+
 ## Developing your IOC
+
+### Using Nix
 
 When developing your IOC, and can become cumbersome that Nix only tracks the
 remote repository of your app: you will probably want to do some temporary
@@ -104,6 +110,29 @@ your top, with the directory `exampleApp` under it. So, if you execute `nix
 develop`, then `enix-local build -L` under the development shell, Nix will
 build your top, with the modifications from your local `exampleApp` directory.
 
+The advantage of using Nix when developing is that it will build from
+a "cleaner" environment, and will store the result in the Nix store, which you
+can copy using the `nix copy` command, and test it on another machine.
+
+### Using standard tools
+
+The EPNix development shell (`nix develop`) comes with your standard build
+tools installed. This means that after creating your project, you will be able
+to use `make` as with any other standard EPICS development.
+
+The only difference is that the `Makefile` and `configure` directory are not
+tracked by Git, since they are directly tied to the base, to add them to your
+top, simply execute `eregen-config`.
+
+**Note:** as a rule of thumb, each time you modify your modules in
+`epnix.toml`, you should leave and re-enter your development environment, and
+re-execute `eregen-config`.
+
+The advantage of using the standard tools, is that the compilation is
+incremental: Nix always builds a package fully, meaning your top will always be
+compiled from scratch if you are using Nix. Using `make` directly will only
+recompile the modified files, at the cost of potential impurities in your
+build.
 
 ## Upgrading your app version
 
