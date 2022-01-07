@@ -90,7 +90,8 @@ its Git version in the `flake.lock` file.
 You can test that your top builds by executing: `nix build -L`
 
 **Note:** as a rule of thumb, each time you modify the `epnix.toml` or
-`flake.nix`, you should leave and re-enter your development environment (`nix
+`flake.nix`, or update your inputs using `nix flake update` or `nix flake
+lock`, you should leave and re-enter your development environment (`nix
 develop`).
 
 ## Developing your IOC
