@@ -87,7 +87,9 @@ Edit your top's `epnix.toml`:
 With these steps, Nix will track your app from the remote repository, and track
 its Git version in the `flake.lock` file.
 
-You can test that your top builds by executing: `nix build -L`
+You can test that your top builds by executing: `nix build -L`. This will put
+a `./result` symbolic link in your top's directory containing the result of the
+compilation.
 
 **Note:** as a rule of thumb, each time you modify the `epnix.toml` or
 `flake.nix`, or update your inputs using `nix flake update` or `nix flake
@@ -98,8 +100,12 @@ develop`).
 
 ### Using Nix
 
-When developing your IOC, and can become cumbersome that Nix only tracks the
-remote repository of your app: you will probably want to do some temporary
+As said above, compiling using Nix is as simple as executing `nix build`. This
+will build your top using your app from the Git remote repository specified in
+your flake inputs, and place the result under `./result`.
+
+But when developing your IOC, and can become cumbersome that Nix only tracks
+the remote repository of your app: you will probably want to do some temporary
 changes to your app, and test them before committing.
 
 For this exact purpose, EPNix comes with a handy command called `enix-local`.
