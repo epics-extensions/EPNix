@@ -150,3 +150,53 @@ update.
 
 This command also works if you want to update the `epnix` input, or the
 `nixpkgs` input containing the various needed packages used by EPICS.
+
+## Looking up the documentation
+
+EPNix comes with a documentation system, adapted to your project. EPNix comes
+with a documentation book (what you are reading), and a manpage.
+
+To see the documentation book execute `edoc` in the development shell, from
+your top directory.
+
+To see the manpage, execute `eman` in the development shell, from your top
+directory.
+
+## Adding dependencies
+
+You now should have all the tools you need to have a self-contained EPICS IOC.
+
+However, it is quite useful to depend on code from the community, and EPNix
+provides a simple way to do it.
+
+The first step is to look at the documentation, either the manpage, under the
+"OPTIONS" section, or in the documentation book, under the "Available options"
+page.
+
+Then, look for a `epnix.support.<your dependency>` option section. For example,
+if you want to add "StreamDevice" as a support module, you can look for options
+under `epnix.support.StreamDevice`.
+
+If it exists, you can add this bit to your `epnix.toml` file:
+
+```toml
+[epnix.support]
+<your dependency>.enable = true
+```
+
+If it does not exist, you can check if it is packaged by looking at the
+documentation, either in the manpage, under the "AVAILABLE PACKAGES" section,
+or in the documentation book, under the "Available packages" page.
+
+If the package exists, you can add this bit to your `epnix.toml` file.
+
+```toml
+[epnix.support]
+modules = [ "pkgs.epnix.support.<your dependency>" ]
+```
+
+If the package does not exist, you can try [packaging it
+yourself](./developer-guide/packaging.md), or you can request it in the EPNix
+issue tracker.
+
+TODO: link issue tracker
