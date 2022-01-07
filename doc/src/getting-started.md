@@ -44,7 +44,7 @@ Git repository.
 
 Here's how to kick-start an EPNix project:
 
-```
+```sh
 # Create a new top
 nix flake new -t 'git+ssh://git@drf-gitlab.cea.fr/rn267667/epnix.git' my-top
 cd my-top
@@ -74,7 +74,10 @@ Edit your top's `flake.nix`
 - Below the other inputs, add:
 
 ```nix
-inputs.exampleApp = { url = "git+ssh://git@drf-gitlab.cea.fr/..."; flake = false; };
+inputs.exampleApp = {
+  url = "git+ssh://git@drf-gitlab.cea.fr/...";
+  flake = false;
+};
 ```
 
 Edit your top's `epnix.toml`:
