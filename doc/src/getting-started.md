@@ -207,3 +207,50 @@ yourself](./developer-guide/packaging.md), or you can request it in the EPNix
 issue tracker.
 
 TODO: link issue tracker
+
+## Deploying your IOC
+
+To deploy your IOC, we recommend you build it using Nix. If you are doing
+a production deployment, you should ensure that you have a clean build, i.e. by
+not using `enix-local`, and having a clean top Git repository.
+
+With this, you get a `./result` symbolic link to the result in the Nix store,
+which you can copy, with all of its dependencies, using `nix copy`. The only
+requirement is that the remote machine has Nix installed too.
+
+For example, if I want to copy my built IOC to the machine
+`example-ioc.prod.mycompany.com`:
+
+```sh
+nix copy ./result --to ssh://root@example-ioc.prod.mycompany.com
+```
+
+This will copy the build in the Nix store and all of its dependencies to the
+remote machine.
+
+To execute the program, you can get where the build is by inspecting the
+symbolic link on your local machine:
+
+```sh
+readlink ./result
+# Returns something like:
+# /nix/store/7p4x6kpawrsk6mngrxi3z09bchl2vag1-epics-distribution-custom-0.0.1
+```
+
+And then, on the remote machine, you can execute the IOC:
+
+```sh
+/nix/store/<...>-epics-distribution-custom-0.0.1/bin/linux-x86_64/example
+```
+
+Of you want to do automated, declarative, or more complex deployments, we
+highly recommend you do that using NixOS and one of its deployment tools
+([NixOps], [morph], [disnix], [colmena]), or by using leech if you want to use
+non-NixOS hosts.
+
+TODO: publish and link leech.
+
+[NixOps]: <https://nixos.org/nixops>
+[morph]: <https://github.com/DBCDK/morph>
+[disnix]: <https://github.com/svanderburg/disnix>
+[colmena]: <https://github.com/zhaofengli/colmena>
