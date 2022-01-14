@@ -59,6 +59,14 @@ let
     - Version: `${pkg.version}`
     - Description: _${pkg.meta.description}_
     - Homepage: <${pkg.meta.homepage}>
+    - Declared in: ${let
+      filePath = head (splitString ":" pkg.meta.position);
+      relativePath = pipe filePath [
+        (splitString "/")
+        (sublist 4 255)
+        (concatStringsSep "/")
+      ];
+    in "[${relativePath}](file://${filePath})"}
     - License(s):
     ${licenseList pkg}
     - Package maintainer(s):
