@@ -2,7 +2,7 @@
   description = "EPICS IOC for <...>";
 
   inputs.nixpkgs = {
-    url = "github:NixOS/nixpkgs/nixos-21.05";
+    url = "github:NixOS/nixpkgs/nixos-21.11";
     follows = "epnix/nixpkgs";
   };
   inputs.flake-utils.url = "github:numtide/flake-utils";

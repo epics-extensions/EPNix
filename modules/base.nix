@@ -19,7 +19,7 @@ in
         local_config_site = cfg.siteConfig;
         local_release = cfg.releaseConfig;
       };
-      defaultText = literalExample ''
+      defaultText = literalExpression ''
         super: super.epnix."epics-base''${releaseBranch}".override {
           local_config_site = siteConfig;
           local_release = releaseConfig;

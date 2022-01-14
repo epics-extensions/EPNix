@@ -15,7 +15,7 @@ in
         local_config_site = cfg.siteConfig;
         local_release = cfg.releaseConfig;
       };
-      defaultText = literalExample ''
+      defaultText = literalExpression ''
         super: super.epnix.support.StreamDevice.override {
           local_config_site = cfg.siteConfig;
           local_release = cfg.releaseConfig;
