@@ -23,6 +23,11 @@ mkEpicsPackage {
 
   inherit local_config_site local_release;
 
+  makeFlags = [
+    "COMMANDLINE_LIBRARY=READLINE_NCURSES"
+    "READLINE_DIR=${readline}"
+  ];
+
   isEpicsBase = true;
 
   src = fetchgit {
@@ -37,7 +42,7 @@ mkEpicsPackage {
     ./handle-make-undefine-variable.patch
   ]);
 
-  propagatedBuildInputs = optional (older "7.0.0") readline;
+  propagatedBuildInputs = [ readline ];
 
   # TODO: find a way to "symlink" what is in ./bin/linux-x86_64 -> ./bin
   meta = {
