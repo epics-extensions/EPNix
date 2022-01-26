@@ -44,6 +44,10 @@ stdenv.mkDerivation (overridable // {
 
   makeFlags = makeFlags ++ [
     "INSTALL_LOCATION=${placeholder "out"}"
+
+    # This prevents EPICS from detecting installed libraries on the host
+    # system, for when Nix is compiling without sandbox (e.g.: WSL2)
+    "GNU_DIR=/var/empty"
   ] ++ optional
     (stdenv.buildPlatform != stdenv.hostPlatform)
     "CROSS_COMPILER_TARGET_ARCHS=${host_arch}";
