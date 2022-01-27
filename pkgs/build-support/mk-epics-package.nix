@@ -144,4 +144,7 @@ stdenv.mkDerivation (overridable // {
     echo "------------------------------"
 
   '' + preBuild;
+
+  doCheck = attrs.doCheck or true;
+  checkTarget = "runtests";
 })
