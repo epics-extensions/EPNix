@@ -126,7 +126,7 @@ in
         help = "Obtain a Process Variable value over Channel Access";
         name = "caget";
         command = ''
-          ${pkgs.epnix.epics-base}/bin/*/caget "$@"
+          ${pkgs.epnix.epics-base}/bin/caget "$@"
         '';
         category = "EPICS Channel Access commands";
       }
@@ -135,7 +135,7 @@ in
         help = "Get information on a Process Variable over Channel Access";
         name = "cainfo";
         command = ''
-          ${pkgs.epnix.epics-base}/bin/*/cainfo "$@"
+          ${pkgs.epnix.epics-base}/bin/cainfo "$@"
         '';
         category = "EPICS Channel Access commands";
       }
@@ -144,7 +144,7 @@ in
         help = "Monitor a Process Variable over Channel Access";
         name = "camonitor";
         command = ''
-          ${pkgs.epnix.epics-base}/bin/*/camonitor "$@"
+          ${pkgs.epnix.epics-base}/bin/camonitor "$@"
         '';
         category = "EPICS Channel Access commands";
       }
@@ -153,7 +153,7 @@ in
         help = "Set a Process Variable value over Channel Access";
         name = "caput";
         command = ''
-          ${pkgs.epnix.epics-base}/bin/*/caput "$@"
+          ${pkgs.epnix.epics-base}/bin/caput "$@"
         '';
         category = "EPICS Channel Access commands";
       }
@@ -167,7 +167,7 @@ in
         help = "Get a Process Variable value over pvAccess";
         name = "pvget";
         command = ''
-          ${pkgs.epnix.epics-base}/bin/*/pvget "$@"
+          ${pkgs.epnix.epics-base}/bin/pvget "$@"
         '';
         category = "EPICS pvAccess commands";
       }
@@ -176,7 +176,7 @@ in
         help = "Get information on a Process Variable over pvAccess";
         name = "pvinfo";
         command = ''
-          ${pkgs.epnix.epics-base}/bin/*/pvinfo "$@"
+          ${pkgs.epnix.epics-base}/bin/pvinfo "$@"
         '';
         category = "EPICS pvAccess commands";
       }
@@ -185,7 +185,7 @@ in
         help = "List Process Variables over pvAccess";
         name = "pvlist";
         command = ''
-          ${pkgs.epnix.epics-base}/bin/*/pvlist "$@"
+          ${pkgs.epnix.epics-base}/bin/pvlist "$@"
         '';
         category = "EPICS pvAccess commands";
       }
@@ -194,7 +194,7 @@ in
         help = "Monitor a Process Variable over pvAccess";
         name = "pvmonitor";
         command = ''
-          ${pkgs.epnix.epics-base}/bin/*/pvmonitor "$@"
+          ${pkgs.epnix.epics-base}/bin/pvmonitor "$@"
         '';
         category = "EPICS pvAccess commands";
       }
@@ -203,7 +203,7 @@ in
         help = "Set a Process Variable value over pvAccess";
         name = "pvput";
         command = ''
-          ${pkgs.epnix.epics-base}/bin/*/pvput "$@"
+          ${pkgs.epnix.epics-base}/bin/pvput "$@"
         '';
         category = "EPICS pvAccess commands";
       }
