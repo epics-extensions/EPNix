@@ -46,7 +46,7 @@ Here's how to kick-start an EPNix project:
 
 ```sh
 # Create a new top
-nix flake new -t 'git+ssh://git@drf-gitlab.cea.fr/rn267667/epnix.git' my-top
+nix flake new -t 'git+ssh://git@drf-gitlab.cea.fr/EPICS/epnix/epnix.git' my-top
 cd my-top
 nix develop
 

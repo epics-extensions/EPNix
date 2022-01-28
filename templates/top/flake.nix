@@ -6,7 +6,7 @@
     follows = "epnix/nixpkgs";
   };
   inputs.flake-utils.url = "github:numtide/flake-utils";
-  inputs.epnix.url = "git+ssh://git@drf-gitlab.cea.fr/rnicole/epnix.git";
+  inputs.epnix.url = "git+ssh://git@drf-gitlab.cea.fr/EPICS/epnix/epnix.git";
 
   # Add your app inputs here:
   # ---
