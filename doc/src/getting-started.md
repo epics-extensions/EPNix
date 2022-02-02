@@ -5,7 +5,7 @@
 If you do not have Nix installed, first follow the [official
 instructions][install-nix].
 
-[install-nix]: <https://nixos.org/download.html#nix-quick-install>
+[install-nix]: <https://nixos.org/download.html#download-nix>
 
 ## Enabling nix flakes and the nix command
 
