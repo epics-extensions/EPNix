@@ -2,16 +2,10 @@
 , epnixLib
 , mkEpicsPackage
 , fetchFromGitHub
-, version ? "2.16"
-, sha256 ? ""
 , local_config_site ? { }
 , local_release ? { }
 }:
 
-let
-  versions = lib.importJSON ./versions.json;
-  hash = if sha256 != "" then sha256 else versions.${version}.sha256;
-in
 mkEpicsPackage rec {
   pname = "ipac";
   version = "2.16";
