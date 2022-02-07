@@ -16,6 +16,7 @@ recurseIntoAttrs rec {
       asyn = callPackage ./epnix/support/asyn { };
       calc = callPackage ./epnix/support/calc { };
       ipac = callPackage ./epnix/support/ipac { };
+      modbus = callPackage ./epnix/support/modbus { };
       seq = callPackage ./epnix/support/seq { };
       sscan = callPackage ./epnix/support/sscan { };
       StreamDevice = callPackage ./epnix/support/StreamDevice { };
