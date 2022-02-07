@@ -1,3 +1,5 @@
+# TODO: remove this module
+
 { config, lib, pkgs, epnixLib, ... }:
 
 with lib;
@@ -58,13 +60,8 @@ in
       };
     }) ];
 
-    epnix.support = {
-      # TODO: calc
-      asyn.enable = true;
-
-      modules = [
-        pkgs.epnix.support.StreamDevice
-      ];
-    };
+    epnix.support.modules = [
+      pkgs.epnix.support.StreamDevice
+    ];
   };
 }

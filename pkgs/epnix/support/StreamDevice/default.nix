@@ -27,7 +27,8 @@ mkEpicsPackage {
     STREAM = null;
   };
 
-  buildInputs = [ pcre ] ++ (with epnix.support; [ asyn calc sscan ]);
+  buildInputs = [ pcre ] ++ (with epnix.support; [ sscan ]);
+  propagatedBuildInputs = with epnix.support; [ asyn calc ];
 
   patches = [ ./printf-only-string-literal.patch ];
 
