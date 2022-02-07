@@ -26,7 +26,7 @@
       in
       rec {
 
-        packages = flattenTree (pkgs.recurseIntoAttrs { inherit (pkgs) epnix; }) // {
+        packages = flattenTree (pkgs.recurseIntoAttrs pkgs.epnix) // {
           manpage = self.lib.mkEpnixManPage system { };
           mdbook = self.lib.mkEpnixMdBook system { };
         };
