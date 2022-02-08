@@ -33,30 +33,7 @@
 
         legacyPackages = pkgs;
 
-        checks = {
-          top-simple = pkgs.callPackage ./test/top-simple { };
-
-          base-build = pkgs.epnixLib.mkEpnixBuild system {
-            epnix = {
-              #epics-base.version = "3.16.2";
-              support.StreamDevice.enable = true;
-              #support.asyn.version = "4-39";
-              applications.apps = [
-                ./test/top-simple/myExampleApp
-                (pkgs.runCommand "ssh-monitorApp"
-                  {
-                    src = builtins.fetchGit {
-                      url = "ssh://git@drf-gitlab.cea.fr/EPICS/ssh-monitorApp.git";
-                      rev = "c8836e010ed9bde59bcf275d808bf000b02ff567";
-                    };
-                  } ''
-                  cp -a "$src" "$out"
-                '')
-              ];
-              boot.iocBoots = [ ./test/top-simple/iocBoot/iocmyExample ];
-            };
-          };
-        };
+        checks = import ./checks { inherit pkgs; };
       })) // {
       inherit overlay;
 
@@ -71,7 +48,10 @@
 
       devShell.x86_64-linux = let pkgs = self.legacyPackages.x86_64-linux; in
         pkgs.epnixLib.mkEpnixDevShell "x86_64-linux" {
-          devShell.commands = [{ package = pkgs.mdbook; }];
+          devShell.commands = [
+            { package = pkgs.mdbook; }
+            { package = pkgs.poetry; }
+          ];
         };
     });
 }

@@ -1,0 +1,73 @@
+# Fixed values
+
+record(ai, "FLOAT:IN") {
+	field(DESC, "A fixed float")
+	field(DTYP, "stream")
+	field(INP, "@simple.proto getFloat $(PORT)")
+	field(PINI, "YES")
+}
+
+record(ai, "FLOAT_WITH_PREFIX:IN") {
+	field(DESC, "A fixed float with a returned prefix")
+	field(DTYP, "stream")
+	field(INP, "@simple.proto getFloatWithPrefix $(PORT)")
+	field(PINI, "YES")
+}
+
+record(longin, "ENUM:IN") {
+	field(DESC, "An fixed enum parsed as integer")
+	field(DTYP, "stream")
+	field(INP, "@simple.proto getEnum $(PORT)")
+	field(PINI, "YES")
+}
+
+# Variable values
+
+record(ai, "VARFLOAT:IN") {
+	field(DESC, "A variable float")
+	field(DTYP, "stream")
+	field(INP, "@simple.proto getVarFloat $(PORT)")
+	field(PINI, "YES")
+}
+
+record(ao, "VARFLOAT:OUT") {
+	field(DESC, "A variable float")
+	field(DTYP, "stream")
+	field(OUT, "@simple.proto setVarFloat $(PORT)")
+	field(FLNK, "VARFLOAT:IN")
+}
+
+# Calc
+
+record(stringin, "SCALC:IN") {
+	field(DESC, "Result of scalcout record")
+	field(DTYP, "stream")
+	field(INP, "@simple.proto getSCalc $(PORT)")
+	field(PINI, "YES")
+}
+
+record(scalcout, "SCALC:OUT") {
+	field(DESC, "An scalcout record")
+	field(A, "0")
+	field(CALC, "printf('1%i', A*A) + 'A'")
+	field(DTYP, "stream")
+	field(OUT, "@simple.proto setSCalc $(PORT)")
+	field(FLNK, "SCALC:IN")
+	field(PINI, "YES")
+}
+
+# Regular Expressions
+
+record(stringin, "REGEX_TITLE:IN") {
+	field(DESC, "A regex test")
+	field(DTYP, "stream")
+	field(INP, "@simple.proto getRegexTitle $(PORT)")
+	field(PINI, "YES")
+}
+
+record(stringin, "REGEX_SUB:IN") {
+	field(DESC, "A regex substitution test")
+	field(DTYP, "stream")
+	field(INP, "@simple.proto getRegexSub $(PORT)")
+	field(PINI, "YES")
+}

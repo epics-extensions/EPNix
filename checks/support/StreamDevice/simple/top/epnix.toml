@@ -1,0 +1,14 @@
+[epnix.buildConfig]
+# Put the name and version of your EPICS distribution here:
+# ---
+flavor = "checks-support-StreamDevice-simple"
+version = "0.0.1"
+
+[epnix.support]
+modules = [ "pkgs.epnix.support.StreamDevice" ]
+
+[epnix.applications]
+apps = [ "./simpleApp" ]
+
+[epnix.boot]
+iocBoots = [ "./iocBoot/iocsimple" ]

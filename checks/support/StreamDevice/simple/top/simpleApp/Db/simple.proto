@@ -1,0 +1,59 @@
+Terminator = CR LF;
+
+# Fixed values
+
+getFloat {
+  out "FLOAT";
+  in "%f";
+}
+
+getFloatWithPrefix {
+  out "FLOAT_WITH_PREFIX";
+  in "VALUE: %f";
+}
+
+getEnum {
+  out "ENUM";
+  in "%{ONE|TWO|THREE}";
+}
+
+# Variable values
+
+setVarFloat {
+  out "SET_VARFLOAT %f";
+}
+
+getVarFloat {
+  out "GET_VARFLOAT";
+  in "%f";
+}
+
+# Calc
+
+getSCalc {
+  out "GET_SCALC";
+  in "%s";
+}
+
+setSCalc {
+  out "SET_SCALC %s";
+  in "%s";
+}
+
+# Regular Expressions
+
+getRegexTitle {
+  out "REGEX_TITLE";
+  # Added `[\s\S]+$` at the end to silence warning of extra input
+  in "%.1/<title>(.*)<\/title>[\s\S]+$/"
+}
+
+getRegexSub {
+  out "REGEX_SUB";
+  # TODO: weirdness in StreamDevice, the `+.2` here means "replace a maximum of
+  # 2", but it also needs 2 regex sub-expression, hence the "(())", as if it
+  # were a normal regex converter ("%/regex/").
+  #
+  # Also %s needed to be after instead of before.
+  in "%#+-10.2/((ab))/X/%s";
+}
