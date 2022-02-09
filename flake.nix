@@ -20,7 +20,7 @@
       overlay = import ./pkgs self.lib;
     in
     with flake-utils.lib;
-    ((eachSystem [ "aarch64-linux" "x86_64-linux" ] (system:
+    ((eachSystem [ "x86_64-linux" ] (system:
       let
         pkgs = import nixpkgs.outPath { inherit system; overlays = [ overlay bash-lib.overlay ]; };
       in
@@ -37,7 +37,17 @@
           # The manpage and documentation should always build
           inherit (self.packages.${system}) manpage mdbook;
         };
+
+        devShell = let pkgs = self.legacyPackages.x86_64-linux; in
+          pkgs.epnixLib.mkEpnixDevShell "x86_64-linux" {
+            devShell.commands = [
+              { package = pkgs.mdbook; }
+              { package = pkgs.poetry; }
+            ];
+          };
+
       })) // {
+
       inherit overlay;
 
       lib = import ./lib { lib = nixpkgs.lib; inherit inputs; };
@@ -49,12 +59,5 @@
 
       defaultTemplate = self.templates.top;
 
-      devShell.x86_64-linux = let pkgs = self.legacyPackages.x86_64-linux; in
-        pkgs.epnixLib.mkEpnixDevShell "x86_64-linux" {
-          devShell.commands = [
-            { package = pkgs.mdbook; }
-            { package = pkgs.poetry; }
-          ];
-        };
     });
 }
