@@ -2,7 +2,7 @@
 name = "mock-server"
 version = "0.1.0"
 description = "Mock Server for the simple StreamDevice support test"
-authors = ["Minijackson <minijackson@riseup.net>"]
+authors = ["Rémi NICOLE <remi.nicole@cea.fr>"]
 
 [tool.poetry.scripts]
 mock_server = "mock_server:main"

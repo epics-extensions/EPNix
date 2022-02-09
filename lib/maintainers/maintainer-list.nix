@@ -44,7 +44,7 @@
 */
 {
   minijackson = {
-    email = "minijackson@riseup.net";
+    email = "remi.nicole@cea.fr";
     github = "minijackson";
     githubId = 1200507;
     name = "Rémi Nicole";
