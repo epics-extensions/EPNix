@@ -33,7 +33,10 @@
 
         legacyPackages = pkgs;
 
-        checks = import ./checks { inherit pkgs; };
+        checks = (import ./checks { inherit pkgs; }) // {
+          # The manpage and documentation should always build
+          inherit (self.packages.${system}) manpage mdbook;
+        };
       })) // {
       inherit overlay;
 
