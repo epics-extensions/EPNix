@@ -89,11 +89,11 @@
         "nixpkgs": "nixpkgs_4"
       },
       "locked": {
-        "lastModified": 1644419505,
-        "narHash": "sha256-T8QgsbAUWGxb0i+TdnECvsbYUtIPGZtR7A7aSlmdf0g=",
+        "lastModified": 1644420092,
+        "narHash": "sha256-uDtbrKWwd38IIBBEYXUCDuarAfeqh4QCu6JJ6z4qrqc=",
         "owner": "minijackson",
         "repo": "epics-systemd",
-        "rev": "26f63e46b14c1ffa9e197eb1b76523e4175242e7",
+        "rev": "31619a1a3e620c3d2ff11b6bb2092be752b31026",
         "type": "github"
       },
       "original": {
