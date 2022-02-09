@@ -54,26 +54,20 @@ pkgs.nixosTest {
     };
 
   testScript = ''
-    import time
-
     start_all()
 
     machine.wait_for_unit("default.target")
     machine.wait_for_unit("ioc.service")
 
-    time.sleep(10)
-
     with subtest("getting fixed values"):
-      assert "42.1234" == machine.succeed("caget -t FLOAT:IN").strip()
+      machine.wait_until_succeeds("caget -t FLOAT:IN | grep '^42\.1234$'")
       assert "69.1337" == machine.succeed("caget -t FLOAT_WITH_PREFIX:IN").strip()
       assert "1" == machine.succeed("caget -t ENUM:IN").strip()
 
     with subtest("setting values"):
       assert "0" == machine.succeed("caget -t VARFLOAT:IN").strip()
       machine.succeed("caput VARFLOAT:OUT 123.456").strip()
-      # TODO: not sure why it can take that long
-      time.sleep(10)
-      assert "123.456" == machine.succeed("caget -t VARFLOAT:IN").strip()
+      machine.wait_until_succeeds("caget -t VARFLOAT:IN | grep '^123\.456$'")
 
     with subtest("calc integration"):
       assert "10A" == machine.succeed("caget -t SCALC:IN").strip()
