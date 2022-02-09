@@ -19,11 +19,13 @@ simple_DBD += simpleAppInclude.dbd
 # Include dbd files from all support applications:
 simple_DBD += asyn.dbd
 simple_DBD += calc.dbd
+simple_DBD += epicsSystemd.dbd
 simple_DBD += stream.dbd
 
 # Add all the support libraries needed by this IOC
 simple_LIBS += asyn
 simple_LIBS += calc
+simple_LIBS += epicsSystemd
 simple_LIBS += stream
 
 # simple_registerRecordDeviceDriver.cpp derives from simple.dbd

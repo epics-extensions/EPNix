@@ -43,6 +43,7 @@ pkgs.nixosTest {
 
           serviceConfig = {
             ExecStart = "${ioc}/iocBoot/iocsimple/st.cmd";
+            Type = "notify";
             WorkingDirectory = "${ioc}/iocBoot/iocsimple";
             # TODO: this is hacky, find a way to have EPICS keep going without
             # a shell
@@ -60,9 +61,6 @@ pkgs.nixosTest {
     machine.wait_for_unit("default.target")
     machine.wait_for_unit("ioc.service")
 
-    # TODO: this is a HACK to ensure EPICS is started
-    time.sleep(15)
-
     with subtest("getting fixed values"):
       assert "42.1234" == machine.succeed("caget -t FLOAT:IN").strip()
       assert "69.1337" == machine.succeed("caget -t FLOAT_WITH_PREFIX:IN").strip()
@@ -71,7 +69,8 @@ pkgs.nixosTest {
     with subtest("setting values"):
       assert "0" == machine.succeed("caget -t VARFLOAT:IN").strip()
       machine.succeed("caput VARFLOAT:OUT 123.456").strip()
-      time.sleep(0.2)
+      # TODO: not sure why it can take that long
+      time.sleep(10)
       assert "123.456" == machine.succeed("caget -t VARFLOAT:IN").strip()
 
     with subtest("calc integration"):

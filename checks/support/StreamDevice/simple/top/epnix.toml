@@ -5,7 +5,10 @@ flavor = "checks-support-StreamDevice-simple"
 version = "0.0.1"
 
 [epnix.support]
-modules = [ "pkgs.epnix.support.StreamDevice" ]
+modules = [
+	"pkgs.epnix.support.StreamDevice",
+	"pkgs.epnix.support.epics-systemd",
+]
 
 [epnix.applications]
 apps = [ "./simpleApp" ]

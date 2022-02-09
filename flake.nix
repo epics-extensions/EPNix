@@ -15,14 +15,23 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, bash-lib, devshell, flake-utils, nixpkgs, ... } @ inputs:
+  inputs.epics-systemd.url = "github:minijackson/epics-systemd";
+
+  outputs = { self, devshell, flake-utils, nixpkgs, ... } @ inputs:
     let
       overlay = import ./pkgs self.lib;
     in
     with flake-utils.lib;
     ((eachSystem [ "x86_64-linux" ] (system:
       let
-        pkgs = import nixpkgs.outPath { inherit system; overlays = [ overlay bash-lib.overlay ]; };
+        pkgs = import nixpkgs.outPath {
+          inherit system;
+          overlays = [
+            overlay
+            inputs.bash-lib.overlay
+            inputs.epics-systemd.overlay
+          ];
+        };
       in
       rec {
 

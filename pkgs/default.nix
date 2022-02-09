@@ -15,6 +15,7 @@ recurseIntoAttrs rec {
     support = recurseIntoAttrs {
       asyn = callPackage ./epnix/support/asyn { };
       calc = callPackage ./epnix/support/calc { };
+      epics-systemd = final.epics-systemd;
       ipac = callPackage ./epnix/support/ipac { };
       modbus = callPackage ./epnix/support/modbus { };
       seq = callPackage ./epnix/support/seq { };
