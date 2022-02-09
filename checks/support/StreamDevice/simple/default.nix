@@ -61,7 +61,7 @@ pkgs.nixosTest {
     machine.wait_for_unit("ioc.service")
 
     # TODO: this is a HACK to ensure EPICS is started
-    time.sleep(5)
+    time.sleep(15)
 
     with subtest("getting fixed values"):
       assert "42.1234" == machine.succeed("caget -t FLOAT:IN").strip()
