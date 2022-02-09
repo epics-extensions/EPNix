@@ -61,6 +61,8 @@ pkgs.nixosTest {
     machine.wait_for_unit("default.target")
     machine.wait_for_unit("ioc.service")
 
+    time.sleep(10)
+
     with subtest("getting fixed values"):
       assert "42.1234" == machine.succeed("caget -t FLOAT:IN").strip()
       assert "69.1337" == machine.succeed("caget -t FLOAT_WITH_PREFIX:IN").strip()
