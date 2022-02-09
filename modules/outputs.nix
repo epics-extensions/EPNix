@@ -54,7 +54,7 @@ in
 
     ${concatMapStringsSep "\n" (boot: ''
       cp -rfv "${boot}" "$out/iocBoot/${epnixLib.getName boot}"
-    '') config.epnix.boot.iocBoots}
+    '') config.epnix.boot.resolvedIocBoots}
   '';
 
   config.epnix.outputs.build =
