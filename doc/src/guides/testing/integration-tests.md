@@ -53,8 +53,10 @@ can describe in Nix like so:
     serviceConfig = {
       ExecStart = "${build}/iocBoot/iocexample/st.cmd";
       WorkingDirectory = "${build}/iocBoot/iocexample";
+
       # If your are using epics-systemd
       #Type = "notify";
+
       # Makes the EPICS command-line not quit for 100 seconds, if it does not
       # receive anything on the standard input
       StandardInputText = "epicsThreadSleep(100)";
