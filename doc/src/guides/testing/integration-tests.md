@@ -18,7 +18,7 @@ For example, in the EPNix template, you will see in your `epnix.toml` file:
 ```toml
 [epnix.checks]
 files = [
-	"./checks/simple.nix",
+  "./checks/simple.nix",
 ]
 ```
 

@@ -7,24 +7,24 @@ By leveraging the Nix package manager, it provides several advantages compared
 to packaging EPICS the traditional way:
 
 - Reproducibility: your development environment is the same as your coworker's
-	development environment, which is the same as your production
-	environment.<sup>1</sup>
+  development environment, which is the same as your production
+  environment.<sup>1</sup>
 
 - Complete dependencies: your EPICS IOCs ship with the complete set of
-	dependencies, allowing you to deploy your IOC without needing to install any
-	dependency on the target machine (except for Nix itself).
+  dependencies, allowing you to deploy your IOC without needing to install any
+  dependency on the target machine (except for Nix itself).
 
 - Dependency traceability: the version of your dependencies are locked, updated
-	manually, and traced in your `flake.lock` file. Combined with code
-	versioning, this allows your project to build with the same environment years
-	later, and allows you to rollback if one of your dependency becomes
-	incompatible.
+  manually, and traced in your `flake.lock` file. Combined with code
+  versioning, this allows your project to build with the same environment years
+  later, and allows you to rollback if one of your dependency becomes
+  incompatible.
 
 - Development shell: provides you with a set of tool adapted to your project,
-	no matter what you have installed on your machine.
+  no matter what you have installed on your machine.
 
 - Declarative configuration: define what you want in your IOC in a declarative
-	and extensible manner.
+  and extensible manner.
 
 - Unit and integration tests: TODO
 
@@ -65,14 +65,14 @@ modules = [ "pkgs.epnix.support.calc" ]
 # Add your applications:
 # ---
 apps = [
-	"inputs.myExampleApp"
+  "inputs.myExampleApp"
 ]
 
 [epnix.boot]
 # And your iocBoot directories:
 # ---
 iocBoots = [
-	"./iocBoot/iocmyProject"
+  "./iocBoot/iocmyProject"
 ]
 
 # You can specify environment variables in your development shell like this:

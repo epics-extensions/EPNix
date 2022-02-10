@@ -17,28 +17,28 @@ version = "0.0.1"
 # Or by specfying it here:
 # ---
 #modules = [
-#	"pkgs.epnix.support.calc",
+#  "pkgs.epnix.support.calc",
 #]
 
 [epnix.applications]
 # Add your applications:
 # ---
 #apps = [
-#	"inputs.exampleApp",
+#  "inputs.exampleApp",
 #]
 
 [epnix.boot]
 # And your iocBoot directories:
 # ---
 #iocBoots = [
-#	"./iocBoot/iocexample",
+#  "./iocBoot/iocexample",
 #]
 
 [epnix.checks]
 # Add your integration tests:
 # ---
 files = [
-	"./checks/simple.nix",
+  "./checks/simple.nix",
 ]
 
 # You can specify environment variables in your development shell like this:
