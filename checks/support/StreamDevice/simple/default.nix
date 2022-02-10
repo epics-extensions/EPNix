@@ -66,13 +66,25 @@ pkgs.nixosTest {
 
     with subtest("setting values"):
       machine.wait_until_succeeds("caget -t VARFLOAT:IN | grep -qxF '0'")
-      machine.succeed("caput VARFLOAT:OUT 123.456")
-      machine.wait_until_succeeds("caget -t VARFLOAT:IN | grep -qxF '123.456'")
+
+      # Caput can simply not go through
+      def put_check_varfloat(_) -> bool:
+        machine.succeed("caput VARFLOAT:OUT 123.456")
+        status, _output = machine.execute("caget -t VARFLOAT:IN | grep -qxF '123.456'")
+        return status
+
+      retry(put_check_varfloat)
 
     with subtest("calc integration"):
       machine.wait_until_succeeds("caget -t SCALC:IN | grep -qxF '10A'")
-      machine.succeed("caput SCALC:OUT.A 2")
-      machine.wait_until_succeeds("caget -t SCALC:IN | grep -qxF '14A'")
+
+      def put_check_scalc(_) -> bool:
+        machine.succeed("caput SCALC:OUT.A 2")
+        status, _output = machine.execute("caget -t SCALC:IN | grep -qxF '14A'")
+        return status
+
+      retry(put_check_scalc)
+
       machine.wait_until_succeeds("caget -t SCALC:OUT.SVAL | grep -qxF 'sent'")
 
     with subtest("regular expressions"):
