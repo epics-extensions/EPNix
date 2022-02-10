@@ -22,14 +22,14 @@ version = "0.0.1"
 # Add your applications:
 # ---
 #apps = [
-#	"inputs.myExampleApp"
+#	"inputs.exampleApp"
 #]
 
 [epnix.boot]
 # And your iocBoot directories:
 # ---
 #iocBoots = [
-#	"./iocBoot/iocmyProject"
+#	"./iocBoot/iocexample"
 #]
 
 # You can specify environment variables in your development shell like this:

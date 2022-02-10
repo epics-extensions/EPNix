@@ -10,8 +10,8 @@
 
   # Add your app inputs here:
   # ---
-  #inputs.myExampleApp = {
-  #  url = "git+ssh://git@my-server.org/me/myExampleApp.git";
+  #inputs.exampleApp = {
+  #  url = "git+ssh://git@my-server.org/me/exampleApp.git";
   #  flake = false;
   #};
 
@@ -32,10 +32,10 @@
         #epnix.support.modules = [ pkgs.epnix.support.calc ];
 
         # Add your applications:
-        #epnix.applications.apps = [ "inputs.myExampleApp" ];
+        #epnix.applications.apps = [ "inputs.exampleApp" ];
 
         # And your iocBoot directories:
-        #epnix.boot.iocBoots = [ ./iocBoot/iocmyExample ];
+        #epnix.boot.iocBoots = [ ./iocBoot/iocexample ];
       };
     in
     # Add your supported systems here.
