@@ -258,11 +258,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1638952839,
-        "narHash": "sha256-Jbjd+L5dKfSsZF1FcJgTtl5GWFZlJJE0geGjNBEMMXU=",
+        "lastModified": 1644503771,
+        "narHash": "sha256-gSA97s6162K47G3vnt1JCCRAycrf9HyU8Iq+HrEm63E=",
         "ref": "master",
-        "rev": "e7a9dd23668d99da97b2ca7a1145df8990482df3",
-        "revCount": 4,
+        "rev": "27e0a89d85a647a706fc70986e3ece91e33a7cbb",
+        "revCount": 5,
         "type": "git",
         "url": "ssh://git@drf-gitlab.cea.fr/rnicole/nix-module-doc.git"
       },
