@@ -1,5 +1,3 @@
-# TODO: leave only latest upstream supported versions of packages
-
 {
   description = "A Nix flake containing EPICS-related modules and packages";
 
@@ -17,56 +15,65 @@
 
   inputs.epics-systemd.url = "github:minijackson/epics-systemd";
 
-  outputs = { self, devshell, flake-utils, nixpkgs, ... } @ inputs:
-    let
-      overlay = import ./pkgs self.lib;
-    in
-    with flake-utils.lib;
-    ((eachSystem [ "x86_64-linux" ] (system:
+  outputs =
+    { self
+    , devshell
+    , flake-utils
+    , nixpkgs
+    , ...
+    } @ inputs:
+      with flake-utils.lib;
       let
-        pkgs = import nixpkgs.outPath {
-          inherit system;
-          overlays = [
-            overlay
-            inputs.bash-lib.overlay
-            inputs.epics-systemd.overlay
-          ];
-        };
-      in
-      rec {
+        overlay = import ./pkgs self.lib;
 
-        packages = flattenTree (pkgs.recurseIntoAttrs pkgs.epnix) // {
-          manpage = self.lib.mkEpnixManPage system { };
-          mdbook = self.lib.mkEpnixMdBook system { };
-        };
+        systemDependentOutputs = system:
+          let
+            pkgs = import nixpkgs {
+              inherit system;
+              overlays = [
+                overlay
+                inputs.bash-lib.overlay
+                inputs.epics-systemd.overlay
+              ];
+            };
+          in
+          rec {
+            packages =
+              flattenTree (pkgs.recurseIntoAttrs pkgs.epnix)
+              // {
+                manpage = self.lib.mkEpnixManPage system { };
+                mdbook = self.lib.mkEpnixMdBook system { };
+              };
 
-        legacyPackages = pkgs;
+            checks =
+              (import ./checks { inherit pkgs; })
+              // {
+                # The manpage and documentation should always build
+                inherit (self.packages.${system}) manpage mdbook;
+              };
 
-        checks = (import ./checks { inherit pkgs; }) // {
-          # The manpage and documentation should always build
-          inherit (self.packages.${system}) manpage mdbook;
-        };
-
-        devShell = let pkgs = self.legacyPackages.x86_64-linux; in
-          pkgs.epnixLib.mkEpnixDevShell "x86_64-linux" {
-            devShell.commands = [
-              { package = pkgs.mdbook; }
-              { package = pkgs.poetry; }
-            ];
+            devShell = pkgs.epnixLib.mkEpnixDevShell "x86_64-linux" {
+              devShell.commands = [
+                { package = pkgs.mdbook; }
+                { package = pkgs.poetry; }
+              ];
+            };
           };
+      in
+      (eachSystem [ "x86_64-linux" ] systemDependentOutputs)
+      // {
+        inherit overlay;
 
-      })) // {
+        lib = import ./lib {
+          lib = nixpkgs.lib;
+          inherit inputs;
+        };
 
-      inherit overlay;
+        templates.top = {
+          path = ./templates/top;
+          description = "An EPNix TOP project";
+        };
 
-      lib = import ./lib { lib = nixpkgs.lib; inherit inputs; };
-
-      templates.top = {
-        path = ./templates/top;
-        description = "An EPNix TOP project";
+        defaultTemplate = self.templates.top;
       };
-
-      defaultTemplate = self.templates.top;
-
-    });
 }
