@@ -60,24 +60,24 @@ pkgs.nixosTest {
     machine.wait_for_unit("ioc.service")
 
     with subtest("getting fixed values"):
-      machine.wait_until_succeeds("caget -t FLOAT:IN | grep '^42\.1234$'")
-      assert "69.1337" == machine.succeed("caget -t FLOAT_WITH_PREFIX:IN").strip()
-      assert "1" == machine.succeed("caget -t ENUM:IN").strip()
+      machine.wait_until_succeeds("caget -t FLOAT:IN | grep -qxF '42.1234'")
+      machine.wait_until_succeeds("caget -t FLOAT_WITH_PREFIX:IN | grep -qxF '69.1337'")
+      machine.wait_until_succeeds("caget -t ENUM:IN | grep -qxF '1'")
 
     with subtest("setting values"):
-      assert "0" == machine.succeed("caget -t VARFLOAT:IN").strip()
-      machine.succeed("caput VARFLOAT:OUT 123.456").strip()
-      machine.wait_until_succeeds("caget -t VARFLOAT:IN | grep '^123\.456$'")
+      machine.wait_until_succeeds("caget -t VARFLOAT:IN | grep -qxF '0'")
+      machine.succeed("caput VARFLOAT:OUT 123.456")
+      machine.wait_until_succeeds("caget -t VARFLOAT:IN | grep -qxF '123.456'")
 
     with subtest("calc integration"):
-      assert "10A" == machine.succeed("caget -t SCALC:IN").strip()
+      machine.wait_until_succeeds("caget -t SCALC:IN | grep -qxF '10A'")
       machine.succeed("caput SCALC:OUT.A 2")
-      assert "14A" == machine.succeed("caget -t SCALC:IN").strip()
-      assert "sent" == machine.succeed("caget -t SCALC:OUT.SVAL").strip()
+      machine.wait_until_succeeds("caget -t SCALC:IN | grep -qxF '14A'")
+      machine.wait_until_succeeds("caget -t SCALC:OUT.SVAL | grep -qxF 'sent'")
 
     with subtest("regular expressions"):
-      assert "Hello, World!" == machine.succeed("caget -t REGEX_TITLE:IN").strip()
-      assert "abcXcXcabc" == machine.succeed("caget -t REGEX_SUB:IN").strip()
+      machine.wait_until_succeeds("caget -t REGEX_TITLE:IN | grep -qxF 'Hello, World!'")
+      machine.wait_until_succeeds("caget -t REGEX_SUB:IN | grep -qxF 'abcXcXcabc'")
   '';
 
   passthru = {
