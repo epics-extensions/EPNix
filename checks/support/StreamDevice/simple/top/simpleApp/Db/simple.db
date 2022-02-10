@@ -5,7 +5,7 @@ record(ai, "FLOAT:IN") {
 	field(DTYP, "stream")
 	field(INP, "@simple.proto getFloat $(PORT)")
 	field(PINI, "YES")
-	field(SCAN, "5 seconds")
+	field(SCAN, "5 second")
 }
 
 record(ai, "FLOAT_WITH_PREFIX:IN") {
@@ -13,7 +13,7 @@ record(ai, "FLOAT_WITH_PREFIX:IN") {
 	field(DTYP, "stream")
 	field(INP, "@simple.proto getFloatWithPrefix $(PORT)")
 	field(PINI, "YES")
-	field(SCAN, "5 seconds")
+	field(SCAN, "5 second")
 }
 
 record(longin, "ENUM:IN") {
@@ -21,7 +21,7 @@ record(longin, "ENUM:IN") {
 	field(DTYP, "stream")
 	field(INP, "@simple.proto getEnum $(PORT)")
 	field(PINI, "YES")
-	field(SCAN, "5 seconds")
+	field(SCAN, "5 second")
 }
 
 # Variable values
@@ -31,7 +31,7 @@ record(ai, "VARFLOAT:IN") {
 	field(DTYP, "stream")
 	field(INP, "@simple.proto getVarFloat $(PORT)")
 	field(PINI, "YES")
-	field(SCAN, "5 seconds")
+	field(SCAN, "5 second")
 }
 
 record(ao, "VARFLOAT:OUT") {
@@ -48,7 +48,7 @@ record(stringin, "SCALC:IN") {
 	field(DTYP, "stream")
 	field(INP, "@simple.proto getSCalc $(PORT)")
 	field(PINI, "YES")
-	field(SCAN, "5 seconds")
+	field(SCAN, "5 second")
 }
 
 record(scalcout, "SCALC:OUT") {
@@ -59,7 +59,7 @@ record(scalcout, "SCALC:OUT") {
 	field(OUT, "@simple.proto setSCalc $(PORT)")
 	field(FLNK, "SCALC:IN")
 	field(PINI, "YES")
-	field(SCAN, "5 seconds")
+	field(SCAN, "5 second")
 }
 
 # Regular Expressions
@@ -69,7 +69,7 @@ record(stringin, "REGEX_TITLE:IN") {
 	field(DTYP, "stream")
 	field(INP, "@simple.proto getRegexTitle $(PORT)")
 	field(PINI, "YES")
-	field(SCAN, "5 seconds")
+	field(SCAN, "5 second")
 }
 
 record(stringin, "REGEX_SUB:IN") {
@@ -77,5 +77,5 @@ record(stringin, "REGEX_SUB:IN") {
 	field(DTYP, "stream")
 	field(INP, "@simple.proto getRegexSub $(PORT)")
 	field(PINI, "YES")
-	field(SCAN, "5 seconds")
+	field(SCAN, "5 second")
 }
