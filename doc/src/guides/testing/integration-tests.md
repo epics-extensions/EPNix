@@ -8,7 +8,7 @@ If you created your IOC using the EPNix template, like suggested in the
 [Getting Started] documentation, you will see a `checks/` directory. This
 directory should contain the integration tests you want to execute.
 
-[Getting Started]: <../getting-started.md>
+[Getting Started]: <../../getting-started.md>
 
 To register an integration test to EPNix, record it in your `epnix.toml` under
 in the `epnix.checks.files` option.
@@ -116,7 +116,7 @@ If you would like to use a fully-fledged python script on the machine, which
 can use Python dependencies like pyepics, please refer to the guide [Packaging
 Python scripts for integration tests][python-packaging].
 
-[python-packaging]: <./python-packaging-for-integration-tests.md>
+[python-packaging]: <./packaging-python-scripts.md>
 
 You can find methods available on the `machine` variable and other
 specificities in the [NixOS tests documentation][nixos-tests].
