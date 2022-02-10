@@ -71,7 +71,7 @@ pkgs.nixosTest {
       def put_check_varfloat(_) -> bool:
         machine.succeed("caput VARFLOAT:OUT 123.456")
         status, _output = machine.execute("caget -t VARFLOAT:IN | grep -qxF '123.456'")
-        return status
+        return status == 0
 
       retry(put_check_varfloat)
 
@@ -81,7 +81,7 @@ pkgs.nixosTest {
       def put_check_scalc(_) -> bool:
         machine.succeed("caput SCALC:OUT.A 2")
         status, _output = machine.execute("caget -t SCALC:IN | grep -qxF '14A'")
-        return status
+        return status == 0
 
       retry(put_check_scalc)
 
