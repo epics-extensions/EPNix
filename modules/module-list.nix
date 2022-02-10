@@ -3,6 +3,7 @@
       ./assertions.nix
       ./base.nix
       ./boot.nix
+      ./checks.nix
       ./common.nix
       ./devshell.nix
       ./documentation.nix
