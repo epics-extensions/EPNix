@@ -114,7 +114,7 @@ retries, instead of hoping the timing lines up.
 
 If you would like to use a fully-fledged python script on the machine, which
 can use Python dependencies like pyepics, please refer to the guide [Packaging
-Python scripts for integration tests][python-packaging].
+Python scripts][python-packaging].
 
 [python-packaging]: <./packaging-python-scripts.md>
 
