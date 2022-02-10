@@ -5,6 +5,9 @@
 If you do not have Nix installed, first follow the [official
 instructions][install-nix].
 
+Unless you are using WSL2, we *highly recommend* using the multi-user
+installation, as it builds packages in a sandboxed environment.
+
 [install-nix]: <https://nixos.org/download.html#download-nix>
 
 ## Enabling nix flakes and the nix command
@@ -149,7 +152,7 @@ want to update your top so that your app version points to the latest version.
 To do this, simply execute:
 
 ```bash
-nix flake lock --update-input exampleApp --commit-lock-file`
+nix flake lock --update-input exampleApp --commit-lock-file
 ```
 
 This will update the `exampleApp` input, and create a Git commit for this
