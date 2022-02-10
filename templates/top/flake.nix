@@ -44,10 +44,15 @@
     # environment can be built on your machine.
     flake-utils.lib.eachSystem [ "x86_64-linux" ] (system:
       with epnix.lib;
+      let
+        result = evalEpnixModules system myEpnixDistribution;
+      in
       {
-        packages = (evalEpnixModules system myEpnixDistribution).outputs;
+        packages = result.outputs;
 
         defaultPackage = self.packages.${system}.build;
         devShell = self.packages.${system}.devShell;
+
+        checks = result.config.epnix.checks.derivations;
       });
 }
