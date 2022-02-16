@@ -26,10 +26,12 @@ to packaging EPICS the traditional way:
 - Declarative configuration: define what you want in your IOC in a declarative
   and extensible manner.
 
-- Unit and integration tests: TODO
+- Integration tests: write tests using Python, by starting a virtual machine
+  with your IOC running.
 
 <sup>1</sup>: Currently, the epics-base package is not 100% reproducible, some
-work is being done towards that.
+work is being done towards that, but it doesn't have much of an effect in
+practice.
 
 [Nix]: <https://nixos.org/guides/how-nix-works.html>
 
