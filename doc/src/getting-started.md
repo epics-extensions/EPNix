@@ -40,7 +40,7 @@ store.
 
 ## Concepts
 
-In EPNix, your IOC well have mainly two important files: the `flake.nix` file,
+In EPNix, your IOC will have mainly two important files: the `flake.nix` file,
 and the `epnix.toml` file.
 
 The `flake.nix` file is the entry point that the `nix` command will read in
