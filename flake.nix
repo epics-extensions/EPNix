@@ -1,13 +1,13 @@
 {
   description = "A Nix flake containing EPICS-related modules and packages";
 
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-21.11";
   inputs.bash-lib = {
     url = "github:minijackson/bash-lib";
     inputs.nixpkgs.follows = "nixpkgs";
   };
   inputs.devshell.url = "github:numtide/devshell";
   inputs.flake-utils.url = "github:numtide/flake-utils";
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-21.11";
   inputs.nix-module-doc = {
     url = "git+ssh://git@drf-gitlab.cea.fr/rnicole/nix-module-doc.git";
     inputs.nixpkgs.follows = "nixpkgs";
