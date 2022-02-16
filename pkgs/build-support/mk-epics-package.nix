@@ -54,7 +54,7 @@ stdenv.mkDerivation (overridable // {
 
   setupHook = ./setup-hook.sh;
 
-  enableParallelBuilding = true;
+  enableParallelBuilding = attrs.enableParallelBuilding or true;
 
   dontConfigure = true;
 
