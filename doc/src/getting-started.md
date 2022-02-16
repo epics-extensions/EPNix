@@ -38,6 +38,30 @@ with Nix.
 This is to prevent build products from being copied unnecessarily to the Nix
 store.
 
+## Concepts
+
+In EPNix, your IOC well have mainly two important files: the `flake.nix` file,
+and the `epnix.toml` file.
+
+The `flake.nix` file is the entry point that the `nix` command will read in
+order for the `nix build`, `nix flake check`, `nix develop`, etc. commands to
+work. It is also the file where we specify our other "repository" dependencies.
+EPNix itself is a dependency of your IOC, and so is each "App" of your IOC.
+
+The `epnix.toml` file will contain the configuration of your EPNix. The list of
+possible options is provided by EPNix and [possibly yourself][adding-options].
+The options provided by EPNix are documented in the [Available
+options][options] page of the documentation book.
+
+[adding-options]: ./guides/adding-options.md
+[options]: ./options.md
+
+This file mainly exist to simplify the usage of EPNix for developers unfamiliar
+with Nix. Every option that you can set in `epnix.toml` is also settable in
+Nix, but Nix being a programming language, there are some complex
+configurations and use-cases that can be handled only in Nix. We try to make
+configurable every common use-case through `epnix.toml`.
+
 ## Creating your project
 
 In EPNix, we encourage developers to version EPICS tops separately from EPICS
