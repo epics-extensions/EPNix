@@ -8,6 +8,7 @@
     - [Writing integration tests](./guides/testing/integration-tests.md)
     - [Packaging Python scripts](./guides/testing/packaging-python-scripts.md)
     - [Creating a mocking server](./guides/testing/creating-a-mock-server.md)
+    - [Writing unit tests](./guides/testing/unit-tests.md)
   - [Pin the version of a Nix dependency](./guides/pinning.md)
   - [Override a support module](./guides/override-package.md)
   - [Adding configuration options](./guides/adding-options.md)
