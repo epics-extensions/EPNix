@@ -40,6 +40,18 @@ pkgs.nixosTest {
 }
 ```
 
+This test will create a NixOS virtual machine of the given configuration, and
+run the test script. Note that the test script does *not* run on the virtual
+machine, but communicates with it. This is because the test script can start,
+shut down, or reboot the machine, and also because NixOS tests can also manage
+several virtual machines, instead of only one.
+
+For an overview of what you can input in the machine configuration, please
+refer to the [NixOS documentation][option-configuration]. You can also read
+about the Python test script API [here][nixos-tests].
+
+[option-configuration]: <https://nixos.org/manual/nixos/stable/index.html#sec-configuration-syntax>
+
 ## Starting your IOC through systemd
 
 Currently, we recommend starting your IOC through a systemd service, which you
@@ -54,7 +66,7 @@ can describe in Nix like so:
       ExecStart = "${build}/iocBoot/iocexample/st.cmd";
       WorkingDirectory = "${build}/iocBoot/iocexample";
 
-      # If your are using epics-systemd
+      # If you are using epics-systemd
       #Type = "notify";
 
       # Makes the EPICS command-line not quit for 100 seconds, if it does not
