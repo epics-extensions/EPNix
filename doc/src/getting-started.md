@@ -131,7 +131,7 @@ As said above, compiling using Nix is as simple as executing `nix build`. This
 will build your top using your app from the Git remote repository specified in
 your flake inputs, and place the result under `./result`.
 
-But when developing your IOC, and can become cumbersome that Nix only tracks
+But when developing your IOC, it can become cumbersome that Nix only tracks
 the remote repository of your app: you will probably want to do some temporary
 changes to your app, and test them before committing.
 
