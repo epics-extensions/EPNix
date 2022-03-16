@@ -43,7 +43,7 @@ in
         [epnix.support]
         modules = [ "pkgs.epnix.support.calc" ]
         ```
-        
+
         will pick up `epnix.support.calc` from the list of available packages.
       '';
     };
@@ -66,12 +66,31 @@ in
     in
     map (epnixLib.resolveInput available) cfg.modules;
 
-  config.devShell.devshell.startup = listToAttrs
-    (map
-      (module: nameValuePair "epnix/${module.pname}" {
-        text = ''
-          source "${module}/nix-support/setup-hook"
-        '';
-      })
-      cfg.resolvedModules);
+    config.devShell.devshell.startup."epnix-startup-hooks".text = ''
+      function eval_startup_hook {
+        local module="$1"
+
+        local startup_hook="''${module}/nix-support/setup-hook"
+
+        if [[ -f  "''${startup_hook}" ]]; then
+          source "''${startup_hook}"
+        fi
+
+        local propagated_build_inputs_file="''${module}/nix-support/propagated-build-inputs"
+
+        if [[ -f "''${propagated_build_inputs_file}" ]]; then
+          IFS=" " read -a propagated_build_inputs < "''${propagated_build_inputs_file}"
+
+          for propagated_build_input in "''${propagated_build_inputs[@]}"; do
+            eval_startup_hook "''${propagated_build_input}"
+          done
+        fi
+      }
+
+      ${concatStringsSep
+        "\n"
+        (map
+          (module: ''eval_startup_hook "${module}"'')
+          cfg.resolvedModules)}
+    '';
 }
