@@ -53,6 +53,11 @@ in
     $(type -p menu &>/dev/null && menu)
   '';
 
+  # Loads `etc/profile.d/*` from packages in the dev shell
+  config.devShell.devshell.load_profiles = true;
+
+  config.devShell.env = [ { name = "GRC_ALIASES"; value = "true"; } ];
+
   config.devShell.commands = [
     {
       package = pkgs.bear;
