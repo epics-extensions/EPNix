@@ -11,7 +11,9 @@ in
       default = [ ];
       type = with types; listOf (oneOf [ str path package ]);
       description = ''
-        iocBoot modules to include in this EPICS distribution.
+        Additional iocBoot directories to include in this EPICS distribution.
+
+        Note that the iocBoot directory is already included by default.
 
         This option support the same types of arguments as
         `epnix.support.modules`. Please refer to its documentation for more
