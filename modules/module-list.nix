@@ -11,7 +11,4 @@
       #./source.nix
 
       ./support
-
-      ./support/asyn.nix
-      ./support/StreamDevice.nix
 ]
