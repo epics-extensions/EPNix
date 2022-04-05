@@ -10,16 +10,13 @@ directory should contain the integration tests you want to execute.
 
 [Getting Started]: <../../getting-started.md>
 
-To register an integration test to EPNix, record it in your `epnix.toml` under
-in the `epnix.checks.files` option.
+To register an integration test to EPNix, record it in your `flake.nix` under
+the `epnix.checks.files` option.
 
-For example, in the EPNix template, you will see in your `epnix.toml` file:
+For example, in the EPNix template, you will see in your `flake.nix` file:
 
-```toml
-[epnix.checks]
-files = [
-  "./checks/simple.nix",
-]
+```nix
+checks.files = [ ./checks/simple.nix ];
 ```
 
 The `./checks/<myTest>.nix` file should contain a NixOS test like so:
