@@ -21,7 +21,6 @@ envPaths
 compile_commands.json
 
 # Applications and Support modules should be an EPNix dependency in flake.nix
-# and epnix.toml
 *App
 *Sup
 # You can add exceptions like this:
