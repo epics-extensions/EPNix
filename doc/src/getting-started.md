@@ -40,27 +40,20 @@ store.
 
 ## Concepts
 
-In EPNix, your IOC will have mainly two important files: the `flake.nix` file,
-and the `epnix.toml` file.
+In EPNix, your IOC will have mainly one important file: the `flake.nix` file.
 
 The `flake.nix` file is the entry point that the `nix` command will read in
 order for the `nix build`, `nix flake check`, `nix develop`, etc. commands to
 work. It is also the file where we specify our other "repository" dependencies.
 EPNix itself is a dependency of your IOC, and so is each "App" of your IOC.
 
-The `epnix.toml` file will contain the configuration of your EPNix. The list of
-possible options is provided by EPNix and [possibly yourself][adding-options].
-The options provided by EPNix are documented in the [Available
-options][options] page of the documentation book.
+The `flake.nix` file will also contain the configuration of your EPNix top. The
+list of possible options is provided by EPNix and [possibly
+yourself][adding-options]. The options provided by EPNix are documented in the
+[Available options][options] page of the documentation book.
 
 [adding-options]: ./guides/adding-options.md
 [options]: ./options.md
-
-This file mainly exist to simplify the usage of EPNix for developers unfamiliar
-with Nix. Every option that you can set in `epnix.toml` is also settable in
-Nix, but Nix being a programming language, there are some complex
-configurations and use-cases that can be handled only in Nix. We try to make
-configurable every common use-case through `epnix.toml`.
 
 ## Creating your project
 
@@ -107,9 +100,9 @@ inputs.exampleApp = {
 };
 ```
 
-Edit your top's `epnix.toml`:
+And, under the EPNix options section:
 
-- add `inputs.exampleApp` in `epnix.applications.apps`
+- add `inputs.exampleApp` in `applications.apps`
 
 With these steps, Nix will track your app from the remote repository, and track
 its Git version in the `flake.lock` file.
@@ -118,10 +111,9 @@ You can test that your top builds by executing: `nix build -L`. This will put
 a `./result` symbolic link in your top's directory containing the result of the
 compilation.
 
-**Note:** as a rule of thumb, each time you modify the `epnix.toml` or
-`flake.nix`, or update your inputs using `nix flake update` or `nix flake
-lock`, you should leave and re-enter your development environment (`nix
-develop`).
+**Note:** as a rule of thumb, each time you modify the `flake.nix` file, or
+update your inputs using `nix flake update` or `nix flake lock`, you should
+leave and re-enter your development environment (`nix develop`).
 
 ## Developing your IOC
 
@@ -158,9 +150,9 @@ The only difference is that the `Makefile` and `configure` directory are not
 tracked by Git, since they are directly tied to the base, to add them to your
 top, simply execute `eregen-config`.
 
-**Note:** as a rule of thumb, each time you modify your modules in
-`epnix.toml`, you should leave and re-enter your development environment, and
-re-execute `eregen-config`.
+**Note:** as a rule of thumb, each time you modify your modules in `flake.nix`,
+you should leave and re-enter your development environment, and re-execute
+`eregen-config`.
 
 The advantage of using the standard tools, is that the compilation is
 incremental: Nix always builds a package fully, meaning your top will always be
@@ -211,22 +203,20 @@ Then, look for a `epnix.support.<your dependency>` option section. For example,
 if you want to add "StreamDevice" as a support module, you can look for options
 under `epnix.support.StreamDevice`.
 
-If it exists, you can add this bit to your `epnix.toml` file:
+If it exists, you can add this bit to your `flake.nix` file:
 
-```toml
-[epnix.support]
-<your dependency>.enable = true
+```nix
+support.${your dependency}.enable = true;
 ```
 
 If it does not exist, you can check if it is packaged by looking at the
 documentation, either in the manpage, under the "AVAILABLE PACKAGES" section,
 or in the documentation book, under the "Available packages" page.
 
-If the package exists, you can add this bit to your `epnix.toml` file.
+If the package exists, you can add this bit to your `flake.nix` file.
 
-```toml
-[epnix.support]
-modules = [ "pkgs.epnix.support.<your dependency>" ]
+```nix
+support.modules = with pkgs.epnix.support; [ your_dependency ];
 ```
 
 If the package does not exist, you can try [packaging it

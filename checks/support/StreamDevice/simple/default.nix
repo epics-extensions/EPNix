@@ -9,7 +9,7 @@ let
   };
 
   ioc = epnixLib.mkEpnixBuild system {
-    imports = [ (epnixLib.importTOML ./top/epnix.toml) ];
+    imports = [ ./top/epnix.nix ];
   };
 in
 pkgs.nixosTest {

@@ -40,45 +40,32 @@ the documentation book.
 
 ## Quick example of a configuration file
 
-```toml
-[epnix.buildConfig]
-# Put the name and version of your EPICS distribution here:
-# ---
-flavor = "custom"
-version = "0.0.1"
+```nix
+epnix = {
+  # You can choose the version of EPICS-base here:
+  # ---
+  epics-base.releaseBranch = "3"; # Defaults to "7"
 
-[epnix.epics-base]
-# You can choose the version of EPICS-base here:
-# ---
-releaseBranch = "3" # Defaults to "7"
+  # Add one of the supported modules through its own option:
+  # ---
+  support.StreamDevice.enable = true;
 
-[epnix.support]
-# Add one of the supported modules through its own option:
-# ---
-StreamDevice.enable = true
+  # Or by specfying it here:
+  # ---
+  support.modules = with pkgs.epnix.support; [ calc ];
 
-# Or by specfying it here:
-# ---
-modules = [ "pkgs.epnix.support.calc" ]
+  # Add your applications:
+  # ---
+  applications.apps = [ "inputs.myExampleApp" ];
 
-[epnix.applications]
-# Add your applications:
-# ---
-apps = [
-  "inputs.myExampleApp"
-]
-
-[epnix.boot]
-# And your iocBoot directories:
-# ---
-iocBoots = [
-  "./iocBoot/iocmyProject"
-]
+  # And your iocBoot directories:
+  # ---
+  boot.iocBoots = [ ./iocBoot/iocmyProject ];
+};
 
 # You can specify environment variables in your development shell like this:
 # ---
-
-[[devShell.env]]
-name = "EPICS_CA_ADDR_LIST"
-value = "localhost"
+devShell.env = [
+  { name = "EPICS_CA_ADDR_LIST"; value = "localhost"; }
+];
 ```

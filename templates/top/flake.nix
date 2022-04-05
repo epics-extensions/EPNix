@@ -17,25 +17,46 @@
 
   outputs = { self, nixpkgs, flake-utils, epnix, ... } @ inputs:
     let
-      myEpnixDistribution = { pkgs, epnixLib, ... }: {
-        imports = [ (epnixLib.importTOML ./epnix.toml) ];
-
-        epnix.inputs = inputs;
-
-        # Set your EPNix options here, or in the ./epnix.toml file
+      myEpnixDistribution = { pkgs, ... }: {
+        # Set your EPNix options here
         # ---
 
-        # Add one of the supported modules through its own option:
-        #epnix.support.StreamDevice.enable = true;
+        epnix = {
+          inherit inputs;
 
-        # Or by specfying it here:
-        #epnix.support.modules = [ pkgs.epnix.support.calc ];
+          # You can choose the version of EPICS-base here:
+          # ---
+          #releaseBranch = "3"; # Defaults to "7"
 
-        # Add your applications:
-        #epnix.applications.apps = [ "inputs.exampleApp" ];
+          # Add one of the supported modules through its own option:
+          # ---
+          #support.StreamDevice.enable = true;
 
-        # And your iocBoot directories:
-        #epnix.boot.iocBoots = [ ./iocBoot/iocexample ];
+          # Or by specfying it here:
+          # ---
+          #support.modules = with pkgs.epnix.support; [ calc ];
+
+          # Add your applications:
+          # Note that flake inputs must be quoted in this context
+          # ---
+          #applications.apps = [ "inputs.exampleApp" ];
+
+          # And your iocBoot directories:
+          # ---
+          #boot.iocBoots = [ ./iocBoot/iocexample ];
+
+
+          # Add your integration tests:
+          # ---
+          checks.files = [ ./checks/simple.nix ];
+        };
+
+        # You can specify environment variables in your development shell like this:
+        # ---
+        #devShell.env = [
+        #  { name = "EPICS_CA_ADDR_LIST"; value = "localhost"; }
+        #  { name = "MY_VARIABLE"; value = "the_value"; }
+        #];
       };
     in
     # Add your supported systems here.

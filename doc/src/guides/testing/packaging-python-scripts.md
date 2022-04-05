@@ -14,12 +14,12 @@ popularity.
 We recommend using the Poetry package from Nix, as it will be the one used when
 building the Python script in the context of the EPNix integration test.
 
-This can be done by adding this bit in your `epnix.toml` file:
+This can be done by adding this bit in your `flake.nix` file:
 
-```toml
-[[devShell.commands]]
-package = "poetry"
-category = "development tools"
+```nix
+devShell.commands = [
+  { package = "poetry"; category = "development tools"; }
+];
 ```
 
 Next, you can start your development shell with `nix develop`, go to the

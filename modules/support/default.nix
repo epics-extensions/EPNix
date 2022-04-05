@@ -13,38 +13,22 @@ in
       description = ''
         Support modules needed for this EPICS distribution.
 
+        Example:
+
+        ```nix
+        epnix.support.modules = with pkgs.epnix.support; [ calc ];
+        ```
+
         If specified as a string, the string is resolved from the available
-        inputs, or available packages.
+        inputs.
 
         For example:
 
         ```nix
-        { epnix.support.modules = [ "inputs.myExampleSup" ]; }
-        ```
-
-        or in TOML format:
-
-        ```toml
-        [epnix.support]
-        modules = [ "inputs.myExampleSup" ]
+        epnix.support.modules = [ "inputs.myExampleSup" ];
         ```
 
         will refer to the `myExampleSup` input of your flake.
-
-        Another example
-
-        ```nix
-        { epnix.support.modules = [ "pkgs.epnix.support.calc" ]; }
-        ```
-
-        or in TOML format:
-
-        ```toml
-        [epnix.support]
-        modules = [ "pkgs.epnix.support.calc" ]
-        ```
-
-        will pick up `epnix.support.calc` from the list of available packages.
       '';
     };
 
@@ -59,10 +43,7 @@ in
   };
 
   config.epnix.support.resolvedModules =
-    let available = {
-      inputs = config.epnix.inputs;
-      pkgs = pkgs;
-    };
+    let available = { inputs = config.epnix.inputs; };
     in
     map (epnixLib.resolveInput available) cfg.modules;
 
