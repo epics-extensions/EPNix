@@ -43,14 +43,11 @@
 
         - Edit your top's `flake.nix`:
             - add `./exampleApp` in `epnix.applications.apps`
-            - add `./iocBoot/iocexampleApp` in `epnix.boot.iocBoots`
 
         **OR**
 
         - Edit your top's `flake.nix`
             - add `./exampleApp` in `epnix.applications.apps` (and not
-              `"./exampleApp"`)
-            - add `./iocBoot/iocssh-monitor` in `epnix.boot.iocBoots` (and not
               `"./exampleApp"`)
 
         - In any case, do not set any additional inputs in your `flake.nix`:
