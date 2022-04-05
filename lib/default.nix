@@ -5,13 +5,6 @@
 with lib;
 
 let
-  convertRelPaths = file: value:
-    if isString value && hasPrefix "./" value
-    then /. + (dirOf file) + "/${value}"
-    else if isList value then map (convertRelPaths file) value
-    else if isAttrs value then mapAttrsRecursive (_path: value: convertRelPaths file value) value
-    else value;
-
   docParams = {
     outputAttrPath = [ "epnix" "outputs" ];
     optionsAttrPath = [ "epnix" "doc" ];
@@ -22,15 +15,6 @@ let
     licenses = import ./licenses.nix args;
     maintainers = import ./maintainers/maintainer-list.nix;
     types = import ./types.nix args;
-
-    # Like "nixpkgs.lib.modules.importTOML, but replace any string starting with
-    # "./" with an absolute path from the directory of the given file.
-    importTOML = file: {
-      _file = file;
-      config = mapAttrsRecursive
-        (_path: value: convertRelPaths file value)
-        (importTOML file);
-    };
 
     evalEpnixModules = system: configuration:
       let
