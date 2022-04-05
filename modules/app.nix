@@ -14,37 +14,15 @@ in
         Applications to include in this EPICS distribution
 
         If specified as a string, the string is resolved from the available
-        inputs, or available packages.
+        inputs.
 
         For example:
 
         ```nix
-        { epnix.applications.apps = [ "inputs.myExampleApp" ]; }
-        ```
-
-        or in TOML format:
-
-        ```toml
-        [epnix.applications]
-        apps = [ "inputs.myExampleApp" ]
+        epnix.applications.apps = [ "inputs.myExampleApp" ];
         ```
 
         will refer to the `myExampleApp` input of your flake.
-
-        Another example
-
-        ```nix
-        { epnix.applications.apps = [ "pkgs.myPackagedApp" ]; }
-        ```
-
-        or in TOML format:
-
-        ```toml
-        [epnix.applications]
-        apps = [ "pkgs.myPackagedApp" ]
-        ```
-        
-        will pick up `myPackagedApp` from the list of available packages.
 
         Note that due to EPICS conventions, your application names *must* end
         with `App`.
@@ -62,10 +40,7 @@ in
   };
 
   config.epnix.applications.resolvedApps =
-    let available = {
-      inputs = config.epnix.inputs;
-      pkgs = pkgs;
-    };
+    let available = { inputs = config.epnix.inputs; };
     in
     map (epnixLib.resolveInput available) cfg.apps;
 }

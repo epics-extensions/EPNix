@@ -138,7 +138,7 @@ let
       in
       "${kernel}-${arch}";
 
-  resolveInput = { inputs, pkgs } @ available: input:
+  resolveInput = { inputs } @ available: input:
     if isDerivation input then input
     else if hasPrefix "/" input then input
     else

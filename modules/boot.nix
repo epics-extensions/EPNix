@@ -30,10 +30,7 @@ in
   };
 
   config.epnix.boot.resolvedIocBoots =
-    let available = {
-      inputs = config.epnix.inputs;
-      pkgs = pkgs;
-    };
+    let available = { inputs = config.epnix.inputs; };
     in
     map (epnixLib.resolveInput available) cfg.iocBoots;
 }

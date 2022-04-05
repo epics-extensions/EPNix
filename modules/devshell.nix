@@ -132,8 +132,8 @@ in
 
         toplevel="$(realpath -s .)"
 
-        if [[ ! -f "epnix.toml" ]]; then
-          fatal "Could not find 'epnix.toml' file. Are you in an EPNix project?"
+        if [[ ! -f "flake.nix" ]]; then
+          fatal "Could not find 'flake.nix' file. Are you in an EPNix project?"
         fi
 
         typeset -a old_files=()
