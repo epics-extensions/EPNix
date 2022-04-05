@@ -1,10 +1,6 @@
 {
   description = "EPICS IOC for <...>";
 
-  inputs.nixpkgs = {
-    url = "github:NixOS/nixpkgs/nixos-21.11";
-    follows = "epnix/nixpkgs";
-  };
   inputs.flake-utils.url = "github:numtide/flake-utils";
   inputs.epnix.url = "git+ssh://git@drf-gitlab.cea.fr/EPICS/epnix/epnix.git";
 
@@ -15,7 +11,7 @@
   #  flake = false;
   #};
 
-  outputs = { self, nixpkgs, flake-utils, epnix, ... } @ inputs:
+  outputs = { self, flake-utils, epnix, ... } @ inputs:
     let
       myEpnixDistribution = { pkgs, ... }: {
         # Set your EPNix options here
@@ -36,11 +32,6 @@
           # Note that flake inputs must be quoted in this context
           # ---
           #applications.apps = [ "inputs.exampleApp" ];
-
-          # And your iocBoot directories:
-          # ---
-          #boot.iocBoots = [ ./iocBoot/iocexample ];
-
 
           # Add your integration tests:
           # ---
