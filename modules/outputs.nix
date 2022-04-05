@@ -24,38 +24,18 @@ in
       type = types.attrs;
       default = { };
     };
+
+    src = mkOption {
+      description = ''
+        The source code for the top.
+
+        Defaults to the directory containing the `flake.nix` file.
+      '';
+      type = types.path;
+    };
   };
 
-  config.epnix.outputs.topSource = pkgs.runCommand "epics-distribution-${cfg.flavor}-top-source" { } ''
-    mkdir -p "$out"
-
-    cp -rfv --no-preserve=mode "${pkgs.epnix.epics-base}/templates/makeBaseApp/top/configure" "$out"
-    ${# Include CONFIG_SITE.local and RELEASE.local in the top "template"
-      # Fixed by commit aa6e976f92d144b5143cf267d8b2781d3ec8b62b
-      optionalString (versionOlder pkgs.epnix.epics-base.version "3.15.5") ''
-        cat >> "$out/configure/CONFIG_SITE" <<'EOF'
-        -include $(TOP)/../CONFIG_SITE.local
-        -include $(TOP)/configure/CONFIG_SITE.local
-        EOF
-
-        cat >> "$out/configure/RELEASE" <<'EOF'
-        -include $(TOP)/../RELEASE.local
-        -include $(TOP)/configure/RELEASE.local
-        EOF
-      ''}
-    cp -rfv "${pkgs.epnix.epics-base}/templates/makeBaseApp/top/Makefile" "$out"
-
-    ${concatMapStringsSep "\n" (app: ''
-      cp -rfv "${app}" "$out/${epnixLib.getName app}"
-    '') config.epnix.applications.resolvedApps}
-
-    mkdir -p "$out/iocBoot"
-    cp -rfv "${pkgs.epnix.epics-base}/templates/makeBaseApp/top/iocBoot/Makefile" "$out/iocBoot"
-
-    ${concatMapStringsSep "\n" (boot: ''
-      cp -rfv "${boot}" "$out/iocBoot/${epnixLib.getName boot}"
-    '') config.epnix.boot.resolvedIocBoots}
-  '';
+  config.epnix.buildConfig.src = mkDefault config.epnix.inputs.self;
 
   config.epnix.outputs.build =
     pkgs.mkEpicsPackage ({
@@ -65,7 +45,25 @@ in
 
       buildInputs = config.epnix.support.resolvedModules ++ (cfg.attrs.buildInputs or [ ]);
 
-      src = config.epnix.outputs.topSource;
+      src = cfg.src;
+
+      postUnpack = ''
+        echo "Copying apps..."
+        ${concatMapStringsSep "\n" (app: ''
+          cp -rfv "${app}" "$sourceRoot/${epnixLib.getName app}"
+        '') config.epnix.applications.resolvedApps}
+
+        mkdir -p "$out/iocBoot"
+
+        echo "Copying additional iocBoot directories..."
+        ${concatMapStringsSep "\n" (boot: ''
+          cp -rfv "${boot}" "$sourceRoot/iocBoot/${epnixLib.getName boot}"
+        '') config.epnix.boot.resolvedIocBoots}
+
+        # Needed because EPICS tries to create O.* directories in App and
+        # iocBoot directories
+        chmod -R u+w -- "$sourceRoot"
+      '' + (cfg.attrs.postUnpack or "");
 
       postInstall = ''
         cp -rafv iocBoot "$out"
