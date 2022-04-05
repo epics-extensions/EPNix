@@ -46,13 +46,9 @@ epnix = {
   # ---
   epics-base.releaseBranch = "3"; # Defaults to "7"
 
-  # Add one of the supported modules through its own option:
+  # Add one of the supported modules here:
   # ---
-  support.StreamDevice.enable = true;
-
-  # Or by specfying it here:
-  # ---
-  support.modules = with pkgs.epnix.support; [ calc ];
+  support.modules = with pkgs.epnix.support; [ StreamDevice ];
 
   # Add your applications:
   # ---
