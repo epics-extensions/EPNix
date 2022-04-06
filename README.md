@@ -43,6 +43,8 @@ the documentation book.
 
 ```nix
 epnix = {
+  meta.name = "my-top";
+
   # You can choose the version of EPICS-base here:
   # ---
   epics-base.releaseBranch = "3"; # Defaults to "7"
