@@ -56,10 +56,14 @@
         result = evalEpnixModules system myEpnixDistribution;
       in
       {
-        packages = result.outputs;
+        packages = result.outputs // {
+          default = self.packages.${system}.build;
+        };
 
-        defaultPackage = self.packages.${system}.build;
-        devShell = self.packages.${system}.devShell;
+        defaultPackage = self.packages.${system}.default;
+
+        devShells.default = self.packages.${system}.devShell;
+        devShell = self.devShells.${system}.default;
 
         checks = result.config.epnix.checks.derivations;
       });
