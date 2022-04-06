@@ -53,6 +53,7 @@
               };
 
             devShells.default = pkgs.epnixLib.mkEpnixDevShell "x86_64-linux" {
+              epnix.meta.name = "epnix";
               devShell.commands = [
                 { package = pkgs.mdbook; }
                 { package = pkgs.poetry; }

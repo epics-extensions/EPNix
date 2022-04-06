@@ -7,6 +7,7 @@
       ./common.nix
       ./devshell.nix
       ./documentation.nix
+      ./meta.nix
       ./outputs.nix
       ./support
 ]
