@@ -61,153 +61,85 @@ in
     })
   ];
 
-  config.devShell.devshell.packages = with pkgs; [
-    gnumake
-    binutils
-  ];
+  config.epnix.devShell = {
+    environment.variables = {
+      # `CMD_...` are flags that we can set from the "command-line"
+      # We set these as environment variables, which should work since they are
+      # explicitely not instanciated in the Makefile hell.
+      CMD_CFLAGS = "-fdiagnostics-color=always";
+      CMD_CXXFLAGS = "-fdiagnostics-color=always";
+    };
 
-  config.devShell.language.c = {
-    compiler = pkgs.gcc;
-    libraries = with pkgs; [
-      readline
-    ];
+    packages = [
+      {
+        package = pkgs.epnix.epics-base;
+        commands = mkMerge [
+          {
+            # Bootstrapping
 
-    includes = with pkgs; [
-      readline
+            "makeBaseApp.pl" = {
+              category = "epics bootstrapping commands";
+              description = "Create a new EPICS App or IOC";
+            };
+
+            "makeBaseExt.pl" = {
+              category = "epics bootstrapping commands";
+              description = "Create a new EPICS extension directory";
+            };
+
+            # Channel Access
+
+            "caget" = {
+              category = "epics channel access commands";
+              description = "Obtain a Process Variable value over Channel Access";
+            };
+
+            "cainfo" = {
+              category = "epics channel access commands";
+              description = "Get information on a Process Variable over Channel Access";
+            };
+
+            "camonitor" = {
+              category = "epics channel access commands";
+              description = "Monitor a Process Variable over Channel Access";
+            };
+
+            "caput" = {
+              category = "epics channel access commands";
+              description = "Set a Process Variable value over Channel Access";
+            };
+          }
+
+          (mkIf (versionAtLeast pkgs.epnix.epics-base.version "7.0.0") {
+            # pvAccess
+
+            "pvget" = {
+              category = "epics pvAccess commands";
+              description = "Get a Process Variable value over pvAccess";
+            };
+
+            "pvinfo" = {
+              category = "epics pvAccess commands";
+              description = "Get information on a Process Variable over pvAccess";
+            };
+
+            "pvlist" = {
+              category = "epics pvAccess commands";
+              description = "List Process Variables over pvAccess";
+            };
+
+            "pvmonitor" = {
+              category = "epics pvAccess commands";
+              description = "Monitor a Process Variable over pvAccess";
+            };
+
+            "pvput" = {
+              category = "epics pvAccess commands";
+              description = "Set a Process Variable value over pvAccess";
+            };
+          })
+        ];
+      }
     ];
   };
-
-  config.devShell.env = [
-    # `CMD_...` are flags that we can set from the "command-line"
-    # We set these as environment variables, which should work since they are
-    # explicitely not instanciated in the Makefile hell.
-    { name = "CMD_CFLAGS"; value = "-fdiagnostics-color=always"; }
-    { name = "CMD_CXXFLAGS"; value = "-fdiagnostics-color=always"; }
-  ];
-
-  config.devShell.devshell.startup."epnix/epics-base".text = ''
-    source "${pkgs.epnix.epics-base}/nix-support/setup-hook"
-  '';
-
-  config.devShell.commands = mkMerge [
-    [
-      # Bootstrapping
-
-      {
-        help = "Create a new EPICS App or IOC";
-        name = "makeBaseApp.pl";
-        command = ''
-          ${pkgs.epnix.epics-base}/bin/*/makeBaseApp.pl "$@"
-        '';
-        category = "EPICS bootstrapping commands";
-      }
-
-      {
-        help = "Create a new EPICS extension directory";
-        name = "makeBaseExt.pl";
-        command = ''
-          ${pkgs.epnix.epics-base}/bin/*/makeBaseExt.pl "$@"
-        '';
-        category = "EPICS bootstrapping commands";
-      }
-
-      {
-        help = "Create a new EPICS API header";
-        name = "makeAPIheader.pl";
-        command = ''
-          ${pkgs.epnix.epics-base}/bin/*/makeAPIheader.pl "$@"
-        '';
-        category = "EPICS bootstrapping commands";
-      }
-
-      # Channel Access
-
-      {
-        help = "Obtain a Process Variable value over Channel Access";
-        name = "caget";
-        command = ''
-          ${pkgs.epnix.epics-base}/bin/caget "$@"
-        '';
-        category = "EPICS Channel Access commands";
-      }
-
-      {
-        help = "Get information on a Process Variable over Channel Access";
-        name = "cainfo";
-        command = ''
-          ${pkgs.epnix.epics-base}/bin/cainfo "$@"
-        '';
-        category = "EPICS Channel Access commands";
-      }
-
-      {
-        help = "Monitor a Process Variable over Channel Access";
-        name = "camonitor";
-        command = ''
-          ${pkgs.epnix.epics-base}/bin/camonitor "$@"
-        '';
-        category = "EPICS Channel Access commands";
-      }
-
-      {
-        help = "Set a Process Variable value over Channel Access";
-        name = "caput";
-        command = ''
-          ${pkgs.epnix.epics-base}/bin/caput "$@"
-        '';
-        category = "EPICS Channel Access commands";
-      }
-    ]
-
-    (mkIf (versionAtLeast pkgs.epnix.epics-base.version "7.0.0") [
-
-      # pvAccess
-
-      {
-        help = "Get a Process Variable value over pvAccess";
-        name = "pvget";
-        command = ''
-          ${pkgs.epnix.epics-base}/bin/pvget "$@"
-        '';
-        category = "EPICS pvAccess commands";
-      }
-
-      {
-        help = "Get information on a Process Variable over pvAccess";
-        name = "pvinfo";
-        command = ''
-          ${pkgs.epnix.epics-base}/bin/pvinfo "$@"
-        '';
-        category = "EPICS pvAccess commands";
-      }
-
-      {
-        help = "List Process Variables over pvAccess";
-        name = "pvlist";
-        command = ''
-          ${pkgs.epnix.epics-base}/bin/pvlist "$@"
-        '';
-        category = "EPICS pvAccess commands";
-      }
-
-      {
-        help = "Monitor a Process Variable over pvAccess";
-        name = "pvmonitor";
-        command = ''
-          ${pkgs.epnix.epics-base}/bin/pvmonitor "$@"
-        '';
-        category = "EPICS pvAccess commands";
-      }
-
-      {
-        help = "Set a Process Variable value over pvAccess";
-        name = "pvput";
-        command = ''
-          ${pkgs.epnix.epics-base}/bin/pvput "$@"
-        '';
-        category = "EPICS pvAccess commands";
-      }
-
-    ])
-  ];
 }

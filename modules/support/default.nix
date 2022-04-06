@@ -45,32 +45,4 @@ in
     let available = { inputs = config.epnix.inputs; };
     in
     map (epnixLib.resolveInput available) cfg.modules;
-
-    config.devShell.devshell.startup."epnix-startup-hooks".text = ''
-      function eval_startup_hook {
-        local module="$1"
-
-        local startup_hook="''${module}/nix-support/setup-hook"
-
-        if [[ -f  "''${startup_hook}" ]]; then
-          source "''${startup_hook}"
-        fi
-
-        local propagated_build_inputs_file="''${module}/nix-support/propagated-build-inputs"
-
-        if [[ -f "''${propagated_build_inputs_file}" ]]; then
-          IFS=" " read -a propagated_build_inputs < "''${propagated_build_inputs_file}"
-
-          for propagated_build_input in "''${propagated_build_inputs[@]}"; do
-            eval_startup_hook "''${propagated_build_input}"
-          done
-        fi
-      }
-
-      ${concatStringsSep
-        "\n"
-        (map
-          (module: ''eval_startup_hook "${module}"'')
-          cfg.resolvedModules)}
-    '';
 }

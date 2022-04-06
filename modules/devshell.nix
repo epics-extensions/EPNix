@@ -1,8 +1,13 @@
-{ config, devshell, lib, pkgs, epnixLib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.epnix.devShell;
 
-with lib;
-let
-  available = { inputs = config.epnix.inputs; };
+  available = {inputs = config.epnix.inputs;};
 
   lockFile = importJSON "${available.inputs.self}/flake.lock";
   lockedInputs = mapAttrs (name: node: lockFile.nodes.${node}) lockFile.nodes.${lockFile.root}.inputs;
@@ -12,165 +17,342 @@ let
     (filter (app: isString app && hasPrefix "inputs." app))
 
     # Fetch the metadata from the lock file
-    (map (inputName:
-      let name = last (splitString "." inputName);
-      in
+    (map (inputName: let
+      name = last (splitString "." inputName);
+    in
       if hasAttr name lockedInputs
       then nameValuePair name lockedInputs.${name}
       else throw "input '${name}' specified in 'epnix.applications.apps' does not exist"))
   ];
-in
-{
-  options.devShell = mkOption {
-    description = ''
-      Devshell related options
 
-      See https://github.com/numtide/devshell/ for more information.
+  category = mkOption {
+    type = types.str;
+    default = "general commands";
+    description = ''
+      Set a free text category under which this command is grouped and
+      shown in the help menu.
     '';
-    type = types.submodule {
-      imports = (import "${devshell}/modules/modules.nix" { inherit pkgs lib; }) ++ [
-        "${devshell}/extra/language/c.nix"
-      ];
-    };
-    default = { };
+    example = "development tools";
   };
 
-  config.epnix.outputs.devShell = config.devShell.devshell.shell;
-  config.nixpkgs.overlays = [
-    devshell.overlay
-    (self: super: {
-      epnix-commands-lib =
-        super.writeTextDir "/libexec/epnix/commands-lib.sh" ''
-          PATH="${makeBinPath (with pkgs; [ ncurses ])}''${PATH:+:$PATH}"
+  description = mkOption {
+    type = types.str;
+    description = ''
+      Description of this specific command.
 
-          source "${pkgs.bash-lib}"
+      This description will be put in the development shell menu.
+    '';
+    default = "";
+  };
+
+  packageModule = {config, ...}: {
+    options = {
+      package = mkOption {
+        type = types.package;
+        description = ''
+          The package providing the specified commands.
         '';
-    })
-  ];
+      };
 
-  config.devShell.devshell.motd = ''
-    [38;5;202m🔨 Welcome to EPNix-${config.epnix.meta.name}'s devShell[0m
-    $(type -p menu &>/dev/null && menu)
+      inherit category;
+
+      commands = mkOption {
+        type = with types;
+          attrsOf (submodule {
+            options = {
+              inherit description;
+              category = mkOption {
+                type = types.str;
+                description = ''
+                  Set a free text category under which this command is grouped
+                  and shown in the help menu.
+
+                  If unspecified, defaults to the category of the package.
+                '';
+                example = "development tools";
+              };
+            };
+
+            config.category = mkDefault config.category;
+          });
+
+        description = ''
+          The various commands to document in the menu.
+        '';
+
+        default = {};
+      };
+    };
+
+    config.commands = let
+      name = config.package.pname or (parseDrvName config.package.name).name;
+      description = config.package.meta.description or "";
+    in
+      mkDefault {
+        ${name}.description = description;
+      };
+  };
+
+  scriptPackages =
+    mapAttrsToList
+    (name: scriptCfg:
+      pkgs.writeShellApplication {
+        inherit name;
+        runtimeInputs = with pkgs; [ncurses];
+        text = ''
+          # shellcheck disable=SC1091
+          source "${pkgs.bash-lib}"
+
+          ${scriptCfg.text}
+        '';
+      })
+    cfg.scripts;
+
+  commandsByCategory = let
+    scriptCategories =
+      mapAttrsToList
+      (name: script: {
+        ${script.category} = {
+          inherit name;
+          inherit (script) description;
+        };
+      })
+      cfg.scripts;
+
+    pkgCommandCategories =
+      map
+      (pkg:
+        mapAttrsToList
+        (name: cmd: {
+          ${cmd.category} = {
+            inherit name;
+            inherit (cmd) description;
+          };
+        })
+        pkg.commands)
+      cfg.packages;
+  in
+    zipAttrs (scriptCategories ++ (flatten pkgCommandCategories));
+
+  categoryText = category: commands: ''
+    ''${YELLOW}[${category}]''${NORMAL}
+    ${concatMapStringsSep
+      "\n"
+      ({
+        name,
+        description,
+      }: "  \${GREEN}${name}\${NORMAL}\n      ${description}")
+      commands}
   '';
 
-  # Loads `etc/profile.d/*` from packages in the dev shell
-  config.devShell.devshell.load_profiles = true;
+  menuText = ''
+    ''${BOLD}''${CYAN}EPNix's ${config.epnix.meta.name} devShell''${NORMAL}
 
-  config.devShell.env = [ { name = "GRC_ALIASES"; value = "true"; } ];
-
-  config.devShell.commands = [
-    {
-      package = pkgs.bear;
-      category = "development tools";
-    }
-    { package = pkgs.grc; }
-
-    {
-      help = "Format nix code";
-      package = pkgs.nixpkgs-fmt;
-      category = "development tools";
-    }
-
-    {
-      help = "Format C/C++ code";
-      name = "clang-format";
-      package = pkgs.clang-tools;
-      category = "development tools";
-    }
-
-    {
-      help = "Show the components of the distribution";
-      name = "epics-components";
-      command = ''
-        # set to empty if unset
-        : ''${EPICS_COMPONENTS=}
-
-        IFS=: read -a components <<<$EPICS_COMPONENTS
-
-        for component in "''${components[@]}"; do
-          echo "$component"
-        done
+    ${concatStringsSep
+      "\n"
+      (mapAttrsToList categoryText commandsByCategory)}'';
+in {
+  options.epnix.devShell = {
+    packages = mkOption {
+      type = with types; listOf (submodule packageModule);
+      description = ''
+        A list of packages and their command description to add into the
+        development environment.
       '';
-      category = "EPNix commands";
-    }
-
-    {
-      help = "Show the configuration options manpage of the distribution";
-      name = "eman";
-      command = ''
-        manpage="$(nix build --no-link --json --no-write-lock-file '.#manpage' | ${pkgs.jq}/bin/jq -r '.[].outputs.out')"
-        man "$manpage"
+      example = literalExpression ''
+        [
+          {
+            package = pkg.poetry;
+            category = "development tools";
+          }
+          {
+            package = pkg.hello;
+            commands.hello = {
+              description = "Say hello in the terminal";
+              category = "miscellaneous";
+            };
+          }
+        ]
       '';
-      category = "EPNix commands";
-    }
+    };
 
-    {
-      help = "Show the EPNix documentation book for the distribution";
-      name = "edoc";
-      command = ''
-        mdbook="$(nix build --no-link --json --no-write-lock-file '.#mdbook' | ${pkgs.jq}/bin/jq -r '.[].outputs.out')"
-        xdg-open "$mdbook/index.html"
+    scripts = mkOption {
+      type = with types;
+        attrsOf (submodule {
+          options = {
+            text = mkOption {
+              type = types.str;
+              description = ''
+                Content of the script.
+              '';
+            };
+
+            inherit category description;
+          };
+        });
+      description = ''
+        A set of shell scripts to add to the development environment.
       '';
-      category = "EPNix commands";
-    }
+      example = {
+        "hello-world" = {
+          text = ''
+            echo 'Hello, World!'
+          '';
+          category = "miscellaneous";
+          description = "Say hello in the terminal";
+        };
+      };
+    };
 
-    {
-      help = "Regenerate the 'configure/' directory, top-level Makefile, and subprojects";
-      name = "eregen";
-      command = ''
-        eregen-config
-        eregen-git
+    environment.variables = mkOption {
+      type = with types; attrsOf (either str (listOf str));
+      description = ''
+        A set of environment variables used in the development environment.
+
+        The value of each variable can be either a string or a list of strings.
+        The latter is concatenated, interspersed with colon characters.
       '';
-      category = "EPNix commands";
-    }
+      apply = mapAttrs (n: v:
+        if isList v
+        then concatStringsSep ":" v
+        else v);
+      example = {
+        EPICS_CA_ADDR_LIST = "localhost";
+      };
+      default = {};
+    };
 
-    {
-      help = "Regenerate the 'configure/' directory, top-level Makefile";
-      name = "eregen-config";
-      command = ''
-        source "${pkgs.epnix-commands-lib}/libexec/epnix/commands-lib.sh"
+    attrs = mkOption {
+      type = types.submodule {
+        freeformType = types.attrs;
 
-        toplevel="$(realpath -s .)"
+        options = {
+          inputsFrom = mkOption {
+            type = with types; listOf package;
+            internal = true;
+          };
 
-        if [[ ! -f "flake.nix" ]]; then
-          fatal "Could not find 'flake.nix' file. Are you in an EPNix project?"
-        fi
+          nativeBuildInputs = mkOption {
+            type = with types; listOf package;
+            internal = true;
+          };
 
-        typeset -a old_files=()
+          shellHook = mkOption {
+            type = types.lines;
+            internal = true;
+          };
+        };
+      };
+      description = ''
+        Extra attributes to pass as-is to the `mkShell` function.
 
-        if [ -f "$toplevel/Makefile" ]; then
-          old_files+=("$toplevel/Makefile")
-        fi
+        See the nixpkgs [documentation] on `mkShell` for more information.
 
-        if [ -d "$toplevel/configure" ]; then
-          old_files+=("$toplevel/configure")
-        fi
-
-        if [ "''${#old_files[@]}" -ne 0 ]; then
-          info "Removing old toplevel files:" "''${old_files[@]}"
-          rm --recursive --force --interactive=once --one-file-system "''${old_files[@]}"
-        fi
-
-        info "Regenerating toplevel files"
-        cp -rfv --no-preserve=mode "${pkgs.epnix.epics-base}/templates/makeBaseApp/top/configure" "$toplevel"
-        cp -rfv --no-preserve=mode "${pkgs.epnix.epics-base}/templates/makeBaseApp/top/Makefile" "$toplevel"
-
-        info "Adding EPICS components to 'configure/RELEASE.local'"
-        epics-components | tee "$toplevel/configure/RELEASE.local" >&2
+        [documentation]: <https://nixos.org/manual/nixpkgs/stable/#sec-pkgs-mkShell>
       '';
+      default = {};
+    };
+  };
 
-      category = "EPNix commands";
-    }
+  config.epnix.devShell = {
+    packages = [
+      {
+        package = pkgs.bear;
+        category = "development tools";
+      }
+      # Once NixOS 22.05 is released, switch to alejandra
+      {
+        package = pkgs.nixpkgs-fmt;
+        category = "development tools";
+      }
+      {
+        package = pkgs.clang-tools;
+        category = "development tools";
+        commands."clang-format".description = "Format C/C++ code";
+      }
+      {package = pkgs.grc;}
+    ];
 
-    {
-      help = "Check and clone subprojects";
-      name = "eregen-git";
-      command =
-        let
-          cloneCommands = forEach inputApps
-            ({ name, value }:
-              let inherit (value.locked) type; in
-              if type == "git" then
+    scripts = {
+      menu = {
+        text = ''
+          cat <<EPNIX_MENU
+          ${menuText}
+          EPNIX_MENU
+        '';
+        description = "Prints this menu";
+      };
+
+      epics-components = {
+        text = ''
+          # set to empty if unset
+          : "''${EPICS_COMPONENTS=}"
+
+          IFS=: read -ra components <<<$EPICS_COMPONENTS
+
+          for component in "''${components[@]}"; do
+            echo "$component"
+          done
+        '';
+        category = "epnix commands";
+        description = "Show the components of the distribution";
+      };
+
+      eman = {
+        text = ''
+          manpage="$(nix build --no-link --json --no-write-lock-file '.#manpage' | ${pkgs.jq}/bin/jq -r '.[].outputs.out')"
+          man "$manpage"
+        '';
+        category = "epnix commands";
+        description = "Show the configuration options manpage of the distribution";
+      };
+
+      edoc = {
+        text = ''
+          mdbook="$(nix build --no-link --json --no-write-lock-file '.#mdbook' | ${pkgs.jq}/bin/jq -r '.[].outputs.out')"
+          xdg-open "$mdbook/index.html"
+        '';
+        category = "epnix commands";
+        description = "Show the EPNix documentation book for the distribution";
+      };
+
+      eregen = {
+        text = ''
+          eregen-config
+          eregen-git
+        '';
+        category = "epnix commands";
+        description = "Regenerate the 'configure/RELEASE.local' file, and subprojects";
+      };
+
+      eregen-config = {
+        # TODO: generate the CONFIG_SITE.local too
+        text = ''
+          toplevel="$(realpath -s .)"
+
+          if [[ ! -f "flake.nix" ]]; then
+            fatal "Could not find 'flake.nix' file. Are you in an EPNix project?"
+          fi
+
+          info "Adding EPICS components to 'configure/RELEASE.local'"
+          epics-components | tee "$toplevel/configure/RELEASE.local" >&2
+        '';
+        category = "epnix commands";
+        description = "Regenerate the 'configure/RELEASE.local' file";
+      };
+
+      eregen-git = {
+        text = let
+          cloneCommands =
+            forEach inputApps
+            ({
+              name,
+              value,
+            }: let
+              inherit (value.locked) type;
+            in
+              if type == "git"
+              then
                 if value.locked.dir or "" != ""
                 then ''warn "for input '${name}', git repositories with the 'dir' option are not supported"''
                 else ''
@@ -178,17 +360,14 @@ in
                     cloneGit "${name}" "${value.locked.url}" "${value.locked.ref or ""}" "${value.locked.rev}"
                   fi
                 ''
-
-              else if type == "github" then ''
+              else if type == "github"
+              then ''
                 if checkMissing "${name}"; then
                   cloneGitHub "${name}" "${value.locked.owner}" "${value.locked.repo}" "${value.original.ref or ""}" "${value.locked.rev}"
                 fi
               ''
               else ''warn "not cloning input '${name}', unsupported type '${type}'"'');
-        in
-        ''
-          source "${pkgs.epnix-commands-lib}/libexec/epnix/commands-lib.sh"
-
+        in ''
           function checkMissing() {
             local name="$1"
 
@@ -222,7 +401,8 @@ in
               return 1
             fi
 
-            local actualRev="$(git -C "$name" rev-parse HEAD)"
+            local actualRev
+            actualRev="$(git -C "$name" rev-parse HEAD)"
 
             if [[ "$resolvedRev" == "$actualRev" ]]; then
               return 0
@@ -259,37 +439,64 @@ in
 
           ${concatStringsSep "\n" cloneCommands}
         '';
+        category = "epnix commands";
+        description = "Check and clone subprojects";
+      };
 
-      category = "EPNix commands";
-    }
-
-    {
-      help = "Like 'nix' but uses the locally cloned applications";
-      name = "enix-local";
-      command =
-        let
-          findLocals = forEach inputApps
-            ({ name, value }:
-              ''
-                if [ -e "${name}" ]; then
-                  info "using local app:" "'${name}'"
-                  overrides+=(--override-input "${name}" "path:./${name}")
-                else
-                  info "app '${name}' is not present locally" "using the one specified in flake inputs"
-                fi
-              '');
-        in
-        ''
-          source "${pkgs.epnix-commands-lib}/libexec/epnix/commands-lib.sh"
-
+      enix-local = {
+        text = let
+          findLocals =
+            forEach inputApps
+            ({
+              name,
+              value,
+            }: ''
+              if [ -e "${name}" ]; then
+                info "using local app:" "'${name}'"
+                overrides+=(--override-input "${name}" "git+file:./${name}")
+              else
+                info "app '${name}' is not present locally" "using the one specified in flake inputs"
+              fi
+            '');
+        in ''
           typeset -a overrides=()
 
           ${concatStringsSep "\n" findLocals}
 
           nix "$@" "''${overrides[@]}"
         '';
+        category = "epnix commands";
+        description = "Like 'nix' but uses the locally cloned subprojects";
+      };
+    };
 
-      category = "EPNix commands";
-    }
-  ];
+    environment.variables."GRC_ALIASES" = "true";
+
+    attrs =
+      {
+        inputsFrom = [config.epnix.outputs.build];
+
+        nativeBuildInputs = (map (cmd: cmd.package) cfg.packages) ++ scriptPackages;
+
+        shellHook = ''
+          function load_profiles() {
+            # Don't return the glob itself, if no matches
+            shopt -s nullglob
+
+            for input in $nativeBuildInputs; do
+              for file in "$input/etc/profile.d/"*sh; do
+                source "$file"
+              done
+            done
+          }
+
+          load_profiles
+
+          menu
+        '';
+      }
+      // cfg.environment.variables;
+  };
+
+  config.epnix.outputs.devShell = pkgs.mkShell cfg.attrs;
 }
