@@ -1,6 +1,7 @@
 { stdenv
 , lib
 , runCommand
+, makeWrapper
 , perl
 , epnix
 , buildPackages
@@ -18,6 +19,7 @@
 , buildInputs ? [ ]
 , makeFlags ? [ ]
 , preBuild ? ""
+, postInstall ? ""
 , ...
 } @ attrs:
 
@@ -39,7 +41,7 @@ stdenv.mkDerivation (overridable // {
 
   depsBuildBuild = [ buildPackages.stdenv.cc ];
 
-  nativeBuildInputs = nativeBuildInputs ++ [ perl ];
+  nativeBuildInputs = nativeBuildInputs ++ [ makeWrapper perl ];
   buildInputs = buildInputs ++ (optional (!isEpicsBase) [ epnix.epics-base ]);
 
   makeFlags = makeFlags ++ [
@@ -124,9 +126,9 @@ stdenv.mkDerivation (overridable // {
     cp -fv --no-preserve=mode "$local_releasePath" configure/RELEASE.local
 
     # set to empty if unset
-    : ''${EPICS_COMPONENTS=}
+    : "''${EPICS_COMPONENTS=}"
 
-    IFS=: read -a components <<<$EPICS_COMPONENTS
+    IFS=: read -ra components <<<$EPICS_COMPONENTS
 
     for component in "''${components[@]}"; do
       echo "$component"
@@ -144,6 +146,19 @@ stdenv.mkDerivation (overridable // {
     echo "------------------------------"
 
   '' + preBuild;
+
+  # Automatically create binaries directly in `bin/` that calls the ones that
+  # are in `bin/linux-x86_64/`
+  # TODO: we should probably do the same for libraries
+  postInstall = ''
+    if [[ -d "$out/bin/${host_arch}" ]]; then
+      for file in "$out/bin/${host_arch}/"*; do
+        [[ -x "$file" ]] || continue
+
+        makeWrapper "$file" "$out/bin/$(basename "$file")"
+      done
+    fi
+  '' + postInstall;
 
   doCheck = attrs.doCheck or true;
   checkTarget = "runtests";
