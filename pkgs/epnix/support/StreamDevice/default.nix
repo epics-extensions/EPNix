@@ -14,7 +14,6 @@ in
 mkEpicsPackage {
   pname = "StreamDevice";
   inherit version;
-  # TODO: is this correct?
   varname = "STREAM";
 
   inherit local_config_site;

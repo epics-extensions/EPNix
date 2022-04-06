@@ -5,7 +5,6 @@ let
   cfg = config.epnix.support;
 in
 {
-  # TODO: rename ? not really support
   options.epnix.support = {
     modules = mkOption {
       default = [ ];
