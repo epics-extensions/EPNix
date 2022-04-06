@@ -1,10 +1,6 @@
 {
   description = "EPICS IOC for <...>";
 
-  inputs.nixpkgs = {
-    url = "github:NixOS/nixpkgs/nixos-21.11";
-    follows = "epnix/nixpkgs";
-  };
   inputs.flake-utils.url = "github:numtide/flake-utils";
   inputs.epnix.url = "git+ssh://git@drf-gitlab.cea.fr/EPICS/epnix/epnix.git";
 
@@ -15,7 +11,7 @@
   #  flake = false;
   #};
 
-  outputs = { self, nixpkgs, flake-utils, epnix, ... } @ inputs:
+  outputs = { self, flake-utils, epnix, ... } @ inputs:
     let
       myEpnixDistribution = { pkgs, ... }: {
         # Set your EPNix options here
@@ -24,27 +20,22 @@
         epnix = {
           inherit inputs;
 
+          # Change this to be the name of your EPICS top
+          # ---
+          meta.name = "my-top";
+
           # You can choose the version of EPICS-base here:
           # ---
           #releaseBranch = "3"; # Defaults to "7"
 
-          # Add one of the supported modules through its own option:
+          # Add one of the supported modules here:
           # ---
-          #support.StreamDevice.enable = true;
-
-          # Or by specfying it here:
-          # ---
-          #support.modules = with pkgs.epnix.support; [ calc ];
+          #support.modules = with pkgs.epnix.support; [ StreamDevice ];
 
           # Add your applications:
           # Note that flake inputs must be quoted in this context
           # ---
           #applications.apps = [ "inputs.exampleApp" ];
-
-          # And your iocBoot directories:
-          # ---
-          #boot.iocBoots = [ ./iocBoot/iocexample ];
-
 
           # Add your integration tests:
           # ---
@@ -69,10 +60,14 @@
         result = evalEpnixModules system myEpnixDistribution;
       in
       {
-        packages = result.outputs;
+        packages = result.outputs // {
+          default = self.packages.${system}.build;
+        };
 
-        defaultPackage = self.packages.${system}.build;
-        devShell = self.packages.${system}.devShell;
+        defaultPackage = self.packages.${system}.default;
+
+        devShells.default = self.packages.${system}.devShell;
+        devShell = self.devShells.${system}.default;
 
         checks = result.config.epnix.checks.derivations;
       });

@@ -3,22 +3,17 @@
 with lib;
 let
   cfg = config.epnix.buildConfig;
+
+  varname = pipe config.epnix.meta.name [
+    # Split out all invalid characters
+    (builtins.split "[^[:alnum:]]+")
+    # Replace invalid character ranges with a "_"
+    (concatMapStrings (s: if lib.isList s then "_" else s))
+    toUpper
+  ];
 in
 {
   options.epnix.buildConfig = {
-    # TODO: move into meta
-    flavor = mkOption {
-      description = "Name of the flavor of this EPICS distribution";
-      type = types.str;
-      default = "custom";
-    };
-
-    version = mkOption {
-      description = "Version of this EPICS distribution";
-      type = types.str;
-      default = "0.0.1";
-    };
-
     attrs = mkOption {
       description = "Extra attributes to pass to the derivation";
       type = types.attrs;
@@ -39,9 +34,9 @@ in
 
   config.epnix.outputs.build =
     pkgs.mkEpicsPackage ({
-      pname = "epics-distribution-${cfg.flavor}";
-      version = cfg.version;
-      varname = "EPICS_DISTRIBUTION_${cfg.flavor}";
+      pname = "epnix-${config.epnix.meta.name}";
+      inherit (config.epnix.meta) version;
+      varname = "EPNIX_${varname}";
 
       buildInputs = config.epnix.support.resolvedModules ++ (cfg.attrs.buildInputs or [ ]);
 

@@ -26,7 +26,8 @@ to packaging EPICS the traditional way:
 - Declarative configuration: define what you want in your IOC in a declarative
   and extensible manner.
 
-- Unit and integration tests: TODO
+- Functional tests: Run automated isolated tests inside a defined virtual
+  machine.
 
 <sup>1</sup>: Currently, the epics-base package is not 100% reproducible, some
 work is being done towards that.
@@ -42,17 +43,15 @@ the documentation book.
 
 ```nix
 epnix = {
+  meta.name = "my-top";
+
   # You can choose the version of EPICS-base here:
   # ---
   epics-base.releaseBranch = "3"; # Defaults to "7"
 
-  # Add one of the supported modules through its own option:
+  # Add one of the supported modules here:
   # ---
-  support.StreamDevice.enable = true;
-
-  # Or by specfying it here:
-  # ---
-  support.modules = with pkgs.epnix.support; [ calc ];
+  support.modules = with pkgs.epnix.support; [ StreamDevice ];
 
   # Add your applications:
   # ---

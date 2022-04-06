@@ -2,10 +2,8 @@
 
 {
   epnix = {
-    buildConfig = {
-      flavor = "checks-support-StreamDevice-simple";
-      src = ./.;
-    };
+    meta.name = "checks-support-StreamDevice-simple";
+    buildConfig.src = ./.;
 
     applications.apps = [ ./simpleApp ];
     boot.iocBoots = [ ./iocBoot/iocsimple ];

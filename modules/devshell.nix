@@ -49,7 +49,7 @@ in
   ];
 
   config.devShell.devshell.motd = ''
-    [38;5;202m🔨 Welcome to EPNix-${config.epnix.buildConfig.flavor}'s devShell[0m
+    [38;5;202m🔨 Welcome to EPNix-${config.epnix.meta.name}'s devShell[0m
     $(type -p menu &>/dev/null && menu)
   '';
 

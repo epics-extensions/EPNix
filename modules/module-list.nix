@@ -7,11 +7,7 @@
       ./common.nix
       ./devshell.nix
       ./documentation.nix
+      ./meta.nix
       ./outputs.nix
-      #./source.nix
-
       ./support
-
-      ./support/asyn.nix
-      ./support/StreamDevice.nix
 ]
