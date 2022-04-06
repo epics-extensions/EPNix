@@ -52,17 +52,20 @@
                 inherit (self.packages.${system}) manpage mdbook;
               };
 
-            devShell = pkgs.epnixLib.mkEpnixDevShell "x86_64-linux" {
+            devShells.default = pkgs.epnixLib.mkEpnixDevShell "x86_64-linux" {
               devShell.commands = [
                 { package = pkgs.mdbook; }
                 { package = pkgs.poetry; }
               ];
             };
+
+            devShell = self.devShells.${system}.default;
           };
       in
       (eachSystem [ "x86_64-linux" ] systemDependentOutputs)
       // {
-        inherit overlay;
+        overlays.default = overlay;
+        overlay = self.overlays.default;
 
         lib = import ./lib {
           lib = nixpkgs.lib;
@@ -74,6 +77,7 @@
           description = "An EPNix TOP project";
         };
 
-        defaultTemplate = self.templates.top;
+        templates.default = self.templates.top;
+        defaultTemplate = self.templates.default;
       };
 }
