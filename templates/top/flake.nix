@@ -20,6 +20,10 @@
         epnix = {
           inherit inputs;
 
+          # Change this to be the name of your EPICS top
+          # ---
+          meta.name = "my-top";
+
           # You can choose the version of EPICS-base here:
           # ---
           #releaseBranch = "3"; # Defaults to "7"
