@@ -26,7 +26,8 @@ to packaging EPICS the traditional way:
 - Declarative configuration: define what you want in your IOC in a declarative
   and extensible manner.
 
-- Unit and integration tests: TODO
+- Functional tests: Run automated isolated tests inside a defined virtual
+  machine.
 
 <sup>1</sup>: Currently, the epics-base package is not 100% reproducible, some
 work is being done towards that.
