@@ -40,14 +40,14 @@
           # Add your integration tests:
           # ---
           checks.files = [ ./checks/simple.nix ];
-        };
 
-        # You can specify environment variables in your development shell like this:
-        # ---
-        #devShell.env = [
-        #  { name = "EPICS_CA_ADDR_LIST"; value = "localhost"; }
-        #  { name = "MY_VARIABLE"; value = "the_value"; }
-        #];
+          # You can specify environment variables in your development shell like this:
+          # ---
+          #devShell.environment.variables = {
+          #  EPICS_CA_ADDR_LIST = "localhost";
+          #  MY_VARIABLE = "the_value";
+          #};
+        };
       };
     in
     # Add your supported systems here.

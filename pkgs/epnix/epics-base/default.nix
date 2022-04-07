@@ -48,18 +48,6 @@ mkEpicsPackage {
   # TODO: Some tests fail
   doCheck = false;
 
-  postInstall = ''
-    pushd "$out/bin"
-    while IFS= read -r -d $'\0' i; do
-        # Don't symlink perl executables, are the EPICS perl lib is "hardcoded"
-        # to be "../../lib/perl"
-        if ! isELF "$i"; then continue; fi
-        ln -sfn "$i" "$out/bin/"
-    done < <(find . -type f -executable -print0)
-    popd
-  '';
-
-  # TODO: find a way to "symlink" everything what is in ./bin/linux-x86_64 -> ./bin
   meta = {
     description = "The Experimental Physics and Industrial Control System";
     homepage = "https://epics-controls.org/";

@@ -6,7 +6,6 @@
     url = "github:minijackson/bash-lib";
     inputs.nixpkgs.follows = "nixpkgs";
   };
-  inputs.devshell.url = "github:numtide/devshell";
   inputs.flake-utils.url = "github:numtide/flake-utils";
   inputs.nix-module-doc = {
     url = "git+ssh://git@drf-gitlab.cea.fr/rnicole/nix-module-doc.git";
@@ -17,7 +16,6 @@
 
   outputs =
     { self
-    , devshell
     , flake-utils
     , nixpkgs
     , ...
@@ -53,11 +51,14 @@
               };
 
             devShells.default = pkgs.epnixLib.mkEpnixDevShell "x86_64-linux" {
-              epnix.meta.name = "epnix";
-              devShell.commands = [
-                { package = pkgs.mdbook; }
-                { package = pkgs.poetry; }
-              ];
+              epnix = {
+                meta.name = "epnix";
+                buildConfig.src = pkgs.emptyDirectory;
+                devShell.packages = [
+                  { package = pkgs.mdbook; category = "development tools"; }
+                  { package = pkgs.poetry; category = "development tools"; }
+                ];
+              };
             };
 
             devShell = self.devShells.${system}.default;

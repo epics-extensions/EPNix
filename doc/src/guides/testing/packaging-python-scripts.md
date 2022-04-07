@@ -17,8 +17,8 @@ building the Python script in the context of the EPNix integration test.
 This can be done by adding this bit in your `flake.nix` file:
 
 ```nix
-devShell.commands = [
-  { package = "poetry"; category = "development tools"; }
+epnix.devShell.packages = [
+  { package = pkg.poetry; category = "development tools"; }
 ];
 ```
 
