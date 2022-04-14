@@ -95,7 +95,16 @@ stdenv.mkDerivation (overridable // {
       CMPLR_CLASS = "clang";
     });
 
-  local_config_site = generateConf local_config_site;
+  local_config_site = generateConf ({
+      # This variable is used as a default version revision if no VCS is found.
+      #
+      # Since fetchgit and related fetchers remove the .git directory for
+      # reproducibility, EPICS fallsback to either the GENVERSIONDEFAULT variable
+      # if set (not the default), or the current date/time, which isn't
+      # reproducible.
+      GENVERSIONDEFAULT = "EPNix";
+    }
+    // local_config_site);
 
   # Undefine the SUPPORT variable here, since there is no single "support"
   # directory and this variable is a source of conflicts between RELEASE files
