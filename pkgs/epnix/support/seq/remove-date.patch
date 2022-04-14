@@ -1,0 +1,13 @@
+diff --git a/src/common/seq_release.pl b/tmp/seq_release.pl
+index e736b86..96f634b 100644
+--- a/src/common/seq_release.pl
++++ b/src/common/seq_release.pl
+@@ -3,7 +3,6 @@
+ # create the seq release header file
+ #
+ $release = $ARGV[0];
+-$now = localtime;
+-print "#define SEQ_RELEASE \"Sequencer release $release, compiled $now\"\n";
++print "#define SEQ_RELEASE \"Sequencer release $release, compiled by EPNix\"\n";
+ ($major,$minor,$patch) = split(/[.]/, $release);
+ printf "#define MAGIC %d%03d%03d\n", $major,$minor,$patch;
