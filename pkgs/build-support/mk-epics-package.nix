@@ -108,6 +108,8 @@ stdenv.mkDerivation (overridable // {
     "local_release"
   ];
 
+  PERL_HASH_SEED = 0;
+
   preBuild = (optionalString isEpicsBase ''
     cp -fv --no-preserve=mode "$build_config_sitePath" configure/os/CONFIG_SITE.${build_arch}.${build_arch}
     cp -fv --no-preserve=mode "$host_config_sitePath" configure/os/CONFIG_SITE.${build_arch}.${host_arch}
