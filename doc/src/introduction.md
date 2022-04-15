@@ -8,7 +8,7 @@ to packaging EPICS the traditional way:
 
 - Reproducibility: your development environment is the same as your coworker's
   development environment, which is the same as your production
-  environment.<sup>1</sup>
+  environment.
 
 - Complete dependencies: your EPICS IOCs ship with the complete set of
   dependencies, allowing you to deploy your IOC without needing to install any
@@ -28,10 +28,6 @@ to packaging EPICS the traditional way:
 
 - Integration tests: write tests using Python, by starting a virtual machine
   with your IOC running.
-
-<sup>1</sup>: Currently, the epics-base package is not 100% reproducible, some
-work is being done towards that, but it doesn't have much of an effect in
-practice.
 
 [Nix]: <https://nixos.org/guides/how-nix-works.html>
 

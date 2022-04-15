@@ -16,6 +16,8 @@ mkEpicsPackage rec {
 
   nativeBuildInputs = [ re2c ];
 
+  patches = [ ./remove-date.patch ];
+
   preBuild = ''
     echo 'include $(TOP)/configure/RELEASE.local' >> configure/RELEASE
   '';
