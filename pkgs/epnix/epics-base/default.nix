@@ -1,6 +1,7 @@
 { stdenv
 , lib
 , epnixLib
+, buildPackages
 , mkEpicsPackage
 , fetchgit
 , fetchpatch
@@ -14,8 +15,14 @@
 with lib;
 
 let
-  atLeast = versionAtLeast version;
   older = versionOlder version;
+
+  generateConf = (epnixLib.formats.make { }).generate;
+
+  # "build" as in Nix terminology (the build machine)
+  build_arch = epnixLib.toEpicsArch stdenv.buildPlatform;
+  # "host" as in Nix terminology (the machine which will run the generated code)
+  host_arch = epnixLib.toEpicsArch stdenv.hostPlatform;
 in
 mkEpicsPackage {
   pname = "epics-base";
@@ -42,6 +49,60 @@ mkEpicsPackage {
     # Fixed by commit 79d7ac931502e1c25b247a43b7c4454353ac13a6
     ./handle-make-undefine-variable.patch
   ]);
+
+  # "build" as in Nix terminology (the build machine)
+  build_config_site = generateConf
+    (with buildPackages.stdenv; {
+      CC = "${cc.targetPrefix}cc";
+      CCC = "${cc.targetPrefix}c++";
+      CXX = "${cc.targetPrefix}c++";
+
+      AR = "${cc.bintools.targetPrefix}ar";
+      LD = "${cc.bintools.targetPrefix}ld";
+      RANLIB = "${cc.bintools.targetPrefix}ranlib";
+
+      ARFLAGS = "rc";
+    } // optionalAttrs cc.isClang {
+      GNU = "NO";
+      CMPLR_CLASS = "clang";
+    });
+
+  # "host" as in Nix terminology (the machine which will run the generated code)
+  host_config_site = generateConf
+    (with stdenv; {
+      CC = "${cc.targetPrefix}cc";
+
+      CCC = if stdenv.cc.isClang then "${cc.targetPrefix}clang++" else "${cc.targetPrefix}c++";
+      CXX = if stdenv.cc.isClang then "${cc.targetPrefix}clang++" else "${cc.targetPrefix}c++";
+
+      AR = "${cc.bintools.targetPrefix}ar";
+      LD = "${cc.bintools.targetPrefix}ld";
+      RANLIB = "${cc.bintools.targetPrefix}ranlib";
+
+      ARFLAGS = "rc";
+    } // optionalAttrs cc.isClang {
+      GNU = "NO";
+      CMPLR_CLASS = "clang";
+    });
+
+  passAsFile = [
+    "build_config_site"
+    "host_config_site"
+  ];
+
+  preBuild = ''
+    cp -fv --no-preserve=mode "$build_config_sitePath" configure/os/CONFIG_SITE.${build_arch}.${build_arch}
+    cp -fv --no-preserve=mode "$host_config_sitePath" configure/os/CONFIG_SITE.${build_arch}.${host_arch}
+
+    echo "=============================="
+    echo "CONFIG_SITE.${build_arch}.${build_arch}"
+    echo "------------------------------"
+    cat "configure/os/CONFIG_SITE.${build_arch}.${build_arch}"
+    echo "=============================="
+    echo "CONFIG_SITE.${build_arch}.${host_arch}"
+    echo "------------------------------"
+    cat "configure/os/CONFIG_SITE.${build_arch}.${host_arch}"
+  '';
 
   # TODO: removing build platform Perl library actually removes every Perl
   # library since it's the only one...

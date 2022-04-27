@@ -18,6 +18,7 @@
 , nativeBuildInputs ? [ ]
 , buildInputs ? [ ]
 , makeFlags ? [ ]
+, passAsFile ? [ ]
 , preBuild ? ""
 , postInstall ? ""
 , ...
@@ -60,41 +61,6 @@ stdenv.mkDerivation (overridable // {
 
   dontConfigure = true;
 
-  # "build" as in Nix terminology (the build machine)
-  build_config_site = generateConf
-    (with buildPackages.stdenv; {
-      CC = "${cc.targetPrefix}cc";
-      CCC = "${cc.targetPrefix}c++";
-      CXX = "${cc.targetPrefix}c++";
-
-      AR = "${cc.bintools.targetPrefix}ar";
-      LD = "${cc.bintools.targetPrefix}ld";
-      RANLIB = "${cc.bintools.targetPrefix}ranlib";
-
-      ARFLAGS = "rc";
-    } // optionalAttrs cc.isClang {
-      GNU = "NO";
-      CMPLR_CLASS = "clang";
-    });
-
-  # "host" as in Nix terminology (the machine which will run the generated code)
-  host_config_site = generateConf
-    (with stdenv; {
-      CC = "${cc.targetPrefix}cc";
-
-      CCC = if stdenv.cc.isClang then "${cc.targetPrefix}clang++" else "${cc.targetPrefix}c++";
-      CXX = if stdenv.cc.isClang then "${cc.targetPrefix}clang++" else "${cc.targetPrefix}c++";
-
-      AR = "${cc.bintools.targetPrefix}ar";
-      LD = "${cc.bintools.targetPrefix}ld";
-      RANLIB = "${cc.bintools.targetPrefix}ranlib";
-
-      ARFLAGS = "rc";
-    } // optionalAttrs cc.isClang {
-      GNU = "NO";
-      CMPLR_CLASS = "clang";
-    });
-
   local_config_site = generateConf ({
       # This variable is used as a default version revision if no VCS is found.
       #
@@ -110,29 +76,14 @@ stdenv.mkDerivation (overridable // {
   # directory and this variable is a source of conflicts between RELEASE files
   local_release = generateConf (local_release // { SUPPORT = null; });
 
-  passAsFile = [
-    "build_config_site"
-    "host_config_site"
+  passAsFile = passAsFile ++ [
     "local_config_site"
     "local_release"
   ];
 
   PERL_HASH_SEED = 0;
 
-  preBuild = (optionalString isEpicsBase ''
-    cp -fv --no-preserve=mode "$build_config_sitePath" configure/os/CONFIG_SITE.${build_arch}.${build_arch}
-    cp -fv --no-preserve=mode "$host_config_sitePath" configure/os/CONFIG_SITE.${build_arch}.${host_arch}
-
-    echo "=============================="
-    echo "CONFIG_SITE.${build_arch}.${build_arch}"
-    echo "------------------------------"
-    cat "configure/os/CONFIG_SITE.${build_arch}.${build_arch}"
-    echo "=============================="
-    echo "CONFIG_SITE.${build_arch}.${host_arch}"
-    echo "------------------------------"
-    cat "configure/os/CONFIG_SITE.${build_arch}.${host_arch}"
-
-  '') + ''
+  preBuild = ''
     cp -fv --no-preserve=mode "$local_config_sitePath" configure/CONFIG_SITE.local
     cp -fv --no-preserve=mode "$local_releasePath" configure/RELEASE.local
 
