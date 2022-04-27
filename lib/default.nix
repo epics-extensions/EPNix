@@ -28,7 +28,6 @@ let
                     overlays = [
                       inputs.self.overlay
                       inputs.bash-lib.overlay
-                      inputs.epics-systemd.overlay
                     ] ++ config.nixpkgs.overlays;
                   };
                 in

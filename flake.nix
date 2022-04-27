@@ -12,8 +12,6 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  inputs.epics-systemd.url = "github:minijackson/epics-systemd";
-
   outputs =
     { self
     , flake-utils
@@ -28,11 +26,7 @@
           let
             pkgs = import nixpkgs {
               inherit system;
-              overlays = [
-                overlay
-                inputs.bash-lib.overlay
-                inputs.epics-systemd.overlay
-              ];
+              overlays = [ overlay inputs.bash-lib.overlay ];
             };
           in
           rec {

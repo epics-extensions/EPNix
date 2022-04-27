@@ -15,9 +15,7 @@ recurseIntoAttrs rec {
     support = recurseIntoAttrs {
       asyn = callPackage ./epnix/support/asyn { };
       calc = callPackage ./epnix/support/calc { };
-      # TODO: do we want to do this?
-      # this raises questions about maintenance responsibilities
-      epics-systemd = final.epics-systemd;
+      epics-systemd = callPackage ./epnix/support/epics-systemd { };
       ipac = callPackage ./epnix/support/ipac { };
       modbus = callPackage ./epnix/support/modbus { };
       seq = callPackage ./epnix/support/seq { };
