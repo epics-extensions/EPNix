@@ -1,10 +1,12 @@
-{ config, lib, ... }:
-
-with lib;
 {
+  config,
+  lib,
+  ...
+}:
+with lib; {
   options = {
     nixpkgs.overlays = mkOption {
-      default = [ ];
+      default = [];
       type = types.listOf types.unspecified;
       description = "Nixpkgs overlays to override the default packages used";
     };
@@ -38,7 +40,7 @@ with lib;
         `doc-options-md`
           ~ A markdown file describing the available module options.
       '';
-      default = { };
+      default = {};
       type = types.attrs;
     };
   };

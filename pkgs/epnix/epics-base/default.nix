@@ -1,146 +1,156 @@
-{ stdenv
-, lib
-, epnixLib
-, buildPackages
-, mkEpicsPackage
-, fetchgit
-, fetchpatch
-, version
-, sha256
-, readline
-, local_config_site ? { }
-, local_release ? { }
+{
+  stdenv,
+  lib,
+  epnixLib,
+  buildPackages,
+  mkEpicsPackage,
+  fetchgit,
+  fetchpatch,
+  version,
+  sha256,
+  readline,
+  local_config_site ? {},
+  local_release ? {},
 }:
-
-with lib;
-
-let
+with lib; let
   older = versionOlder version;
 
-  generateConf = (epnixLib.formats.make { }).generate;
+  generateConf = (epnixLib.formats.make {}).generate;
 
   # "build" as in Nix terminology (the build machine)
   build_arch = epnixLib.toEpicsArch stdenv.buildPlatform;
   # "host" as in Nix terminology (the machine which will run the generated code)
   host_arch = epnixLib.toEpicsArch stdenv.hostPlatform;
 in
-mkEpicsPackage {
-  pname = "epics-base";
-  inherit version;
-  varname = "EPICS_BASE";
+  mkEpicsPackage {
+    pname = "epics-base";
+    inherit version;
+    varname = "EPICS_BASE";
 
-  inherit local_config_site local_release;
+    inherit local_config_site local_release;
 
-  makeFlags = [
-    "COMMANDLINE_LIBRARY=READLINE_NCURSES"
-    "READLINE_DIR=${readline}"
-  ];
+    makeFlags = [
+      "COMMANDLINE_LIBRARY=READLINE_NCURSES"
+      "READLINE_DIR=${readline}"
+    ];
 
-  isEpicsBase = true;
+    isEpicsBase = true;
 
-  src = fetchgit {
-    url = "https://git.launchpad.net/epics-base";
-    rev = "R${version}";
-    inherit sha256;
-  };
+    src = fetchgit {
+      url = "https://git.launchpad.net/epics-base";
+      rev = "R${version}";
+      inherit sha256;
+    };
 
-  patches = (optionals (older "7.0.5") [
-    # Support "undefine MYVAR" in convertRelease.pl
-    # Fixed by commit 79d7ac931502e1c25b247a43b7c4454353ac13a6
-    ./handle-make-undefine-variable.patch
-  ]);
+    patches = optionals (older "7.0.5") [
+      # Support "undefine MYVAR" in convertRelease.pl
+      # Fixed by commit 79d7ac931502e1c25b247a43b7c4454353ac13a6
+      ./handle-make-undefine-variable.patch
+    ];
 
-  # "build" as in Nix terminology (the build machine)
-  build_config_site = generateConf
-    (with buildPackages.stdenv; {
-      CC = "${cc.targetPrefix}cc";
-      CCC = "${cc.targetPrefix}c++";
-      CXX = "${cc.targetPrefix}c++";
+    # "build" as in Nix terminology (the build machine)
+    build_config_site =
+      generateConf
+      (with buildPackages.stdenv;
+        {
+          CC = "${cc.targetPrefix}cc";
+          CCC = "${cc.targetPrefix}c++";
+          CXX = "${cc.targetPrefix}c++";
 
-      AR = "${cc.bintools.targetPrefix}ar";
-      LD = "${cc.bintools.targetPrefix}ld";
-      RANLIB = "${cc.bintools.targetPrefix}ranlib";
+          AR = "${cc.bintools.targetPrefix}ar";
+          LD = "${cc.bintools.targetPrefix}ld";
+          RANLIB = "${cc.bintools.targetPrefix}ranlib";
 
-      ARFLAGS = "rc";
-    } // optionalAttrs cc.isClang {
-      GNU = "NO";
-      CMPLR_CLASS = "clang";
-    });
+          ARFLAGS = "rc";
+        }
+        // optionalAttrs cc.isClang {
+          GNU = "NO";
+          CMPLR_CLASS = "clang";
+        });
 
-  # "host" as in Nix terminology (the machine which will run the generated code)
-  host_config_site = generateConf
-    (with stdenv; {
-      CC = "${cc.targetPrefix}cc";
+    # "host" as in Nix terminology (the machine which will run the generated code)
+    host_config_site =
+      generateConf
+      (with stdenv;
+        {
+          CC = "${cc.targetPrefix}cc";
 
-      CCC = if stdenv.cc.isClang then "${cc.targetPrefix}clang++" else "${cc.targetPrefix}c++";
-      CXX = if stdenv.cc.isClang then "${cc.targetPrefix}clang++" else "${cc.targetPrefix}c++";
+          CCC =
+            if stdenv.cc.isClang
+            then "${cc.targetPrefix}clang++"
+            else "${cc.targetPrefix}c++";
+          CXX =
+            if stdenv.cc.isClang
+            then "${cc.targetPrefix}clang++"
+            else "${cc.targetPrefix}c++";
 
-      AR = "${cc.bintools.targetPrefix}ar";
-      LD = "${cc.bintools.targetPrefix}ld";
-      RANLIB = "${cc.bintools.targetPrefix}ranlib";
+          AR = "${cc.bintools.targetPrefix}ar";
+          LD = "${cc.bintools.targetPrefix}ld";
+          RANLIB = "${cc.bintools.targetPrefix}ranlib";
 
-      ARFLAGS = "rc";
-    } // optionalAttrs cc.isClang {
-      GNU = "NO";
-      CMPLR_CLASS = "clang";
-    });
+          ARFLAGS = "rc";
+        }
+        // optionalAttrs cc.isClang {
+          GNU = "NO";
+          CMPLR_CLASS = "clang";
+        });
 
-  passAsFile = [
-    "build_config_site"
-    "host_config_site"
-  ];
+    passAsFile = [
+      "build_config_site"
+      "host_config_site"
+    ];
 
-  preBuild = ''
-    cp -fv --no-preserve=mode "$build_config_sitePath" configure/os/CONFIG_SITE.${build_arch}.${build_arch}
-    cp -fv --no-preserve=mode "$host_config_sitePath" configure/os/CONFIG_SITE.${build_arch}.${host_arch}
+    preBuild = ''
+      cp -fv --no-preserve=mode "$build_config_sitePath" configure/os/CONFIG_SITE.${build_arch}.${build_arch}
+      cp -fv --no-preserve=mode "$host_config_sitePath" configure/os/CONFIG_SITE.${build_arch}.${host_arch}
 
-    echo "=============================="
-    echo "CONFIG_SITE.${build_arch}.${build_arch}"
-    echo "------------------------------"
-    cat "configure/os/CONFIG_SITE.${build_arch}.${build_arch}"
-    echo "=============================="
-    echo "CONFIG_SITE.${build_arch}.${host_arch}"
-    echo "------------------------------"
-    cat "configure/os/CONFIG_SITE.${build_arch}.${host_arch}"
-  '';
+      echo "=============================="
+      echo "CONFIG_SITE.${build_arch}.${build_arch}"
+      echo "------------------------------"
+      cat "configure/os/CONFIG_SITE.${build_arch}.${build_arch}"
+      echo "=============================="
+      echo "CONFIG_SITE.${build_arch}.${host_arch}"
+      echo "------------------------------"
+      cat "configure/os/CONFIG_SITE.${build_arch}.${host_arch}"
+    '';
 
-  # TODO: removing build platform Perl library actually removes every Perl
-  # library since it's the only one...
-  preFixup =
-    ''
-      # Remove lines that start with `#` for the TOOLCHAIN files.
-      #
-      # This file is generated by `gcc -E`, and outputs header dependencies in the
-      # "comments". Unfortunately, a glibc header is part of them, which means Nix
-      # would pull `glibc.dev` as a runtime dependency, which would add ~10MB to
-      # the closure.
-      #
-      # The file is sourced by Make, so comments should have no effect
-      for file in $out/cfg/TOOLCHAIN.*; do
-        sed -i '/^#/d' "$file"
-      done
-    ''
-    + (optionalString (stdenv.buildPlatform != stdenv.hostPlatform) ''
-      # Remove the build platform pkg-config file, since we are stripping the
-      # build platform outputs from the result
-      # TODO: the architecture may be differently named in certain cases (e.g. windows)
-      #
-      # Also remove the build platform "native" perl library
-      rm -rf \
-        $out/lib/pkgconfig/epics-base-${stdenv.buildPlatform.linuxArch}.pc \
-        $out/lib/perl/*/${stdenv.buildPlatform.system}*
-    '');
+    # TODO: removing build platform Perl library actually removes every Perl
+    # library since it's the only one...
+    preFixup =
+      ''
+        # Remove lines that start with `#` for the TOOLCHAIN files.
+        #
+        # This file is generated by `gcc -E`, and outputs header dependencies in the
+        # "comments". Unfortunately, a glibc header is part of them, which means Nix
+        # would pull `glibc.dev` as a runtime dependency, which would add ~10MB to
+        # the closure.
+        #
+        # The file is sourced by Make, so comments should have no effect
+        for file in $out/cfg/TOOLCHAIN.*; do
+          sed -i '/^#/d' "$file"
+        done
+      ''
+      + (optionalString (stdenv.buildPlatform != stdenv.hostPlatform) ''
+        # Remove the build platform pkg-config file, since we are stripping the
+        # build platform outputs from the result
+        # TODO: the architecture may be differently named in certain cases (e.g. windows)
+        #
+        # Also remove the build platform "native" perl library
+        rm -rf \
+          $out/lib/pkgconfig/epics-base-${stdenv.buildPlatform.linuxArch}.pc \
+          $out/lib/perl/*/${stdenv.buildPlatform.system}*
+      '');
 
-  buildInputs = [ readline ];
-  nativeBuildInputs = [ readline ];
+    buildInputs = [readline];
+    nativeBuildInputs = [readline];
 
-  # TODO: Some tests fail
-  doCheck = false;
+    # TODO: Some tests fail
+    doCheck = false;
 
-  meta = {
-    description = "The Experimental Physics and Industrial Control System";
-    homepage = "https://epics-controls.org/";
-    license = epnixLib.licenses.epics;
-    maintainers = with epnixLib.maintainers; [ minijackson ];
-  };
-}
+    meta = {
+      description = "The Experimental Physics and Industrial Control System";
+      homepage = "https://epics-controls.org/";
+      license = epnixLib.licenses.epics;
+      maintainers = with epnixLib.maintainers; [minijackson];
+    };
+  }

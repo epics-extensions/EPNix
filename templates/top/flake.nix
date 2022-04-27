@@ -11,58 +11,62 @@
   #  flake = false;
   #};
 
-  outputs = { self, flake-utils, epnix, ... } @ inputs:
-    let
-      myEpnixDistribution = { pkgs, ... }: {
-        # Set your EPNix options here
+  outputs = {
+    self,
+    flake-utils,
+    epnix,
+    ...
+  } @ inputs: let
+    myEpnixDistribution = {pkgs, ...}: {
+      # Set your EPNix options here
+      # ---
+
+      epnix = {
+        inherit inputs;
+
+        # Change this to be the name of your EPICS top
         # ---
+        meta.name = "my-top";
 
-        epnix = {
-          inherit inputs;
+        # You can choose the version of EPICS-base here:
+        # ---
+        #releaseBranch = "3"; # Defaults to "7"
 
-          # Change this to be the name of your EPICS top
-          # ---
-          meta.name = "my-top";
+        # Add one of the supported modules here:
+        # ---
+        #support.modules = with pkgs.epnix.support; [ StreamDevice ];
 
-          # You can choose the version of EPICS-base here:
-          # ---
-          #releaseBranch = "3"; # Defaults to "7"
+        # Add your applications:
+        # Note that flake inputs must be quoted in this context
+        # ---
+        #applications.apps = [ "inputs.exampleApp" ];
 
-          # Add one of the supported modules here:
-          # ---
-          #support.modules = with pkgs.epnix.support; [ StreamDevice ];
+        # Add your integration tests:
+        # ---
+        checks.files = [./checks/simple.nix];
 
-          # Add your applications:
-          # Note that flake inputs must be quoted in this context
-          # ---
-          #applications.apps = [ "inputs.exampleApp" ];
-
-          # Add your integration tests:
-          # ---
-          checks.files = [ ./checks/simple.nix ];
-
-          # You can specify environment variables in your development shell like this:
-          # ---
-          #devShell.environment.variables = {
-          #  EPICS_CA_ADDR_LIST = "localhost";
-          #  MY_VARIABLE = "the_value";
-          #};
-        };
+        # You can specify environment variables in your development shell like this:
+        # ---
+        #devShell.environment.variables = {
+        #  EPICS_CA_ADDR_LIST = "localhost";
+        #  MY_VARIABLE = "the_value";
+        #};
       };
-    in
+    };
+  in
     # Add your supported systems here.
     # ---
     # "x86_64-linux" should still be specified so that the development
     # environment can be built on your machine.
-    flake-utils.lib.eachSystem [ "x86_64-linux" ] (system:
-      with epnix.lib;
-      let
+    flake-utils.lib.eachSystem ["x86_64-linux"] (system:
+      with epnix.lib; let
         result = evalEpnixModules system myEpnixDistribution;
-      in
-      {
-        packages = result.outputs // {
-          default = self.packages.${system}.build;
-        };
+      in {
+        packages =
+          result.outputs
+          // {
+            default = self.packages.${system}.build;
+          };
 
         defaultPackage = self.packages.${system}.default;
 
