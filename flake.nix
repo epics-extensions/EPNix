@@ -44,11 +44,9 @@
               };
 
             checks =
-              (import ./checks { inherit pkgs; })
-              // {
-                # The manpage and documentation should always build
-                inherit (self.packages.${system}) manpage mdbook;
-              };
+              # Everything should always build
+              self.packages.${system}
+              // (import ./checks { inherit pkgs; });
 
             devShells.default = pkgs.epnixLib.mkEpnixDevShell "x86_64-linux" {
               epnix = {
