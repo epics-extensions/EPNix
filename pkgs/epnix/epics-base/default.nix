@@ -56,8 +56,8 @@ mkEpicsPackage {
     done
   '';
 
-  propagatedBuildInputs = [ readline ];
-  propagatedNativeBuildInputs = [ readline ];
+  buildInputs = [ readline ];
+  nativeBuildInputs = [ readline ];
 
   # TODO: Some tests fail
   doCheck = false;
