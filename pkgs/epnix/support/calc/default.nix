@@ -1,12 +1,12 @@
-{ lib
-, epnixLib
-, mkEpicsPackage
-, fetchFromGitHub
-, epnix
-, local_config_site ? { }
-, local_release ? { }
+{
+  lib,
+  epnixLib,
+  mkEpicsPackage,
+  fetchFromGitHub,
+  epnix,
+  local_config_site ? {},
+  local_release ? {},
 }:
-
 mkEpicsPackage rec {
   pname = "calc";
   version = "3-7-4";
@@ -14,7 +14,7 @@ mkEpicsPackage rec {
 
   inherit local_config_site local_release;
 
-  buildInputs = with epnix.support; [ sscan ];
+  buildInputs = with epnix.support; [sscan];
 
   src = fetchFromGitHub {
     owner = "epics-modules";
@@ -27,6 +27,6 @@ mkEpicsPackage rec {
     description = "Support for run-time expression evaluation";
     homepage = "https://epics.anl.gov/bcda/synApps/calc/calc.html";
     license = epnixLib.licenses.epics;
-    maintainers = with epnixLib.maintainers; [ minijackson ];
+    maintainers = with epnixLib.maintainers; [minijackson];
   };
 }

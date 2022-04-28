@@ -1,13 +1,13 @@
-{ lib
-, epnixLib
-, mkEpicsPackage
-, fetchFromGitHub
-, fetchpatch
-, epnix
-, local_config_site ? { }
-, local_release ? { }
+{
+  lib,
+  epnixLib,
+  mkEpicsPackage,
+  fetchFromGitHub,
+  fetchpatch,
+  epnix,
+  local_config_site ? {},
+  local_release ? {},
 }:
-
 mkEpicsPackage rec {
   pname = "sscan";
   version = "2-11-5";
@@ -15,7 +15,7 @@ mkEpicsPackage rec {
 
   inherit local_config_site local_release;
 
-  buildInputs = with epnix.support; [ seq ];
+  buildInputs = with epnix.support; [seq];
 
   src = fetchFromGitHub {
     owner = "epics-modules";
@@ -28,6 +28,6 @@ mkEpicsPackage rec {
     description = "Contains the sscan record and related software for systematically moving positioners, triggering detectors, and acquiring and storing resulting data";
     homepage = "https://epics.anl.gov/bcda/synApps/sscan/sscan.html";
     license = epnixLib.licenses.epics;
-    maintainers = with epnixLib.maintainers; [ minijackson ];
+    maintainers = with epnixLib.maintainers; [minijackson];
   };
 }

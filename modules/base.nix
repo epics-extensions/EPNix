@@ -1,24 +1,27 @@
-{ config, lib, epnixLib, pkgs, ... }:
-
-with lib;
-
-let
-  cfg = config.epnix.epics-base;
-  settingsFormat = epnixLib.formats.make { };
-in
 {
+  config,
+  lib,
+  epnixLib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.epnix.epics-base;
+  settingsFormat = epnixLib.formats.make {};
+in {
   options.epnix.epics-base = {
     releaseBranch = mkOption {
       default = "7";
-      type = types.enum [ "7" "3" ];
+      type = types.enum ["7" "3"];
       description = "The release branch of epics-base to install";
     };
 
     package = mkOption {
-      default = super: super.epnix."epics-base${cfg.releaseBranch}".override {
-        local_config_site = cfg.siteConfig;
-        local_release = cfg.releaseConfig;
-      };
+      default = super:
+        super.epnix."epics-base${cfg.releaseBranch}".override {
+          local_config_site = cfg.siteConfig;
+          local_release = cfg.releaseConfig;
+        };
       defaultText = literalExpression ''
         super: super.epnix."epics-base''${releaseBranch}".override {
           local_config_site = siteConfig;
@@ -35,29 +38,31 @@ in
     };
 
     releaseConfig = mkOption {
-      default = { };
+      default = {};
       description = "Configuration installed as RELEASE";
       type = types.submodule {
         freeformType = settingsFormat.type;
-        options = { };
+        options = {};
       };
     };
 
     siteConfig = mkOption {
-      default = { };
+      default = {};
       description = "Configuration installed as CONFIG_SITE";
       type = types.submodule {
         freeformType = settingsFormat.type;
-        options = { };
+        options = {};
       };
     };
   };
 
   config.nixpkgs.overlays = [
     (self: super: {
-      epnix = (super.epnix or { }) // {
-        epics-base = cfg.package super;
-      };
+      epnix =
+        (super.epnix or {})
+        // {
+          epics-base = cfg.package super;
+        };
     })
   ];
 

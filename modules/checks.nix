@@ -1,10 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-let
-  cfg = config.epnix.checks;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.epnix.checks;
+in {
   options.epnix.checks = {
     files = mkOption {
       description = ''
@@ -14,8 +16,8 @@ in
         tests" for instructions on how to write these `.nix` files.
       '';
       type = with types; listOf path;
-      default = [ ];
-      example = [ "./checks/simple.nix" ];
+      default = [];
+      example = ["./checks/simple.nix"];
     };
 
     derivations = mkOption {
@@ -29,21 +31,22 @@ in
     };
   };
 
-  config.epnix.checks.derivations =
-    let
-      checkName = path: pipe path [
+  config.epnix.checks.derivations = let
+    checkName = path:
+      pipe path [
         baseNameOf
         (splitString ".")
         head
       ];
 
-      importCheck = path: import path {
+    importCheck = path:
+      import path {
         inherit pkgs;
         inherit (config.epnix.outputs) build;
       };
-    in
+  in
     listToAttrs
-      (forEach
-        cfg.files
-        (file: nameValuePair (checkName file) (importCheck file)));
+    (forEach
+      cfg.files
+      (file: nameValuePair (checkName file) (importCheck file)));
 }

@@ -1,13 +1,16 @@
-{ build, pkgs, ... }:
-
+{
+  build,
+  pkgs,
+  ...
+}:
 pkgs.nixosTest {
   name = "simple";
 
   machine = {
-    environment.systemPackages = [ pkgs.epnix.epics-base ];
+    environment.systemPackages = [pkgs.epnix.epics-base];
 
     systemd.services.my-ioc = {
-      wantedBy = [ "multi-user.target" ];
+      wantedBy = ["multi-user.target"];
       serviceConfig = {
         ExecStart = "${build}/iocBoot/iocexample/st.cmd";
         WorkingDirectory = "${build}/iocBoot/iocexample";

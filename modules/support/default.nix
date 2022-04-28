@@ -1,14 +1,17 @@
-{ config, lib, pkgs, epnixLib, ... }:
-
-with lib;
-let
-  cfg = config.epnix.support;
-in
 {
+  config,
+  lib,
+  pkgs,
+  epnixLib,
+  ...
+}:
+with lib; let
+  cfg = config.epnix.support;
+in {
   options.epnix.support = {
     modules = mkOption {
-      default = [ ];
-      type = with types; listOf (oneOf [ str path package ]);
+      default = [];
+      type = with types; listOf (oneOf [str path package]);
       description = ''
         Support modules needed for this EPICS distribution.
 
@@ -41,8 +44,8 @@ in
     };
   };
 
-  config.epnix.support.resolvedModules =
-    let available = { inputs = config.epnix.inputs; };
-    in
+  config.epnix.support.resolvedModules = let
+    available = {inputs = config.epnix.inputs;};
+  in
     map (epnixLib.resolveInput available) cfg.modules;
 }

@@ -1,12 +1,12 @@
-{ lib
-, epnixLib
-, mkEpicsPackage
-, fetchzip
-, re2c
-, local_config_site ? { }
-, local_release ? { }
+{
+  lib,
+  epnixLib,
+  mkEpicsPackage,
+  fetchzip,
+  re2c,
+  local_config_site ? {},
+  local_release ? {},
 }:
-
 mkEpicsPackage rec {
   pname = "seq";
   version = "2.2.6";
@@ -14,9 +14,9 @@ mkEpicsPackage rec {
 
   inherit local_config_site local_release;
 
-  nativeBuildInputs = [ re2c ];
+  nativeBuildInputs = [re2c];
 
-  patches = [ ./remove-date.patch ];
+  patches = [./remove-date.patch];
 
   preBuild = ''
     echo 'include $(TOP)/configure/RELEASE.local' >> configure/RELEASE
@@ -34,6 +34,6 @@ mkEpicsPackage rec {
     description = "Provides the State Notation Language (SNL), a domain specific programming language";
     homepage = "https://www-csr.bessy.de/control/SoftDist/sequencer/";
     license = epnixLib.licenses.epics;
-    maintainers = with epnixLib.maintainers; [ minijackson ];
+    maintainers = with epnixLib.maintainers; [minijackson];
   };
 }

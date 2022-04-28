@@ -1,7 +1,5 @@
-{ lib, ... }:
-
-with lib;
-{
+{lib, ...}:
+with lib; {
   options.epnix.meta = {
     name = mkOption {
       description = "Name of this EPICS distribution";
