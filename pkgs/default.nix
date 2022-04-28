@@ -25,5 +25,7 @@ with prev;
         sscan = callPackage ./epnix/support/sscan {};
         StreamDevice = callPackage ./epnix/support/StreamDevice {};
       };
+
+      procServ = callPackage ./epnix/tools/procServ {};
     };
   }
