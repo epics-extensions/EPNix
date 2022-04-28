@@ -492,7 +492,9 @@ in {
 
           load_profiles
 
-          menu
+          if [[ "$-" == *i* ]]; then
+            menu
+          fi
         '';
       }
       // cfg.environment.variables;
