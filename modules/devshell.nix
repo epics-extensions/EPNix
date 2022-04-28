@@ -205,12 +205,16 @@ in {
     };
 
     environment.variables = mkOption {
-      type = with types; attrsOf (either str (listOf str));
+      type = with types; attrsOf (nullOr (either str (listOf str)));
       description = ''
         A set of environment variables used in the development environment.
 
         The value of each variable can be either a string or a list of strings.
         The latter is concatenated, interspersed with colon characters.
+
+        If null is given, the environment variable is explicitely unset,
+        preventing said environment variable to "leak" from the host
+        environment to the development environment.
       '';
       apply = mapAttrs (n: v:
         if isList v
@@ -491,6 +495,11 @@ in {
           }
 
           load_profiles
+
+          ${concatMapStringsSep "\n"
+            (var: "unset ${var}")
+            (attrNames
+              (filterAttrs (_: isNull) cfg.environment.variables))}
 
           if [[ "$-" == *i* ]]; then
             menu
