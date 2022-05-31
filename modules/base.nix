@@ -73,6 +73,9 @@ in {
       # explicitely not instanciated in the Makefile hell.
       CMD_CFLAGS = "-fdiagnostics-color=always";
       CMD_CXXFLAGS = "-fdiagnostics-color=always";
+      EPICS_MBA_DEF_APP_TYPE = null;
+      EPICS_MBA_TEMPLATE_TOP = null;
+      EPICS_MBA_BASE = null;
     };
 
     packages = [
