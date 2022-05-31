@@ -395,7 +395,7 @@ in {
             local -a options=(--recurse-submodules)
 
             if [ -n "$wantedRef" ]; then
-              options+=(--branch "$wantedRef")
+              options+=(--branch "''${wantedRef#refs/heads/}")
             fi
 
             info "cloning '$name'"

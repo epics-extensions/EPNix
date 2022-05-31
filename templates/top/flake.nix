@@ -30,7 +30,7 @@
 
         # You can choose the version of EPICS-base here:
         # ---
-        #releaseBranch = "3"; # Defaults to "7"
+        #epics-base.releaseBranch = "3"; # Defaults to "7"
 
         # Add one of the supported modules here:
         # ---
