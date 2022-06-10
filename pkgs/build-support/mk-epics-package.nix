@@ -130,16 +130,6 @@ in
             done
           fi
         ''
-        # When cross-compiling, EPICS actually compiles everything for the build
-        # platform *and* for the host platform. We don't need products for the
-        # build platform, so we remove them.
-        #
-        # TODO: find a solution upstream so that we don't waste time compiling for
-        # the build platform.
-        + (optionalString (stdenv.buildPlatform != stdenv.hostPlatform)
-          ''
-            rm -rf $out/{bin,lib}/${build_arch}
-          '')
         + postInstall;
 
       doCheck = attrs.doCheck or true;
