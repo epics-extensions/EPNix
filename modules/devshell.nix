@@ -98,7 +98,7 @@ with lib; let
     (name: scriptCfg:
       pkgs.writeShellApplication {
         inherit name;
-        runtimeInputs = with pkgs; [ncurses];
+        runtimeInputs = [pkgs.buildPackages.ncurses];
         text = ''
           # shellcheck disable=SC1091
           source "${pkgs.bash-lib}"
@@ -259,22 +259,25 @@ in {
   };
 
   config.epnix.devShell = {
-    packages = [
+    packages = with pkgs.buildPackages; [
       {
-        package = pkgs.bear;
+        package = bear;
         category = "development tools";
       }
       # Once NixOS 22.05 is released, switch to alejandra
       {
-        package = pkgs.nixpkgs-fmt;
+        package = nixpkgs-fmt;
         category = "development tools";
       }
       {
-        package = pkgs.clang-tools;
+        # Use pkgsBuildBuild so we don't have to build LLVM when
+        # cross-compiling. This is necessary for clang because
+        # hostPackages != targetPackages
+        package = pkgs.pkgsBuildBuild.clang-tools;
         category = "development tools";
         commands."clang-format".description = "Format C/C++ code";
       }
-      {package = pkgs.grc;}
+      {package = grc;}
     ];
 
     scripts = {
@@ -304,7 +307,7 @@ in {
 
       eman = {
         text = ''
-          manpage="$(nix build --no-link --json --no-write-lock-file '.#manpage' | ${pkgs.jq}/bin/jq -r '.[].outputs.out')"
+          manpage="$(nix build --no-link --json --no-write-lock-file '.#manpage' | ${pkgs.buildPackages.jq}/bin/jq -r '.[].outputs.out')"
           man "$manpage"
         '';
         category = "epnix commands";
@@ -313,7 +316,7 @@ in {
 
       edoc = {
         text = ''
-          mdbook="$(nix build --no-link --json --no-write-lock-file '.#mdbook' | ${pkgs.jq}/bin/jq -r '.[].outputs.out')"
+          mdbook="$(nix build --no-link --json --no-write-lock-file '.#mdbook' | ${pkgs.buildPackages.jq}/bin/jq -r '.[].outputs.out')"
           xdg-open "$mdbook/index.html"
         '';
         category = "epnix commands";
