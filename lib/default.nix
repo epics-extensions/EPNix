@@ -16,14 +16,23 @@ with lib; let
     maintainers = import ./maintainers/maintainer-list.nix;
     types = import ./types.nix args;
 
-    evalEpnixModules = system: configuration: let
+    evalEpnixModules = {
+      nixpkgsConfig,
+      epnixConfig,
+    }: let
+      nixpkgsConfigWithDefaults =
+        {
+          crossSystem = null;
+          config = {};
+        }
+        // nixpkgsConfig;
       eval = evalModules {
         modules =
           [
             ({config, ...}: {
               config._module.args = let
                 finalPkgs = import inputs.nixpkgs {
-                  inherit system;
+                  inherit (nixpkgsConfigWithDefaults) system crossSystem config;
                   overlays =
                     [
                       inputs.self.overlay
@@ -37,7 +46,7 @@ with lib; let
               };
             })
 
-            configuration
+            epnixConfig
             (inputs.nix-module-doc.lib.modules.doc-options-md docParams)
             (inputs.nix-module-doc.lib.modules.manpage docParams)
             (inputs.nix-module-doc.lib.modules.mdbook docParams)
@@ -62,16 +71,16 @@ with lib; let
       inherit (config.epnix) outputs;
     };
 
-    mkEpnixBuild = system: configuration:
-      (self.evalEpnixModules system configuration).config.epnix.outputs.build;
+    mkEpnixBuild = cfg:
+      (self.evalEpnixModules cfg).config.epnix.outputs.build;
 
-    mkEpnixDevShell = system: configuration:
-      (self.evalEpnixModules system configuration).config.epnix.outputs.devShell;
+    mkEpnixDevShell = cfg:
+      (self.evalEpnixModules cfg).config.epnix.outputs.devShell;
 
-    mkEpnixManPage = system: configuration:
-      (self.evalEpnixModules system configuration).config.epnix.outputs.manpage;
-    mkEpnixMdBook = system: configuration:
-      (self.evalEpnixModules system configuration).config.epnix.outputs.mdbook;
+    mkEpnixManPage = cfg:
+      (self.evalEpnixModules cfg).config.epnix.outputs.manpage;
+    mkEpnixMdBook = cfg:
+      (self.evalEpnixModules cfg).config.epnix.outputs.mdbook;
 
     # Like lib.getName, but also supports paths
     getName = thing:

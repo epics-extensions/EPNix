@@ -6,8 +6,9 @@
     projectDir = ./mock-server;
   };
 
-  ioc = epnixLib.mkEpnixBuild system {
-    imports = [./top/epnix.nix];
+  ioc = epnixLib.mkEpnixBuild {
+    nixpkgsConfig.system = system;
+    epnixConfig.imports = [./top/epnix.nix];
   };
 in
   pkgs.nixosTest {

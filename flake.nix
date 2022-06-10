@@ -30,8 +30,14 @@
         packages =
           flattenTree (pkgs.recurseIntoAttrs pkgs.epnix)
           // {
-            manpage = self.lib.mkEpnixManPage system {};
-            mdbook = self.lib.mkEpnixMdBook system {};
+            manpage = self.lib.mkEpnixManPage {
+              nixpkgsConfig.system = system;
+              epnixConfig = {};
+            };
+            mdbook = self.lib.mkEpnixMdBook {
+              nixpkgsConfig.system = system;
+              epnixConfig = {};
+            };
           };
 
         checks =
@@ -39,8 +45,9 @@
           self.packages.${system}
           // (import ./checks {inherit pkgs;});
 
-        devShells.default = pkgs.epnixLib.mkEpnixDevShell "x86_64-linux" {
-          epnix = {
+        devShells.default = pkgs.epnixLib.mkEpnixDevShell {
+          nixpkgsConfig.system = "x86_64-linux";
+          epnixConfig.epnix = {
             meta.name = "epnix";
             buildConfig.src = pkgs.emptyDirectory;
             devShell.packages = [
