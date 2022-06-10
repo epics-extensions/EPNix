@@ -24,7 +24,8 @@ in
         TIRPC = "YES";
       };
 
-    nativeBuildInputs = [pkg-config rpcsvc-proto];
+    depsBuildBuild = [pkg-config];
+    nativeBuildInputs = [pkg-config rpcsvc-proto libtirpc];
     buildInputs = [libtirpc] ++ (with epnix.support; [ipac seq]);
 
     patches = [./use-pkg-config.patch];
