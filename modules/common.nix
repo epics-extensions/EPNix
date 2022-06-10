@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 with lib; {
@@ -41,6 +42,25 @@ with lib; {
           ~ A markdown file describing the available module options.
       '';
       default = {};
+      type = types.attrs;
+    };
+
+    epnix.pkgs = mkOption {
+      description = ''
+        Contains the set of packages effectively used by this distribution.
+
+        This means for example that the `epics-base` package will refer to the
+        release branch 3 or 7, depending on the
+        `epnix.epics-base.releaseBranch` option value, and so on.
+
+        These packages will be available as the `legacyPackages` flake output.
+
+        This option is read-only. To modify a set of packages, please use the
+        `nixpkgs.overlays` option.
+      '';
+      default = pkgs;
+      defaultText = literalExpression "<the effective used packages>";
+      readOnly = true;
       type = types.attrs;
     };
   };

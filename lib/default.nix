@@ -65,7 +65,7 @@ with lib; let
         then throw "\nFailed assertions:\n${lib.concatStringsSep "\n" (map (x: "- ${x}") failedAssertions)}"
         else lib.showWarnings eval.config.warnings eval.config;
     in {
-      inherit (eval) pkgs options;
+      inherit (eval) options;
       inherit config;
 
       inherit (config.epnix) outputs;
