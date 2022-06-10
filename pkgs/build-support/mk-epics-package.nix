@@ -22,6 +22,7 @@
   passAsFile ? [],
   preBuild ? "",
   postInstall ? "",
+  postFixup ? "",
   ...
 } @ attrs:
 with lib; let
@@ -134,4 +135,10 @@ in
 
       doCheck = attrs.doCheck or true;
       checkTarget = "runtests";
+
+      stripDebugList = attrs.stripDebugList or ["bin/${host_arch}" "lib/${host_arch}"];
+      postFixup = optionalString (stdenv.buildPlatform != stdenv.hostPlatform) ''
+        stripDirs strip "bin/${build_arch} lib/${build_arch}" "-S"
+      ''
+      + postFixup;
     })
