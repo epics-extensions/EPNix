@@ -15,6 +15,7 @@
   local_config_site ? {},
   local_release ? {},
   isEpicsBase ? false,
+  depsBuildBuild ? [],
   nativeBuildInputs ? [],
   buildInputs ? [],
   makeFlags ? [],
@@ -39,7 +40,7 @@ in
     // {
       strictDeps = true;
 
-      depsBuildBuild = [buildPackages.stdenv.cc];
+      depsBuildBuild = depsBuildBuild ++ [buildPackages.stdenv.cc];
 
       nativeBuildInputs = nativeBuildInputs ++ [makeWrapper perl];
       buildInputs = buildInputs ++ (optional (!isEpicsBase) [epnix.epics-base]);
@@ -48,14 +49,9 @@ in
         makeFlags
         ++ [
           "INSTALL_LOCATION=${placeholder "out"}"
+        ];
 
-          # This prevents EPICS from detecting installed libraries on the host
-          # system, for when Nix is compiling without sandbox (e.g.: WSL2)
-          "GNU_DIR=/var/empty"
-        ]
-        ++ optional
-        (stdenv.buildPlatform != stdenv.hostPlatform)
-        "CROSS_COMPILER_TARGET_ARCHS=${host_arch}";
+      PERL_HASH_SEED = 0;
 
       setupHook = ./setup-hook.sh;
 
@@ -71,6 +67,14 @@ in
           # if set (not the default), or the current date/time, which isn't
           # reproducible.
           GENVERSIONDEFAULT = "EPNix";
+          CROSS_COMPILER_TARGET_ARCHS =
+            if (stdenv.buildPlatform != stdenv.hostPlatform)
+            then host_arch
+            else null;
+
+          # This prevents EPICS from detecting installed libraries on the host
+          # system, for when Nix is compiling without sandbox (e.g.: WSL2)
+          GNU_DIR = "/var/empty";
         }
         // local_config_site);
 
@@ -84,8 +88,6 @@ in
           "local_config_site"
           "local_release"
         ];
-
-      PERL_HASH_SEED = 0;
 
       preBuild =
         ''
