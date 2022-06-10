@@ -341,11 +341,81 @@ in {
             fatal "Could not find 'flake.nix' file. Are you in an EPNix project?"
           fi
 
+          if [[ ! -d "$toplevel/configure" ]]; then
+            fatal "The 'configure/' directory does not exist, you might need to execute 'makeBaseApp.pl' first"
+          fi
+
+          # local_release and local_config_site are set in the shell attributes
+
           info "Adding EPICS components to 'configure/RELEASE.local'"
-          epics-components | tee "$toplevel/configure/RELEASE.local" >&2
+          # shellcheck disable=SC2154
+          echo "$local_release" | tee "$toplevel/configure/RELEASE.local" >&2
+          epics-components >> "$toplevel/configure/RELEASE.local"
+          epics-components
+
+          info "Adding Make variables to 'configure/CONFIG_SITE.local'"
+          # shellcheck disable=SC2154
+          echo "$local_config_site" | tee "$toplevel/configure/CONFIG_SITE.local" >&2
         '';
         category = "epnix commands";
-        description = "Regenerate the 'configure/RELEASE.local' file";
+        description = "Regenerate EPNix specific 'configure/' files";
+      };
+
+      check-config = {
+        text = ''
+          toplevel="$(realpath -s .)"
+
+          if [[ ! -f "flake.nix" ]]; then
+            exit
+          fi
+
+          has_mismatch=0
+
+          # local_release and local_config_site are set in the shell attributes
+
+          release_path="$toplevel/configure/RELEASE.local"
+          config_site_path="$toplevel/configure/CONFIG_SITE.local"
+
+          function compare() {
+            diff --color=always -au - "$1" | tail -n +3
+          }
+
+          if [[ -f "$release_path" ]]; then
+            set +e
+            # shellcheck disable=SC2154
+            release_diff="$( (echo "$local_release"; epics-components) | compare "$release_path")"
+            set -e
+            if [[ "$release_diff" ]]; then
+              warn "the 'configure/RELEASE.local' file differs from the one used by Nix"
+              echoe "$release_diff"
+              has_mismatch=1
+            fi
+          else
+              warn "the 'configure/RELEASE.local' file does not exist"
+              has_mismatch=1
+          fi
+
+          if [[ -f "$config_site_path" ]]; then
+            set +e
+            # shellcheck disable=SC2154
+            config_site_diff="$(echo "$local_config_site" | compare "$config_site_path")"
+            set -e
+            if [[ "$config_site_diff" ]]; then
+              warn "the 'configure/CONFIG_SITE.local' file differs from the one used by Nix"
+              echoe "$config_site_diff"
+              has_mismatch=1
+            fi
+          else
+            warn "the 'configure/CONFIG_SITE.local' file does not exist"
+            has_mismatch=1
+          fi
+
+          if [[ "$has_mismatch" == 1 ]]; then
+            info "run 'eregen-config' to update your 'configure/' directory."
+          fi
+        '';
+        category = "epnix commands";
+        description = "Check whether important files in 'configure/' are up to date";
       };
 
       eregen-git = {
@@ -485,6 +555,8 @@ in {
 
         nativeBuildInputs = (map (cmd: cmd.package) cfg.packages) ++ scriptPackages;
 
+        inherit (config.epnix.outputs.build) local_config_site local_release;
+
         shellHook = ''
           function load_profiles() {
             # Don't return the glob itself, if no matches
@@ -507,6 +579,8 @@ in {
           if [[ "$-" == *i* ]]; then
             menu
           fi
+
+          check-config
         '';
       }
       // cfg.environment.variables;
