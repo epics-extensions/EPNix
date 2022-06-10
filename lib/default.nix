@@ -125,22 +125,27 @@ with lib; let
 
       arch =
         {
-          x86_64 =
-            if parsed.kernel.name == "windows"
-            then "x64"
-            else "x86_64";
+          x86 =
+            if parsed.cpu.bits == 64
+            then
+              if parsed.kernel.name == "windows"
+              then "x64"
+              else "x86_64"
+            else "x86";
 
-          aarch64 = "aarch64";
-          # TODO: is this correct? EPICS' CONFIG_SITE files don't seem to
-          # differenciate between i386, i486, i586, and i686
-          i686 = "x86";
+          arm =
+            if parsed.cpu.bits == 64
+            then "aarch64"
+            else "arm";
 
-          powerpc = "ppc";
-          powerpc64 = "ppc64";
+          power =
+            if parsed.cpu.bits == 64
+            then "ppc64"
+            else "ppc";
 
           sparc = "sparc";
         }
-        .${parsed.cpu.name}
+        .${parsed.cpu.family}
         or (throw "Unsupported architecture: ${parsed.cpu.name}");
     in "${kernel}-${arch}";
 
