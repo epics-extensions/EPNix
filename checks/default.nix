@@ -12,9 +12,9 @@ with pkgs.lib;
       # Would be nice to have, but needs special care
       # "x86_64-w64-mingw32"
       # "x86_64-cygwin"
-      "powerpc64-linux"
-      "powerpc64le-linux"
-      "aarch64-linux"
+      "powerpc64-unknown-linux-gnu"
+      "powerpc64le-unknown-linux-gnu"
+      "aarch64-unknown-linux-gnu"
       # Needs special care
       # "armv6l-linux"
     ])))
