@@ -15,7 +15,7 @@ in
     name = "support-StreamDevice-simple";
     meta.maintainers = with epnixLib.maintainers; [minijackson];
 
-    machine = let
+    nodes.machine = let
       listenAddr = "127.0.0.1:1234";
     in {
       environment.systemPackages = [pkgs.epnix.epics-base];

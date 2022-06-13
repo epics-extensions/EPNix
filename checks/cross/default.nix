@@ -23,7 +23,7 @@ in
     name = "cross-for-${system}";
     meta.maintainers = with epnixLib.maintainers; [minijackson];
 
-    machine = {};
+    nodes.machine = {};
 
     testScript = ''
       start_all()
