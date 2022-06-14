@@ -71,7 +71,9 @@ in {
 
       postInstall =
         ''
-          cp -rafv iocBoot "$out"
+          if [[ -d iocBoot ]]; then
+            cp -rafv iocBoot "$out"
+          fi
 
         ''
         + (cfg.attrs.postInstall or "");

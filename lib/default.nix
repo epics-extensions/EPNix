@@ -16,14 +16,23 @@ with lib; let
     maintainers = import ./maintainers/maintainer-list.nix;
     types = import ./types.nix args;
 
-    evalEpnixModules = system: configuration: let
+    evalEpnixModules = {
+      nixpkgsConfig,
+      epnixConfig,
+    }: let
+      nixpkgsConfigWithDefaults =
+        {
+          crossSystem = null;
+          config = {};
+        }
+        // nixpkgsConfig;
       eval = evalModules {
         modules =
           [
             ({config, ...}: {
               config._module.args = let
                 finalPkgs = import inputs.nixpkgs {
-                  inherit system;
+                  inherit (nixpkgsConfigWithDefaults) system crossSystem config;
                   overlays =
                     [
                       inputs.self.overlay
@@ -37,7 +46,7 @@ with lib; let
               };
             })
 
-            configuration
+            epnixConfig
             (inputs.nix-module-doc.lib.modules.doc-options-md docParams)
             (inputs.nix-module-doc.lib.modules.manpage docParams)
             (inputs.nix-module-doc.lib.modules.mdbook docParams)
@@ -56,22 +65,22 @@ with lib; let
         then throw "\nFailed assertions:\n${lib.concatStringsSep "\n" (map (x: "- ${x}") failedAssertions)}"
         else lib.showWarnings eval.config.warnings eval.config;
     in {
-      inherit (eval) pkgs options;
+      inherit (eval) options;
       inherit config;
 
       inherit (config.epnix) outputs;
     };
 
-    mkEpnixBuild = system: configuration:
-      (self.evalEpnixModules system configuration).config.epnix.outputs.build;
+    mkEpnixBuild = cfg:
+      (self.evalEpnixModules cfg).config.epnix.outputs.build;
 
-    mkEpnixDevShell = system: configuration:
-      (self.evalEpnixModules system configuration).config.epnix.outputs.devShell;
+    mkEpnixDevShell = cfg:
+      (self.evalEpnixModules cfg).config.epnix.outputs.devShell;
 
-    mkEpnixManPage = system: configuration:
-      (self.evalEpnixModules system configuration).config.epnix.outputs.manpage;
-    mkEpnixMdBook = system: configuration:
-      (self.evalEpnixModules system configuration).config.epnix.outputs.mdbook;
+    mkEpnixManPage = cfg:
+      (self.evalEpnixModules cfg).config.epnix.outputs.manpage;
+    mkEpnixMdBook = cfg:
+      (self.evalEpnixModules cfg).config.epnix.outputs.mdbook;
 
     # Like lib.getName, but also supports paths
     getName = thing:
@@ -116,22 +125,27 @@ with lib; let
 
       arch =
         {
-          x86_64 =
-            if parsed.kernel.name == "windows"
-            then "x64"
-            else "x86_64";
+          x86 =
+            if parsed.cpu.bits == 64
+            then
+              if parsed.kernel.name == "windows"
+              then "x64"
+              else "x86_64"
+            else "x86";
 
-          aarch64 = "aarch64";
-          # TODO: is this correct? EPICS' CONFIG_SITE files don't seem to
-          # differenciate between i386, i486, i586, and i686
-          i686 = "x86";
+          arm =
+            if parsed.cpu.bits == 64
+            then "aarch64"
+            else "arm";
 
-          powerpc = "ppc";
-          powerpc64 = "ppc64";
+          power =
+            if parsed.cpu.bits == 64
+            then "ppc64"
+            else "ppc";
 
           sparc = "sparc";
         }
-        .${parsed.cpu.name}
+        .${parsed.cpu.family}
         or (throw "Unsupported architecture: ${parsed.cpu.name}");
     in "${kernel}-${arch}";
 

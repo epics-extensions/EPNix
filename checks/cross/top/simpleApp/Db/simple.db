@@ -1,0 +1,3 @@
+record(ai, "HELLO") {
+	field(DESC, "A simple record")
+}

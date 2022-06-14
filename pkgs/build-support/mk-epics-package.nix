@@ -15,12 +15,14 @@
   local_config_site ? {},
   local_release ? {},
   isEpicsBase ? false,
+  depsBuildBuild ? [],
   nativeBuildInputs ? [],
   buildInputs ? [],
   makeFlags ? [],
   passAsFile ? [],
   preBuild ? "",
   postInstall ? "",
+  postFixup ? "",
   ...
 } @ attrs:
 with lib; let
@@ -39,7 +41,7 @@ in
     // {
       strictDeps = true;
 
-      depsBuildBuild = [buildPackages.stdenv.cc];
+      depsBuildBuild = depsBuildBuild ++ [buildPackages.stdenv.cc];
 
       nativeBuildInputs = nativeBuildInputs ++ [makeWrapper perl];
       buildInputs = buildInputs ++ (optional (!isEpicsBase) [epnix.epics-base]);
@@ -48,14 +50,9 @@ in
         makeFlags
         ++ [
           "INSTALL_LOCATION=${placeholder "out"}"
+        ];
 
-          # This prevents EPICS from detecting installed libraries on the host
-          # system, for when Nix is compiling without sandbox (e.g.: WSL2)
-          "GNU_DIR=/var/empty"
-        ]
-        ++ optional
-        (stdenv.buildPlatform != stdenv.hostPlatform)
-        "CROSS_COMPILER_TARGET_ARCHS=${host_arch}";
+      PERL_HASH_SEED = 0;
 
       setupHook = ./setup-hook.sh;
 
@@ -71,6 +68,14 @@ in
           # if set (not the default), or the current date/time, which isn't
           # reproducible.
           GENVERSIONDEFAULT = "EPNix";
+          CROSS_COMPILER_TARGET_ARCHS =
+            if (stdenv.buildPlatform != stdenv.hostPlatform)
+            then host_arch
+            else null;
+
+          # This prevents EPICS from detecting installed libraries on the host
+          # system, for when Nix is compiling without sandbox (e.g.: WSL2)
+          GNU_DIR = "/var/empty";
         }
         // local_config_site);
 
@@ -84,8 +89,6 @@ in
           "local_config_site"
           "local_release"
         ];
-
-      PERL_HASH_SEED = 0;
 
       preBuild =
         ''
@@ -128,18 +131,14 @@ in
             done
           fi
         ''
-        # When cross-compiling, EPICS actually compiles everything for the build
-        # platform *and* for the host platform. We don't need products for the
-        # build platform, so we remove them.
-        #
-        # TODO: find a solution upstream so that we don't waste time compiling for
-        # the build platform.
-        + (optionalString (stdenv.buildPlatform != stdenv.hostPlatform)
-          ''
-            rm -rf $out/{bin,lib}/${build_arch}
-          '')
         + postInstall;
 
       doCheck = attrs.doCheck or true;
       checkTarget = "runtests";
+
+      stripDebugList = attrs.stripDebugList or ["bin/${host_arch}" "lib/${host_arch}"];
+      postFixup = optionalString (stdenv.buildPlatform != stdenv.hostPlatform) ''
+        stripDirs strip "bin/${build_arch} lib/${build_arch}" "-S"
+      ''
+      + postFixup;
     })

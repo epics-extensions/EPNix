@@ -60,7 +60,10 @@
     # environment can be built on your machine.
     flake-utils.lib.eachSystem ["x86_64-linux"] (system:
       with epnix.lib; let
-        result = evalEpnixModules system myEpnixDistribution;
+        result = evalEpnixModules {
+          nixpkgsConfig.system = system;
+          epnixConfig = myEpnixDistribution;
+        };
       in {
         packages =
           result.outputs
