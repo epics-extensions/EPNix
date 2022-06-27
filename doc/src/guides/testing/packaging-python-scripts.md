@@ -1,9 +1,9 @@
 # Packaging Python scripts
 
-As EPNix is using Nix, it is possible to packaging Python scripts as helpers
-for our integration tests, by using the provided [infrastructure] of nixpkgs.
-As a matter of fact, it is possible to package any program in any language, but
-we recommend using Python scripts with [Poetry] for their simplicity and
+As EPNix uses Nix, you can packaging Python scripts as helpers for your
+integration tests, by using the provided [infrastructure] of nixpkgs. As
+a matter of fact, you can package any program in any language, but we
+recommend using Python scripts with [Poetry] for their simplicity and
 popularity.
 
 [infrastructure]: <https://nixos.org/manual/nixpkgs/stable/#python>
@@ -11,10 +11,10 @@ popularity.
 
 ## Getting started
 
-We recommend using the Poetry package from Nix, as it will be the one used when
-building the Python script in the context of the EPNix integration test.
+We recommend using the Poetry package in your EPNix environment, through Nix,
+to use the same version as the one building the Python script.
 
-This can be done by adding this bit in your `flake.nix` file:
+You can do this by adding this bit in your `flake.nix` file:
 
 ```nix
 epnix.devShell.packages = [
@@ -53,11 +53,11 @@ documentation].
 
 [Poetry documentation]: <https://python-poetry.org/docs/basic-usage/>
 
-Before packaging this script using Nix, it is important to generate the lock
-file, and remember to re-generate it each time the `pyproject.toml` file is
-modified.
+Before packaging this script using Nix, it's important to generate the lock
+file, and to remember to re-generate it each time you change the
+`pyproject.toml` file.
 
-This can be done with the following command:
+You can do this with the following command:
 
 ```bash
 poetry lock
@@ -84,11 +84,11 @@ pkgs.nixosTest {
 
 With this, you can use the `pythonScript` variable as you see fit.
 
-## Example usage: as a one shot test script
+## Example usage: As a one shot test script
 
 Using a packaged Python script instead of the provided `testScript` has several
-advantages: it can use dependencies provided by the community (like `modbus`,
-`systemd`, etc.), and it can be made to run on the running virtual machine.
+advantages. It can use dependencies provided by the community (like `modbus`,
+`systemd`, etc.), and you can make it run on the running virtual machine.
 
 Python script:
 
@@ -140,11 +140,10 @@ pkgs.nixosTest {
 }
 ```
 
-## Example usage: as a systemd service
+## Example usage: As a systemd service
 
-Using a Python script as a systemd service is particularly useful for mocking
-devices. For more information, please see the [Creating a mocking server]
-guide.
+Using a Python script as a systemd service is useful for mocking devices. For
+more information, please see the [Creating a mocking server] guide.
 
 [Creating a mocking server]: ./creating-a-mock-server.md
 
