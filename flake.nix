@@ -40,10 +40,13 @@
             };
           };
 
-        checks =
+        checks = {
           # Everything should always build
-          self.packages.${system}
-          // (import ./checks {inherit pkgs;});
+          allPackages = pkgs.releaseTools.aggregate {
+            name = "allPackages";
+            constituents = builtins.attrValues self.packages.${system};
+          };
+        } // (import ./checks {inherit pkgs;});
 
         devShells.default = pkgs.epnixLib.mkEpnixDevShell {
           nixpkgsConfig.system = "x86_64-linux";
