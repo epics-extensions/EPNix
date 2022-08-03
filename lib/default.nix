@@ -9,7 +9,6 @@ with lib; let
     formats = import ./formats.nix args;
     licenses = import ./licenses.nix args;
     maintainers = import ./maintainers/maintainer-list.nix;
-    types = import ./types.nix args;
 
     evalEpnixModules = {
       nixpkgsConfig,
