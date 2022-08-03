@@ -4,17 +4,28 @@ with pkgs.lib;
     support-StreamDevice-simple = import ./support/StreamDevice/simple args;
   }
   // (let
-    checkCrossFor = arch: import ./cross/default.nix (args // {crossArch = arch;});
-  in (listToAttrs (map (arch:
-      nameValuePair "cross-for-${arch}" (checkCrossFor arch))
-    [
-      "x86_64-linux"
-      # Would be nice to have, but needs special care
-      # "x86_64-w64-mingw32"
-      # "x86_64-cygwin"
-      "powerpc64-unknown-linux-gnu"
-      "powerpc64le-unknown-linux-gnu"
-      "aarch64-unknown-linux-gnu"
-      # Needs special care
-      # "armv6l-linux"
-    ])))
+    checkCrossFor = crossSystem: let
+      system-name = (systems.elaborate crossSystem).system;
+    in
+      nameValuePair
+      "cross-for-${system-name}"
+      (import ./cross/default.nix (args // {inherit crossSystem;}));
+
+    systemsToCheck = with systems.examples; [
+      # Your usual x86_64-linux
+      gnu64
+
+      # Maybe one day...
+      #mingwW64
+
+      # IFC1410
+      ppc64
+
+      powernv
+
+      # D-TACQ
+      { system = "armv7a-linux"; }
+
+      raspberryPi
+    ];
+  in listToAttrs (map checkCrossFor systemsToCheck))
