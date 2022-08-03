@@ -1,6 +1,5 @@
 [
   ./app.nix
-  ./assertions.nix
   ./base.nix
   ./boot.nix
   ./checks.nix

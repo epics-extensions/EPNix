@@ -2,16 +2,11 @@
   config,
   lib,
   pkgs,
+  epnix,
   ...
 }:
 with lib; {
   options = {
-    nixpkgs.overlays = mkOption {
-      default = [];
-      type = types.listOf types.unspecified;
-      description = "Nixpkgs overlays to override the default packages used";
-    };
-
     epnix.inputs = mkOption {
       description = ''
         The flake inputs of your project.
@@ -63,5 +58,9 @@ with lib; {
       readOnly = true;
       type = types.attrs;
     };
+  };
+
+  config = {
+    nixpkgs.overlays = [epnix.inputs.bash-lib.overlay epnix.overlays.default];
   };
 }

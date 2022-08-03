@@ -69,11 +69,27 @@
       (eachSystem ["x86_64-linux"] systemDependentOutputs)
       // {
         overlays.default = overlay;
-        overlay = self.overlays.default;
 
         lib = import ./lib {
           lib = nixpkgs.lib;
           inherit inputs;
+        };
+
+        nixosModules.default = let
+          docParams = {
+            outputAttrPath = ["epnix" "outputs"];
+            optionsAttrPath = ["epnix" "doc"];
+          };
+        in {
+          imports =
+            [
+              (inputs.nix-module-doc.lib.modules.doc-options-md docParams)
+              (inputs.nix-module-doc.lib.modules.manpage docParams)
+              (inputs.nix-module-doc.lib.modules.mdbook docParams)
+            ]
+            ++ import ./modules/module-list.nix;
+
+            _module.args.epnix = self;
         };
 
         templates.top = {

@@ -2,7 +2,7 @@
   config,
   lib,
   pkgs,
-  epnixLib,
+  epnix,
   ...
 }:
 with lib; let
@@ -36,5 +36,5 @@ in {
   config.epnix.boot.resolvedIocBoots = let
     available = {inputs = config.epnix.inputs;};
   in
-    map (epnixLib.resolveInput available) cfg.iocBoots;
+    map (epnix.lib.resolveInput available) cfg.iocBoots;
 }

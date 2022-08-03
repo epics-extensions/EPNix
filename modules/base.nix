@@ -1,13 +1,13 @@
 {
   config,
   lib,
-  epnixLib,
+  epnix,
   pkgs,
   ...
 }:
 with lib; let
   cfg = config.epnix.epics-base;
-  settingsFormat = epnixLib.formats.make {};
+  settingsFormat = epnix.lib.formats.make {};
 in {
   options.epnix.epics-base = {
     releaseBranch = mkOption {
@@ -28,7 +28,7 @@ in {
           local_release = releaseConfig;
         }
       '';
-      type = epnixLib.types.strOrFuncToPackage pkgs;
+      type = epnix.lib.types.strOrFuncToPackage pkgs;
       description = ''
         Package to use for epics-base.
 
