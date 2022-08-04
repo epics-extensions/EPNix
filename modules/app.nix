@@ -1,6 +1,6 @@
 {
   config,
-  epnixLib,
+  epnix,
   lib,
   pkgs,
   ...
@@ -44,5 +44,5 @@ in {
   config.epnix.applications.resolvedApps = let
     available = {inputs = config.epnix.inputs;};
   in
-    map (epnixLib.resolveInput available) cfg.apps;
+    map (epnix.lib.resolveInput available) cfg.apps;
 }

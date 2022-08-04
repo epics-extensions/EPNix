@@ -2,7 +2,7 @@
   config,
   lib,
   pkgs,
-  epnixLib,
+  epnix,
   ...
 }:
 with lib; let
@@ -51,7 +51,7 @@ in {
         ''
           echo "Copying apps..."
           ${concatMapStringsSep "\n" (app: ''
-              cp -rfv "${app}" "$sourceRoot/${epnixLib.getName app}"
+              cp -rfv "${app}" "$sourceRoot/${epnix.lib.getName app}"
             '')
             config.epnix.applications.resolvedApps}
 
@@ -59,7 +59,7 @@ in {
 
           echo "Copying additional iocBoot directories..."
           ${concatMapStringsSep "\n" (boot: ''
-              cp -rfv "${boot}" "$sourceRoot/iocBoot/${epnixLib.getName boot}"
+              cp -rfv "${boot}" "$sourceRoot/iocBoot/${epnix.lib.getName boot}"
             '')
             config.epnix.boot.resolvedIocBoots}
 

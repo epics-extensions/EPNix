@@ -5,16 +5,10 @@
   ...
 } @ args:
 with lib; let
-  docParams = {
-    outputAttrPath = ["epnix" "outputs"];
-    optionsAttrPath = ["epnix" "doc"];
-  };
-
   self = {
     formats = import ./formats.nix args;
     licenses = import ./licenses.nix args;
     maintainers = import ./maintainers/maintainer-list.nix;
-    types = import ./types.nix args;
 
     evalEpnixModules = {
       nixpkgsConfig,
@@ -31,29 +25,26 @@ with lib; let
           [
             ({config, ...}: {
               config._module.args = let
+                # Configure the available packages with e.g. cross compilation
+                # and overlays
                 finalPkgs = import inputs.nixpkgs {
                   inherit (nixpkgsConfigWithDefaults) system crossSystem config;
-                  overlays =
-                    [
-                      inputs.self.overlay
-                      inputs.bash-lib.overlay
-                    ]
-                    ++ config.nixpkgs.overlays;
+                  inherit (config.nixpkgs) overlays;
                 };
               in {
-                inherit (inputs) devshell;
                 pkgs = finalPkgs;
               };
             })
 
             epnixConfig
-            (inputs.nix-module-doc.lib.modules.doc-options-md docParams)
-            (inputs.nix-module-doc.lib.modules.manpage docParams)
-            (inputs.nix-module-doc.lib.modules.mdbook docParams)
-          ]
-          ++ import ../modules/module-list.nix;
+            inputs.self.nixosModules.default
 
-        specialArgs = {epnixLib = self;};
+            # nixpkgs and assertions are separate, in case we want to include
+            # this module in a NixOS configuration, where `nixpkgs` and
+            # `assertions` options are already defined
+            ../modules/nixpkgs.nix
+            ../modules/assertions.nix
+          ];
       };
 
       # From Robotnix

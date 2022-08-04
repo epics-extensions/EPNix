@@ -2,7 +2,7 @@
   config,
   lib,
   pkgs,
-  epnixLib,
+  epnix,
   ...
 }:
 with lib; let
@@ -47,5 +47,5 @@ in {
   config.epnix.support.resolvedModules = let
     available = {inputs = config.epnix.inputs;};
   in
-    map (epnixLib.resolveInput available) cfg.modules;
+    map (epnix.lib.resolveInput available) cfg.modules;
 }

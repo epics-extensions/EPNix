@@ -553,7 +553,10 @@ in {
       {
         inputsFrom = [config.epnix.outputs.build];
 
-        nativeBuildInputs = (map (cmd: cmd.package) cfg.packages) ++ scriptPackages;
+        nativeBuildInputs =
+          (map (cmd: cmd.package) cfg.packages)
+          ++ scriptPackages
+          ++ config.epnix.outputs.build.depsBuildBuild;
 
         inherit (config.epnix.outputs.build) local_config_site local_release;
 

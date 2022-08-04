@@ -1,13 +1,13 @@
 {
   config,
   lib,
-  epnixLib,
+  epnix,
   pkgs,
   ...
 }:
 with lib; let
   cfg = config.epnix.epics-base;
-  settingsFormat = epnixLib.formats.make {};
+  settingsFormat = epnix.lib.formats.make {};
 in {
   options.epnix.epics-base = {
     releaseBranch = mkOption {
@@ -17,18 +17,17 @@ in {
     };
 
     package = mkOption {
-      default = super:
-        super.epnix."epics-base${cfg.releaseBranch}".override {
-          local_config_site = cfg.siteConfig;
-          local_release = cfg.releaseConfig;
-        };
+      default = pkgs.epnix."epics-base${cfg.releaseBranch}".override {
+        local_config_site = cfg.siteConfig;
+        local_release = cfg.releaseConfig;
+      };
       defaultText = literalExpression ''
-        super: super.epnix."epics-base''${releaseBranch}".override {
+        pkgs.epnix."epics-base''${releaseBranch}".override {
           local_config_site = siteConfig;
           local_release = releaseConfig;
         }
       '';
-      type = epnixLib.types.strOrFuncToPackage pkgs;
+      type = types.package;
       description = ''
         Package to use for epics-base.
 
@@ -56,16 +55,6 @@ in {
     };
   };
 
-  config.nixpkgs.overlays = [
-    (self: super: {
-      epnix =
-        (super.epnix or {})
-        // {
-          epics-base = cfg.package super;
-        };
-    })
-  ];
-
   config.epnix.devShell = {
     environment.variables = {
       # `CMD_...` are flags that we can set from the "command-line"
@@ -80,7 +69,7 @@ in {
 
     packages = [
       {
-        package = pkgs.epnix.epics-base;
+        inherit (cfg) package;
         commands = mkMerge [
           {
             # Bootstrapping

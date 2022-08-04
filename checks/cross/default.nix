@@ -1,6 +1,6 @@
 {
   pkgs,
-  crossArch,
+  crossSystem,
   ...
 }: let
   inherit (pkgs) epnixLib;
@@ -8,8 +8,7 @@
 
   result = epnixLib.evalEpnixModules {
     nixpkgsConfig = {
-      system = system;
-      crossSystem.config = crossArch;
+      inherit system crossSystem;
     };
     epnixConfig.imports = [./top/epnix.nix];
   };
