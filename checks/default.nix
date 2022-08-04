@@ -12,9 +12,6 @@ with pkgs.lib;
       (import ./cross/default.nix (args // {inherit crossSystem;}));
 
     systemsToCheck = with systems.examples; [
-      # Your usual x86_64-linux
-      gnu64
-
       # Maybe one day...
       #mingwW64
 
