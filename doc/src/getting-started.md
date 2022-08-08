@@ -1,9 +1,24 @@
 # Getting started
 
+## Requirements
+
+The only requirements for using EPNix are having curl, Nix, and Git installed.
+
+If you use an old system and see git errors while creating your template, you
+can install a recent version of git by running `nix-env -iA nixos.git` after
+installing nix.
+
+You *do not* need to have EPICS base installed globally, EPNix will make it
+available to you when you enter your top's development environment.
+
 ## Installing Nix
 
 If you don't have Nix installed, first follow the [official
 instructions][install-nix].
+
+If you use a GNU/Linux distribution with SELinux, make sure you disable it, for
+example by adding the line `SELINUX=disabled` in `/etc/sysconfig/selinux` on
+RHEL-based distributions like CentOS, Rocky Linux, etc.
 
 Unless you are using WSL2, we *highly recommend* using the multi-user
 installation, as it builds packages in a sandboxed environment.
@@ -64,10 +79,13 @@ Git repository.
 
 To kick-start an EPNix project:
 
-```sh
+```bash
 # Create a new top
 nix flake new -t 'git+ssh://git@drf-gitlab.cea.fr/EPICS/epnix/epnix.git' my-top
 cd my-top
+
+# Will provide you with a development environment, including the EPICS base
+# used for the project located in the current directory.
 nix develop
 
 # Create a new app
@@ -76,15 +94,16 @@ makeBaseApp.pl -i -t ioc -p example example
 
 # Versioning the top
 git init
-git add -N .
+git add .
+
+# Create a remote repository for the Top, and push to it
 
 # Versioning the app
 cd exampleApp
 git init
-git commit --all --message "initial commit"
-# Create a remote repository, and push to it
-git remote add origin "git@drf-gitlab.cea.fr:..."
-git push
+git add .
+
+# Create a remote repository for the App, and push to it
 ```
 
 Then, instruct EPNix to use your created app from the remote repository:
@@ -225,7 +244,7 @@ requirement is that the remote machine has Nix installed too.
 For example, if you want to copy my built IOC to the machine
 `example-ioc.prod.mycompany.com`:
 
-```sh
+```bash
 nix copy ./result --to ssh://root@example-ioc.prod.mycompany.com
 ```
 
@@ -235,7 +254,7 @@ machine.
 To run the program, you can get where the build is by inspecting the symbolic
 link on your local machine:
 
-```sh
+```bash
 readlink ./result
 # Returns something like:
 # /nix/store/7p4x6kpawrsk6mngrxi3z09bchl2vag1-epics-distribution-custom-0.0.1
@@ -243,7 +262,7 @@ readlink ./result
 
 And then, on the remote machine, you can run the IOC:
 
-```sh
+```bash
 /nix/store/<...>-epics-distribution-custom-0.0.1/bin/linux-x86_64/example
 ```
 
