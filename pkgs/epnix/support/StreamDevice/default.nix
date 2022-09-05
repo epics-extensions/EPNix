@@ -20,8 +20,8 @@ in
       local_release
       // {
         PCRE = null;
-        PCRE_INCLUDE = "${pcre.dev}/include";
-        PCRE_LIB = "${pcre}/lib";
+        PCRE_INCLUDE = "${lib.getDev pcre}/include";
+        PCRE_LIB = "${lib.getLib pcre}/lib";
 
         # Removes warning about unused SUPPORT variable
         STREAM = null;
