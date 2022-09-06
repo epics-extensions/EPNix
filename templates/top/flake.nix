@@ -71,10 +71,7 @@
             default = self.packages.${system}.build;
           };
 
-        defaultPackage = self.packages.${system}.default;
-
         devShells.default = self.packages.${system}.devShell;
-        devShell = self.devShells.${system}.default;
 
         checks = result.config.epnix.checks.derivations;
       });
