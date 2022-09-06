@@ -6,7 +6,7 @@
 pkgs.nixosTest {
   name = "simple";
 
-  machine = {
+  nodes.machine = {
     environment.systemPackages = [pkgs.epnix.epics-base];
 
     systemd.services.my-ioc = {
