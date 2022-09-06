@@ -46,7 +46,7 @@
             name = "allPackages";
             constituents = builtins.attrValues self.packages.${system};
           };
-        } // (import ./checks {inherit pkgs;});
+        } // (import ./checks {inherit pkgs self;});
 
         devShells.default = pkgs.epnixLib.mkEpnixDevShell {
           nixpkgsConfig.system = "x86_64-linux";

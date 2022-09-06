@@ -1,4 +1,4 @@
-{pkgs} @ args:
+{pkgs, ...} @ args:
 with pkgs.lib;
   {
     support-StreamDevice-simple = import ./support/StreamDevice/simple args;
