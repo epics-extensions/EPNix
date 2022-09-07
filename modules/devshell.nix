@@ -372,7 +372,8 @@ in {
           if [[ ! -d "configure" ]]; then
             warn "the 'configure/' directory does not exist"
             warn "please run a 'makeBaseApp.pl' command to generate the top build files"
-            warn "then run 'eregen-config' to generate EPNix' 'configure/' files."
+            warn "then run 'eregen-config' to generate EPNix' 'configure/' files"
+            warn "finally, add all these files to your Git repository."
             exit 1
           fi
 
