@@ -366,7 +366,14 @@ in {
           toplevel="$(realpath -s .)"
 
           if [[ ! -f "flake.nix" ]]; then
-            exit
+            exit 1
+          fi
+
+          if [[ ! -d "configure" ]]; then
+            warn "the 'configure/' directory does not exist"
+            warn "please run a 'makeBaseApp.pl' command to generate the top build files"
+            warn "then run 'eregen-config' to generate EPNix' 'configure/' files."
+            exit 1
           fi
 
           has_mismatch=0
@@ -412,6 +419,7 @@ in {
 
           if [[ "$has_mismatch" == 1 ]]; then
             info "run 'eregen-config' to update your 'configure/' directory."
+            exit 1
           fi
         '';
         category = "epnix commands";
