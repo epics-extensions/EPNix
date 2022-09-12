@@ -7,8 +7,8 @@ with prev;
 
     epnix = recurseIntoAttrs rec {
       epics-base7 = callPackage ./epnix/epics-base {
-        version = "7.0.6.1";
-        hash = "sha256-sd02U9+1mdz0xVWHli4NoB+J6UWkY3vuZXTAwsPU2/U=";
+        version = "7.0.7";
+        hash = "sha256-VMiuwTuPykoMLcIphUAsjtLQZ8HLKr3LvGpje3lsIXc=";
       };
       epics-base3 = callPackage ./epnix/epics-base {
         version = "3.15.9";
