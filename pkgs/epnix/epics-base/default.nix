@@ -141,9 +141,6 @@ in
           $out/lib/perl/*/${stdenv.buildPlatform.system}*
       '');
 
-    buildInputs = [readline];
-    nativeBuildInputs = [readline];
-
     # TODO: Some tests fail
     doCheck = false;
 

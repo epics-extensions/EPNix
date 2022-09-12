@@ -1,13 +1,11 @@
 {
   stdenv,
   lib,
-  runCommand,
   makeWrapper,
   perl,
   epnix,
   buildPackages,
-  pkgsBuildBuild,
-  writeText,
+  readline,
   ...
 }: {
   pname,
@@ -43,8 +41,8 @@ in
 
       depsBuildBuild = depsBuildBuild ++ [buildPackages.stdenv.cc];
 
-      nativeBuildInputs = nativeBuildInputs ++ [makeWrapper perl];
-      buildInputs = buildInputs ++ (optional (!isEpicsBase) [epnix.epics-base]);
+      nativeBuildInputs = nativeBuildInputs ++ [makeWrapper perl readline];
+      buildInputs = buildInputs ++ [readline] ++ (optional (!isEpicsBase) [epnix.epics-base]);
 
       makeFlags =
         makeFlags
@@ -137,8 +135,9 @@ in
       checkTarget = "runtests";
 
       stripDebugList = attrs.stripDebugList or ["bin/${host_arch}" "lib/${host_arch}"];
-      postFixup = optionalString (stdenv.buildPlatform != stdenv.hostPlatform) ''
-        stripDirs strip "bin/${build_arch} lib/${build_arch}" "-S"
-      ''
-      + postFixup;
+      postFixup =
+        optionalString (stdenv.buildPlatform != stdenv.hostPlatform) ''
+          stripDirs strip "bin/${build_arch} lib/${build_arch}" "-S"
+        ''
+        + postFixup;
     })
