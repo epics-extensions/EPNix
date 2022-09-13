@@ -556,7 +556,10 @@ in {
       };
     };
 
-    environment.variables."GRC_ALIASES" = "true";
+    environment.variables = {
+      "GRC_ALIASES" = "true";
+      "LOCALE_ARCHIVE" = "${pkgs.glibcLocales}/lib/locale/locale-archive";
+    };
 
     attrs =
       {
