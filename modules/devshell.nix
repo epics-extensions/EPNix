@@ -539,7 +539,7 @@ in {
             }: ''
               if [ -e "${name}" ]; then
                 info "using local app:" "'${name}'"
-                overrides+=(--override-input "${name}" "git+file:./${name}")
+                overrides+=(--override-input "${name}" "./${name}")
               else
                 info "app '${name}' is not present locally" "using the one specified in flake inputs"
               fi
