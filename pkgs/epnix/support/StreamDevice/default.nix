@@ -27,6 +27,7 @@ in
         STREAM = null;
       };
 
+    nativeBuildInputs = [pcre];
     buildInputs = [pcre] ++ (with epnix.support; [sscan]);
     propagatedBuildInputs = with epnix.support; [asyn calc];
 
