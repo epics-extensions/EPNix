@@ -10,7 +10,7 @@
   local_config_site ? {},
   local_release ? {},
 }: let
-  version = "4-42";
+  version = "4-43";
 in
   mkEpicsPackage {
     pname = "asyn";
@@ -34,7 +34,7 @@ in
       owner = "epics-modules";
       repo = "asyn";
       rev = "R${version}";
-      sha256 = "sha256-Q8s4gaI0YGWGS3xlNVNN+us3xcbEz9/+zdoiFIykZ2s=";
+      hash = "sha256-zIKOPHDrQUhBU6vnXR6ic22lU8fXN43wZxZpF/K6VvI=";
     };
 
     meta = {

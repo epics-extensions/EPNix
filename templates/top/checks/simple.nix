@@ -6,10 +6,10 @@
 pkgs.nixosTest {
   name = "simple";
 
-  machine = {
+  nodes.machine = {
     environment.systemPackages = [pkgs.epnix.epics-base];
 
-    systemd.services.my-ioc = {
+    systemd.services.ioc = {
       wantedBy = ["multi-user.target"];
       serviceConfig = {
         ExecStart = "${build}/iocBoot/iocexample/st.cmd";
@@ -20,10 +20,8 @@ pkgs.nixosTest {
   };
 
   testScript = ''
-    start_all()
-
     machine.wait_for_unit("default.target")
-    machine.wait_for_unit("my-ioc.service")
+    machine.wait_for_unit("ioc.service")
 
     machine.wait_until_succeeds("caget stringin")
     machine.wait_until_succeeds("caget stringout")

@@ -366,7 +366,15 @@ in {
           toplevel="$(realpath -s .)"
 
           if [[ ! -f "flake.nix" ]]; then
-            exit
+            exit 1
+          fi
+
+          if [[ ! -d "configure" ]]; then
+            warn "the 'configure/' directory does not exist"
+            warn "please run a 'makeBaseApp.pl' command to generate the top build files"
+            warn "then run 'eregen-config' to generate EPNix' 'configure/' files"
+            warn "finally, add all these files to your Git repository."
+            exit 1
           fi
 
           has_mismatch=0
@@ -412,6 +420,7 @@ in {
 
           if [[ "$has_mismatch" == 1 ]]; then
             info "run 'eregen-config' to update your 'configure/' directory."
+            exit 1
           fi
         '';
         category = "epnix commands";
@@ -530,7 +539,7 @@ in {
             }: ''
               if [ -e "${name}" ]; then
                 info "using local app:" "'${name}'"
-                overrides+=(--override-input "${name}" "git+file:./${name}")
+                overrides+=(--override-input "${name}" "./${name}")
               else
                 info "app '${name}' is not present locally" "using the one specified in flake inputs"
               fi
@@ -547,7 +556,10 @@ in {
       };
     };
 
-    environment.variables."GRC_ALIASES" = "true";
+    environment.variables = {
+      "GRC_ALIASES" = "true";
+      "LOCALE_ARCHIVE" = "${pkgs.glibcLocales}/lib/locale/locale-archive";
+    };
 
     attrs =
       {

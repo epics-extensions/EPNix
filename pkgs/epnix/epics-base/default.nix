@@ -7,7 +7,7 @@
   fetchgit,
   fetchpatch,
   version,
-  sha256,
+  hash,
   readline,
   local_config_site ? {},
   local_release ? {},
@@ -39,7 +39,7 @@ in
     src = fetchgit {
       url = "https://git.launchpad.net/epics-base";
       rev = "R${version}";
-      inherit sha256;
+      inherit hash;
     };
 
     patches = optionals (older "7.0.5") [
@@ -140,9 +140,6 @@ in
           $out/lib/pkgconfig/epics-base-${stdenv.buildPlatform.linuxArch}.pc \
           $out/lib/perl/*/${stdenv.buildPlatform.system}*
       '');
-
-    buildInputs = [readline];
-    nativeBuildInputs = [readline];
 
     # TODO: Some tests fail
     doCheck = false;

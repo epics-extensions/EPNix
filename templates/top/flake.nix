@@ -60,8 +60,17 @@
     # environment can be built on your machine.
     flake-utils.lib.eachSystem ["x86_64-linux"] (system:
       with epnix.lib; let
+        inherit (epnix.inputs) nixpkgs;
+
         result = evalEpnixModules {
-          nixpkgsConfig.system = system;
+          nixpkgsConfig = {
+            # This specifies the build architecture
+            inherit system;
+
+            # This specifies the host architecture, uncomment for cross-compiling
+            # ---
+            #crossSystem = nixpkgs.lib.systems.examples.armv7l-hf-multiplatform;
+          };
           epnixConfig = myEpnixDistribution;
         };
       in {
@@ -71,10 +80,7 @@
             default = self.packages.${system}.build;
           };
 
-        defaultPackage = self.packages.${system}.default;
-
         devShells.default = self.packages.${system}.devShell;
-        devShell = self.devShells.${system}.default;
 
         checks = result.config.epnix.checks.derivations;
       });

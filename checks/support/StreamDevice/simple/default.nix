@@ -6,10 +6,14 @@
     projectDir = ./mock-server;
   };
 
-  ioc = epnixLib.mkEpnixBuild {
+  result = epnixLib.evalEpnixModules {
     nixpkgsConfig.system = system;
     epnixConfig.imports = [./top/epnix.nix];
   };
+
+  service = result.config.epnix.nixos.service.config;
+
+  ioc = result.outputs.build;
 in
   pkgs.nixosTest {
     name = "support-StreamDevice-simple";
@@ -17,7 +21,7 @@ in
 
     nodes.machine = let
       listenAddr = "127.0.0.1:1234";
-    in {
+    in {lib, ...}: {
       environment.systemPackages = [pkgs.epnix.epics-base];
 
       systemd.sockets.mock-server = {
@@ -33,26 +37,14 @@ in
           StandardError = "journal";
         };
 
-        ioc = {
-          wantedBy = ["multi-user.target"];
-
-          environment.STREAM_PS1 = listenAddr;
-
-          serviceConfig = {
-            ExecStart = "${ioc}/iocBoot/iocsimple/st.cmd";
-            Type = "notify";
-            WorkingDirectory = "${ioc}/iocBoot/iocsimple";
-            # TODO: this is hacky, find a way to have EPICS keep going without
-            # a shell
-            StandardInputText = "epicsThreadSleep(100)";
-          };
-        };
+        ioc = lib.mkMerge [
+          service
+          { environment.STREAM_PS1 = listenAddr; }
+        ];
       };
     };
 
     testScript = ''
-      start_all()
-
       machine.wait_for_unit("default.target")
       machine.wait_for_unit("ioc.service")
 

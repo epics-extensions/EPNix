@@ -8,7 +8,7 @@
   local_config_site ? {},
   local_release ? {},
 }: let
-  version = "2.8.20";
+  version = "2.8.22";
 in
   mkEpicsPackage {
     pname = "StreamDevice";
@@ -20,13 +20,14 @@ in
       local_release
       // {
         PCRE = null;
-        PCRE_INCLUDE = "${pcre.dev}/include";
-        PCRE_LIB = "${pcre}/lib";
+        PCRE_INCLUDE = "${lib.getDev pcre}/include";
+        PCRE_LIB = "${lib.getLib pcre}/lib";
 
         # Removes warning about unused SUPPORT variable
         STREAM = null;
       };
 
+    nativeBuildInputs = [pcre];
     buildInputs = [pcre] ++ (with epnix.support; [sscan]);
     propagatedBuildInputs = with epnix.support; [asyn calc];
 
@@ -36,7 +37,7 @@ in
       owner = "paulscherrerinstitute";
       repo = "StreamDevice";
       rev = version;
-      sha256 = "sha256-D4/jTn+LI12nRNV3Sun3Y/UP79nbERzEAp80D2/eUNQ=";
+      hash = "sha256-guGzwcf/wZdX7lKLXaQvQpVt3GUtdi193qUnc5v8vz8=";
     };
 
     meta = {
