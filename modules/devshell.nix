@@ -385,7 +385,7 @@ in {
           config_site_path="$toplevel/configure/CONFIG_SITE.local"
 
           function compare() {
-            diff --color=always -au - "$1" | tail -n +3
+            diff --color=always -au "$1" - | tail -n +3
           }
 
           if [[ -f "$release_path" ]]; then
