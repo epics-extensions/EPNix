@@ -5,7 +5,7 @@
 The only requirements for using EPNix are having curl, Nix, and Git installed.
 
 If you use an old system and see git errors while creating your template, you
-can install a recent version of git by running `nix-env -iA nixos.git` after
+can install a recent version of git by running `nix-env -iA nixpkgs.git` after
 installing nix.
 
 You *do not* need to have EPICS base installed globally, EPNix will make it
