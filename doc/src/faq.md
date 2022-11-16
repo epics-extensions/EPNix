@@ -1,4 +1,15 @@
-# FAQ
+# Frequently Asked Questions
+
+## A file I created isn't found when I run `nix build`
+
+If your top is a Git repository, you must `git add` files to make them
+recognized by Nix.
+
+## An App can't find a build product from another App
+
+EPNix enables parallel builds by default. These means that if App dependencies
+aren't specified, these Apps will compile in no particular order. Use
+`<consumerApp>_DEPEND_DIRS += <producerApp>` in your top-level `Makefile`.
 
 ## How to version a whole EPNix top
 

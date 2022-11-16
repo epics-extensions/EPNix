@@ -277,3 +277,8 @@ TODO: publish and link leech.
 [morph]: <https://github.com/DBCDK/morph>
 [disnix]: <https://github.com/svanderburg/disnix>
 [colmena]: <https://github.com/zhaofengli/colmena>
+
+## Pitfalls
+
+Although tries to resemble standard EPICS development, some differences might
+lead to confusion. You can see a few usual ones by reading the [FAQ](./faq.md).
