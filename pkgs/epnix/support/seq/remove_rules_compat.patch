@@ -1,0 +1,10 @@
+diff --git a/configure/RULES_BUILD b/configure/RULES_BUILD
+deleted file mode 100644
+index 4b0fe3a..0000000
+--- a/configure/RULES_BUILD
++++ /dev/null
+@@ -1,4 +0,0 @@
+-# This is file included by $(EPICS_BASE)/configure/RULES_FILE_TYPE
+-# Needed with older Base which doesn't include $(INSTALL_LOCATION)/cfg/RULES_*
+-
+-include $(dir $(lastword $(MAKEFILE_LIST)))/RULES_SNCSEQ
