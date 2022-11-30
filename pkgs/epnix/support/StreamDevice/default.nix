@@ -8,7 +8,7 @@
   local_config_site ? {},
   local_release ? {},
 }: let
-  version = "2.8.22";
+  version = "2.8.24";
 in
   mkEpicsPackage {
     pname = "StreamDevice";
@@ -31,13 +31,15 @@ in
     buildInputs = [pcre] ++ (with epnix.support; [sscan]);
     propagatedBuildInputs = with epnix.support; [asyn calc];
 
-    patches = [./printf-only-string-literal.patch];
-
     src = fetchFromGitHub {
       owner = "paulscherrerinstitute";
       repo = "StreamDevice";
       rev = version;
-      hash = "sha256-guGzwcf/wZdX7lKLXaQvQpVt3GUtdi193qUnc5v8vz8=";
+      # Tarball from GitHub is not completely reproducible due to usage of
+      # export-subst in .gitattributes for .VERSION
+      # See: https://epics.anl.gov/tech-talk/2022/msg01842.php
+      forceFetchGit = true;
+      hash = "sha256-2MJ6CSNFc5rKijx5TFwwXStzj6zypS4cpMrcSuW4+F0=";
     };
 
     meta = {
