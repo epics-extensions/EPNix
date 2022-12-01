@@ -5,7 +5,7 @@
 The only requirements for using EPNix are having curl, Nix, and Git installed.
 
 If you use an old system and see git errors while creating your template, you
-can install a recent version of git by running `nix-env -iA nixos.git` after
+can install a recent version of git by running `nix-env -iA nixpkgs.git` after
 installing nix.
 
 You *do not* need to have EPICS base installed globally, EPNix will make it
@@ -277,3 +277,8 @@ TODO: publish and link leech.
 [morph]: <https://github.com/DBCDK/morph>
 [disnix]: <https://github.com/svanderburg/disnix>
 [colmena]: <https://github.com/zhaofengli/colmena>
+
+## Pitfalls
+
+Although tries to resemble standard EPICS development, some differences might
+lead to confusion. You can see a few usual ones by reading the [FAQ](./faq.md).
