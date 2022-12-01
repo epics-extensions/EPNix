@@ -9,14 +9,18 @@
 }:
 mkEpicsPackage rec {
   pname = "seq";
-  version = "2.2.6";
+  version = "2.2.9";
   varname = "SNCSEQ";
 
   inherit local_config_site local_release;
 
   nativeBuildInputs = [re2c];
 
-  patches = [./remove-date.patch];
+  patches = [
+    ./remove-date.patch
+    # See: https://epics.anl.gov/epics/tech-talk/2022/msg01183.php
+    ./remove_rules_compat.patch
+  ];
 
   preBuild = ''
     echo 'include $(TOP)/configure/RELEASE.local' >> configure/RELEASE
@@ -24,7 +28,7 @@ mkEpicsPackage rec {
 
   src = fetchzip {
     url = "https://www-csr.bessy.de/control/SoftDist/sequencer/releases/seq-${version}.tar.gz";
-    sha256 = "sha256-CNy9Mh2CtTcqsQLI1LbWbHf9xfwHlrvI9N7Ifjpi50E=";
+    sha256 = "sha256-LAqR5Mrph6CNrhpyt/uP5qbaWN0y7sJk6mfxnCk2Jx0=";
   };
 
   # TODO: Some tests fail

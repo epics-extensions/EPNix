@@ -1,6 +1,7 @@
 {pkgs, ...} @ args:
 with pkgs.lib;
   {
+    support-seq-simple = import ./support/seq/simple args;
     support-StreamDevice-simple = import ./support/StreamDevice/simple args;
   }
   // (let

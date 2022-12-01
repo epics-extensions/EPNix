@@ -1,0 +1,2 @@
+record(longin, "val") {}
+record(longout, "state") {}
