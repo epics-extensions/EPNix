@@ -1,7 +1,7 @@
 {
   description = "A Nix flake containing EPICS-related modules and packages";
 
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.05";
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
   inputs.bash-lib = {
     url = "github:minijackson/bash-lib";
     inputs.nixpkgs.follows = "nixpkgs";

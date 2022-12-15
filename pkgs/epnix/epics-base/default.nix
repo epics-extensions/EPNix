@@ -29,11 +29,6 @@ in
 
     inherit local_config_site local_release;
 
-    makeFlags = [
-      "COMMANDLINE_LIBRARY=READLINE_NCURSES"
-      "READLINE_DIR=${readline}"
-    ];
-
     isEpicsBase = true;
 
     src = fetchgit {
@@ -89,6 +84,8 @@ in
           RANLIB = "${cc.bintools.targetPrefix}ranlib";
 
           ARFLAGS = "rc";
+
+          COMMANDLINE_LIBRARY= "READLINE_NCURSES";
         }
         // optionalAttrs cc.isClang {
           GNU = "NO";
