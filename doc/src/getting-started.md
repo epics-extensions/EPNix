@@ -7,10 +7,6 @@ The only requirements for using EPNix are having curl, Nix, and Git installed.
 If you need to install Nix, you will also need the `xz` utility, usually part
 of the "xzip" or "xz" package.
 
-If you use an old system and see git errors while creating your template, you
-can install a recent version of git by running `nix-env -iA nixpkgs.git` after
-installing nix.
-
 You *do not* need to have EPICS base installed globally, EPNix will make it
 available to you when you enter your top's development environment.
 
@@ -79,6 +75,10 @@ With EPNix, we recommend developers to version EPICS tops separate from EPICS
 apps. This means that by default, when executing `makeBaseApp.pl` from your
 top, Git will ignore your created app, so that you can create its own separate
 Git repository.
+
+If you use an old system and see git errors while creating your template, you
+can install a recent version of git by running `nix-env -iA nixpkgs.git` after
+installing nix.
 
 To kick-start an EPNix project:
 
