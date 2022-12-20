@@ -294,3 +294,6 @@ TODO: publish and link leech.
 
 Although tries to resemble standard EPICS development, some differences might
 lead to confusion. You can see a few usual ones by reading the [FAQ](./faq.md).
+
+You might also be interested in reading [Setting up the flake
+registry](./guides/flake-registry.md)
