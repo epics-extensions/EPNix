@@ -12,12 +12,13 @@ available to you when you enter your top's development environment.
 
 ## Installing Nix
 
+> **Warning**: If you use a GNU/Linux distribution with SELinux, make sure you
+> disable it, for example by adding the line `SELINUX=disabled` in
+> `/etc/sysconfig/selinux` on RHEL-based distributions like CentOS, Rocky Linux,
+> etc.
+
 If you don't have Nix installed, first follow the [official
 instructions][install-nix].
-
-If you use a GNU/Linux distribution with SELinux, make sure you disable it, for
-example by adding the line `SELINUX=disabled` in `/etc/sysconfig/selinux` on
-RHEL-based distributions like CentOS, Rocky Linux, etc.
 
 Unless you are using WSL2, we *highly recommend* using the multi-user
 installation, as it builds packages in a sandboxed environment.
