@@ -4,6 +4,9 @@
 
 The only requirements for using EPNix are having curl, Nix, and Git installed.
 
+If you need to install Nix, you will also need the `xz` utility, usually part
+of the "xzip" or "xz" package.
+
 If you use an old system and see git errors while creating your template, you
 can install a recent version of git by running `nix-env -iA nixpkgs.git` after
 installing nix.
