@@ -32,7 +32,8 @@ with lib; let
                   inherit (config.nixpkgs) overlays;
                 };
               in {
-                pkgs = finalPkgs;
+                # See: https://github.com/NixOS/nixpkgs/pull/190358
+                pkgs = finalPkgs.__splicedPackages;
               };
             })
 
