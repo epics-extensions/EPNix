@@ -72,6 +72,11 @@ documentation book documents the options provided by EPNix.
 
 ## Creating your project
 
+> **Note**: This section assumes that you have set up your computer so that you
+> can clone GitLab projects unattended, with for example SSH keys or tokens. If
+> this isn't the case, please read the [GitLab setup](./guides/gitlab-setup.md)
+> guide.
+
 With EPNix, we recommend developers to version EPICS tops separate from EPICS
 apps. This means that by default, when executing `makeBaseApp.pl` from your
 top, Git will ignore your created app, so that you can create its own separate

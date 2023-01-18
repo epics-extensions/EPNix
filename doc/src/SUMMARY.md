@@ -3,6 +3,7 @@
 - [Introduction](./introduction.md)
 - [Getting started](./getting-started.md)
 - [User guides](./guides.md)
+  - [GitLab setup](./guides/gitlab-setup.md)
   - [Setting up the flake registry](./guides/flake-registry.md)
   - [Porting IOCs to EPNix](./guides/porting.md)
   - [Developing modules](./guides/developing-modules.md)
