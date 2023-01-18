@@ -60,8 +60,6 @@
     # environment can be built on your machine.
     flake-utils.lib.eachSystem ["x86_64-linux"] (system:
       with epnix.lib; let
-        inherit (epnix.inputs) nixpkgs;
-
         result = evalEpnixModules {
           nixpkgsConfig = {
             # This specifies the build architecture

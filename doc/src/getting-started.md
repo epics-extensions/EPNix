@@ -4,21 +4,21 @@
 
 The only requirements for using EPNix are having curl, Nix, and Git installed.
 
-If you use an old system and see git errors while creating your template, you
-can install a recent version of git by running `nix-env -iA nixpkgs.git` after
-installing nix.
+If you need to install Nix, you will also need the `xz` utility, usually part
+of the "xzip" or "xz" package.
 
 You *do not* need to have EPICS base installed globally, EPNix will make it
 available to you when you enter your top's development environment.
 
 ## Installing Nix
 
+> **Warning**: If you use a GNU/Linux distribution with SELinux, make sure you
+> disable it, for example by adding the line `SELINUX=disabled` in
+> `/etc/sysconfig/selinux` on RHEL-based distributions like CentOS, Rocky Linux,
+> etc.
+
 If you don't have Nix installed, first follow the [official
 instructions][install-nix].
-
-If you use a GNU/Linux distribution with SELinux, make sure you disable it, for
-example by adding the line `SELINUX=disabled` in `/etc/sysconfig/selinux` on
-RHEL-based distributions like CentOS, Rocky Linux, etc.
 
 Unless you are using WSL2, we *highly recommend* using the multi-user
 installation, as it builds packages in a sandboxed environment.
@@ -72,31 +72,47 @@ documentation book documents the options provided by EPNix.
 
 ## Creating your project
 
+> **Note**: This section assumes that you have set up your computer so that you
+> can clone GitLab projects unattended, with for example SSH keys or tokens. If
+> this isn't the case, please read the [GitLab setup](./guides/gitlab-setup.md)
+> guide.
+
 With EPNix, we recommend developers to version EPICS tops separate from EPICS
 apps. This means that by default, when executing `makeBaseApp.pl` from your
 top, Git will ignore your created app, so that you can create its own separate
 Git repository.
 
+If you use an old system and see git errors while creating your template, you
+can install a recent version of git by running `nix-env -iA nixpkgs.git` after
+installing nix.
+
 To kick-start an EPNix project:
 
 ```bash
-# Create a new top
+# Create a new directory by using the EPNix template. It will create the
+# aforementioned `flake.nix` which will allow you to specify your base and your
+# dependencies. It does not however create your top for you, instead it can
+# provide you with an environment with EPICS base installed (see below).
 nix flake new -t 'git+ssh://git@drf-gitlab.cea.fr/EPICS/epnix/epnix.git' my-top
 cd my-top
 
-# Will provide you with a development environment, including the EPICS base
-# used for the project located in the current directory.
+# This will make you enter in a new shell, in which you have the EPICS base
+# installed. The EPICS base version will be the one used by your top.
 nix develop
 
-# Create a new app
+# Initializes the EPICS part of your top, and creates a new app
 makeBaseApp.pl -t ioc example
+# Creates a new iocBoot folder
 makeBaseApp.pl -i -t ioc -p example example
 
-# Versioning the top
+# Versioning the top.
+# This is highly recommended, since this will make Nix ignore your build
+# products in its sandboxed build
 git init
 git add .
 
 # Create a remote repository for the Top, and push to it
+...
 
 # Versioning the app
 cd exampleApp
@@ -104,6 +120,7 @@ git init
 git add .
 
 # Create a remote repository for the App, and push to it
+...
 ```
 
 Then, instruct EPNix to use your created app from the remote repository:
@@ -282,3 +299,6 @@ TODO: publish and link leech.
 
 Although tries to resemble standard EPICS development, some differences might
 lead to confusion. You can see a few usual ones by reading the [FAQ](./faq.md).
+
+You might also be interested in reading [Setting up the flake
+registry](./guides/flake-registry.md)
