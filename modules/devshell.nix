@@ -7,6 +7,8 @@
 with lib; let
   cfg = config.epnix.devShell;
 
+  outputs = config.epnix.outputs;
+
   available = {inputs = config.epnix.inputs;};
 
   lockFile = importJSON "${available.inputs.self}/flake.lock";
@@ -307,8 +309,7 @@ in {
 
       eman = {
         text = ''
-          manpage="$(nix build --no-link --json --no-write-lock-file '.#manpage' | ${pkgs.buildPackages.jq}/bin/jq -r '.[].outputs.out')"
-          man "$manpage"
+          man "${outputs.manpage}"
         '';
         category = "epnix commands";
         description = "Show the configuration options manpage of the distribution";
@@ -316,8 +317,7 @@ in {
 
       edoc = {
         text = ''
-          mdbook="$(nix build --no-link --json --no-write-lock-file '.#mdbook' | ${pkgs.buildPackages.jq}/bin/jq -r '.[].outputs.out')"
-          xdg-open "$mdbook/index.html"
+          xdg-open "${outputs.mdbook}/index.html"
         '';
         category = "epnix commands";
         description = "Show the EPNix documentation book for the distribution";
