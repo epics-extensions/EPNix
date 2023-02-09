@@ -558,7 +558,7 @@ in {
 
     environment.variables = {
       "GRC_ALIASES" = "true";
-      "LOCALE_ARCHIVE" = "${pkgs.glibcLocales}/lib/locale/locale-archive";
+      "LOCALE_ARCHIVE" = "${pkgs.buildPackages.glibcLocales}/lib/locale/locale-archive";
     };
 
     attrs =
