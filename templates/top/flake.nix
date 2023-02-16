@@ -66,8 +66,11 @@
             inherit system;
 
             # This specifies the host architecture, uncomment for cross-compiling
+            #
+            # The complete of example architectures is here:
+            # https://github.com/NixOS/nixpkgs/blob/nixos-22.11/lib/systems/examples.nix
             # ---
-            #crossSystem = nixpkgs.lib.systems.examples.armv7l-hf-multiplatform;
+            #crossSystem = epnix.inputs.nixpkgs.lib.systems.examples.armv7l-hf-multiplatform;
           };
           epnixConfig = myEpnixDistribution;
         };
