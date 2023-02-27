@@ -1,7 +1,7 @@
 # EPNix
 
-EPNix (pronunciation: like you are high on mushrooms) is a way of building and
-packaging EPICS IOCs using the [Nix] package manager.
+EPNix (pronunciation: like you are high on mushrooms) provides a way of
+building and packaging EPICS IOCs using the [Nix] package manager.
 
 By leveraging the Nix package manager, it provides several advantages compared
 to packaging EPICS the traditional way:
@@ -11,23 +11,22 @@ to packaging EPICS the traditional way:
   environment.
 
 - Complete dependencies: your EPICS IOCs ship with the complete set of
-  dependencies, allowing you to deploy your IOC without needing to install any
-  dependency on the target machine (except for Nix itself).
+  dependencies, which means you can to deploy your IOC without needing to
+  install any dependency on the target machine (except for Nix itself).
 
 - Dependency traceability: the version of your dependencies are locked, updated
   manually, and traced in your `flake.lock` file. Combined with code
-  versioning, this allows your project to build with the same environment years
-  later, and allows you to rollback if one of your dependency becomes
-  incompatible.
+  versioning, you can build your project with the same environment years
+  later, and you can rollback if one of your dependency becomes incompatible.
 
 - Development shell: provides you with a set of tool adapted to your project,
   no matter what you have installed on your machine.
 
 - Declarative configuration: define what you want in your IOC in a declarative
-  and extensible manner.
+  and extendable manner.
 
-- Functional tests: Run automated isolated tests inside a defined virtual
-  machine.
+- Integration tests: write tests using Python, by starting a virtual machine
+  with your IOC running.
 
 [Nix]: <https://nixos.org/guides/how-nix-works.html>
 
@@ -36,7 +35,7 @@ to packaging EPICS the traditional way:
 The guide to getting started is [over there](./doc/src/getting-started.md) in
 the documentation book.
 
-## Quick example of a configuration file
+## Quick example of an EPNix configuration
 
 ```nix
 epnix = {
@@ -58,7 +57,7 @@ epnix = {
   # ---
   boot.iocBoots = [ ./iocBoot/iocmyProject ];
 
-  # You can specify environment variables in your development shell like this:
+  # You can specify environment variables for your development shell like this:
   # ---
   devShell.environment.variables."EPICS_CA_ADDR_LIST" = "localhost";
 };

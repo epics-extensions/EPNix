@@ -16,7 +16,7 @@ to packaging EPICS the traditional way:
 
 - Dependency traceability: the version of your dependencies are locked, updated
   manually, and traced in your `flake.lock` file. Combined with code
-  versioning, your can build your project with the same environment years
+  versioning, you can build your project with the same environment years
   later, and you can rollback if one of your dependency becomes incompatible.
 
 - Development shell: provides you with a set of tool adapted to your project,

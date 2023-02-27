@@ -1,14 +1,14 @@
-# GitLab setup
+# Private repository setup
 
 To avoid a great deal of confusion, it's best to configure your machine so that
-it can clone private GitLab repositories unattended. This means that this
+it can clone your private repositories unattended. This means that this
 command should succeed without asking for user input on the terminal:
 
 ```bash
-git clone 'ssh://git@drf-gitlab.cea.fr/EPICS/epnix/epnix.git'
+git clone 'ssh://git@your.gitlab.com/your/epicsApp.git'
 ```
 
-Asking for user input graphically is however acceptable.
+But, asking for user input graphically is acceptable.
 
 The reason is that the Nix command-line tool often writes text on the terminal,
 and does so over the questions asked by programs like SSH or Git. If SSH or Git
@@ -18,11 +18,16 @@ will appear when the Nix command hangs.
 There's two main ways to configure your machine for this:
 
 - SSH keys
-- GitLab tokens
+- GitHub / GitLab tokens
 
 ## SSH keys
 
 ### Configuring the SSH key
+
+To setup SSH keys to use with your GitHub account, you can follow the [official
+documentation].
+
+[official documentation]: <https://docs.github.com/en/authentication/connecting-to-github-with-ssh>
 
 To setup SSH keys to use with your GitLab account, you can follow the [official
 documentation], and particularly look at these sections:
@@ -53,7 +58,7 @@ ssh-add 'path/to/key/id_ed25519'
 Check that logging in to GitLab doesn't ask for user input on the terminal:
 
 ```bash
-ssh -T 'git@drf-gitlab.cea.fr'
+ssh -T 'git@your.gitlab.com'
 # Welcome to GitLab, @user!
 ```
 
@@ -64,27 +69,39 @@ you can add this line to your `~/.bashrc`:
 export SSH_AUTH_SOCK=/run/user/$UID/keyring/ssh
 ```
 
-## GitLab tokens
+## GitHub / GitLab tokens
 
-GitLab tokens offer a fast, timed way of authentication, suitable for either
-quick and dirty access, or for setting up services or scripts that need access
-to GitLab. In any case, GitLab tokens shouldn't be used for usual development.
+GitHub and GitLab tokens offer a timed way of authenticating, suitable for
+either quick and dirty access, or for setting up services or scripts that need
+access to GitHub / GitLab repositories. In any case, tokens shouldn't be used
+for usual development.
 
-You can create GitLab tokens either per-user, per-group, or per-project.
+In GitLab, you can create tokens either per-user, per-group, or per-project.
 
-Creating a Gitlab token for your user means that you can give it access to all
-projects and APIs that you have access to. This can be useful for your personal
-applications, or tools like [glab].
+In GitHub, you can only create personal access tokens, but their usage can be
+restricted in an organization.
+
+Creating a GitHub token, or a Gitlab token for your user means that you can
+give it access to all projects and APIs that you have access to. This can be
+useful for your personal applications, or tools like [glab].
 
 [glab]: <https://docs.gitlab.com/ee/integration/glab/>
 
-You can create a GitLab token for given group or project so that it offers
+In GitLab, you can create a token for given group or project so that it offers
 access to that specific group or project. These kinds of tokens should be
 preferred.
 
-To create a token, go to the user/group/project settings, under the "Access
-Tokens" section. Give your token a meaningful name, an expiration date, and for
-a group/project, select the appropriate role.
+### GitHub
+
+To create a GitHub token, follow the [official documentation].
+
+[official documentation]: <https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token>
+
+### GitLab
+
+To create a GitLab token, go to the user/group/project settings, under the
+"Access Tokens" section. Give your token a meaningful name, an expiration date,
+and for a group/project, select the appropriate role.
 
 If you only want your token to be able to clone repositories, you can just
 select the `read_repository` scope. Else refer to GitLab's official
@@ -96,18 +113,18 @@ careful, as this value can't be accessed after closing the page.
 If you want to clone any repository, the URL will need to be:
 
 ```bash
-https://gitlab-ci-token:${TOKEN}@drf-gitlab.cea.fr"
+https://gitlab-ci-token:${TOKEN}@your.gitlab.com"
 ```
 
 As EPNix uses SSH flake inputs, you can use this command to instruct Git to
 rewrite GitLab URLs:
 
 ```bash
-git config --global url."https://gitlab-ci-token:${TOKEN}@drf-gitlab.cea.fr".insteadOf "ssh://git@drf-gitlab.cea.fr"
+git config --global url."https://gitlab-ci-token:${TOKEN}@your.gitlab.com".insteadOf "ssh://git@your.gitlab.com"
 ```
 
 To check that your setup is working, execute the following command:
 
 ```bash
-git clone 'ssh://git@drf-gitlab.cea.fr/EPICS/epnix/epnix.git'
+git clone 'ssh://git@your.gitlab.com/your/epicsApp.git'
 ```

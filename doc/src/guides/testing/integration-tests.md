@@ -134,7 +134,7 @@ You can also look at examples either in the EPNix repository under the
 [`checks` folder][epnix-checks], or in nixpkgs under the [`nixos/tests`
 folder][nixpkgs-nixos-tests].
 
-[epnix-checks]: <https://drf-gitlab.cea.fr/EPICS/epnix/epnix/-/tree/master/checks>
+[epnix-checks]: <https://github.com/epics-extensions/epnix/tree/master/checks>
 [nixpkgs-nixos-tests]: <https://github.com/NixOS/nixpkgs/tree/master/nixos/tests>
 
 [nixos-tests]: <https://nixos.org/manual/nixos/stable/index.html#sec-nixos-tests>
