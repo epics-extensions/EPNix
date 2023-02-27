@@ -58,17 +58,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1670487109,
-        "narHash": "sha256-D5gbYeFGgRkKY2Nn/8VA8nPyY0sF6xISafyOAE1HsjQ=",
-        "ref": "refs/heads/master",
-        "rev": "d488feb4b2a586071fdb28309858747549670903",
-        "revCount": 8,
-        "type": "git",
-        "url": "ssh://git@drf-gitlab.cea.fr/rnicole/nix-module-doc.git"
+        "lastModified": 1677492593,
+        "narHash": "sha256-jABGs42bX2SrOj1AqdmoRXsVCJc9emFJ+OC2D51IQSo=",
+        "owner": "minijackson",
+        "repo": "nix-module-doc",
+        "rev": "ad8fc3bd004d60097d867996327d3e1e822e1d9c",
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "ssh://git@drf-gitlab.cea.fr/rnicole/nix-module-doc.git"
+        "owner": "minijackson",
+        "repo": "nix-module-doc",
+        "type": "github"
       }
     },
     "nixpkgs": {
