@@ -283,11 +283,10 @@ And then, on the remote machine, you can run the IOC:
 ```
 
 If you want to do automated, declarative, or more complex deployments, we
-highly recommend using NixOS and one of its deployment tools ([NixOps],
-[morph], [disnix], [colmena]) . You can also use leech if you want to use
-non-NixOS hosts.
+highly recommend using NixOS and optionally one of its deployment tools
+([NixOps], [morph], [disnix], [colmena]) . You can also use non-NixOS hosts.
 
-TODO: publish and link leech.
+TODO: create a deployment guide.
 
 [NixOps]: <https://nixos.org/nixops>
 [morph]: <https://github.com/DBCDK/morph>
