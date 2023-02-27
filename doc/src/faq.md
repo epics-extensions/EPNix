@@ -16,12 +16,12 @@ EPNix enables parallel builds by default. These means that if App dependencies
 aren't specified, these Apps will compile in no particular order. Use
 `<consumerApp>_DEPEND_DIRS += <producerApp>` in your top-level `Makefile`.
 
-## How to version a whole EPNix top
+## How do I version a whole EPNix top?
 
-Meaning, not versioning an app separate from the top. This might be justified
-if you don't intend to share an app in any other top.
+Meaning, not versioning an App separate from the top. This might be justified
+if you don't intend to share an App in any other top.
 
-1. First, create a top and an app, as in the [Getting
+1. First, create a top and an App, as in the [Getting
    Started](./getting-started.md) guide.
 
 2. Make sure to add an exception for the `exampleApp` folder at the end of
@@ -37,7 +37,7 @@ if you don't intend to share an app in any other top.
     !exampleApp
     ```
 
-3. Then, version both the top and the app:
+3. Then, version both the top and the App:
     ```bash
     git init
     git add -N .

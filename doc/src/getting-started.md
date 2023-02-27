@@ -59,7 +59,7 @@ In EPNix, your IOC will have mainly one important file: the `flake.nix` file.
 The `flake.nix` file is the entry point that the `nix` command will read in
 order for the `nix build`, `nix flake check`, `nix develop`, etc. commands to
 work. It's also the file where you specify your other "repository"
-dependencies. Your IOC depends on EPNix itself, and also depends each of your
+dependencies. Your IOC depends on EPNix itself, and also depends on each EPICS
 "App."
 
 The `flake.nix` file will also contain the configuration of your EPNix top.
@@ -73,14 +73,13 @@ documentation book documents the options provided by EPNix.
 ## Creating your project
 
 > **Note**: This section assumes that you have set up your computer so that you
-> can clone GitLab projects unattended, with for example SSH keys or tokens. If
-> this isn't the case, please read the [GitLab setup](./guides/gitlab-setup.md)
-> guide.
+> can clone your repositories unattended, with for example SSH keys or tokens.
+> If you intend to use private git repositories, please check out the
+> [Private repository setup](./guides/private-repo-setup.md) guide.
 
 With EPNix, we recommend developers to version EPICS tops separate from EPICS
-apps. This means that by default, when executing `makeBaseApp.pl` from your
-top, Git will ignore your created app, so that you can create its own separate
-Git repository.
+apps. This means that by default, Git will ignore apps created with
+`makeBaseApp.pl`, so that you can create separate Git repositories for them.
 
 If you use an old system and see git errors while creating your template, you
 can install a recent version of git by running `nix-env -iA nixpkgs.git` after
@@ -93,7 +92,7 @@ To kick-start an EPNix project:
 # aforementioned `flake.nix` which will allow you to specify your base and your
 # dependencies. It does not however create your top for you, instead it can
 # provide you with an environment with EPICS base installed (see below).
-nix flake new -t 'git+ssh://git@drf-gitlab.cea.fr/EPICS/epnix/epnix.git' my-top
+nix flake new -t 'github:epics-extensions/epnix' my-top
 cd my-top
 
 # This will make you enter in a new shell, in which you have the EPICS base
@@ -131,7 +130,7 @@ Edit your top's `flake.nix`
 
 ```nix
 inputs.exampleApp = {
-  url = "git+ssh://git@drf-gitlab.cea.fr/...";
+  url = "git+ssh://git@your.gitlab.com/your/exampleApp.git";
   flake = false;
 };
 ```

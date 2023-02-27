@@ -38,11 +38,11 @@
     },
     "flake-utils_2": {
       "locked": {
-        "lastModified": 1667395993,
-        "narHash": "sha256-nuEHfE/LcWyuSWnS8t12N1wc105Qtau+/OdUAjtQ0rA=",
+        "lastModified": 1676283394,
+        "narHash": "sha256-XX2f9c3iySLCw54rJ/CZs+ZK6IQy7GXNY4nSOyu2QG4=",
         "owner": "numtide",
         "repo": "flake-utils",
-        "rev": "5aed5285a952e0b949eb3ba02c12fa4fcfef535f",
+        "rev": "3db36a8b464d0c4532ba1c7dda728f4576d6d073",
         "type": "github"
       },
       "original": {
@@ -58,26 +58,26 @@
         ]
       },
       "locked": {
-        "lastModified": 1670487109,
-        "narHash": "sha256-D5gbYeFGgRkKY2Nn/8VA8nPyY0sF6xISafyOAE1HsjQ=",
-        "ref": "refs/heads/master",
-        "rev": "d488feb4b2a586071fdb28309858747549670903",
-        "revCount": 8,
-        "type": "git",
-        "url": "ssh://git@drf-gitlab.cea.fr/rnicole/nix-module-doc.git"
+        "lastModified": 1677492593,
+        "narHash": "sha256-jABGs42bX2SrOj1AqdmoRXsVCJc9emFJ+OC2D51IQSo=",
+        "owner": "minijackson",
+        "repo": "nix-module-doc",
+        "rev": "ad8fc3bd004d60097d867996327d3e1e822e1d9c",
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "ssh://git@drf-gitlab.cea.fr/rnicole/nix-module-doc.git"
+        "owner": "minijackson",
+        "repo": "nix-module-doc",
+        "type": "github"
       }
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1670372410,
-        "narHash": "sha256-BDiOUkuqgq5DP+E5xfTzIFYYyMb8DpSLYmeaOBeZ0vg=",
+        "lastModified": 1677341534,
+        "narHash": "sha256-zqaJuOTnKzg5AubC4rzzJ/IS5kU5n4U7vxosv1Fv8Ug=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "5528350186a9e826588cee1329640899ca44a0cf",
+        "rev": "7076110064c09f0b3942f609f2134c1358ef2e50",
         "type": "github"
       },
       "original": {

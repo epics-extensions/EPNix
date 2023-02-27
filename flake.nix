@@ -8,7 +8,7 @@
   };
   inputs.flake-utils.url = "github:numtide/flake-utils";
   inputs.nix-module-doc = {
-    url = "git+ssh://git@drf-gitlab.cea.fr/rnicole/nix-module-doc.git";
+    url = "github:minijackson/nix-module-doc";
     inputs.nixpkgs.follows = "nixpkgs";
   };
 

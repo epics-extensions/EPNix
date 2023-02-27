@@ -2,7 +2,7 @@
   description = "EPICS IOC for <...>";
 
   inputs.flake-utils.url = "github:numtide/flake-utils";
-  inputs.epnix.url = "git+ssh://git@drf-gitlab.cea.fr/EPICS/epnix/epnix.git";
+  inputs.epnix.url = "github:epics-extensions/epnix";
 
   # Add your app inputs here:
   # ---
