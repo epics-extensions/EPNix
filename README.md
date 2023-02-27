@@ -53,10 +53,6 @@ epnix = {
   # ---
   applications.apps = [ "inputs.myExampleApp" ];
 
-  # And your iocBoot directories:
-  # ---
-  boot.iocBoots = [ ./iocBoot/iocmyProject ];
-
   # You can specify environment variables for your development shell like this:
   # ---
   devShell.environment.variables."EPICS_CA_ADDR_LIST" = "localhost";
