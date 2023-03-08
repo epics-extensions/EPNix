@@ -92,14 +92,9 @@ in
           CMPLR_CLASS = "clang";
         });
 
-    passAsFile = [
-      "build_config_site"
-      "host_config_site"
-    ];
-
     preBuild = ''
-      cp -fv --no-preserve=mode "$build_config_sitePath" configure/os/CONFIG_SITE.${build_arch}.${build_arch}
-      cp -fv --no-preserve=mode "$host_config_sitePath" configure/os/CONFIG_SITE.${build_arch}.${host_arch}
+      echo "$build_config_site" > configure/os/CONFIG_SITE.${build_arch}.${build_arch}
+      echo "$host_config_site" > configure/os/CONFIG_SITE.${build_arch}.${host_arch}
 
       echo "=============================="
       echo "CONFIG_SITE.${build_arch}.${build_arch}"
