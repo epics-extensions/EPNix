@@ -17,7 +17,6 @@
   nativeBuildInputs ? [],
   buildInputs ? [],
   makeFlags ? [],
-  passAsFile ? [],
   preBuild ? "",
   postInstall ? "",
   postFixup ? "",
@@ -81,17 +80,10 @@ in
       # directory and this variable is a source of conflicts between RELEASE files
       local_release = generateConf (local_release // {SUPPORT = null;});
 
-      passAsFile =
-        passAsFile
-        ++ [
-          "local_config_site"
-          "local_release"
-        ];
-
       preBuild =
         ''
-          cp -fv --no-preserve=mode "$local_config_sitePath" configure/CONFIG_SITE.local
-          cp -fv --no-preserve=mode "$local_releasePath" configure/RELEASE.local
+          echo "$local_config_site" > configure/CONFIG_SITE.local
+          echo "$local_release" > configure/RELEASE.local
 
           # set to empty if unset
           : "''${EPICS_COMPONENTS=}"
