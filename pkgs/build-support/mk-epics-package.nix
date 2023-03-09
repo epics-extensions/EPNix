@@ -41,7 +41,9 @@ in
       depsBuildBuild = depsBuildBuild ++ [buildPackages.stdenv.cc];
 
       nativeBuildInputs = nativeBuildInputs ++ [makeWrapper perl readline];
-      buildInputs = buildInputs ++ [readline] ++ (optional (!isEpicsBase) [epnix.epics-base]);
+
+      # Also add perl into the non-native build inputs so that shebangs gets patched
+      buildInputs = buildInputs ++ [perl readline] ++ (optional (!isEpicsBase) [epnix.epics-base]);
 
       makeFlags =
         makeFlags
