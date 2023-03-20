@@ -45,9 +45,10 @@
 {
   minijackson = {
     email = "remi.nicole@cea.fr";
+    name = "Rémi Nicole";
+    matrix = "@Minijackson:matrix.org";
     github = "minijackson";
     githubId = 1200507;
-    name = "Rémi Nicole";
     keys = [
       {
         longkeyid = "rsa2048/0xFEA888C9F5D64F62";
