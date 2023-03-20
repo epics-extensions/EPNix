@@ -47,7 +47,7 @@
             constituents = builtins.attrValues self.packages.${system};
           };
         }
-        // (import ./checks {inherit pkgs self;});
+        // (import ./ioc/tests {inherit pkgs self;});
 
       devShells.default = pkgs.epnixLib.mkEpnixDevShell {
         nixpkgsConfig.system = system;
@@ -82,7 +82,14 @@
         inherit inputs;
       };
 
-      nixosModules.default = let
+      nixosModules.default = {
+        imports = [
+          self.nixosModules.ioc
+          self.nixosModules.nixos
+        ];
+      };
+
+      nixosModules.ioc = let
         docParams = {
           outputAttrPath = ["epnix" "outputs"];
           optionsAttrPath = ["epnix" "doc"];
@@ -94,9 +101,13 @@
             (inputs.nix-module-doc.lib.modules.manpage docParams)
             (inputs.nix-module-doc.lib.modules.mdbook docParams)
           ]
-          ++ import ./modules/module-list.nix;
+          ++ import ./ioc/modules/module-list.nix;
 
         _module.args.epnix = self;
+      };
+
+      nixosModules.nixos = {
+        imports = import ./nixos/module-list.nix;
       };
 
       templates.top = {

@@ -42,8 +42,8 @@ with lib; let
           # nixpkgs and assertions are separate, in case we want to include
           # this module in a NixOS configuration, where `nixpkgs` and
           # `assertions` options are already defined
-          ../modules/nixpkgs.nix
-          ../modules/assertions.nix
+          ../ioc/modules/nixpkgs.nix
+          ../ioc/modules/assertions.nix
         ];
       };
 
