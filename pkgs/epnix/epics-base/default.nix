@@ -85,7 +85,7 @@ in
 
           ARFLAGS = "rc";
 
-          COMMANDLINE_LIBRARY= "READLINE_NCURSES";
+          COMMANDLINE_LIBRARY = "READLINE_NCURSES";
         }
         // optionalAttrs cc.isClang {
           GNU = "NO";

@@ -22,8 +22,9 @@ with pkgs.lib;
       powernv
 
       # D-TACQ
-      { system = "armv7a-linux"; }
+      {system = "armv7a-linux";}
 
       raspberryPi
     ];
-  in listToAttrs (map checkCrossFor systemsToCheck))
+  in
+    listToAttrs (map checkCrossFor systemsToCheck))

@@ -21,31 +21,30 @@ with lib; let
         }
         // nixpkgsConfig;
       eval = evalModules {
-        modules =
-          [
-            ({config, ...}: {
-              config._module.args = let
-                # Configure the available packages with e.g. cross compilation
-                # and overlays
-                finalPkgs = import inputs.nixpkgs {
-                  inherit (nixpkgsConfigWithDefaults) system crossSystem config;
-                  inherit (config.nixpkgs) overlays;
-                };
-              in {
-                # See: https://github.com/NixOS/nixpkgs/pull/190358
-                pkgs = finalPkgs.__splicedPackages;
+        modules = [
+          ({config, ...}: {
+            config._module.args = let
+              # Configure the available packages with e.g. cross compilation
+              # and overlays
+              finalPkgs = import inputs.nixpkgs {
+                inherit (nixpkgsConfigWithDefaults) system crossSystem config;
+                inherit (config.nixpkgs) overlays;
               };
-            })
+            in {
+              # See: https://github.com/NixOS/nixpkgs/pull/190358
+              pkgs = finalPkgs.__splicedPackages;
+            };
+          })
 
-            epnixConfig
-            inputs.self.nixosModules.default
+          epnixConfig
+          inputs.self.nixosModules.default
 
-            # nixpkgs and assertions are separate, in case we want to include
-            # this module in a NixOS configuration, where `nixpkgs` and
-            # `assertions` options are already defined
-            ../modules/nixpkgs.nix
-            ../modules/assertions.nix
-          ];
+          # nixpkgs and assertions are separate, in case we want to include
+          # this module in a NixOS configuration, where `nixpkgs` and
+          # `assertions` options are already defined
+          ../modules/nixpkgs.nix
+          ../modules/assertions.nix
+        ];
       };
 
       # From Robotnix

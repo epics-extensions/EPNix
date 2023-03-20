@@ -21,28 +21,29 @@ in
 
     nodes.machine = let
       listenAddr = "127.0.0.1:1234";
-    in {lib, ...}: {
-      environment.systemPackages = [pkgs.epnix.epics-base];
+    in
+      {lib, ...}: {
+        environment.systemPackages = [pkgs.epnix.epics-base];
 
-      systemd.sockets.mock-server = {
-        wantedBy = ["multi-user.target"];
-        listenStreams = [listenAddr];
-        socketConfig.Accept = true;
-      };
-
-      systemd.services = {
-        "mock-server@".serviceConfig = {
-          ExecStart = "${mock_server}/bin/mock_server";
-          StandardInput = "socket";
-          StandardError = "journal";
+        systemd.sockets.mock-server = {
+          wantedBy = ["multi-user.target"];
+          listenStreams = [listenAddr];
+          socketConfig.Accept = true;
         };
 
-        ioc = lib.mkMerge [
-          service
-          { environment.STREAM_PS1 = listenAddr; }
-        ];
+        systemd.services = {
+          "mock-server@".serviceConfig = {
+            ExecStart = "${mock_server}/bin/mock_server";
+            StandardInput = "socket";
+            StandardError = "journal";
+          };
+
+          ioc = lib.mkMerge [
+            service
+            {environment.STREAM_PS1 = listenAddr;}
+          ];
+        };
       };
-    };
 
     testScript = ''
       machine.wait_for_unit("default.target")
