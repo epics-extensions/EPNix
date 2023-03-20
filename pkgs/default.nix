@@ -6,6 +6,9 @@ with prev;
     mkEpicsPackage = callPackage ./build-support/mk-epics-package.nix {};
 
     epnix = recurseIntoAttrs rec {
+
+      # EPICS base
+
       epics-base7 = callPackage ./epnix/epics-base {
         version = "7.0.7";
         hash = "sha256-VMiuwTuPykoMLcIphUAsjtLQZ8HLKr3LvGpje3lsIXc=";
@@ -15,6 +18,9 @@ with prev;
         hash = "sha256-QWScmCEaG0F6OW6LPCaFur4W57oRl822p7wpzbYhOuA=";
       };
       epics-base = epics-base7;
+
+      # EPICS support modules
+
       support = recurseIntoAttrs {
         asyn = callPackage ./epnix/support/asyn {};
         calc = callPackage ./epnix/support/calc {};
@@ -27,6 +33,9 @@ with prev;
         StreamDevice = callPackage ./epnix/support/StreamDevice {};
       };
 
+      # EPICS related tools and extensions
+
+      phoebus-olog = callPackage ./epnix/tools/phoebus/olog {};
       procServ = callPackage ./epnix/tools/procServ {};
     };
   }
