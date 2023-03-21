@@ -47,7 +47,8 @@
             constituents = builtins.attrValues self.packages.${system};
           };
         }
-        // (import ./ioc/tests {inherit pkgs self;});
+        // (import ./ioc/tests {inherit pkgs self;})
+        // (import ./nixos/tests/all-tests.nix {inherit nixpkgs pkgs self system;});
 
       devShells.default = pkgs.epnixLib.mkEpnixDevShell {
         nixpkgsConfig.system = system;
@@ -108,6 +109,9 @@
 
       nixosModules.nixos = {
         imports = import ./nixos/module-list.nix;
+
+        nixpkgs.overlays = [self.overlays.default];
+        _module.args.epnixLib = self.lib;
       };
 
       templates.top = {

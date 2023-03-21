@@ -1,3 +1,3 @@
 [
-
+  ./modules/phoebus/olog.nix
 ]

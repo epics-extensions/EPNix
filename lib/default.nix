@@ -37,7 +37,7 @@ with lib; let
           })
 
           epnixConfig
-          inputs.self.nixosModules.default
+          inputs.self.nixosModules.ioc
 
           # nixpkgs and assertions are separate, in case we want to include
           # this module in a NixOS configuration, where `nixpkgs` and
