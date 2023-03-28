@@ -6,7 +6,6 @@ with prev;
     mkEpicsPackage = callPackage ./build-support/mk-epics-package.nix {};
 
     epnix = recurseIntoAttrs rec {
-
       # EPICS base
 
       epics-base7 = callPackage ./epnix/epics-base {
@@ -35,7 +34,18 @@ with prev;
 
       # EPICS related tools and extensions
 
+      phoebus = callPackage ./epnix/tools/phoebus/client {
+        # TODO: uncomment when this works:
+        # TODO: add libjfxwebkit.so into openjfx
+        # jdk = final.openjdk17.override {enableJavaFX = true;};
+      };
+      phoebus-alarm-server = callPackage ./epnix/tools/phoebus/alarm-server {};
+      phoebus-archive-engine = callPackage ./epnix/tools/phoebus/archive-engine {};
+      phoebus-deps = callPackage ./epnix/tools/phoebus/deps {};
       phoebus-olog = callPackage ./epnix/tools/phoebus/olog {};
+      phoebus-pva = callPackage ./epnix/tools/phoebus/pva {};
+      phoebus-scan-server = callPackage ./epnix/tools/phoebus/scan-server {};
+      phoebus-setup-hook = callPackage ./epnix/tools/phoebus/setup-hook {};
       procServ = callPackage ./epnix/tools/procServ {};
     };
   }
