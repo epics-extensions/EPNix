@@ -15,5 +15,6 @@
 
   handleTest = path: args: nixosTesting.simpleTest (import path (pkgs // args));
 in {
+  phoebus-alarm = handleTest ./phoebus/alarm.nix {};
   phoebus-olog = handleTest ./phoebus/olog.nix {};
 }
