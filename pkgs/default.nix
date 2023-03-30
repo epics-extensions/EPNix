@@ -40,6 +40,7 @@ with prev;
         # jdk = final.openjdk17.override {enableJavaFX = true;};
       };
       phoebus-alarm-server = callPackage ./epnix/tools/phoebus/alarm-server {};
+      phoebus-alarm-logger = callPackage ./epnix/tools/phoebus/alarm-logger {};
       phoebus-archive-engine = callPackage ./epnix/tools/phoebus/archive-engine {};
       phoebus-deps = callPackage ./epnix/tools/phoebus/deps {};
       phoebus-olog = callPackage ./epnix/tools/phoebus/olog {};
