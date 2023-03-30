@@ -5,7 +5,7 @@
   maven,
   makeWrapper,
   epnix,
-  jre,
+  jdk,
 }: let
   buildDate = "2022-02-24T07:56:00Z";
 in
@@ -52,6 +52,6 @@ in
       homepage = "https://control-system-studio.readthedocs.io/en/latest/services/alarm-logger/doc/index.html";
       license = lib.licenses.epl10;
       maintainers = with epnixLib.maintainers; [minijackson];
-      inherit (jre.meta) platforms;
+      inherit (jdk.meta) platforms;
     };
   }
