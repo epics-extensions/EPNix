@@ -45,6 +45,7 @@ with prev;
       phoebus-deps = callPackage ./epnix/tools/phoebus/deps {};
       phoebus-olog = callPackage ./epnix/tools/phoebus/olog {};
       phoebus-pva = callPackage ./epnix/tools/phoebus/pva {};
+      phoebus-save-and-restore = callPackage ./epnix/tools/phoebus/save-and-restore {};
       phoebus-scan-server = callPackage ./epnix/tools/phoebus/scan-server {};
       phoebus-setup-hook = callPackage ./epnix/tools/phoebus/setup-hook {};
       procServ = callPackage ./epnix/tools/procServ {};
