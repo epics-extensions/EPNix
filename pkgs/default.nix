@@ -22,6 +22,7 @@ with prev;
         ipac = callPackage ./epnix/support/ipac {};
         modbus = callPackage ./epnix/support/modbus {};
         seq = callPackage ./epnix/support/seq {};
+        snmp = callPackage ./epnix/support/snmp {};
         sscan = callPackage ./epnix/support/sscan {};
         StreamDevice = callPackage ./epnix/support/StreamDevice {};
       };

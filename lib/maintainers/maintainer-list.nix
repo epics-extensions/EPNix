@@ -55,4 +55,8 @@
       }
     ];
   };
+  stephane = {
+    email = "stephane.tzvetkov@cea.fr";
+    name = "Stéphane Tzvetkov";
+  };
 }
