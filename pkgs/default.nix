@@ -22,6 +22,7 @@ with prev;
 
       support = recurseIntoAttrs {
         asyn = callPackage ./epnix/support/asyn {};
+        autosave = callPackage ./epnix/support/autosave {};
         calc = callPackage ./epnix/support/calc {};
         epics-systemd = callPackage ./epnix/support/epics-systemd {};
         ipac = callPackage ./epnix/support/ipac {};
