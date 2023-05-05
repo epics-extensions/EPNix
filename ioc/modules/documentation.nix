@@ -27,6 +27,8 @@ with lib; let
   # Apply a function to a derivation and its path, contained recursively in a
   # attrset, while supporting the `recurseForDerivations` attribute.
   #
+  # It will also filter-out hidden derivation using the meta.hidden attribute.
+  #
   # Type: (String -> Derivation -> a) -> a -> AttrSet -> [a]
   mapRecursiveDrvsToList = f: sep: attrset: let
     mapRecursiveDrvsToList' = base: f: attrset: let
@@ -34,9 +36,10 @@ with lib; let
       attrsList = mapAttrsToList nameValuePair attrset';
       partitioning = partition (x: isDerivation x.value) attrsList;
 
-      drvApplication = map (x: f "${base}${x.name}" x.value) partitioning.right;
+      visibleDerivations = filter (drv: !(drv.value.meta.hidden or false)) partitioning.right;
+      drvApplication = map (x: f "${base}${x.name}" x.value) visibleDerivations;
 
-      subAttrs = filter (x: x.value.recurseForDerivations or false == true) partitioning.wrong;
+      subAttrs = filter (x: x.value.recurseForDerivations or false) partitioning.wrong;
 
       subApplications = flatten (map
         (x: mapRecursiveDrvsToList' "${base}${x.name}." f x.value)
@@ -48,6 +51,7 @@ with lib; let
   in
     mapRecursiveDrvsToList' "" f attrset;
 
+  # TODO: support a category for splitting packages
   # TODO: specify available platforms, and fill out the meta.platforms field in
   # all packages
   package2md = path: pkg: ''

@@ -1,0 +1,12 @@
+record(ai, "ALARM_TEST") {
+	field(DESC, "PV monitored by Phoebus Alarm server")
+	field(LOLO, 0)
+	field(LLSV, MAJOR)
+	field(LOW, 1)
+	field(LSV, MINOR)
+	field(INP, {"const": 2})
+	field(HIGH, 3)
+	field(HSV, MINOR)
+	field(HIHI, 4)
+	field(HHSV, MAJOR)
+}
