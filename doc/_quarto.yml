@@ -25,6 +25,7 @@ website:
         - text: Introduction
           file: ./ioc/introduction.md
         - section: User Tutorials
+          file: ./ioc/tutorials.md
           contents:
             - ./ioc/tutorials/getting-started.md
             - ./ioc/tutorials/porting.md
@@ -32,7 +33,7 @@ website:
             - ./ioc/tutorials/integration-tests.md
             - ./ioc/tutorials/creating-a-mock-server.md
             - ./ioc/tutorials/adding-options.md
-        - section: User Guides
+        - file: ./ioc/guides.md
           contents:
             - ./ioc/guides/private-repo-setup.md
             - ./ioc/guides/flake-registry.md
@@ -44,15 +45,15 @@ website:
               contents:
                 - ./ioc/guides/testing/packaging-python-scripts.md
                 - ./ioc/guides/testing/unit-tests.md
-        - section: Explanations
-        - section: Developer Tutorials
-        - section: Developer Guides
+        - file: ./ioc/explanations.md
+        - file: ./ioc/developer-tutorials.md
+        - file: ./ioc/developer-guides.md
           contents:
             - ./ioc/developer-guides/packaging-modules.md
             - ./ioc/developer-guides/guidelines.md
             - ./ioc/developer-guides/packaging.md
             - ./ioc/developer-guides/glossary.md
-        - section: References
+        - file: ./ioc/references.md
           contents:
             - ./ioc/references/options.md
             - ./ioc/references/packages.md
