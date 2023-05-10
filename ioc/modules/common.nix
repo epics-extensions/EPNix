@@ -25,16 +25,6 @@ with lib; {
 
         `build`
           ~ The actual build of this distribution.
-
-        `manpage`
-          ~ A manpage of EPNix options.
-
-        `mdbook`
-          ~ The documentation book of the EPNix project, including your
-            available module options.
-
-        `doc-options-md`
-          ~ A markdown file describing the available module options.
       '';
       default = {};
       type = types.attrs;
