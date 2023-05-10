@@ -6,6 +6,7 @@
 } @ args:
 with lib; let
   self = {
+    documentation = import ./documentation.nix args;
     formats = import ./formats.nix args;
     licenses = import ./licenses.nix args;
     maintainers = import ./maintainers/maintainer-list.nix;
@@ -70,8 +71,6 @@ with lib; let
 
     mkEpnixManPage = cfg:
       (self.evalEpnixModules cfg).config.epnix.outputs.manpage;
-    mkEpnixMdBook = cfg:
-      (self.evalEpnixModules cfg).config.epnix.outputs.mdbook;
 
     # Like lib.getName, but also supports paths
     getName = thing:

@@ -50,5 +50,8 @@ with prev;
       phoebus-scan-server = callPackage ./epnix/tools/phoebus/scan-server {};
       phoebus-setup-hook = callPackage ./epnix/tools/phoebus/setup-hook {};
       procServ = callPackage ./epnix/tools/procServ {};
+
+      # EPNix specific packages
+      book = callPackage ./book {};
     };
   }

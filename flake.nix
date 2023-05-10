@@ -7,10 +7,6 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
   inputs.flake-utils.url = "github:numtide/flake-utils";
-  inputs.nix-module-doc = {
-    url = "github:minijackson/nix-module-doc";
-    inputs.nixpkgs.follows = "nixpkgs";
-  };
 
   outputs = {
     self,
@@ -26,18 +22,7 @@
         overlays = [overlay inputs.bash-lib.overlay];
       };
     in rec {
-      packages =
-        flake-utils.lib.flattenTree (pkgs.recurseIntoAttrs pkgs.epnix)
-        // {
-          manpage = self.lib.mkEpnixManPage {
-            nixpkgsConfig.system = system;
-            epnixConfig = {};
-          };
-          mdbook = self.lib.mkEpnixMdBook {
-            nixpkgsConfig.system = system;
-            epnixConfig = {};
-          };
-        };
+      packages = flake-utils.lib.flattenTree (pkgs.recurseIntoAttrs pkgs.epnix);
 
       checks =
         {
@@ -57,7 +42,7 @@
           buildConfig.src = pkgs.emptyDirectory;
           devShell.packages = [
             {
-              package = pkgs.mdbook;
+              package = pkgs.quarto;
               category = "development tools";
             }
             {
@@ -78,10 +63,13 @@
     // {
       overlays.default = overlay;
 
-      lib = import ./lib {
-        lib = nixpkgs.lib;
-        inherit inputs;
-      };
+      lib = let
+        epnixLib = import ./lib {
+          inherit (nixpkgs) lib;
+          inherit epnixLib inputs;
+        };
+      in
+        epnixLib;
 
       nixosModules.default = {
         imports = [
@@ -90,26 +78,13 @@
         ];
       };
 
-      nixosModules.ioc = let
-        docParams = {
-          outputAttrPath = ["epnix" "outputs"];
-          optionsAttrPath = ["epnix" "doc"];
-        };
-      in {
-        imports =
-          [
-            (inputs.nix-module-doc.lib.modules.doc-options-md docParams)
-            (inputs.nix-module-doc.lib.modules.manpage docParams)
-            (inputs.nix-module-doc.lib.modules.mdbook docParams)
-          ]
-          ++ import ./ioc/modules/module-list.nix;
-
+      nixosModules.ioc = {
+        imports = import ./ioc/modules/module-list.nix;
         _module.args.epnix = self;
       };
 
       nixosModules.nixos = {
         imports = import ./nixos/module-list.nix;
-
         nixpkgs.overlays = [self.overlays.default];
         _module.args.epnixLib = self.lib;
       };
