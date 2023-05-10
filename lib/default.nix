@@ -69,9 +69,6 @@ with lib; let
     mkEpnixDevShell = cfg:
       (self.evalEpnixModules cfg).config.epnix.outputs.devShell;
 
-    mkEpnixManPage = cfg:
-      (self.evalEpnixModules cfg).config.epnix.outputs.manpage;
-
     # Like lib.getName, but also supports paths
     getName = thing:
       if builtins.isPath thing

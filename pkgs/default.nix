@@ -53,5 +53,6 @@ with prev;
 
       # EPNix specific packages
       book = callPackage ./book {};
+      manpages = callPackage ./manpages {};
     };
   }
