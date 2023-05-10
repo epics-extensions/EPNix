@@ -1,3 +1,5 @@
-# Pin the version of a Nix dependency
+---
+title: Pin the version of a Nix dependency
+---
 
 TODO

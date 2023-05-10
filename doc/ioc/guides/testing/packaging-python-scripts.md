@@ -1,73 +1,61 @@
-# Packaging Python scripts
+---
+title: Packaging Python scripts
+---
 
-As EPNix uses Nix, you can packaging Python scripts as helpers for your
-integration tests, by using the provided [infrastructure] of nixpkgs. As
-a matter of fact, you can package any program in any language, but we
-recommend using Python scripts with [Poetry] for their simplicity and
-popularity.
+```{=html}
+<!-- TODO: move most of it in tutorial -->
+```
+As EPNix uses Nix, you can package Python scripts as helpers for your integration tests, by using the provided [infrastructure] of nixpkgs.
+In fact, you can package any program in any language, but this document focuses on Python scripts with [Poetry] for their simplicity and popularity.
 
-[infrastructure]: <https://nixos.org/manual/nixpkgs/stable/#python>
-[Poetry]: <https://python-poetry.org/>
+  [infrastructure]: https://nixos.org/manual/nixpkgs/stable/#python
+  [Poetry]: https://python-poetry.org/
 
-## Getting started
+# Getting started
 
-We recommend using the Poetry package in your EPNix environment, through Nix,
-to use the same version as the one building the Python script.
+We recommend using the Poetry package in your EPNix environment, through Nix, to use the same version as the one building the Python script.
 
 You can do this by adding this bit in your `flake.nix` file:
 
-```nix
+``` nix
 epnix.devShell.packages = [
   { package = pkg.poetry; category = "development tools"; }
 ];
 ```
 
-Next, you can start your development shell with `nix develop`, go to the
-directory of your test, and create a new project with the command:
+Next, you can start your development shell with `nix develop`, go to the directory of your test, and create a new project with the command:
 
-```bash
+``` bash
 poetry new <my-python-script>
 ```
 
 This will create a Python project under the `<my-python-script>` directory.
-Under it, you will find a `pyproject.toml` where you can specify the
-dependencies of your script. For example, you can specify `modbus` to add the
-Python [modbus package], if you want to test modbus communication. You can
-remove the dependency on pytest if won't add unit tests to your Python script.
+Under it, you will find a `pyproject.toml` where you can specify the dependencies of your script.
+For example, you can specify `modbus` to add the Python [modbus package], if you want to test modbus communication.
+You can remove the dependency on pytest if won't add unit tests to your Python script.
 
-[modbus package]: <https://pypi.org/project/modbus/>
+To add an entry point to your Python code, you can use the `tool.poetry.scripts` section like so:
 
-To add an entry point to your Python code, you can use the
-`tool.poetry.scripts` section like so:
-
-```toml
+``` toml
 [tool.poetry.scripts]
 my_python_script = "my_python_script:main"
 ```
 
-This will add an executable named `my_python_script` that will run the `main`
-function of the `my_python_script` module.
+This will add an executable named `my_python_script`{.bash} that will run the `main()`{.python} function of the `my_python_script`{.python} module.
 
-For more information on how to use poetry, please refer to the [Poetry
-documentation].
+For more information on how to use poetry, please refer to the [Poetry documentation].
 
-[Poetry documentation]: <https://python-poetry.org/docs/basic-usage/>
-
-Before packaging this script using Nix, it's important to generate the lock
-file, and to remember to re-generate it each time you change the
-`pyproject.toml` file.
+Before packaging this script using Nix, it's important to generate the lock file, and to remember to re-generate it each time you change the `pyproject.toml` file.
 
 You can do this with the following command:
 
-```bash
+``` bash
 poetry lock
 ```
 
 Then, in your [integration test] file, you can package it like this:
 
-[integration test]: ./integration-tests.md
-
-```nix
+``` nix
 { build, pkgs, ... }:
 
 let
@@ -84,15 +72,18 @@ pkgs.nixosTest {
 
 With this, you can use the `pythonScript` variable as you see fit.
 
-## Example usage: As a one shot test script
+  [modbus package]: https://pypi.org/project/modbus/
+  [Poetry documentation]: https://python-poetry.org/docs/basic-usage/
+  [integration test]: ../../tutorials/integration-tests.md
 
-Using a packaged Python script instead of the provided `testScript` has several
-advantages. It can use dependencies provided by the community (like `modbus`,
-`systemd`, etc.), and you can make it run on the running virtual machine.
+# Example usage: As a one shot test script
+
+Using a packaged Python script instead of the provided `testScript` has several advantages.
+It can use dependencies provided by the community (like `modbus`, `systemd`, etc.), and you can make it run on the running virtual machine.
 
 Python script:
 
-```python
+``` python
 import subprocess
 
 from modbus.client import *
@@ -113,7 +104,7 @@ def main():
 
 Nix test:
 
-```nix
+``` nix
 { build, pkgs, ... }:
 
 let
@@ -140,16 +131,14 @@ pkgs.nixosTest {
 }
 ```
 
-## Example usage: As a systemd service
+# Example usage: As a systemd service
 
-Using a Python script as a systemd service is useful for mocking devices. For
-more information, please see the [Creating a mocking server] guide.
-
-[Creating a mocking server]: ./creating-a-mock-server.md
+Using a Python script as a systemd service is useful for mocking devices.
+For more information, please see the [Creating a mocking server] guide.
 
 Python script:
 
-```python
+``` python
 import logging
 from logging import info
 
@@ -165,7 +154,7 @@ def main():
 
 Nix test:
 
-```nix
+``` nix
 { build, pkgs, ... }:
 
 let
@@ -195,3 +184,5 @@ pkgs.nixosTest {
   '';
 }
 ```
+
+  [Creating a mocking server]: ../../tutorials/creating-a-mock-server.md

@@ -1,3 +1,5 @@
-# Override a support module
+---
+title: Override a support module
+---
 
 TODO

@@ -1,3 +1,5 @@
-# Packaging new software
+---
+title: Packaging new software
+---
 
 TODO

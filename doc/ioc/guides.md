@@ -1,3 +1,5 @@
-# User guides
+---
+title: User guides
+---
 
 TODO

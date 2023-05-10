@@ -1,3 +1,5 @@
-# Adding configuration options
+---
+title: Adding configuration options
+---
 
 TODO

@@ -1,3 +1,5 @@
-# Packaging modules
+---
+title: Packaging modules
+---
 
 TODO

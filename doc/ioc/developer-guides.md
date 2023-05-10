@@ -1,3 +1,5 @@
-# Developer guide
+---
+title: Developer guides
+---
 
 TODO

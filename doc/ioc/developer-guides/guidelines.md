@@ -1,3 +1,5 @@
-# Guidelines
+---
+title: Guidelines
+---
 
 TODO

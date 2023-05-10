@@ -1,9 +1,11 @@
-# Writing unit tests
+---
+title: Writing unit tests
+---
 
-## EPICS unit tests primer
+# EPICS unit tests primer
 
 TODO
 
-## EPICS unit test API
+# EPICS unit test API
 
-## Example
+# Example

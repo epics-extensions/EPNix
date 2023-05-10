@@ -1,3 +1,5 @@
-# Glossary
+---
+title: Glossary
+---
 
 TODO
