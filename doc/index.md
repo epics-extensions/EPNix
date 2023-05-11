@@ -1,6 +1,10 @@
-# EPNix
+---
+title: EPNix documentation
+---
 
-![](./doc/logo.svg)
+![](./logo.svg){width=70% fig-align=center}
+
+# Introduction
 
 EPNix (pronunciation: like you are high on mushrooms) packages EPICS-related software using the [Nix] package manager.
 
@@ -22,17 +26,11 @@ EPNix strives to have integration tests for each of those module.
 For more information, see the [NixOS modules introduction].
 
   [Nix]: https://nixos.org/guides/how-nix-works.html
-  [EPICS IOCs introduction]: https://epics-extensions.github.io/EPNix/ioc/introduction.html
-  [Packages list]: https://epics-extensions.github.io/EPNix/pkgs/packages.html
-  [NixOS modules introduction]: https://epics-extensions.github.io/EPNix/nixos/introduction.html
+  [EPICS IOCs introduction]: ./ioc/introduction.md
+  [Packages list]: ./pkgs/packages.md
+  [NixOS modules introduction]: ./nixos/introduction.md
 
-## Getting started building IOCs
-
-See [over there] in the documentation book.
-
-  [over there]: https://epics-extensions.github.io/EPNix/ioc/getting-started.html
-
-## Packaging policy
+# Packaging policy
 
 As EPNix provides a package repository, packaging for example `epics-base`, `asyn`, `StreamDevice`, `procServ`, `phoebus`, etc., it needs to have a packaging policy.
 
@@ -40,33 +38,17 @@ In its package repository, EPNix officially supports the latest upstream version
 
 However, since EPNix is a git repository, you will be able, through Nix, to use a fixed version of EPNix, without being forced to upgrade your dependencies.
 
-### The epics-base package
+```{=html}
+<!-- TODO: link to an explanation, from the IOC side, and from the NixOS side -->
+```
+## The epics-base package
 
 The epics-base package has no significant modification compared to the upstream version at [Launchpad].
 One goal of EPNix is to keep those modifications to a minimum, and upstream what's possible.
 
+------------------------------------------------------------------------
+
+This documentation follows the [Diátaxis] documentation framework.
+
   [Launchpad]: https://git.launchpad.net/epics-base
-
-## Quick example of an EPNix configuration
-
-``` nix
-epnix = {
-  meta.name = "my-top";
-
-  # You can choose the version of EPICS-base here:
-  # ---
-  epics-base.releaseBranch = "3"; # Defaults to "7"
-
-  # Add one of the supported modules here:
-  # ---
-  support.modules = with pkgs.epnix.support; [ StreamDevice ];
-
-  # Add your applications:
-  # ---
-  applications.apps = [ "inputs.myExampleApp" ];
-
-  # You can specify environment variables for your development shell like this:
-  # ---
-  devShell.environment.variables."EPICS_CA_ADDR_LIST" = "localhost";
-};
-```
+  [Diátaxis]: https://diataxis.fr/

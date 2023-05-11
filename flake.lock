@@ -51,26 +51,6 @@
         "type": "github"
       }
     },
-    "nix-module-doc": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1677492593,
-        "narHash": "sha256-jABGs42bX2SrOj1AqdmoRXsVCJc9emFJ+OC2D51IQSo=",
-        "owner": "minijackson",
-        "repo": "nix-module-doc",
-        "rev": "ad8fc3bd004d60097d867996327d3e1e822e1d9c",
-        "type": "github"
-      },
-      "original": {
-        "owner": "minijackson",
-        "repo": "nix-module-doc",
-        "type": "github"
-      }
-    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1679966490,
@@ -91,7 +71,6 @@
       "inputs": {
         "bash-lib": "bash-lib",
         "flake-utils": "flake-utils_2",
-        "nix-module-doc": "nix-module-doc",
         "nixpkgs": "nixpkgs"
       }
     }

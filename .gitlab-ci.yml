@@ -13,23 +13,33 @@ run_checks:
   script:
     - nix flake check $NIX_BUILD_FLAGS
 
-manpage:
+editorconfig:
+  stage: test
+  script:
+    - nix run 'nixpkgs#eclint' --inputs-from .
+
+formatting:
+  stage: test
+  script:
+    - nix fmt -- --check .
+
+manpages:
   stage: deploy
   script:
-    - nix build $NIX_BUILD_FLAGS '.#manpage'
-    - cp -Lr ./result manpage
+    - nix build $NIX_BUILD_FLAGS '.#manpages'
+    - cp -Lr ./result manpages
   artifacts:
-    name: "manpage-$CI_COMMIT_REF_SLUG"
+    name: "manpages-$CI_COMMIT_REF_SLUG"
     paths:
-      - manpage
+      - manpages
 
 pages:
   stage: deploy
   script:
-    - nix build $NIX_BUILD_FLAGS '.#mdbook'
+    - nix build $NIX_BUILD_FLAGS '.#book'
     - cp -Lr ./result public
   artifacts:
-    name: "mdbook"
+    name: "book"
     paths:
       - public
   dependencies: []

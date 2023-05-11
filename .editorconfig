@@ -21,3 +21,9 @@ indent_size = 4
 [*.{db,dbd}]
 indent_style = tab
 indent_size = 4
+
+# Ignore diffs/patches
+[*.{diff,patch}]
+end_of_line = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset

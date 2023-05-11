@@ -1,3 +1,0 @@
-# Packaging new software
-
-TODO

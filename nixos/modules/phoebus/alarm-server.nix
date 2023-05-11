@@ -34,7 +34,7 @@ in {
 
         Includes services:
 
-        - Apache Kafka (if it configured locally)
+        - Apache Kafka (if configured locally)
         - Phoebus Alarm Logger (if not disabled)
 
         Warning: this opens the firewall on all network interfaces.

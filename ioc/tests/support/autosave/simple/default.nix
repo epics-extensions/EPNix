@@ -18,7 +18,7 @@ in
     nodes.machine = {
       environment.systemPackages = [pkgs.epnix.epics-base pkgs.inetutils];
 
-      systemd.services.ioc = pkgs.lib.mkMerge[ service {serviceConfig.StateDirectory = "epics/autosave";} ];
+      systemd.services.ioc = pkgs.lib.mkMerge [service {serviceConfig.StateDirectory = "epics/autosave";}];
     };
 
     testScript = ''

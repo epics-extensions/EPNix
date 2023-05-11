@@ -15,8 +15,8 @@ mkEpicsPackage rec {
 
   inherit local_config_site local_release;
 
-  buildInputs = [ net-snmp openssl ];
-  nativeBuildInputs = [ net-snmp openssl ];
+  buildInputs = [net-snmp openssl];
+  nativeBuildInputs = [net-snmp openssl];
 
   preBuild = ''
     echo 'include $(TOP)/configure/RELEASE.local' >> configure/RELEASE

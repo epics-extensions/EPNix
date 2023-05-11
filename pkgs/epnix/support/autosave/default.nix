@@ -26,4 +26,3 @@ mkEpicsPackage rec {
     maintainers = with epnixLib.maintainers; [stephane];
   };
 }
-

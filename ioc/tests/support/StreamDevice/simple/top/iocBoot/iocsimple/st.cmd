@@ -4,7 +4,7 @@
 
 ## Register all support components
 dbLoadDatabase("../../dbd/simple.dbd", 0, 0)
-simple_registerRecordDeviceDriver(pdbbase) 
+simple_registerRecordDeviceDriver(pdbbase)
 
 var streamError 1
 

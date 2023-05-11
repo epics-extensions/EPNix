@@ -1,3 +1,0 @@
-# Adding configuration options
-
-TODO
