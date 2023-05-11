@@ -18,6 +18,11 @@ editorconfig:
   script:
     - nix run 'nixpkgs#eclint' --inputs-from .
 
+formatting:
+  stage: test
+  script:
+    - nix fmt -- --check .
+
 manpages:
   stage: deploy
   script:
