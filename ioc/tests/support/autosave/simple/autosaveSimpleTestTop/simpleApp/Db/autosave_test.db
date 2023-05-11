@@ -1,0 +1,76 @@
+# aai
+record(aai,"$(PREFIX):aai"){
+}
+
+# aao
+record(aao,"$(PREFIX):aao"){
+}
+
+# ai
+record(ai,"$(PREFIX):ai"){
+}
+
+# ao
+record(ao,"$(PREFIX):ao"){
+}
+
+# bi
+record(bi,"$(PREFIX):bi"){
+}
+
+# bo
+record(bo,"$(PREFIX):bo"){
+}
+
+# calc
+record(calc,"$(PREFIX):calc"){
+}
+
+# calcout
+record(calcout,"$(PREFIX):calcout"){
+}
+
+# longin
+record(longin,"$(PREFIX):longin"){
+}
+
+# longout
+record(longout,"$(PREFIX):longout"){
+}
+
+# lsi
+record(lsi,"$(PREFIX):lsi"){
+}
+
+# lso
+record(lso,"$(PREFIX):lso"){
+}
+
+# mbbi
+record(mbbi,"$(PREFIX):mbbi"){
+}
+
+# mbbiDirect
+record(mbbiDirect,"$(PREFIX):mbbiDirect"){
+}
+
+# mbbo
+record(mbbo,"$(PREFIX):mbbo"){
+}
+
+# mbboDirect
+record(mbboDirect,"$(PREFIX):mbboDirect"){
+}
+
+# stringin
+record(stringin, "$(PREFIX):stringin") {
+}
+
+# stringout
+record(stringout, "$(PREFIX):stringout") {
+}
+
+# waveform
+record(waveform, "$(PREFIX):waveform") {
+}
+
