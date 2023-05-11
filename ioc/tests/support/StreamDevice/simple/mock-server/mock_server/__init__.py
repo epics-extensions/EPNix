@@ -39,12 +39,12 @@ def main():
         elif data == "REGEX_TITLE":
             send("""<!DOCTYPE html>
 <html>
-  <head>
-    <title>Hello, World!</title>
-  </head>
-  </body>
-    <p>Hello, World!</p>
-  </body>
+    <head>
+        <title>Hello, World!</title>
+    </head>
+    </body>
+        <p>Hello, World!</p>
+    </body>
 </html>
 """)
         elif data == "REGEX_SUB":
