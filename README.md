@@ -30,7 +30,7 @@ For more information, see the [NixOS modules introduction].
 
 See [over there] in the documentation book.
 
-  [over there]: https://epics-extensions.github.io/EPNix/ioc/getting-started.html
+  [over there]: https://epics-extensions.github.io/EPNix/ioc/tutorials/getting-started.html
 
 ## Packaging policy
 
