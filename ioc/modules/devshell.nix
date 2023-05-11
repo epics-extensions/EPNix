@@ -7,8 +7,6 @@
 with lib; let
   cfg = config.epnix.devShell;
 
-  outputs = config.epnix.outputs;
-
   available = {inputs = config.epnix.inputs;};
 
   lockFile = importJSON "${available.inputs.self}/flake.lock";
@@ -87,7 +85,7 @@ with lib; let
     };
 
     config.commands = let
-      name = config.package.pname or (parseDrvName config.package.name).name;
+      name = config.package.pname or (builtins.parseDrvName config.package.name).name;
       description = config.package.meta.description or "";
     in
       mkDefault {
@@ -309,7 +307,12 @@ in {
 
       eman = {
         text = ''
-          man "${outputs.manpage}"
+          info "Please use man to lookup an EPNix manpage"
+          info "Available manpages:"
+          echo "- man 5 epnix-ioc"
+          echo "- man 5 epnix-nixos"
+          echo "- man 5 epnix-packages"
+          exit 1
         '';
         category = "epnix commands";
         description = "Show the configuration options manpage of the distribution";
@@ -317,7 +320,7 @@ in {
 
       edoc = {
         text = ''
-          xdg-open "${outputs.mdbook}/index.html"
+          ${pkgs.python3}/bin/python -m http.server --bind 127.0.0.1 --directory "${pkgs.epnix.book}"
         '';
         category = "epnix commands";
         description = "Show the EPNix documentation book for the distribution";
@@ -568,7 +571,8 @@ in {
         nativeBuildInputs =
           (map (cmd: cmd.package) cfg.packages)
           ++ scriptPackages
-          ++ config.epnix.outputs.build.depsBuildBuild;
+          ++ config.epnix.outputs.build.depsBuildBuild
+          ++ [pkgs.epnix.manpages];
 
         inherit (config.epnix.outputs.build) local_config_site local_release;
 
