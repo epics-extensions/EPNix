@@ -1,43 +1,55 @@
 # EPNix
 
-EPNix (pronunciation: like you are high on mushrooms) provides a way of
-building and packaging EPICS IOCs using the [Nix] package manager.
+![](./doc/logo.svg)
 
-By leveraging the Nix package manager, it provides several advantages compared
-to packaging EPICS the traditional way:
+EPNix (pronunciation: like you are high on mushrooms) packages EPICS-related software using the [Nix] package manager.
 
-- Reproducibility: your development environment is the same as your coworker's
-  development environment, which is the same as your production
-  environment.
+It's made of three parts:
 
-- Complete dependencies: your EPICS IOCs ship with the complete set of
-  dependencies, which means you can to deploy your IOC without needing to
-  install any dependency on the target machine (except for Nix itself).
+-   the EPICS IOC framework
+-   other EPICS-related packages
+-   NixOS modules
 
-- Dependency traceability: the version of your dependencies are locked, updated
-  manually, and traced in your `flake.lock` file. Combined with code
-  versioning, you can build your project with the same environment years
-  later, and you can rollback if one of your dependency becomes incompatible.
+The EPICS IOC framework lets you package, deploy, and test EPICS IOCs using the Nix package manager, which provides several benefits.
+For more information, see the [EPICS IOCs introduction].
 
-- Development shell: provides you with a set of tool adapted to your project,
-  no matter what you have installed on your machine.
+EPNix also packages other EPICS-related tools, like procServ, Phoebus, etc.
+You can build them using Nix, and in the future download them pre-compiled, while having a strong guarantee that they will work as-is.
+For a list of all supported EPICS-related packages, see the [Packages list].
 
-- Declarative configuration: define what you want in your IOC in a declarative
-  and extendable manner.
+EPNix also provides NixOS modules, which are instructions on how to configure various EPICS-related services on NixOS machines (for example the Phoebus alarm server).
+EPNix strives to have integration tests for each of those module.
+For more information, see the [NixOS modules introduction].
 
-- Integration tests: write tests using Python, by starting a virtual machine
-  with your IOC running.
+  [Nix]: https://nixos.org/guides/how-nix-works.html
+  [EPICS IOCs introduction]: https://epics-extensions.github.io/EPNix/ioc/introduction.html
+  [Packages list]: https://epics-extensions.github.io/EPNix/pkgs/packages.html
+  [NixOS modules introduction]: https://epics-extensions.github.io/EPNix/nixos/introduction.html
 
-[Nix]: <https://nixos.org/guides/how-nix-works.html>
+## Getting started building IOCs
 
-## Getting started
+See [over there] in the documentation book.
 
-The guide to getting started is [over there](./doc/src/getting-started.md) in
-the documentation book.
+  [over there]: https://epics-extensions.github.io/EPNix/ioc/getting-started.html
+
+## Packaging policy
+
+As EPNix provides a package repository, packaging for example `epics-base`, `asyn`, `StreamDevice`, `procServ`, `phoebus`, etc., it needs to have a packaging policy.
+
+In its package repository, EPNix officially supports the latest upstream version.
+
+However, since EPNix is a git repository, you will be able, through Nix, to use a fixed version of EPNix, without being forced to upgrade your dependencies.
+
+### The epics-base package
+
+The epics-base package has no significant modification compared to the upstream version at [Launchpad].
+One goal of EPNix is to keep those modifications to a minimum, and upstream what's possible.
+
+  [Launchpad]: https://git.launchpad.net/epics-base
 
 ## Quick example of an EPNix configuration
 
-```nix
+``` nix
 epnix = {
   meta.name = "my-top";
 
