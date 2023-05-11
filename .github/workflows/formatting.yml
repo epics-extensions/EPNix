@@ -1,0 +1,16 @@
+name: "Check Formatting"
+
+permissions: read-all
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  alejandra:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: cachix/install-nix-action@v20
+    - name: "Check Formatting"
+      run: nix fmt -- --check .
