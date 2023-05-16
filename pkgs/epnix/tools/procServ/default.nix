@@ -22,6 +22,8 @@ stdenv.mkDerivation rec {
   # without doc for now...
   configureFlags = ["--disable-doc"];
 
+  enableParallelBuilding = true;
+
   meta = {
     description = "Wrapper to start arbitrary interactive commands in the background, with telnet or Unix domain socket access to stdin/stdout";
     homepage = "https://github.com/ralphlange/procServ";

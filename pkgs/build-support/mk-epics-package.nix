@@ -18,7 +18,6 @@
   buildInputs ? [],
   makeFlags ? [],
   preBuild ? "",
-  postInstall ? "",
   postFixup ? "",
   ...
 } @ attrs:
@@ -55,6 +54,7 @@ in
 
       setupHook = ./setup-hook.sh;
 
+      # Defaults to true, EPICS' Makefile framework does usually support parallel builds
       enableParallelBuilding = attrs.enableParallelBuilding or true;
 
       dontConfigure = true;
@@ -113,17 +113,22 @@ in
       # Automatically create binaries directly in `bin/` that calls the ones that
       # are in `bin/linux-x86_64/`
       # TODO: we should probably do the same for libraries
-      postInstall =
-        ''
-          if [[ -d "$out/bin/${host_arch}" ]]; then
-            for file in "$out/bin/${host_arch}/"*; do
-              [[ -x "$file" ]] || continue
+      #
+      # Don't do a manual `make install`, `make` already installs
+      # everything into `INSTALL_LOCATION`.
+      installPhase = ''
+        runHook preInstall
 
-              makeWrapper "$file" "$out/bin/$(basename "$file")"
-            done
-          fi
-        ''
-        + postInstall;
+        if [[ -d "$out/bin/${host_arch}" ]]; then
+          for file in "$out/bin/${host_arch}/"*; do
+            [[ -x "$file" ]] || continue
+
+            makeWrapper "$file" "$out/bin/$(basename "$file")"
+          done
+        fi
+
+        runHook postInstall
+      '';
 
       doCheck = attrs.doCheck or true;
       checkTarget = "runtests";
