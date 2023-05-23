@@ -5,7 +5,9 @@
 
     support.modules = with pkgs.epnix.support; [seq];
 
-    nixos.service.app = "simple";
-    nixos.service.ioc = "iocsimple";
+    nixos.services.ioc = {
+      app = "simple";
+      ioc = "iocsimple";
+    };
   };
 }
