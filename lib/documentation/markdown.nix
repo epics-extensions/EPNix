@@ -48,7 +48,7 @@ in {
   fromOption = headingLevel: option: let
     header = lib.fixedWidthString headingLevel "#" "";
   in ''
-    ${header} ${wordBreakOption option.loc}
+    ${header} ${wordBreakOption (map lib.escapeXML option.loc)}
 
     ${self.toText option.description}
 
