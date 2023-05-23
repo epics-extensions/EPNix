@@ -25,7 +25,7 @@ You can look at the [Packaging modules] guide, this doesn't even have to compile
 From the directory containing the source code of your support module, run:
 
 ``` bash
-nix develop "/path/to/local/epnix#support/mySupport"`
+nix develop "/path/to/local/epnix#support/mySupport"
 # Then, inside the development environment
 dontUnpack=true
 genericBuild
