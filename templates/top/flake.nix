@@ -45,6 +45,14 @@
         # ---
         checks.files = [./checks/simple.nix];
 
+        # Used when generating NixOS systemd services, for example for
+        # deployment to production, or for the NixOS tests in checks/
+        # ---
+        nixos.services.ioc = {
+          app = "example";
+          ioc = "iocExample";
+        };
+
         # You can specify environment variables in your development shell like this:
         # ---
         #devShell.environment.variables = {
