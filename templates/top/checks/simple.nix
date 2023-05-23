@@ -1,22 +1,21 @@
 {
-  build,
+  epnix,
+  # Your EPNix configuration, as defined in flake.nix
+  epnixConfig,
   pkgs,
   ...
 }:
 pkgs.nixosTest {
   name = "simple";
 
-  nodes.machine = {
+  nodes.machine = {config, ...}: {
+    imports = [
+      epnix.nixosModules.ioc
+      epnixConfig
+    ];
     environment.systemPackages = [pkgs.epnix.epics-base];
 
-    systemd.services.ioc = {
-      wantedBy = ["multi-user.target"];
-      serviceConfig = {
-        ExecStart = "${build}/iocBoot/iocexample/st.cmd";
-        WorkingDirectory = "${build}/iocBoot/iocexample";
-        StandardInputText = "epicsThreadSleep(100)";
-      };
-    };
+    systemd.services.ioc = config.epnix.nixos.services.ioc.config;
   };
 
   testScript = ''
