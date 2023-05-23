@@ -1,5 +1,7 @@
 {
   config,
+  epnix,
+  epnixConfig,
   lib,
   pkgs,
   ...
@@ -41,8 +43,17 @@ in {
 
     importCheck = path:
       import path {
-        inherit pkgs;
-        inherit (config.epnix.outputs) build;
+        inherit pkgs epnix epnixConfig;
+
+        build =
+          lib.warn
+          ''
+            using 'build' in a check is deprecated.
+            Please see the current EPNix IOC template for the new way of implementing checks:
+
+            - ${epnix}/templates/top/checks/simple.nix
+          ''
+          config.epnix.outputs.build;
       };
   in
     listToAttrs

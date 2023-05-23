@@ -34,6 +34,9 @@ with lib; let
             in {
               # See: https://github.com/NixOS/nixpkgs/pull/190358
               pkgs = finalPkgs.__splicedPackages;
+
+              # Used when we want to apply the same config in checks
+              inherit epnixConfig;
             };
           })
 
