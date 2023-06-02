@@ -42,11 +42,15 @@
           buildConfig.src = pkgs.emptyDirectory;
           devShell.packages = [
             {
+              package = pkgs.poetry;
+              category = "development tools";
+            }
+            {
               package = pkgs.quarto;
               category = "development tools";
             }
             {
-              package = pkgs.poetry;
+              package = pkgs.vale;
               category = "development tools";
             }
           ];
