@@ -26,13 +26,13 @@ From the directory containing the source code of your support module, run:
 
 ``` bash
 nix develop "/path/to/local/epnix#support/mySupport"
-# Then, inside the development environment
+# Then, inside the development shell
 dontUnpack=true
 genericBuild
 ```
 
 This will put the result of your compilation under `outputs/out`.
-If you make modifications to your support module, run `buildPhase`{.bash} from the same development environment to recompile it.
+If you make modifications to your support module, run `buildPhase`{.bash} from the same development shell to recompile it.
 
 # Using it on your EPICS top
 
@@ -61,13 +61,13 @@ Use this option to override individual packages.
 ------------------------------------------------------------------------
 
 With this setup, you can hack and compile your support module, and the changes will be directly visible to your top.
-This enables you to hack on both project at the same time, each on their own development environment.
+This enables you to hack on both project at the same time, each on their own development shell.
 
 One question one may ask:
 
 > What's the difference between running the complex `nix develop`{.bash} command and just putting `/path/to/mySupport/outputs/out` into `RELEASE.local`?
 
-One thing that the complex `nix develop`{.bash} command does correctly, is replacing *everything* that would have been `/nix/store/...-mySupport../` into your development environment.
+One thing that the complex `nix develop`{.bash} command does correctly, is replacing *everything* that would have been `/nix/store/...-mySupport../` into your development shell.
 This includes the `RELEASE.local` file, but this may not be the only thing:
 
 For example, if you're hacking on the `seq` support module, not only will it put the path to your local `seq` module into `RELEASE.local`, but it will also put some `seq` specific programs into your `$PATH`{.bash}, like the `snc`{.bash} utility.
