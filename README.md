@@ -2,7 +2,7 @@
 
 ![](./doc/logo.svg)
 
-EPNix (pronunciation: like you are high on mushrooms) packages EPICS-related software using the [Nix] package manager.
+EPNix (pronunciation: like you are high on mushrooms) packages EPICS-related software by using the [Nix] package manager.
 
 It's made of three parts:
 
@@ -10,12 +10,14 @@ It's made of three parts:
 -   other EPICS-related packages
 -   NixOS modules
 
-The EPICS IOC framework lets you package, deploy, and test EPICS IOCs using the Nix package manager, which provides several benefits.
+The EPICS IOC framework lets you package, deploy, and test EPICS IOCs by using the Nix package manager, which provides several benefits.
 For more information, see the [EPICS IOCs introduction].
 
-EPNix also packages other EPICS-related tools, like procServ, Phoebus, etc.
-You can build them using Nix, and in the future download them pre-compiled, while having a strong guarantee that they will work as-is.
+EPNix also packages other EPICS-related tools, such as procServ, Phoebus, and so on.
+You can build them by using Nix, while having a strong guarantee that they work as-is.
 For a list of all supported EPICS-related packages, see the [Packages list].
+
+Note: providing a cache server that enables you to download dependencies pre-compiled is anticipated.
 
 EPNix also provides NixOS modules, which are instructions on how to configure various EPICS-related services on NixOS machines (for example the Phoebus alarm server).
 EPNix strives to have integration tests for each of those module.
@@ -34,16 +36,14 @@ See [over there] in the documentation book.
 
 ## Packaging policy
 
-As EPNix provides a package repository, packaging for example `epics-base`, `asyn`, `StreamDevice`, `procServ`, `phoebus`, etc., it needs to have a packaging policy.
-
 In its package repository, EPNix officially supports the latest upstream version.
 
-However, since EPNix is a git repository, you will be able, through Nix, to use a fixed version of EPNix, without being forced to upgrade your dependencies.
+This doesn't cause much issues: since EPNix is a Git repository, you use a fixed version of EPNix, without being forced to upgrade your dependencies.
 
 ### The epics-base package
 
 The epics-base package has no significant modification compared to the upstream version at [Launchpad].
-One goal of EPNix is to keep those modifications to a minimum, and upstream what's possible.
+One goal of EPNix is to have as little modification as possible, and upstream what's possible.
 
   [Launchpad]: https://git.launchpad.net/epics-base
 
