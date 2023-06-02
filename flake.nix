@@ -96,6 +96,16 @@
       templates.top = {
         path = ./templates/top;
         description = "An EPNix TOP project";
+        welcomeText = ''
+          You have created an EPNix top.
+
+          Don't forget to run `makeBaseApp.pl` and `eregen` inside the development shell before compiling it.
+
+          Useful links:
+
+          - EPNix IOC documentation: <https://epics-extensions.github.io/EPNix/ioc/introduction.html>
+          - Getting Started: <https://epics-extensions.github.io/EPNix/ioc/tutorials/getting-started.html>
+        '';
       };
 
       templates.default = self.templates.top;
