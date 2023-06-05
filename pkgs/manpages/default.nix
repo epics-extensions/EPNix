@@ -67,7 +67,7 @@
 
     # DESCRIPTION
 
-    This page references all EPNix packages that should be used *outside* of an IOC.
+    This page references all EPNix packages that may be used outside of an IOC.
     For all IOC-specific packages, see `epnix-ioc(5)`.
 
     # PACKAGES

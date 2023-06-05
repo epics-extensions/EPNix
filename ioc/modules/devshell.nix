@@ -157,7 +157,7 @@ in {
       type = with types; listOf (submodule packageModule);
       description = ''
         A list of packages and their command description to add into the
-        development environment.
+        development shell.
       '';
       example = literalExpression ''
         [
@@ -191,7 +191,7 @@ in {
           };
         });
       description = ''
-        A set of shell scripts to add to the development environment.
+        A set of shell scripts to add to the development shell.
       '';
       example = {
         "hello-world" = {
@@ -207,14 +207,14 @@ in {
     environment.variables = mkOption {
       type = with types; attrsOf (nullOr (either str (listOf str)));
       description = ''
-        A set of environment variables used in the development environment.
+        A set of environment variables used in the development shell.
 
         The value of each variable can be either a string or a list of strings.
         The latter is concatenated, interspersed with colon characters.
 
         If null is given, the environment variable is explicitely unset,
         preventing said environment variable to "leak" from the host
-        environment to the development environment.
+        environment to the development shell.
       '';
       apply = mapAttrs (n: v:
         if isList v

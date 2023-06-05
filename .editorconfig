@@ -6,6 +6,10 @@ insert_final_newline = true
 charset = utf-8
 trim_trailing_whitespace = true
 
+# Ignore vale-downloaded files
+[/doc/vale/**]
+insert_final_newline = unset
+
 [*.nix]
 indent_style = space
 indent_size = 2

@@ -50,6 +50,8 @@ You can also read about the Python test script API [here][NixOS testing framewor
 
 We recommend starting your IOC through a systemd service, which you can describe in Nix like so:
 
+<!-- TODO: change that -->
+
 ``` nix
 # Inside the `machine` attribute
 {
@@ -59,10 +61,7 @@ We recommend starting your IOC through a systemd service, which you can describe
       ExecStart = "${build}/iocBoot/iocexample/st.cmd";
       WorkingDirectory = "${build}/iocBoot/iocexample";
 
-      # If you are using epics-systemd
-      #Type = "notify";
-
-      # Makes the EPICS command-line not quit for 100 seconds, if it does not
+      # Makes the EPICS command-line not quit for 100 seconds, if it doesn't
       # receive anything on the standard input
       StandardInputText = "epicsThreadSleep(100)";
     };
@@ -74,8 +73,6 @@ We recommend starting your IOC through a systemd service, which you can describe
 ```
 
 You can view the list of options available for a NixOS machine [here].
-
-We also recommend making your App use [epics-systemd], so that the systemd considers the service active after your IOC has finished its initialization stage.
 
 Then, you can write your test script.
 Note that the test script doesn't run directly on the machine, but communicates with the machine through the `machine` variable.

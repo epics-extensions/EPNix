@@ -1,0 +1,15 @@
+and so on
+colmena
+disnix
+EPICS
+epics-base
+EPNix
+IOCs?
+Nix
+NixOS
+NixOps
+procServ
+SELinux
+systemd
+RedHat
+[Uu]ntracked
