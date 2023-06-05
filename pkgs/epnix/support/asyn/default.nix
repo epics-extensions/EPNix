@@ -1,5 +1,4 @@
 {
-  lib,
   epnixLib,
   mkEpicsPackage,
   fetchFromGitHub,
@@ -10,7 +9,7 @@
   local_config_site ? {},
   local_release ? {},
 }: let
-  version = "4-44";
+  version = "4-44-2";
 in
   mkEpicsPackage {
     pname = "asyn";
@@ -34,7 +33,7 @@ in
       owner = "epics-modules";
       repo = "asyn";
       rev = "R${version}";
-      hash = "sha256-V+8ZeG0GpuaCRjC/xcBQYBX72Krz4w1cSgLV/4/kzSk=";
+      hash = "sha256-tbWSL0b49iXW49tT44nLO7Hbe2nvjxJG6JlhK68fLXI=";
     };
 
     meta = {
