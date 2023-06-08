@@ -7,7 +7,7 @@
     epnixConfig.imports = [./top/epnix.nix];
   };
 
-  service = result.config.epnix.nixos.service.config;
+  service = result.config.epnix.nixos.services.ioc.config;
 
   ioc = result.outputs.build;
 in
