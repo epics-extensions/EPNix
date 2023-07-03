@@ -19,6 +19,9 @@
           # not open-source. But as we're using it run tests, not exposing
           # any service, this should be fine.
           "elasticsearch"
+
+          # MongoDB also uses the SSPL.
+          "mongodb"
         ];
 
       networking.firewall.allowedTCPPorts = [8181];
