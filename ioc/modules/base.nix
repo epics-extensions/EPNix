@@ -139,4 +139,14 @@ in {
       }
     ];
   };
+
+  config.nixpkgs.overlays = [
+    (_final: prev: {
+      epnix =
+        prev.epnix
+        // {
+          epics-base = cfg.package;
+        };
+    })
+  ];
 }
