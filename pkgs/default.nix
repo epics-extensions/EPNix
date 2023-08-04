@@ -35,6 +35,8 @@ with prev;
 
       # EPICS related tools and extensions
 
+      archiver-appliance = callPackage ./epnix/tools/archiver-appliance {};
+
       phoebus = callPackage ./epnix/tools/phoebus/client {
         # TODO: uncomment when this works:
         # TODO: add libjfxwebkit.so into openjfx
