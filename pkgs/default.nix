@@ -53,6 +53,10 @@ with prev;
       phoebus-setup-hook = callPackage ./epnix/tools/phoebus/setup-hook {};
       procServ = callPackage ./epnix/tools/procServ {};
 
+      # Other utilities
+
+      mariadb_jdbc = callPackage ./epnix/tools/mariadb_jdbc {};
+
       # EPNix specific packages
       book = callPackage ./book {};
       manpages = callPackage ./manpages {};
