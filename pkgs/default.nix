@@ -31,6 +31,7 @@ in
         epics-systemd = callPackage ./epnix/support/epics-systemd {};
         ipac = callPackage ./epnix/support/ipac {};
         modbus = callPackage ./epnix/support/modbus {};
+        pvxs = callPackage ./epnix/support/pvxs {};
         seq = callPackage ./epnix/support/seq {};
         snmp = callPackage ./epnix/support/snmp {};
         sscan = callPackage ./epnix/support/sscan {};
