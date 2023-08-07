@@ -35,6 +35,8 @@ with prev;
 
       # EPICS related tools and extensions
 
+      archiver-appliance = callPackage ./epnix/tools/archiver-appliance {};
+
       phoebus = callPackage ./epnix/tools/phoebus/client {
         # TODO: uncomment when this works:
         # TODO: add libjfxwebkit.so into openjfx
@@ -50,6 +52,11 @@ with prev;
       phoebus-scan-server = callPackage ./epnix/tools/phoebus/scan-server {};
       phoebus-setup-hook = callPackage ./epnix/tools/phoebus/setup-hook {};
       procServ = callPackage ./epnix/tools/procServ {};
+
+      # Other utilities
+
+      jna = callPackage ./epnix/tools/jna {};
+      mariadb_jdbc = callPackage ./epnix/tools/mariadb_jdbc {};
 
       # EPNix specific packages
       book = callPackage ./book {};

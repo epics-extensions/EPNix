@@ -1,0 +1,10 @@
+diff --git a/src/sitespecific/tests/classpathfiles/policies.py b/src/sitespecific/tests/classpathfiles/policies.py
+index 65fc8c7..a12cbb2 100644
+--- a/src/sitespecific/tests/classpathfiles/policies.py
++++ b/src/sitespecific/tests/classpathfiles/policies.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/env python
+ 
+ # policies.py
+ #
