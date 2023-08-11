@@ -308,7 +308,7 @@ in {
 
     users.groups."archappl" = {};
     users.users."archappl" = {
-      group = "archapl";
+      group = "archappl";
       isSystemUser = true;
     };
 
