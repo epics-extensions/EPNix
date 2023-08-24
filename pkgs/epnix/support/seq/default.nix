@@ -1,8 +1,7 @@
 {
-  lib,
   epnixLib,
   mkEpicsPackage,
-  fetchzip,
+  fetchdarcs,
   re2c,
   local_config_site ? {},
   local_release ? {},
@@ -26,8 +25,9 @@ mkEpicsPackage rec {
     echo 'include $(TOP)/configure/RELEASE.local' >> configure/RELEASE
   '';
 
-  src = fetchzip {
-    url = "https://www-csr.bessy.de/control/SoftDist/sequencer/releases/seq-${version}.tar.gz";
+  src = fetchdarcs {
+    url = "https://hub.darcs.net/bf/seq-branch-2-2";
+    rev = "R2-2-9";
     sha256 = "sha256-LAqR5Mrph6CNrhpyt/uP5qbaWN0y7sJk6mfxnCk2Jx0=";
   };
 
@@ -36,7 +36,7 @@ mkEpicsPackage rec {
 
   meta = {
     description = "Provides the State Notation Language (SNL), a domain specific programming language";
-    homepage = "https://www-csr.bessy.de/control/SoftDist/sequencer/";
+    homepage = "https://epics-sequencer.sourceforge.io/sequencer-2-2/";
     license = epnixLib.licenses.epics;
     maintainers = with epnixLib.maintainers; [minijackson];
   };
