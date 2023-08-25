@@ -15,9 +15,10 @@ swap:
   "(?<!mobile |cell )phone": "telephone|cell phone|mobile phone"
   "(?<!Mozilla )Firefox": Mozilla Firefox
   "(?<!Mozilla )Thunderbird": Mozilla Thunderbird
-  "[bB]asic [aA]uth": Basic HTTP authentication (first instance)|Basic authentication
+  "[bB]asic [aA]uth": Basic HTTP authentication|Basic authentication
   "a lot(?: of)?": many|much
   "AI": Assisted Installer
+  "(?<!as well )as per": according to|as|as in
   "backward(?:-)?compatible": compatible with earlier versions
   "bottle neck|bottle-neck": bottleneck
   "bottom(?:-)?left": lower left|lower-left
@@ -54,8 +55,8 @@ swap:
   alright|all right: "correct|as expected"
   analyse: analyze
   and/or: a or b|a, b, or both
+  appendices: appendixes
   as long as: if|provided that
-  as per: according to|as|as in
   autodetect: auto-detect
   back-level: earlier|previous|not at the latest level
   bi-monthly: bimonthly
@@ -134,6 +135,7 @@ swap:
   dualboot|dual boot: dual-boot
   e-fix: fix|interim fix
   eFix: fix|interim fix
+  Elastic Load Balancer: Elastic Load Balancing
   emphasise: emphasize
   end user: user
   end-user interface: graphical interface|interface
@@ -181,7 +183,6 @@ swap:
   keep in mind: remember
   kernelspace: kernel-space
   labour: labor
-  laptop: notebook
   large page|super page: huge page
   launch: start|open
   learnt: learned
@@ -244,6 +245,8 @@ swap:
   pseudo ops|pseudoops: pseudo-ops
   pull-down: pulldown
   recognise: recognize
+  Red Hat OpenJDK|RHOJDK|Red Hat Open Java Development Kit: Red Hat build of OpenJDK
+  Red Hat Java: Red Hat build of OpenJDK
   regex: regular expression
   remote-access server: remote access server
   remote-access: remote access
@@ -327,3 +330,6 @@ swap:
   xsite: cross-site replication
   zero out: zero
   zonegroup|zone-group: zone group
+  kilobytes?: KB|kB
+  'w/(?!o) ': "with "
+  'w/o': without
