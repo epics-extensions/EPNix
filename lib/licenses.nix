@@ -2,7 +2,7 @@
 # Taken from:
 # https://github.com/NixOS/nixpkgs/blob/55ad138e5cd97c6415abb45fae653fd413bef869/lib/licenses.nix
 lib.mapAttrs (lname: lset: let
-  defaultLicense = rec {
+  defaultLicense = {
     shortName = lname;
     free = true; # Most of our licenses are Free, explicitly declare unfree additions as such!
     deprecated = false;

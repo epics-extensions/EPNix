@@ -21,7 +21,7 @@
         inherit system;
         overlays = [overlay inputs.bash-lib.overlay];
       };
-    in rec {
+    in {
       packages = flake-utils.lib.flattenTree (pkgs.recurseIntoAttrs pkgs.epnix);
 
       checks =

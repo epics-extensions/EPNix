@@ -6,7 +6,7 @@
   local_config_site ? {},
   local_release ? {},
 }:
-mkEpicsPackage rec {
+mkEpicsPackage {
   pname = "seq";
   version = "2.2.9";
   varname = "SNCSEQ";
