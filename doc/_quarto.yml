@@ -70,6 +70,8 @@ website:
         - title: NixOS
           file: ./nixos/introduction.md
         - section: Tutorials
+          contents:
+            - ./nixos/tutorials/archiver-appliance.md
         - section: User Guides
         - section: Explanations
         - section: References
