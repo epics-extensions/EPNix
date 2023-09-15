@@ -1,6 +1,7 @@
 {
   pkgs,
   crossSystem,
+  system-name,
   ...
 }: let
   inherit (pkgs) epnixLib;
@@ -19,7 +20,7 @@
   emulator = pkgs.lib.replaceStrings ["\""] ["\\\""] (hostPlatform.emulator pkgs);
 in
   pkgs.nixosTest {
-    name = "cross-for-${system}";
+    name = "cross-for-${system-name}";
     meta.maintainers = with epnixLib.maintainers; [minijackson];
 
     nodes.machine = {};

@@ -14,7 +14,7 @@ with pkgs.lib;
     in
       nameValuePair
       "cross-for-${system-name}"
-      (import ./cross/default.nix (args // {inherit crossSystem;}));
+      (import ./cross/default.nix (args // {inherit crossSystem system-name;}));
 
     systemsToCheck = with systems.examples; [
       # Maybe one day...
