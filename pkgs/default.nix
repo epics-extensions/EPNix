@@ -68,5 +68,8 @@ in
       # EPNix specific packages
       book = callPackage ./book {};
       manpages = callPackage ./manpages {};
+
+      # Documentation support packages
+      psu-simulator = callPackage ./doc-support/psu-simulator {};
     });
   }
