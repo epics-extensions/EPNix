@@ -21,7 +21,9 @@ with pkgs.lib;
       #mingwW64
 
       # IFC1410
-      ppc64
+      # This is commented out now, due to an issue from Qemu
+      # The tests don't pass, but they run on actual hardware
+      #ppc64
 
       powernv
 
