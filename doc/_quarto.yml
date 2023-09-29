@@ -29,6 +29,7 @@ website:
           contents:
             - ./ioc/tutorials/pre-requisites.md
             - ./ioc/tutorials/getting-started.md
+            - ./ioc/tutorials/streamdevice.md
             - ./ioc/tutorials/porting.md
             - ./ioc/tutorials/day-to-day-dev.md
             - ./ioc/tutorials/integration-tests.md
