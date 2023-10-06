@@ -43,7 +43,7 @@
 
         # Add your integration tests:
         # ---
-        checks.files = [./checks/simple.nix];
+        checks.imports = [./checks/simple.nix];
 
         # Used when generating NixOS systemd services, for example for
         # deployment to production, or for the NixOS tests in checks/
