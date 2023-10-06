@@ -1,5 +1,4 @@
 {
-  lib,
   epnixLib,
   mkEpicsPackage,
   fetchFromGitHub,
