@@ -1,10 +1,12 @@
 and so on
+Archiver Appliance
 colmena
 disnix
 EPICS
 epics-base
 EPNix
 IOCs?
+nginx
 Nix
 NixOS
 NixOps

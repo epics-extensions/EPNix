@@ -120,11 +120,13 @@ exceptions:
   - OpenIPMI
   - OpenJDK
   - OpenRewrite
+  - OpenRAN
   - OpenSCAP
   - OpenShift
   - OpenSSH
   - OpenSSL
   - OpenStack
+  - OpenTelemetry
   - OpenTracing
   - OperatorHub
   - OpEx

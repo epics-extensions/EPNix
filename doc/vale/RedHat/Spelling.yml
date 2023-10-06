@@ -8,28 +8,34 @@ message: "Use correct American English spelling. Did you really mean '%s'?"
 # A "filter" is a case-sensitive regular expression specifying words to ignore during spell checking.
 # Spelling rule applies to individual words
 filters:
-  - '\.NET'
-  - 'I/O'
-  - 'Node\.js'
   - "[aA]ccessor"
   - "[aA]llowlist"
+  - "[aA]utomount"
   - "[aA]utostart"
   - "[bB]ackfilling"
   - "[bB]ackported"
   - "[bB]acktrace"
   - "[bB]indable"
   - "[bB]oolean"
+  - "[bB]ootable"
   - "[bB]reakpoint"
   - "[bB]reakpoints"
   - "[cC]he"
+  - "[cC]hrony"
   - "[cC]lassloading"
+  - "[cC]lasspath"
   - "[cC]olocate"
+  - "[cC]olocation"
   - "[cC]onfig"
+  - "[cC]ustomizer"
+  - "[dD]atasource"
   - "[dD]eclaratively"
   - "[dD]ecompiler"
   - "[dD]eserialization"
+  - "[dD]eserialized"
   - "[dD]esynchronize"
   - "[dD]esynchronized"
+  - "[dD]ev"
   - "[dD]ev[wW]orkspace"
   - "[dD]evfile"
   - "[dD]evfiles"
@@ -40,8 +46,11 @@ filters:
   - "[Ff]actory"
   - "[fF]ailback"
   - "[fF]ailover"
+  - "[fF]indability"
   - "[gG]bps"
   - "[gG]it"
+  - "[gG]locks?"
+  - "[gG]radle"
   - "[gG]rafana"
   - "[hH]ardcoding"
   - "[hH]eatmap"
@@ -52,26 +61,32 @@ filters:
   - "[jJ]et[bB]rains"
   - "[jJ]ournald"
   - "[jJ]ournaling"
+  - "[kK]dump"
   - "[kK]eycloak"
   - "[kK]eylime"
   - "[kK]eyring"
   - "[kK]eyrings"
+  - "[kK]eytabs?"
   - "[lL]ibvirt"
   - "[lL]icensor"
+  - "[lL]iquibase"
   - "[lL]iveness"
   - "[lL]oopback"
   - "[mM]atrixes"
   - "[mM]ebibytes"
+  - "[mM]etamodel"
   - "[mM]iddleware"
   - "[mM]illicores"
   - "[mM]ixin"
   - "[mM]ixins"
   - "[mM]odularization"
+  - "[Mm]onospace"
   - "[mM]ulticluster"
   - "[mM]ultihost"
   - "[mM]ultinode"
-  - "[mM]ultithread"
+  - "[mM]ultipath"
   - "[mM]ultitenant"
+  - "[mM]ultithread"
   - "[mM]ultiuser"
   - "[mM]ultizone"
   - "[nN]amespace"
@@ -80,12 +95,13 @@ filters:
   - "[oO]perator"
   - "[oO]verridable"
   - "[pP]reconfigured"
+  - "[pP]reconfigured"
   - "[pP]regenerated"
-  - "[pP]ulldown"
   - "[pP]repend"
   - "[pP]repended"
   - "[pP]roductize"
   - "[pP]roductized"
+  - "[pP]ulldown"
   - "[rR]eadonly"
   - "[rR]ebalance"
   - "[rR]ebalances"
@@ -108,13 +124,14 @@ filters:
   - "[rR]untime"
   - "[rR]untimes"
   - "[sS]crollbar"
-  - "[sS]erializer"
-  - "[sS]erialization"
+  - "[sS]earchability"
   - "[sS]erializable"
+  - "[sS]erialization"
+  - "[sS]erializer"
   - "[sS]erverless"
   - "[sS]ervlet"
+  - "[sS]etter"
   - "[sS]harding"
-  - "[sS]ysctl"
   - "[Ss]u"
   - "[sS]ubcommand"
   - "[sS]ubcommands"
@@ -134,12 +151,15 @@ filters:
   - "[sS]ubusers"
   - "[sS]ubvolume"
   - "[sS]ubvolumes"
+  - "[sS]ysctl"
+  - "[sS]yslog"
   - "[sS]ystemd"
   - "[tT]emplated"
   - "[tT]heia"
   - "[tT]olerations"
   - "[tT]raceback"
   - "[tT]ruststore"
+  - "[uU]mask"
   - "[uU]ncomment"
   - "[uU]ndercloud"
   - "[uU]ninstallation"
@@ -151,7 +171,11 @@ filters:
   - "[uU]psell"
   - "[uU]pselling"
   - "[vV]alidator"
+  - '\.NET'
+  - 'I/O'
+  - 'Node\.js'
   - "Let\\'s Encrypt"
+  - ACLs
   - adoc
   - AGPLv
   - Agroal
@@ -171,9 +195,11 @@ filters:
   - BOM
   - Bonjour
   - Bouncy Castle
+  - bcrypt
   - btn
   - Btrfs
   - Bugzilla
+  - Buildah
   - camelCase
   - CentOS
   - Ceph
@@ -183,7 +209,6 @@ filters:
   - Ciphertext
   - Civetweb
   - classloader
-  - classpath
   - Cloudbursting
   - Cloudwashing
   - CodeReady
@@ -229,8 +254,11 @@ filters:
   - firewalld
   - Flathub
   - Flatpak
+  - Fluentd
+  - Flyway
   - Fortran
   - Funqy
+  - Galera
   - GCC
   - GIDs
   - GitHub
@@ -238,10 +266,11 @@ filters:
   - Gluster
   - GNUPro
   - GraalVM
-  - Gradle
   - GraphQL
-  - greenboot
   - Grayscale
+  - Graylog
+  - greenboot
+  - gRPC
   - GTIDs?
   - GUI
   - Hashicorp
@@ -261,6 +290,7 @@ filters:
   - IntelliJ
   - IPsec
   - ISeries
+  - Istio
   - IPPool
   - IPsec
   - IPv
@@ -280,6 +310,7 @@ filters:
   - JVM
   - Kafka
   - kbd
+  - Kerberos
   - keystore
   - Kibana
   - Knative
@@ -288,13 +319,17 @@ filters:
   - Kompose
   - kubelet
   - Kubespray
+  - Kubernetes
   - Kylin
   - Laravel
   - LGPLv
   - librados
   - librbd
+  - Libreswan
   - libOSMesa
+  - Logstash
   - Lombok
+  - Liquibase
   - Makefile
   - Mattermost
   - Maven
@@ -305,7 +340,6 @@ filters:
   - Mirantis
   - Mockito
   - MongoDB
-  - Multipath
   - MySQL
   - Nagios
   - Narayana
@@ -332,8 +366,10 @@ filters:
   - OSBuild
   - osd
   - OSs
+  - OSTree
   - PCIe
   - PDFs?
+  - Petitboot
   - PHP
   - PIDs
   - Podman
@@ -354,8 +390,8 @@ filters:
   - Redis
   - Redistributions
   - relaxngDatatype
-  - RESTEasy
   - Restic
+  - RESTEasy
   - Rolfe
   - Rollup
   - ROMs
@@ -367,12 +403,14 @@ filters:
   - SCM
   - SELinux
   - Semeru
+  - Skopeo
   - Shadowman
   - SLAs
   - SmallRye
   - Spotify
   - startx
   - STMicroelectronics
+  - Stratis
   - Suchow
   - SVG
   - Symfony
@@ -400,6 +438,7 @@ filters:
   - vSphere
   - WebAuthn
   - Webpack
+  - WebView
   - WebSocket
   - Wildfly
   - Woopra
