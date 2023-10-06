@@ -9,17 +9,23 @@
 with lib; let
   cfg = config.epnix.checks;
 in {
+  imports = [
+    (mkRenamedOptionModule ["epnix" "checks" "files"] ["epnix" "checks" "imports"])
+  ];
+
   options.epnix.checks = {
-    files = mkOption {
+    imports = mkOption {
       description = ''
         A list of `.nix` files containing integration tests.
+
+        Alternatively, a raw configuration can be specified.
 
         Please refer to the documentation book guide "Writing integration
         tests" for instructions on how to write these `.nix` files.
       '';
-      type = with types; listOf path;
+      type = with types; listOf (oneOf [path attrs (functionTo attrs)]);
       default = [];
-      example = ["./checks/simple.nix"];
+      example = lib.literalExpression "[./checks/simple.nix]";
     };
 
     derivations = mkOption {
@@ -34,15 +40,8 @@ in {
   };
 
   config.epnix.checks.derivations = let
-    checkName = path:
-      pipe path [
-        baseNameOf
-        (splitString ".")
-        head
-      ];
-
-    importCheck = path:
-      import path {
+    importCheck = check: let
+      params = {
         inherit pkgs epnix epnixConfig;
 
         build =
@@ -55,9 +54,21 @@ in {
           ''
           config.epnix.outputs.build;
       };
+
+      # Do different things,
+      # depending on if the check is a file, an attrSet, or a function
+      switch = {
+        path = path: import path params;
+        set = set: set;
+        lambda = lambda: lambda params;
+      };
+
+      importedCheck =
+        switch."${builtins.typeOf check}" check;
+
+      inherit (importedCheck.config) name;
+    in
+      nameValuePair name importedCheck;
   in
-    listToAttrs
-    (forEach
-      cfg.files
-      (file: nameValuePair (checkName file) (importCheck file)));
+    listToAttrs (map importCheck cfg.imports);
 }
