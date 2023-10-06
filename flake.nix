@@ -22,7 +22,7 @@
         overlays = [overlay inputs.bash-lib.overlay];
       };
     in {
-      packages = flake-utils.lib.flattenTree (pkgs.recurseIntoAttrs pkgs.epnix);
+      packages = flake-utils.lib.flattenTree pkgs.epnix;
 
       checks =
         {
