@@ -162,7 +162,7 @@ swap:
   post-mortem: postmortem
   post-operation: postoperation
   post-requisite: postrequisite
-  power down: turn off|power off 
+  power down: turn off|power off
   power up: power on|turn on
   poweroff: power-off
   pre-apply: preapply
