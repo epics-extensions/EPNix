@@ -211,7 +211,7 @@ the following new units were started: arch-lts-ArchiverStore.mount,
 From the message,
 we can guess it started the Tomcat server running Archiver Appliance,
 the MySQL (in fact, MariaDB) server,
-and some mounted some partitions.
+and mounted some partitions.
 Fantastic!
 
 You can run the `systemctl list-units` command to see if any systemd unit failed.
