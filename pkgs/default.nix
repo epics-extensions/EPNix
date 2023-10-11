@@ -37,6 +37,8 @@ with prev;
 
       archiver-appliance = callPackage ./epnix/tools/archiver-appliance {};
 
+      pcas = callPackage ./epnix/tools/pcas {};
+
       phoebus = callPackage ./epnix/tools/phoebus/client {
         # TODO: uncomment when this works:
         # TODO: add libjfxwebkit.so into openjfx
