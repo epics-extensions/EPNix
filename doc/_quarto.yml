@@ -74,6 +74,7 @@ website:
             - ./nixos/tutorials/archiver-appliance.md
         - section: User Guides
           contents:
+            - ./nixos/guides/ca-gateway.md
             - ./nixos/guides/phoebus-alarm.md
         - section: Explanations
         - section: References
