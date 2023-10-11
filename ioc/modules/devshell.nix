@@ -295,7 +295,7 @@ in {
           # set to empty if unset
           : "''${EPICS_COMPONENTS=}"
 
-          IFS=: read -ra components <<<$EPICS_COMPONENTS
+          IFS=: read -ra components <<<"$EPICS_COMPONENTS"
 
           for component in "''${components[@]}"; do
             echo "$component"
