@@ -288,9 +288,8 @@ in {
         "${pkgs.epnix.mariadb_jdbc}/share/java/mariadb-java-client.jar"
 
         # Dependencies of the mariadb connector, for UNIX sockets:
-        # TODO: use the nixpkgs version when we switch to NixOS 23.05
-        "${pkgs.epnix.jna}/share/java/jna.jar"
-        "${pkgs.epnix.jna}/share/java/jna-platform.jar"
+        "${pkgs.jna}/share/java/jna.jar"
+        "${pkgs.jna}/share/java/jna-platform.jar"
       ];
 
       user = "archappl";
