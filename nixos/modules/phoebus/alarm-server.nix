@@ -107,6 +107,13 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = !(lib.hasInfix "," cfg.settings."org.phoebus.applications.alarm/config_names");
+        message = "Phoebus Alarm Server doesn't support multiple topics, yet";
+      }
+    ];
+
     systemd.services.phoebus-alarm-server = {
       description = "Phoebus Alarm Server";
 
