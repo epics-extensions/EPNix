@@ -76,17 +76,18 @@ in {
             defaultText = lib.literalExpression ''"localhost:''${toString config.services.apache-kafka.port}"'';
           };
 
-          "org.phoebus.applications.alarm/config_name" = lib.mkOption {
-            description = ''
-              Name of alarm tree root.
-
-              Will be used as the name for the Kafka topic.
-            '';
-            type = lib.types.str;
-            # TODO: bug? From the code it seems that specifying multiple topics
-            # here with create_topics will have issues (AlarmServerMain.java:654)
-            default = "Accelerator";
-          };
+          # Waiting for: https://github.com/ControlSystemStudio/phoebus/issues/2843
+          #
+          #"org.phoebus.applications.alarm/config_name" = lib.mkOption {
+          #  description = ''
+          #    Name of alarm tree root.
+          #    Will be used as the name for the Kafka topic.
+          #  '';
+          #  type = lib.types.str;
+          #  # TODO: bug? From the code it seems that specifying multiple topics
+          #  # here with create_topics will have issues (AlarmServerMain.java:654)
+          #  default = "Accelerator";
+          #};
 
           "org.phoebus.applications.alarm/config_names" = lib.mkOption {
             description = ''
@@ -97,8 +98,7 @@ in {
             type = with lib.types; listOf str;
             # TODO: bug? From the code it seems that specifying multiple topics
             # here with create_topics will have issues (AlarmServerMain.java:654)
-            default = [cfg.settings."org.phoebus.applications.alarm/config_name"];
-            defaultText = lib.literalExpression ''[cfg.settings."org.phoebus.applications.alarm/config_name"]'';
+            default = ["Accelerator"];
             apply = lib.concatStringsSep ",";
           };
         };
