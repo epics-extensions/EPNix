@@ -76,6 +76,7 @@ website:
           contents:
             - ./nixos/guides/ca-gateway.md
             - ./nixos/guides/phoebus-alarm.md
+            - ./nixos/guides/phoebus-save-and-restore.md
         - section: Explanations
         - section: References
           contents:
