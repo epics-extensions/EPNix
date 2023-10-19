@@ -10,6 +10,7 @@ with lib; let
     formats = import ./formats.nix args;
     licenses = import ./licenses.nix args;
     maintainers = import ./maintainers/maintainer-list.nix;
+    testing = import ./testing.nix;
 
     evalEpnixModules = {
       nixpkgsConfig,
