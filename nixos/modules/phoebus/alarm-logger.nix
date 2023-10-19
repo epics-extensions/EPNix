@@ -173,7 +173,7 @@ in {
 
     services.elasticsearch = lib.mkIf localElasticsearch {
       enable = true;
-      # Should be kept in sync with the phoebus-olog service
+      # Should be kept in sync with the phoebus-olog and phoebus-save-and-restore services
       package = pkgs.elasticsearch7;
     };
 

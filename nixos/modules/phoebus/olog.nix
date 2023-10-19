@@ -116,7 +116,7 @@ in {
 
     services.elasticsearch = {
       enable = true;
-      # Should be kept in sync with the phoebus-alarm-logger service
+      # Should be kept in sync with the phoebus-alarm-logger and phoebus-save-and-restore services
       package = pkgs.elasticsearch7;
     };
     services.mongodb.enable = true;
