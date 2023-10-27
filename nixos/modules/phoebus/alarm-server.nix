@@ -76,17 +76,18 @@ in {
             defaultText = lib.literalExpression ''"localhost:''${toString config.services.apache-kafka.port}"'';
           };
 
-          "org.phoebus.applications.alarm/config_name" = lib.mkOption {
-            description = ''
-              Name of alarm tree root.
-
-              Will be used as the name for the Kafka topic.
-            '';
-            type = lib.types.str;
-            # TODO: bug? From the code it seems that specifying multiple topics
-            # here with create_topics will have issues (AlarmServerMain.java:654)
-            default = "Accelerator";
-          };
+          # Waiting for: https://github.com/ControlSystemStudio/phoebus/issues/2843
+          #
+          #"org.phoebus.applications.alarm/config_name" = lib.mkOption {
+          #  description = ''
+          #    Name of alarm tree root.
+          #    Will be used as the name for the Kafka topic.
+          #  '';
+          #  type = lib.types.str;
+          #  # TODO: bug? From the code it seems that specifying multiple topics
+          #  # here with create_topics will have issues (AlarmServerMain.java:654)
+          #  default = "Accelerator";
+          #};
 
           "org.phoebus.applications.alarm/config_names" = lib.mkOption {
             description = ''
@@ -97,9 +98,58 @@ in {
             type = with lib.types; listOf str;
             # TODO: bug? From the code it seems that specifying multiple topics
             # here with create_topics will have issues (AlarmServerMain.java:654)
-            default = [cfg.settings."org.phoebus.applications.alarm/config_name"];
-            defaultText = lib.literalExpression ''[cfg.settings."org.phoebus.applications.alarm/config_name"]'';
+            default = ["Accelerator"];
             apply = lib.concatStringsSep ",";
+          };
+
+          # Email options:
+          # ---
+
+          "org.phoebus.email/mailhost" = lib.mkOption {
+            description = ''
+              The SMTP server host.
+
+              If set to DISABLE (the default), email support is disabled.
+            '';
+            type = lib.types.str;
+            default = "DISABLE";
+          };
+
+          "org.phoebus.email/mailport" = lib.mkOption {
+            description = ''
+              The SMTP server port.
+            '';
+            type = lib.types.port;
+            default = 25;
+            apply = toString;
+          };
+
+          "org.phoebus.email/username" = lib.mkOption {
+            description = ''
+              Username for authenticating to the SMTP server.
+            '';
+            type = lib.types.str;
+            default = "";
+          };
+
+          "org.phoebus.email/password" = lib.mkOption {
+            description = ''
+              Password for authenticating to the SMTP server.
+
+              Note: the password will be put in plaintext, in the world-readable `/nix/store`.
+            '';
+            type = lib.types.str;
+            default = "";
+          };
+
+          "org.phoebus.email/from" = lib.mkOption {
+            description = ''
+              Default address to be used for the email field `From:`.
+
+              If left empty, then the last used from address is used.
+            '';
+            type = lib.types.str;
+            default = "";
           };
         };
       };
@@ -107,6 +157,13 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = !(lib.hasInfix "," cfg.settings."org.phoebus.applications.alarm/config_names");
+        message = "Phoebus Alarm Server doesn't support multiple topics, yet";
+      }
+    ];
+
     systemd.services.phoebus-alarm-server = {
       description = "Phoebus Alarm Server";
 

@@ -73,6 +73,8 @@ website:
           contents:
             - ./nixos/tutorials/archiver-appliance.md
         - section: User Guides
+          contents:
+            - ./nixos/guides/phoebus-alarm.md
         - section: Explanations
         - section: References
           contents:
