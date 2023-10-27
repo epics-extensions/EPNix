@@ -55,7 +55,6 @@ with prev;
 
       # Other utilities
 
-      jna = callPackage ./epnix/tools/jna {};
       mariadb_jdbc = callPackage ./epnix/tools/mariadb_jdbc {};
 
       # EPNix specific packages

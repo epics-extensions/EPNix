@@ -14,14 +14,16 @@ with pkgs.lib;
     in
       nameValuePair
       "cross-for-${system-name}"
-      (import ./cross/default.nix (args // {inherit crossSystem;}));
+      (import ./cross/default.nix (args // {inherit crossSystem system-name;}));
 
     systemsToCheck = with systems.examples; [
       # Maybe one day...
       #mingwW64
 
       # IFC1410
-      ppc64
+      # This is commented out now, due to an issue from Qemu
+      # The tests don't pass, but they run on actual hardware
+      #ppc64
 
       powernv
 
