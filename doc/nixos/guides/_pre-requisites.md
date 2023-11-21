@@ -19,6 +19,7 @@ For example:
  {
    # ...
 +  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
++  inputs.epnix.url = "github:epics-extensions/EPNix";
 
    # ...
    outputs = {
