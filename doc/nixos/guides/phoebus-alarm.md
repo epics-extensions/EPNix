@@ -40,7 +40,7 @@ add this to your configuration:
   kafkaSock = "${ip}:${kafkaPort}";
 in {
   # The Phoebus Alarm server also automatically enables the Phoebus Alarm Logger
-  services.phoebus-alarm = {
+  services.phoebus-alarm-server = {
     enable = true;
     openFirewall = true;
     settings."org.phoebus.applications.alarm/server" = "${kafkaSock}";
