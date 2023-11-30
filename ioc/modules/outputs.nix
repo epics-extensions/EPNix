@@ -51,7 +51,7 @@ in {
         ''
           echo "Copying apps..."
           ${concatMapStringsSep "\n" (app: ''
-              cp -rfv "${app}" "$sourceRoot/${epnix.lib.getName app}"
+              cp -rTfv "${app}" "$sourceRoot/${epnix.lib.getName app}"
             '')
             config.epnix.applications.resolvedApps}
 
@@ -59,7 +59,7 @@ in {
 
           echo "Copying additional iocBoot directories..."
           ${concatMapStringsSep "\n" (boot: ''
-              cp -rfv "${boot}" "$sourceRoot/iocBoot/${epnix.lib.getName boot}"
+              cp -rTfv "${boot}" "$sourceRoot/iocBoot/${epnix.lib.getName boot}"
             '')
             config.epnix.boot.resolvedIocBoots}
 
@@ -72,7 +72,7 @@ in {
       postInstall =
         ''
           if [[ -d iocBoot ]]; then
-            cp -rafv iocBoot "$out"
+            cp -rafv iocBoot -t "$out"
           fi
 
         ''
