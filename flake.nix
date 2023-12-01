@@ -87,9 +87,11 @@
         _module.args.epnix = self;
       };
 
-      nixosModules.nixos = {
+      nixosModules.nixos = {lib, ...}: {
         imports = import ./nixos/module-list.nix;
-        nixpkgs.overlays = [self.overlays.default];
+        # use mkBefore so that end users can be sure
+        # that their overlay can override EPNix packages
+        nixpkgs.overlays = lib.mkBefore [self.overlays.default];
         _module.args.epnixLib = self.lib;
       };
 
