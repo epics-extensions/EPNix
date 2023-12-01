@@ -1,11 +1,15 @@
-epnixLib: final: prev:
-with prev;
-  recurseIntoAttrs rec {
+epnixLib: final: prev: let
+  inherit (final) callPackage;
+  # From prev, else it somehow causes an infinite recursion
+  inherit (prev) recurseIntoAttrs;
+  recurseExtensible = f: recurseIntoAttrs (final.lib.makeExtensible f);
+in
+  recurseIntoAttrs {
     inherit epnixLib;
 
     mkEpicsPackage = callPackage ./build-support/mk-epics-package.nix {};
 
-    epnix = recurseIntoAttrs rec {
+    epnix = recurseExtensible (self: {
       # EPICS base
 
       epics-base7 = callPackage ./epnix/epics-base {
@@ -16,11 +20,11 @@ with prev;
         version = "3.15.9";
         hash = "sha256-QWScmCEaG0F6OW6LPCaFur4W57oRl822p7wpzbYhOuA=";
       };
-      epics-base = epics-base7;
+      epics-base = self.epics-base7;
 
       # EPICS support modules
 
-      support = recurseIntoAttrs {
+      support = recurseExtensible (_self: {
         asyn = callPackage ./epnix/support/asyn {};
         autosave = callPackage ./epnix/support/autosave {};
         calc = callPackage ./epnix/support/calc {};
@@ -31,7 +35,7 @@ with prev;
         snmp = callPackage ./epnix/support/snmp {};
         sscan = callPackage ./epnix/support/sscan {};
         StreamDevice = callPackage ./epnix/support/StreamDevice {};
-      };
+      });
 
       # EPICS related tools and extensions
 
@@ -64,5 +68,5 @@ with prev;
       # EPNix specific packages
       book = callPackage ./book {};
       manpages = callPackage ./manpages {};
-    };
+    });
   }
