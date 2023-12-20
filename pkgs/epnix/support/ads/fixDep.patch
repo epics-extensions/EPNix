@@ -1,0 +1,12 @@
+diff --git a/Makefile.epics b/Makefile.epics
+index ef5c909..a709c05 100644
+--- a/Makefile.epics
++++ b/Makefile.epics
+@@ -10,6 +10,7 @@ endef
+ $(foreach dir, $(filter-out configure,$(DIRS)),$(eval $(call DIR_template,$(dir))))
+ 
+ iocBoot_DEPEND_DIRS += $(filter %App,$(DIRS))
++adsExApp_DEPEND_DIRS += adsApp
+ 
+ include $(TOP)/configure/RULES_TOP
+ 
