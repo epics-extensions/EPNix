@@ -35,6 +35,7 @@ in
         snmp = callPackage ./epnix/support/snmp {};
         sscan = callPackage ./epnix/support/sscan {};
         StreamDevice = callPackage ./epnix/support/StreamDevice {};
+        opcua = callPackage ./epnix/support/opcua {};
       });
 
       # EPICS related tools and extensions
