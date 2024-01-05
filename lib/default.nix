@@ -7,71 +7,13 @@
 with lib; let
   self = {
     documentation = import ./documentation.nix args;
+    evaluation = import ./evaluation.nix args;
     formats = import ./formats.nix args;
     licenses = import ./licenses.nix args;
     maintainers = import ./maintainers/maintainer-list.nix;
     testing = import ./testing.nix;
 
-    evalEpnixModules = {
-      nixpkgsConfig,
-      epnixConfig,
-    }: let
-      nixpkgsConfigWithDefaults =
-        {
-          crossSystem = null;
-          config = {};
-        }
-        // nixpkgsConfig;
-      eval = evalModules {
-        modules = [
-          ({config, ...}: {
-            config._module.args = let
-              # Configure the available packages with e.g. cross compilation
-              # and overlays
-              finalPkgs = import inputs.nixpkgs {
-                inherit (nixpkgsConfigWithDefaults) system crossSystem config;
-                inherit (config.nixpkgs) overlays;
-              };
-            in {
-              # See: https://github.com/NixOS/nixpkgs/pull/190358
-              pkgs = finalPkgs.__splicedPackages;
-
-              # Used when we want to apply the same config in checks
-              inherit epnixConfig;
-            };
-          })
-
-          epnixConfig
-          inputs.self.nixosModules.ioc
-
-          # nixpkgs and assertions are separate, in case we want to include
-          # this module in a NixOS configuration, where `nixpkgs` and
-          # `assertions` options are already defined
-          ../ioc/modules/nixpkgs.nix
-          ../ioc/modules/assertions.nix
-        ];
-      };
-
-      # From Robotnix
-      # From nixpkgs/nixos/modules/system/activation/top-level.nix
-      failedAssertions = map (x: x.message) (lib.filter (x: !x.assertion) eval.config.assertions);
-
-      config =
-        if failedAssertions != []
-        then throw "\nFailed assertions:\n${lib.concatStringsSep "\n" (map (x: "- ${x}") failedAssertions)}"
-        else lib.showWarnings eval.config.warnings eval.config;
-    in {
-      inherit (eval) options;
-      inherit config;
-
-      inherit (config.epnix) outputs;
-    };
-
-    mkEpnixBuild = cfg:
-      (self.evalEpnixModules cfg).config.epnix.outputs.build;
-
-    mkEpnixDevShell = cfg:
-      (self.evalEpnixModules cfg).config.epnix.outputs.devShell;
+    inherit (self.evaluation) evalEpnixModules mkEpnixBuild mkEpnixDevShell;
 
     # Like lib.getName, but also supports paths
     getName = thing:

@@ -2,19 +2,17 @@
 title: Setting up the flake registry
 ---
 
-Since the usage of EPNix doesn't encourage installing epics-base globally, some commonly used command-line programs won't be available in your usual environment.
+While developing with EPNix,
+it's possible you will end up typing `'github:epics-extensions/epnix'` quite often.
 
-It's possible to go into a top, and type `nix develop`{.bash} just to have the `caget`{.bash} command available, but it's quite tedious.
+It happens when you need to create a "top" template,
+or when you just want to have `epics-base` in your shell,
+and so on.
 
-An alternative would be to run:
+This is tedious.
 
-``` bash
-nix develop 'github:epics-extensions/epnix'
-```
-
-This will give you the development shell of EPNix itself, with the added benefit of having the latest version of EPICS base.
-
-The command is quite hard to remember, but with the "registry" feature of Nix, you can shorten it by running:
+Nix provides a way of shortening these URLs,
+by adding to the [Nix registry][]:
 
 ``` bash
 nix registry add epnix 'github:epics-extensions/epnix'
@@ -27,8 +25,11 @@ For example, the develop command to have EPICS based installed outside of a top 
 nix develop epnix
 ```
 
-Another benefit is that you can now initialize an EPNix top by running:
+If you want to initialize an EPNix top,
+you can run:
 
 ``` bash
 nix flake new -t epnix my-top
 ```
+
+  [Nix registry]: https://nixos.org/manual/nix/stable/command-ref/new-cli/nix3-registry.html#description

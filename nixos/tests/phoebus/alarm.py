@@ -4,15 +4,25 @@ from typing import Any
 
 start_all()
 
-server.wait_for_unit("apache-kafka.service")
-server.wait_for_unit("zookeeper.service")
-server.wait_for_unit("phoebus-alarm-server.service")
-server.wait_for_unit("phoebus-alarm-logger.service")
-server.wait_for_open_port(8080)
 
-ioc.wait_for_unit("ioc.service")
+def wait_for_boot():
+    with subtest("Machines boot correctly"):
+        server.wait_for_unit("apache-kafka.service")
+        server.wait_for_unit("elasticsearch.service")
+        server.wait_for_unit("phoebus-alarm-server.service")
+        server.wait_for_unit("phoebus-alarm-logger.service")
+        server.wait_for_open_port(9092, "192.168.1.3")
+        server.wait_for_open_port(9200)
+        server.wait_for_open_port(8080)
 
-client.wait_for_unit("multi-user.target")
+        ioc.wait_for_unit("ioc.service")
+
+        client.wait_for_unit("multi-user.target")
+
+    with subtest("Alarm logger is connected to Elasticsearch"):
+        status = get_logger("/")
+        assert status["elastic"]["status"] == "Connected"
+
 
 alarm_path = "/Accelerator/ALARM_TEST"
 alarm_config = f"config:{alarm_path}"
@@ -43,9 +53,7 @@ def get_logger(uri: str):
 
 # -----
 
-with subtest("Alarm logger is connected to Elasticsearch"):
-    status = get_logger("/")
-    assert status["elastic"]["status"] == "Connected"
+wait_for_boot()
 
 with subtest("We initialize the PV"):
     # This is done so that the PV is processed at least once, else the
@@ -135,6 +143,7 @@ with subtest("The Alarm logger recorded every state change"):
     def logger_has_latest_state(_):
         global logger_alarms
         logger_alarms = get_logger("/search/alarm/pv/ALARM_TEST")
+        logger_alarms.sort(key=lambda event: event.get("time", ""), reverse=True)
         return (
             logger_alarms[0]["current_severity"] == "OK"
             and logger_alarms[0]["severity"] == "OK"
@@ -165,16 +174,15 @@ with subtest("The Alarm logger recorded every state change"):
 with subtest("The data is still here after a server reboot"):
     server.shutdown()
     server.start()
-    server.wait_for_unit("apache-kafka.service")
+
+    wait_for_boot()
 
     alarm = get_alarm()
     assert alarm["current_severity"] == "OK"
     assert alarm["severity"] == "OK"
 
-    server.wait_for_unit("phoebus-alarm-logger.service")
-    server.wait_for_open_port(8080)
-
     logger_alarms = get_logger("/search/alarm/pv/ALARM_TEST")
+    logger_alarms.sort(key=lambda event: event.get("time", ""), reverse=True)
     alarm_states = [
         alarm for alarm in logger_alarms if alarm["config"].startswith("state:")
     ]

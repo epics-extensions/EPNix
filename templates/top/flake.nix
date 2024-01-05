@@ -4,7 +4,16 @@
   inputs.flake-utils.url = "github:numtide/flake-utils";
   inputs.epnix.url = "github:epics-extensions/epnix";
 
-  # Add your app inputs here:
+  # If you have a support module as a separate EPNix repository,
+  # add it as an input here:
+  # ---
+  #inputs.mySupportModule = {
+  #  url = "git+ssh://git@my-server.org/me/exampleApp.git";
+  #  inputs.epnix.follows = "epnix";
+  #};
+
+  # If you have an "App" as a separate repository,
+  # add it as an input here:
   # ---
   #inputs.exampleApp = {
   #  url = "git+ssh://git@my-server.org/me/exampleApp.git";
@@ -17,9 +26,14 @@
     epnix,
     ...
   } @ inputs: let
-    myEpnixDistribution = {pkgs, ...}: {
+    myEpnixConfig = {pkgs, ...}: {
       # Set your EPNix options here
       # ---
+
+      # If you have a support module as a separate EPNix repository,
+      # uncomment this line to make the package available:
+      # ---
+      #overlays = [inputs.mySupportModule.overlays.default];
 
       epnix = {
         inherit inputs;
@@ -32,12 +46,12 @@
         # ---
         #epics-base.releaseBranch = "3"; # Defaults to "7"
 
-        # Add one of the supported modules here:
+        # Add your support modules here:
         # ---
-        #support.modules = with pkgs.epnix.support; [ StreamDevice ];
+        #support.modules = with pkgs.epnix.support; [ StreamDevice mySupportModule ];
 
-        # Add your applications:
-        # Note that flake inputs must be quoted in this context
+        # If you have an "App" as a separate repository,
+        # add it here:
         # ---
         #applications.apps = [ "inputs.exampleApp" ];
 
@@ -68,7 +82,7 @@
     # environment can be built on your machine.
     flake-utils.lib.eachSystem ["x86_64-linux"] (system:
       with epnix.lib; let
-        result = evalEpnixModules {
+        epnixDistribution = evalEpnixModules {
           nixpkgsConfig = {
             # This specifies the build architecture
             inherit system;
@@ -80,17 +94,23 @@
             # ---
             #crossSystem = epnix.inputs.nixpkgs.lib.systems.examples.armv7l-hf-multiplatform;
           };
-          epnixConfig = myEpnixDistribution;
+          epnixConfig = myEpnixConfig;
         };
       in {
         packages =
-          result.outputs
+          epnixDistribution.outputs
           // {
             default = self.packages.${system}.build;
           };
 
+        inherit epnixDistribution;
+
         devShells.default = self.packages.${system}.devShell;
 
-        checks = result.config.epnix.checks.derivations;
-      });
+        checks = epnixDistribution.config.epnix.checks.derivations;
+      })
+    // {
+      overlays.default = final: prev:
+        self.epnixDistribution.x86_64-linux.generatedOverlay final prev;
+    };
 }

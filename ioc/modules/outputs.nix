@@ -3,6 +3,7 @@
   lib,
   pkgs,
   epnix,
+  epnixFunEval,
   ...
 }:
 with lib; let
@@ -19,24 +20,41 @@ with lib; let
     toUpper
   ];
 in {
-  options.epnix.buildConfig = {
-    attrs = mkOption {
-      description = "Extra attributes to pass to the derivation";
-      type = types.attrs;
-      default = {};
+  options.epnix = {
+    buildConfig = {
+      attrs = mkOption {
+        description = "Extra attributes to pass to the derivation";
+        type = types.attrs;
+        default = {};
+      };
+
+      src = mkOption {
+        description = ''
+          The source code for the top.
+
+          Defaults to the directory containing the `flake.nix` file.
+        '';
+        type = types.path;
+      };
     };
 
-    src = mkOption {
-      description = ''
-        The source code for the top.
-
-        Defaults to the directory containing the `flake.nix` file.
-      '';
-      type = types.path;
+    generatedOverlay = mkOption {
+      description = "A generated overlay which has your package inside `pkgs.epnix.support`.";
+      type = with types; functionTo (functionTo attrs);
     };
   };
 
   config.epnix.buildConfig.src = mkDefault config.epnix.inputs.self;
+
+  config.epnix.generatedOverlay = final: prev: let
+    newEval = final.callPackage epnixFunEval final;
+  in {
+    epnix = prev.epnix.extend (_final: prev: {
+      support = prev.support.extend (_final: _prev: {
+        "${config.epnix.meta.name}" = newEval.config.epnix.outputs.build;
+      });
+    });
+  };
 
   config.epnix.outputs.build = pkgs.mkEpicsPackage ({
       pname = "epnix-${config.epnix.meta.name}";

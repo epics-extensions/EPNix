@@ -37,19 +37,11 @@ in
       inherit hash;
     };
 
-    patches =
-      (optionals (atLeast "7.0.0") [
-        # From: https://github.com/epics-base/epics-base/pull/395
-        (fetchpatch {
-          url = "https://github.com/epics-base/epics-base/commit/d87fd0db0124faf450cff93226ae6a2cc02f02bf.patch";
-          hash = "sha256-BQWFOPCfRjSowDSAbqe8ClqEWT1OtfbgRh4k5jmAjpU=";
-        })
-      ])
-      ++ (optionals (older "7.0.5") [
-        # Support "undefine MYVAR" in convertRelease.pl
-        # Fixed by commit 79d7ac931502e1c25b247a43b7c4454353ac13a6
-        ./handle-make-undefine-variable.patch
-      ]);
+    patches = optionals (older "7.0.5") [
+      # Support "undefine MYVAR" in convertRelease.pl
+      # Fixed by commit 79d7ac931502e1c25b247a43b7c4454353ac13a6
+      ./handle-make-undefine-variable.patch
+    ];
 
     # "build" as in Nix terminology (the build machine)
     build_config_site =

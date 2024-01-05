@@ -1,0 +1,3 @@
+[tool.ruff]
+select = ["ALL"]
+target-version = "py310"
