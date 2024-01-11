@@ -61,10 +61,6 @@ epnix = {
   # ---
   support.modules = with pkgs.epnix.support; [ StreamDevice ];
 
-  # Add your applications:
-  # ---
-  applications.apps = [ "inputs.myExampleApp" ];
-
   # You can specify environment variables for your development shell like this:
   # ---
   devShell.environment.variables."EPICS_CA_ADDR_LIST" = "localhost";
