@@ -4,7 +4,8 @@
   inputs.flake-utils.url = "github:numtide/flake-utils";
   inputs.epnix.url = "github:epics-extensions/epnix";
 
-  # Add your app inputs here:
+  # If you have an "App" as a separate repository,
+  # add it as an input here:
   # ---
   #inputs.exampleApp = {
   #  url = "git+ssh://git@my-server.org/me/exampleApp.git";
@@ -36,8 +37,8 @@
         # ---
         #support.modules = with pkgs.epnix.support; [ StreamDevice ];
 
-        # Add your applications:
-        # Note that flake inputs must be quoted in this context
+        # If you have an "App" as a separate repository,
+        # add it here:
         # ---
         #applications.apps = [ "inputs.exampleApp" ];
 
