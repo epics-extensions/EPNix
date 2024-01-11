@@ -32,7 +32,7 @@ For more information, see the [NixOS modules introduction].
 
 See [over there] in the documentation book.
 
-  [over there]: https://epics-extensions.github.io/EPNix/ioc/tutorials/getting-started.html
+  [over there]: https://epics-extensions.github.io/EPNix/
 
 ## Packaging policy
 
@@ -60,10 +60,6 @@ epnix = {
   # Add one of the supported modules here:
   # ---
   support.modules = with pkgs.epnix.support; [ StreamDevice ];
-
-  # Add your applications:
-  # ---
-  applications.apps = [ "inputs.myExampleApp" ];
 
   # You can specify environment variables for your development shell like this:
   # ---
