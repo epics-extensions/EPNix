@@ -11,7 +11,7 @@
     # TODO: document replication setup
     services.apache-kafka = {
       logDirs = lib.mkDefault ["/var/lib/apache-kafka"];
-      extraProperties = lib.mkDefault ''
+      extraProperties = ''
         offsets.topic.replication.factor=1
         transaction.state.log.replication.factor=1
         transaction.state.log.min.isr=1
