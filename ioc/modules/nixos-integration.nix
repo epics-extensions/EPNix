@@ -110,7 +110,7 @@ in {
               ${toString config.procServ.port} \
               ${iocTop}/bin/${arch}/${config.app} ${config.startCommandsFile}
             '';
-            Restart = "on-failure";
+            Restart = "always";
           };
         };
       }));
