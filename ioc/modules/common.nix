@@ -27,7 +27,7 @@ with lib; {
           ~ The actual build of this distribution.
       '';
       default = {};
-      type = types.attrs;
+      type = with types; attrsOf package;
     };
 
     epnix.pkgs = mkOption {
