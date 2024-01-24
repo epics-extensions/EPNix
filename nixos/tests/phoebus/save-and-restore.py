@@ -8,11 +8,13 @@ JSON = str | int | float | bool | None | Dict[str, Any] | List[Any]
 root_node_id = "44bef5de-e8e6-4014-af37-b8f6c8a939a2"
 user = "myself"
 
+base_url = "http://server:8080/save-restore"
+
 
 def get(uri: str):
     return json.loads(
         client.succeed(
-            "curl -sSf " "-H 'Accept: application/json' " f"'http://server:8080{uri}'"
+            "curl -sSf " "-H 'Accept: application/json' " f"'{base_url}{uri}'"
         )
     )
 
@@ -25,7 +27,7 @@ def put(uri: str, data: JSON):
             "-X PUT "
             "-H 'Content-Type: application/json' "
             "-H 'Accept: application/json' "
-            f"'http://server:8080{uri}' "
+            f"'{base_url}{uri}' "
             f"--data '{encoded_data}'"
         )
     )
@@ -37,7 +39,7 @@ def delete(uri: str):
         "-X DELETE "
         "-H 'Content-Type: application/json' "
         "-H 'Accept: application/json' "
-        f"'http://server:8080{uri}'"
+        f"'{base_url}{uri}'"
     )
 
 

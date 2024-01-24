@@ -8,13 +8,13 @@
 }:
 stdenv.mkDerivation {
   pname = "phoebus-deps";
-  version = "4.7.2";
+  version = "4.7.3";
 
   src = fetchFromGitHub {
     owner = "ControlSystemStudio";
     repo = "phoebus";
-    rev = "v4.7.2";
-    hash = "sha256-UdfwQaOFvx+Ox68P2WuI8sN4eUmyW2WmoVKBj9ZzMXc=";
+    rev = "v4.7.3";
+    hash = "sha256-1Q66iZ+mTXzQ9pjW5wypG7q7rPy9K+PUcQXsKKk2sNo=";
   };
 
   nativeBuildInputs = [jdk maven];
@@ -58,7 +58,7 @@ stdenv.mkDerivation {
 
   outputHashAlgo = "sha256";
   outputHashMode = "recursive";
-  outputHash = "sha256-HFrdvjuImn77y2TJvOTxJUFQSwP3umIPklpqI4feplY=";
+  outputHash = "sha256-9MJdmIVAqjPW5ihZYWCh+zsWlxrtoHBH7NFwPh01pRc=";
 
   doCheck = false;
 
