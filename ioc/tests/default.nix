@@ -6,6 +6,7 @@ with pkgs.lib;
 
     support-autosave-simple = import ./support/autosave/simple args;
     support-pvxs-ioc = import ./support/pvxs/ioc args;
+    support-pvxs-qsrv2 = import ./support/pvxs/qsrv2 args;
     support-pvxs-standalone-server = import ./support/pvxs/standalone-server args;
     support-seq-simple = import ./support/seq/simple args;
     support-StreamDevice-simple = import ./support/StreamDevice/simple args;
