@@ -1,0 +1,17 @@
+record(ai, "${P}ai") {
+	field(DESC, "An ai")
+	field(VAL, "42")
+	info(Q:form, "Hex") # hint to clients to render as hexadecimal
+}
+
+record(stringin, "${P}stringin") {
+	field(DESC, "An stringin")
+	field(VAL, "hello")
+}
+
+record(waveform, "${P}waveform") {
+	field(DESC, "An waveform")
+	field(FTVL, "CHAR")
+	field(NELM, 1024)
+	info(Q:form, "String") # hint to QSRV to expose char[] as string
+}

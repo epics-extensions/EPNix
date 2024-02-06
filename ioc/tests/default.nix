@@ -4,9 +4,12 @@ with pkgs.lib;
     default-ioc-epics-base-3 = import ./default-ioc "3" args;
     default-ioc-epics-base-7 = import ./default-ioc "7" args;
 
+    support-autosave-simple = import ./support/autosave/simple args;
+    support-pvxs-ioc = import ./support/pvxs/ioc args;
+    support-pvxs-qsrv2 = import ./support/pvxs/qsrv2 args;
+    support-pvxs-standalone-server = import ./support/pvxs/standalone-server args;
     support-seq-simple = import ./support/seq/simple args;
     support-StreamDevice-simple = import ./support/StreamDevice/simple args;
-    support-autosave-simple = import ./support/autosave/simple args;
   }
   // (let
     checkCrossFor = crossSystem: let
