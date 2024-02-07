@@ -12,7 +12,7 @@
   ioc = result.outputs.build;
 in
   pkgs.nixosTest {
-    name = "support-pvxs-standalone-server";
+    name = "support-pvxs-qsrv2";
     meta.maintainers = with epnixLib.maintainers; [minijackson];
 
     nodes = {
