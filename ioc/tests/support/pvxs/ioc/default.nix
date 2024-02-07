@@ -31,15 +31,19 @@ in
       };
     };
 
+    extraPythonPackages = p: [p.json5];
+    # Type checking on extra packages doesn't work yet
+    skipTypeCheck = true;
+
     testScript = ''
-      import json
+      import json5
 
       start_all()
 
       addr_list = "EPICS_PVA_ADDR_LIST=192.168.1.2"
 
       def pvget(name: str):
-        return json.loads(client.succeed(f"{addr_list} pvget {name} -M json | cut -d' ' -f2-"))
+        return json5.loads(client.succeed(f"{addr_list} pvget {name} -M json | cut -d' ' -f2-"))
 
       def pvxget(name: str):
         output = client.succeed(f"{addr_list} pvxget {name}")

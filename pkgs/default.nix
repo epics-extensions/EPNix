@@ -13,8 +13,8 @@ in
       # EPICS base
 
       epics-base7 = callPackage ./epnix/epics-base {
-        version = "7.0.7";
-        hash = "sha256-VMiuwTuPykoMLcIphUAsjtLQZ8HLKr3LvGpje3lsIXc=";
+        version = "7.0.8";
+        hash = "sha256-GEkUwlOkRhQ6LskxHV+eDvBe9UUzF2YWWmgiyuiHypM=";
       };
       epics-base3 = callPackage ./epnix/epics-base {
         version = "3.15.9";

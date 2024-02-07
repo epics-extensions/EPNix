@@ -12,7 +12,7 @@
   ioc = result.outputs.build;
 in
   pkgs.nixosTest {
-    name = "support-pvxs-standalone-server";
+    name = "support-pvxs-qsrv2";
     meta.maintainers = with epnixLib.maintainers; [minijackson];
 
     nodes = {
@@ -31,8 +31,12 @@ in
       };
     };
 
+    extraPythonPackages = p: [p.json5];
+    # Type checking on extra packages doesn't work yet
+    skipTypeCheck = true;
+
     testScript = ''
-      import json
+      import json5
 
       start_all()
 
@@ -40,7 +44,7 @@ in
       p = "PVXS:QSRV2:"
 
       def pvget(name: str):
-        return json.loads(client.succeed(f"{addr_list} pvget {name} -M json | cut -d' ' -f2-"))
+        return json5.loads(client.succeed(f"{addr_list} pvget {name} -M json | cut -d' ' -f2-"))
 
       def pvxget(name: str):
         output = client.succeed(f"{addr_list} pvxget {name}")
@@ -60,10 +64,9 @@ in
         client.wait_until_succeeds(f"{addr_list} pvget {p}ai", timeout=60)
 
       with subtest("Check initial data"):
-        # JSON seems broken here?
-        #value = pvget(f"{p}ai")
-        #assert value["value"] == 42
-        #assert value["display"]["description"] == "An ai"
+        value = pvget(f"{p}ai")
+        assert value["value"] == 42
+        assert value["display"]["description"] == "An ai"
 
         value = pvget(f"{p}stringin")
         assert value["value"] == "hello"
