@@ -26,9 +26,9 @@ The Phoebus Alarm Logging Service can also be called the Phoebus Alarm Logger.
 
 {{< include _pre-requisites.md >}}
 
-# Enabling the Phoebus Alarm services
+# Single server Phoebus Alarm setup
 
-To enable the Phoebus Alarm server and the Phoebus Alarm Logger,
+To configure Phoebus Alarm, Phoebus Alarm Logger, Apache Kafka, and ElasticSearch on a single server,
 add this to your configuration:
 
 ``` nix
@@ -37,20 +37,53 @@ add this to your configuration:
   # Replace this with your machine's IP address
   # or DNS domain name
   ip = "192.168.1.42";
-  kafkaSock = "${ip}:${kafkaPort}";
+  kafkaListenSockAddr = "${ip}:${kafkaPort}";
 in {
   # The Phoebus Alarm server also automatically enables the Phoebus Alarm Logger
   services.phoebus-alarm-server = {
     enable = true;
     openFirewall = true;
-    settings."org.phoebus.applications.alarm/server" = "${kafkaSock}";
+    settings."org.phoebus.applications.alarm/server" = kafkaListenSockAddr;
   };
 
-  # Tell Apache Kafka to listen on this IP address
-  # If you don't have a DNS domain name, it's best to set a specific, non-local IP address.
-  services.apache-kafka.extraProperties = ''
-    listeners=PLAINTEXT://${kafkaSock}
-  '';
+  services.phoebus-alarm-logger.settings."bootstrap.servers" = kafkaListenSockAddr;
+
+  services.elasticsearch = {
+    enable = true;
+    package = pkgs.elasticsearch7;
+  };
+
+  # Single-server Kafka setup
+  services.apache-kafka = {
+    enable = true;
+    logDirs = ["/var/lib/apache-kafka"];
+    # Tell Apache Kafka to listen on this IP address
+    # If you don't have a DNS domain name, it's best to set a specific, non-local IP address.
+    extraProperties = ''
+      listeners=PLAINTEXT://${kafkaListenSockAddr}
+      offsets.topic.replication.factor=1
+      transaction.state.log.replication.factor=1
+      transaction.state.log.min.isr=1
+    '';
+  };
+
+  systemd.services.apache-kafka = {
+    after = ["zookeeper.service"];
+    unitConfig.StateDirectory = "apache-kafka";
+  };
+
+  services.zookeeper = {
+    enable = true;
+    extraConf = ''
+      # Port conflicts by default with phoebus-alarm-logger's port
+      admin.enableServer=false
+    '';
+  };
+
+  # Open kafka to the outside world
+  networking.firewall.allowedTCPPorts = [
+    config.services.apache-kafka.port
+  ];
 
   # Elasticsearch, needed by Phoebus Alarm Logger, is not free software (SSPL | Elastic License).
   # To accept the license, add the code below:
