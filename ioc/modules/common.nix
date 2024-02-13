@@ -51,6 +51,10 @@ with lib; {
   };
 
   config = {
-    nixpkgs.overlays = [epnix.inputs.bash-lib.overlay epnix.overlays.default];
+    nixpkgs.overlays = [
+      epnix.inputs.poetry2nix.overlays.default
+      epnix.inputs.bash-lib.overlay
+      epnix.overlays.default
+    ];
   };
 }

@@ -1,12 +1,18 @@
 {
   description = "A Nix flake containing EPICS-related modules and packages";
 
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
-  inputs.bash-lib = {
-    url = "github:minijackson/bash-lib";
-    inputs.nixpkgs.follows = "nixpkgs";
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
+    bash-lib = {
+      url = "github:minijackson/bash-lib";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    flake-utils.url = "github:numtide/flake-utils";
+    poetry2nix = {
+      url = "github:nix-community/poetry2nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
-  inputs.flake-utils.url = "github:numtide/flake-utils";
 
   outputs = {
     self,
@@ -19,7 +25,11 @@
     systemDependentOutputs = system: let
       pkgs = import nixpkgs {
         inherit system;
-        overlays = [overlay inputs.bash-lib.overlay];
+        overlays = [
+          overlay
+          inputs.bash-lib.overlay
+          inputs.poetry2nix.overlays.default
+        ];
       };
     in {
       packages = flake-utils.lib.flattenTree pkgs.epnix;
