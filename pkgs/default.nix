@@ -9,6 +9,10 @@ in
 
     mkEpicsPackage = callPackage ./build-support/mk-epics-package.nix {};
 
+    python3Packages = prev.python3Packages.overrideScope (final: prev: {
+      scanf = final.callPackage ./epnix/tools/scanf {};
+    });
+
     epnix = recurseExtensible (self: {
       # EPICS base
 
