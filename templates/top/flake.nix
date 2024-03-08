@@ -33,7 +33,7 @@
       # If you have a support module as a separate EPNix repository,
       # uncomment this line to make the package available:
       # ---
-      #overlays = [inputs.mySupportModule.overlays.default];
+      #nixpkgs.overlays = [inputs.mySupportModule.overlays.default];
 
       epnix = {
         inherit inputs;
