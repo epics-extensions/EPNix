@@ -136,6 +136,12 @@ in
     # TODO: Some tests fail
     doCheck = false;
 
+    # _FORTIFY_SOURCE=3 causes a buffer overflow in some cases:
+    #     *** buffer overflow detected ***: terminated
+    #
+    # Fall back to _FORTIFY_SOURCE=2
+    hardeningDisable = ["fortify3"];
+
     meta = {
       description = "The Experimental Physics and Industrial Control System";
       homepage = "https://epics-controls.org/";
