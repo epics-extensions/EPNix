@@ -4,13 +4,10 @@
   lib,
   pkgs,
   ...
-} @ moduleAttrs: let
+}: let
   cfg = config.services.phoebus-alarm-logger;
   settingsFormat = pkgs.formats.javaProperties {};
   configFile = settingsFormat.generate "phoebus-alarm-logger.properties" cfg.settings;
-
-  localKafka = lib.hasPrefix "localhost:" cfg.settings."bootstrap.servers";
-  localElasticsearch = cfg.settings.es_host == "localhost";
 in {
   options.services.phoebus-alarm-logger = {
     enable = lib.mkEnableOption ''
@@ -90,8 +87,6 @@ in {
           "bootstrap.servers" = lib.mkOption {
             description = "Location of the Kafka server";
             type = lib.types.str;
-            default = "localhost:${toString config.services.apache-kafka.port}";
-            defaultText = lib.literalExpression ''"localhost:''${toString config.services.apache-kafka.port}"'';
           };
 
           date_span_units = lib.mkOption {
@@ -141,10 +136,6 @@ in {
       description = "Phoebus Alarm Logger";
 
       wantedBy = ["multi-user.target"];
-      after = lib.mkMerge [
-        (lib.mkIf localKafka ["apache-kafka.service"])
-        (lib.mkIf localElasticsearch ["elasticsearch.service"])
-      ];
 
       # Weirdly not "phoebus.user"
       environment.JAVA_OPTS = "-Djava.util.prefs.userRoot=/var/lib/phoebus-alarm-logger";
@@ -162,29 +153,10 @@ in {
       };
     };
 
-    services.apache-kafka = lib.mkIf localKafka {
-      enable = true;
-      localSetup.enable = true;
-    };
-    # Port conflicts by default with phoebus-alarm-logger's port
-    services.zookeeper.extraConf = lib.mkIf localKafka ''
-      admin.enableServer=false
-    '';
-
-    services.elasticsearch = lib.mkIf localElasticsearch {
-      enable = true;
-      # Should be kept in sync with the phoebus-olog and phoebus-save-and-restore services
-      package = pkgs.elasticsearch7;
-    };
-
     networking.firewall.allowedTCPPorts = lib.mkIf cfg.openFirewall [
       (lib.toInt cfg.settings."server.port")
     ];
   };
 
-  meta = {
-    maintainers = with epnixLib.maintainers; [minijackson];
-    # TODO:
-    # doc = ./alarm-logger.md;
-  };
+  meta.maintainers = with epnixLib.maintainers; [minijackson];
 }
