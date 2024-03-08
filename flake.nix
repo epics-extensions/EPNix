@@ -56,7 +56,7 @@
               category = "development tools";
             }
             {
-              package = pkgs.quarto;
+              package = pkgs.quartoMinimal;
               category = "development tools";
             }
             {
