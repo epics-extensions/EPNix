@@ -69,8 +69,6 @@ in {
           "org.phoebus.applications.alarm/server" = lib.mkOption {
             description = "Kafka server host:port";
             type = lib.types.str;
-            default = "localhost:${toString config.services.apache-kafka.port}";
-            defaultText = lib.literalExpression ''"localhost:''${toString config.services.apache-kafka.port}"'';
           };
 
           # Waiting for: https://github.com/ControlSystemStudio/phoebus/issues/2843
