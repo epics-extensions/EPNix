@@ -4,12 +4,10 @@
   lib,
   pkgs,
   ...
-} @ moduleAttrs: let
+}: let
   cfg = config.services.phoebus-alarm-server;
   settingsFormat = pkgs.formats.javaProperties {};
   configFile = settingsFormat.generate "phoebus-alarm-server.properties" cfg.settings;
-
-  localKafka = lib.hasPrefix "localhost:" cfg.settings."org.phoebus.applications.alarm/server";
 in {
   options.services.phoebus-alarm-server = {
     enable = lib.mkEnableOption ''
@@ -34,7 +32,6 @@ in {
 
         Includes services:
 
-        - Apache Kafka (if configured locally)
         - Phoebus Alarm Logger (if not disabled)
 
         Warning: this opens the firewall on all network interfaces.
@@ -168,7 +165,6 @@ in {
       description = "Phoebus Alarm Server";
 
       wantedBy = ["multi-user.target"];
-      after = lib.mkIf localKafka ["apache-kafka.service"];
 
       environment.JAVA_OPTS = "-Dphoebus.user=/var/lib/phoebus-alarm-server";
 
@@ -191,20 +187,7 @@ in {
       enable = lib.mkDefault true;
       openFirewall = lib.mkIf cfg.openFirewall (lib.mkDefault true);
     };
-
-    services.apache-kafka = lib.mkIf localKafka {
-      enable = true;
-      localSetup.enable = true;
-    };
-
-    networking.firewall.allowedTCPPorts = lib.mkIf cfg.openFirewall [
-      config.services.apache-kafka.port
-    ];
   };
 
-  meta = {
-    maintainers = with epnixLib.maintainers; [minijackson];
-    # TODO:
-    # doc = ./alarm-server.md;
-  };
+  meta.maintainers = with epnixLib.maintainers; [minijackson];
 }
