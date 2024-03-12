@@ -52,6 +52,7 @@ in
       ca-gateway = callPackage ./epnix/tools/ca-gateway {};
 
       inherit (final.python3Packages) lewis;
+      inherit (callPackage ./epnix/tools/lewis/lib.nix {}) mkLewisSimulator;
 
       pcas = callPackage ./epnix/tools/pcas {};
 
