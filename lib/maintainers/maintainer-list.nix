@@ -45,6 +45,10 @@ Please keep the list alphabetically sorted.
 See `<nixpkgs/maintainers/scripts/check-maintainer-github-handles.sh>` for an example on how to work with this data.
 */
 {
+  agaget = {
+    email = "alexis.gaget@cea.fr";
+    name = "Alexis Gaget";
+  };
   minijackson = {
     email = "remi.nicole@cea.fr";
     name = "Rémi Nicole";
@@ -61,9 +65,5 @@ See `<nixpkgs/maintainers/scripts/check-maintainer-github-handles.sh>` for an ex
   stephane = {
     email = "stephane.tzvetkov@cea.fr";
     name = "Stéphane Tzvetkov";
-  };
-  agaget = {
-    email = "alexis.gaget@cea.fr";
-    name = "Alexis Gaget";
   };
 }
