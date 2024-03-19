@@ -62,4 +62,8 @@ See `<nixpkgs/maintainers/scripts/check-maintainer-github-handles.sh>` for an ex
     email = "stephane.tzvetkov@cea.fr";
     name = "Stéphane Tzvetkov";
   };
+  agaget = {
+    email = "alexis.gaget@cea.fr";
+    name = "Alexis Gaget";
+  };
 }
