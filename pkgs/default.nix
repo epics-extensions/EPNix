@@ -25,6 +25,7 @@ in
       # EPICS support modules
 
       support = recurseExtensible (_self: {
+        ads = callPackage ./epnix/support/ads {};
         asyn = callPackage ./epnix/support/asyn {};
         autosave = callPackage ./epnix/support/autosave {};
         calc = callPackage ./epnix/support/calc {};
