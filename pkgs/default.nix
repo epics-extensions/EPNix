@@ -28,9 +28,11 @@ in
         asyn = callPackage ./epnix/support/asyn {};
         autosave = callPackage ./epnix/support/autosave {};
         calc = callPackage ./epnix/support/calc {};
+        devlib2 = callPackage ./epnix/support/devlib2 {};
         epics-systemd = callPackage ./epnix/support/epics-systemd {};
         ipac = callPackage ./epnix/support/ipac {};
         modbus = callPackage ./epnix/support/modbus {};
+        mrfioc2 = callPackage ./epnix/support/mrfioc2 {};
         pvxs = callPackage ./epnix/support/pvxs {};
         seq = callPackage ./epnix/support/seq {};
         snmp = callPackage ./epnix/support/snmp {};
