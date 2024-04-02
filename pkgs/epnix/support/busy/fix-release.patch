@@ -1,0 +1,13 @@
+diff --git a/configure/RELEASE b/configure/RELEASE
+index 4d24f2c..61a1d60 100644
+--- a/configure/RELEASE
++++ b/configure/RELEASE
+@@ -13,7 +13,7 @@ ASYN=$(SUPPORT)/asyn-4-33
+ AUTOSAVE=$(SUPPORT)/autosave-5-9
+ 
+ # BUSY is this module
+-BUSY=$(SUPPORT)/busy-1-7
++# BUSY=$(SUPPORT)/busy-1-7
+ 
+ # EPICS_BASE usually appears last so other apps can override stuff:
+ EPICS_BASE=/corvette/usr/local/epics-devel/base-7.0.2

@@ -27,6 +27,7 @@ in
       support = recurseExtensible (_self: {
         asyn = callPackage ./epnix/support/asyn {};
         autosave = callPackage ./epnix/support/autosave {};
+        busy = callPackage ./epnix/support/busy {};
         calc = callPackage ./epnix/support/calc {};
         devlib2 = callPackage ./epnix/support/devlib2 {};
         epics-systemd = callPackage ./epnix/support/epics-systemd {};
