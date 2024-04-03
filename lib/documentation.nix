@@ -72,7 +72,7 @@
     package2pandoc = headingLevel: path: pkg: let
       header = lib.fixedWidthString headingLevel "#" "";
     in ''
-      ${header} ${pkg.pname}
+      ${header} ${pkg.pname or pkg.name}
 
       Path
       : `epnix.${path}`
@@ -86,16 +86,17 @@
       Homepage
       : <${pkg.meta.homepage}>
 
-      Declared in
-      : ${let
+      ${lib.optionalString (pkg.meta ? position) (let
         filePath = lib.head (lib.splitString ":" pkg.meta.position);
         relativePath = lib.pipe filePath [
           (lib.splitString "/")
           (lib.sublist 4 255)
           (lib.concatStringsSep "/")
         ];
-      in
-        self.markdown.inDefList "[${relativePath}](file://${filePath})"}
+      in ''
+        Declared in
+        : ${self.markdown.inDefList "[${relativePath}](file://${filePath})"}
+      '')}
 
       License(s)
       : ${self.markdown.inDefList (self.licenseList pkg)}
