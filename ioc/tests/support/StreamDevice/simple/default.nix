@@ -2,10 +2,6 @@
   inherit (pkgs) epnixLib;
   inherit (pkgs.stdenv.hostPlatform) system;
 
-  mock_server = pkgs.poetry2nix.mkPoetryApplication {
-    projectDir = ./mock-server;
-  };
-
   result = epnixLib.evalEpnixModules {
     nixpkgsConfig.system = system;
     epnixConfig.imports = [./top/epnix.nix];
@@ -19,70 +15,60 @@ in
     name = "support-StreamDevice-simple";
     meta.maintainers = with epnixLib.maintainers; [minijackson];
 
-    nodes.machine = let
-      listenAddr = "127.0.0.1:1234";
-    in
-      {lib, ...}: {
-        environment.systemPackages = [pkgs.epnix.epics-base];
+    nodes.machine = {lib, ...}: {
+      environment.systemPackages = [pkgs.epnix.epics-base];
 
-        systemd.sockets.mock-server = {
+      systemd.services = {
+        "psu-simulator" = {
           wantedBy = ["multi-user.target"];
-          listenStreams = [listenAddr];
-          socketConfig.Accept = true;
-        };
-
-        systemd.services = {
-          "mock-server@".serviceConfig = {
-            ExecStart = "${mock_server}/bin/mock_server";
-            StandardInput = "socket";
-            StandardError = "journal";
+          serviceConfig = {
+            ExecStart = lib.getExe pkgs.epnix.psu-simulator;
           };
-
-          ioc = lib.mkMerge [
-            service
-            {environment.STREAM_PS1 = listenAddr;}
-          ];
         };
+
+        ioc = lib.mkMerge [
+          service
+          {environment.STREAM_PS1 = "localhost:9999";}
+        ];
       };
+    };
 
     testScript = ''
       machine.wait_for_unit("default.target")
       machine.wait_for_unit("ioc.service")
 
-      with subtest("getting fixed values"):
-        machine.wait_until_succeeds("caget -t FLOAT:IN | grep -qxF '42.1234'")
-        machine.wait_until_succeeds("caget -t FLOAT_WITH_PREFIX:IN | grep -qxF '69.1337'")
-        machine.wait_until_succeeds("caget -t ENUM:IN | grep -qxF '1'")
+      def assert_caget(pv: str, expected: str) -> None:
+        machine.wait_until_succeeds(f"caget -t '{pv}' | grep -qxF '{expected}'", timeout=10)
+
+      def assert_caput(pv: str, value: str) -> None:
+        def do_caput(_) -> bool:
+          machine.succeed(f"caput '{pv}' '{value}'")
+          status, _output = machine.execute(f"caget -t '{pv}' | grep -qxF '{value}'")
+          return status == 0
+
+        retry(do_caput, timeout=10)
+
+      with subtest("getting initial values"):
+        assert_caget("UCmd", "0")
+        assert_caget("URb", "0")
+        assert_caget("PowerCmd", "ON")
+        assert_caget("PowerRb", "ON")
 
       with subtest("setting values"):
-        machine.wait_until_succeeds("caget -t VARFLOAT:IN | grep -qxF '0'")
-
-        # Caput can simply not go through
-        def put_check_varfloat(_) -> bool:
-          machine.succeed("caput VARFLOAT:OUT 123.456")
-          status, _output = machine.execute("caget -t VARFLOAT:IN | grep -qxF '123.456'")
-          return status == 0
-
-        retry(put_check_varfloat)
+        assert_caput("UCmd", "10")
+        assert_caget("URb", "10")
 
       with subtest("calc integration"):
-        machine.wait_until_succeeds("caget -t SCALC:IN | grep -qxF '10A'")
-
-        def put_check_scalc(_) -> bool:
-          machine.succeed("caput SCALC:OUT.A 2")
-          status, _output = machine.execute("caget -t SCALC:IN | grep -qxF '14A'")
-          return status == 0
-
-        retry(put_check_scalc)
-
-        machine.wait_until_succeeds("caget -t SCALC:OUT.SVAL | grep -qxF 'sent'")
+        assert_caput("2UCmd.A", "42")
+        assert_caget("2UCmd.SVAL", "184")
+        assert_caget("URb", "184")
 
       with subtest("regular expressions"):
-        machine.wait_until_succeeds("caget -t REGEX_TITLE:IN | grep -qxF 'Hello, World!'")
-        machine.wait_until_succeeds("caget -t REGEX_SUB:IN | grep -qxF 'abcXcXcabc'")
+        assert_caget("VersionNum", "0.1.0")
+        assert_caget("VersionCat", "010")
     '';
 
     passthru = {
-      inherit mock_server ioc;
+      inherit ioc;
     };
   }

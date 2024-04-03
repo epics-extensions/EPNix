@@ -1,81 +1,82 @@
-# Fixed values
+# Normal flow
 
-record(ai, "FLOAT:IN") {
-	field(DESC, "A fixed float")
+record(ao, "${P}UCmd") {
+	field(DESC, "Voltage command")
 	field(DTYP, "stream")
-	field(INP, "@simple.proto getFloat $(PORT)")
+	field(OUT, "@simple.proto setUCmd $(PORT)")
+	field(EGU, "V")
+
+	field(FLNK, "${P}URb")
+}
+
+record(ai, "${P}URb") {
+	field(DESC, "Voltage read-back")
+	field(DTYP, "stream")
+	field(INP, "@simple.proto getURb $(PORT)")
+	field(EGU, "V")
+	field(PINI, "YES")
+}
+
+record(ai, "${P}UMes") {
+	field(DESC, "Measure of voltage intensity")
+	field(DTYP, "stream")
+	field(INP, "@simple.proto getUMes $(PORT)")
+	field(EGU, "V")
 	field(PINI, "YES")
 	field(SCAN, "5 second")
 }
 
-record(ai, "FLOAT_WITH_PREFIX:IN") {
+record(bo, "${P}PowerCmd") {
+	field(DESC, "Command for enabling output")
+	field(DTYP, "stream")
+	field(OUT, "@simple.proto setPowerCmd $(PORT)")
+	field(ZNAM, "OFF")
+	field(ONAM, "ON")
+
+	field(FLNK, "${P}PowerRb")
+}
+
+record(bi, "${P}PowerRb") {
+	field(DESC, "Read back of power supply is enabled")
+	field(DTYP, "stream")
+	field(INP, "@simple.proto getPowerRb $(PORT)")
+	field(PINI, YES)
+	field(ZNAM, "OFF")
+	field(ONAM, "ON")
+
+	# field(FLNK, "${P}Status")
+}
+
+record(stringin, "${P}Version") {
 	field(DESC, "A fixed float with a returned prefix")
 	field(DTYP, "stream")
-	field(INP, "@simple.proto getFloatWithPrefix $(PORT)")
+	field(INP, "@simple.proto getVersion $(PORT)")
 	field(PINI, "YES")
-	field(SCAN, "5 second")
-}
-
-record(longin, "ENUM:IN") {
-	field(DESC, "An fixed enum parsed as integer")
-	field(DTYP, "stream")
-	field(INP, "@simple.proto getEnum $(PORT)")
-	field(PINI, "YES")
-	field(SCAN, "5 second")
-}
-
-# Variable values
-
-record(ai, "VARFLOAT:IN") {
-	field(DESC, "A variable float")
-	field(DTYP, "stream")
-	field(INP, "@simple.proto getVarFloat $(PORT)")
-	field(PINI, "YES")
-	field(SCAN, "5 second")
-}
-
-record(ao, "VARFLOAT:OUT") {
-	field(DESC, "A variable float")
-	field(DTYP, "stream")
-	field(OUT, "@simple.proto setVarFloat $(PORT)")
-	field(FLNK, "VARFLOAT:IN")
 }
 
 # Calc
 
-record(stringin, "SCALC:IN") {
-	field(DESC, "Result of scalcout record")
-	field(DTYP, "stream")
-	field(INP, "@simple.proto getSCalc $(PORT)")
-	field(PINI, "YES")
-	field(SCAN, "5 second")
-}
-
-record(scalcout, "SCALC:OUT") {
-	field(DESC, "An scalcout record")
+record(scalcout, "${P}2UCmd") {
+	field(DESC, "Twice the voltage command")
 	field(A, "0")
-	field(CALC, "printf('1%i', A*A) + 'A'")
+	field(CALC, "printf('1%i', A*2)")
 	field(DTYP, "stream")
-	field(OUT, "@simple.proto setSCalc $(PORT)")
-	field(FLNK, "SCALC:IN")
-	field(PINI, "YES")
-	field(SCAN, "5 second")
+	field(OUT, "@simple.proto setUCmd $(PORT)")
+	field(FLNK, "${P}URb")
 }
 
 # Regular Expressions
 
-record(stringin, "REGEX_TITLE:IN") {
-	field(DESC, "A regex test")
+record(stringin, "${P}VersionNum") {
+	field(DESC, "Just the version number")
 	field(DTYP, "stream")
-	field(INP, "@simple.proto getRegexTitle $(PORT)")
+	field(INP, "@simple.proto getVersionNum $(PORT)")
 	field(PINI, "YES")
-	field(SCAN, "5 second")
 }
 
-record(stringin, "REGEX_SUB:IN") {
-	field(DESC, "A regex substitution test")
+record(stringin, "${P}VersionCat") {
+	field(DESC, "Just the version numbers, concatenated")
 	field(DTYP, "stream")
-	field(INP, "@simple.proto getRegexSub $(PORT)")
+	field(INP, "@simple.proto getVersionCat $(PORT)")
 	field(PINI, "YES")
-	field(SCAN, "5 second")
 }
