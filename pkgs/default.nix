@@ -9,6 +9,11 @@ in
 
     mkEpicsPackage = callPackage ./build-support/mk-epics-package.nix {};
 
+    python3Packages = prev.python3Packages.overrideScope (final: prev: {
+      lewis = final.callPackage ./epnix/tools/lewis {};
+      scanf = final.callPackage ./epnix/tools/scanf {};
+    });
+
     epnix = recurseExtensible (self: {
       # EPICS base
 
@@ -45,6 +50,9 @@ in
       archiver-appliance = callPackage ./epnix/tools/archiver-appliance {};
 
       ca-gateway = callPackage ./epnix/tools/ca-gateway {};
+
+      inherit (final.python3Packages) lewis;
+      inherit (callPackage ./epnix/tools/lewis/lib.nix {}) mkLewisSimulator;
 
       pcas = callPackage ./epnix/tools/pcas {};
 

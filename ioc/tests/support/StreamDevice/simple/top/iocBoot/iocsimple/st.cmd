@@ -13,6 +13,6 @@ epicsEnvSet("STREAM_PROTOCOL_PATH", ".:${TOP}/db")
 drvAsynIPPortConfigure("PS1", "${STREAM_PS1}")
 
 ## Load record instances
-dbLoadRecords("../../db/simple.db", "PORT=PS1")
+dbLoadRecords("../../db/simple.db", "PORT=PS1,P=")
 
 iocInit()
