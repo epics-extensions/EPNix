@@ -7,6 +7,7 @@ with pkgs.lib;
     support-seq-simple = import ./support/seq/simple args;
     support-StreamDevice-simple = import ./support/StreamDevice/simple args;
     support-autosave-simple = import ./support/autosave/simple args;
+    support-opcua-simple = import ./support/opcua/simple args;
   }
   // (let
     checkCrossFor = crossSystem: let

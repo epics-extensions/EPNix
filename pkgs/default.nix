@@ -31,11 +31,11 @@ in
         epics-systemd = callPackage ./epnix/support/epics-systemd {};
         ipac = callPackage ./epnix/support/ipac {};
         modbus = callPackage ./epnix/support/modbus {};
+        opcua = callPackage ./epnix/support/opcua {};
         seq = callPackage ./epnix/support/seq {};
         snmp = callPackage ./epnix/support/snmp {};
         sscan = callPackage ./epnix/support/sscan {};
         StreamDevice = callPackage ./epnix/support/StreamDevice {};
-        opcua = callPackage ./epnix/support/opcua {};
       });
 
       # EPICS related tools and extensions
