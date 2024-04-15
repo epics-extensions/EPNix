@@ -30,6 +30,7 @@ in
       # EPICS support modules
 
       support = recurseExtensible (_self: {
+        adsDriver = callPackage ./epnix/support/adsDriver {};
         asyn = callPackage ./epnix/support/asyn {};
         autoparamDriver = callPackage ./epnix/support/autoparamDriver {};
         autosave = callPackage ./epnix/support/autosave {};
