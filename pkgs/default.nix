@@ -31,6 +31,7 @@ in
 
       support = recurseExtensible (_self: {
         asyn = callPackage ./epnix/support/asyn {};
+        autoparamDriver = callPackage ./epnix/support/autoparamDriver {};
         autosave = callPackage ./epnix/support/autosave {};
         calc = callPackage ./epnix/support/calc {};
         devlib2 = callPackage ./epnix/support/devlib2 {};
