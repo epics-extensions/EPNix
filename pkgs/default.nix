@@ -42,6 +42,7 @@ in
         ipac = callPackage ./epnix/support/ipac {};
         modbus = callPackage ./epnix/support/modbus {};
         mrfioc2 = callPackage ./epnix/support/mrfioc2 {};
+        opcua = callPackage ./epnix/support/opcua {};
         pvxs = callPackage ./epnix/support/pvxs {};
         seq = callPackage ./epnix/support/seq {};
         snmp = callPackage ./epnix/support/snmp {};

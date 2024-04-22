@@ -1,0 +1,29 @@
+diff --git a/devOpcuaSup/open62541/Makefile.config b/devOpcuaSup/open62541/Makefile.config
+index d1b82cb..5d81dc2 100644
+--- a/devOpcuaSup/open62541/Makefile.config
++++ b/devOpcuaSup/open62541/Makefile.config
+@@ -25,7 +25,7 @@ USR_CXXFLAGS += -DHAS_XMLPARSER
+ ifneq ($(filter -D_MINGW,$(OP_SYS_CPPFLAGS)),)
+ USR_INCLUDES += -I$(MSYSTEM_PREFIX)/include/libxml2
+ else
+-USR_INCLUDES += -I/usr/include/libxml2
++USR_INCLUDES += `pkg-config --cflags libxml-2.0`
+ endif
+ 
+ opcua_SRCS += Session.cpp
+diff --git a/unitTestApp/src/Makefile b/unitTestApp/src/Makefile
+index c52a727..8c2556b 100644
+--- a/unitTestApp/src/Makefile
++++ b/unitTestApp/src/Makefile
+@@ -28,9 +28,9 @@ USR_CXXFLAGS += -DHAS_SECURITY
+ endif
+ ifeq ($($(CLIENT)_USE_XMLPARSER),YES)
+ USR_CXXFLAGS += -DHAS_XMLPARSER
+-USR_INCLUDES_Linux += -I/usr/include/libxml2
++USR_INCLUDES += `pkg-config --cflags libxml-2.0`
+ ifneq ($(filter -D_MINGW,$(OP_SYS_CPPFLAGS)),)
+-USR_INCLUDES += -I$(MSYSTEM_PREFIX)/include/libxml2
++USR_INCLUDES += `pkg-config --cflags libxml-2.0`
+ USR_SYS_LIBS += xml2
+ endif
+ endif
