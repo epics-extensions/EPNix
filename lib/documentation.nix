@@ -46,14 +46,21 @@
     in
       mapRecursiveDrvsToList' "" f attrset;
 
+    maybeUrl = text: destination:
+      if destination == null
+      then text
+      else "[${text}](${destination})";
+
+    licenseLink = license: self.maybeUrl license.fullName (license.url or null);
+
     licenseList = pkg:
       if lib.isList pkg.meta.license
       then
         lib.concatMapStringsSep
         "\n"
-        (license: "  - [${license.fullName}](${license.url})")
+        (license: "  - ${self.licenseLink license}")
         pkg.meta.license
-      else "  - [${pkg.meta.license.fullName}](${pkg.meta.license.url})";
+      else "  - ${self.licenseLink pkg.meta.license}";
 
     maintainerInfo = maintainer:
       if maintainer ? github
