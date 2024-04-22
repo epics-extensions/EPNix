@@ -66,4 +66,10 @@ See `<nixpkgs/maintainers/scripts/check-maintainer-github-handles.sh>` for an ex
     email = "stephane.tzvetkov@cea.fr";
     name = "Stéphane Tzvetkov";
   };
+  synthetica = {
+    email = "philhorst@highvolteng.com";
+    name = "Patrick Hilhorst";
+    github = "Synthetica9";
+    githubId = 7075751;
+  };
 }
