@@ -72,4 +72,8 @@ See `<nixpkgs/maintainers/scripts/check-maintainer-github-handles.sh>` for an ex
     github = "Synthetica9";
     githubId = 7075751;
   };
+  vivien = {
+    email = "vivien.loriot@cea.fr";
+    name = "Vivien Loriot";
+  };
 }
