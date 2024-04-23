@@ -34,6 +34,7 @@ in
         asyn = callPackage ./epnix/support/asyn {};
         autoparamDriver = callPackage ./epnix/support/autoparamDriver {};
         autosave = callPackage ./epnix/support/autosave {};
+        busy = callPackage ./epnix/support/busy {};
         calc = callPackage ./epnix/support/calc {};
         devlib2 = callPackage ./epnix/support/devlib2 {};
         epics-systemd = callPackage ./epnix/support/epics-systemd {};
