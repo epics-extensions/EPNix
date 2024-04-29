@@ -9,3 +9,11 @@ Breaking changes
 
 - The :nix:`config.epnix.outputs.mdbook` and :nix:`config.epnix.outputs.manpages` options
   from the IOC module options, previously deprecated, are now removed.
+
+- The :ref:`opt-services.phoebus-alarm-server.enable`,
+  :ref:`opt-services.phoebus-olog.enable`,
+  and :ref:`opt-services.phoebus-save-and-restore.enable` options
+  don't enable ElasticSearch automatically anymore.
+  See :doc:`../nixos-services/user-guides/phoebus-alarm`
+  and :doc:`../nixos-services/user-guides/phoebus-save-and-restore`
+  for how to enable it yourself on the same server.
