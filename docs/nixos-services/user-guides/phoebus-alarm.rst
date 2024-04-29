@@ -52,7 +52,9 @@ and Kafka’s ``clusterId``:
 
      services.phoebus-alarm-logger.settings."bootstrap.servers" = kafkaListenSockAddr;
 
-     # Single-server Kafka setup
+     # Phoebus alarm needs Kafka.
+     # If not already enabled elsewhere in your configuration,
+     # the code below shows a single-server Kafka setup:
      services.apache-kafka = {
        enable = true;
        # Replace with a randomly generated uuid. You can get one by running:
@@ -89,6 +91,9 @@ and Kafka’s ``clusterId``:
      # Open kafka to the outside world
      networking.firewall.allowedTCPPorts = [9092];
 
+     # Phoebus alarm needs ElasticSearch.
+     # If not already enabled elsewhere in your configuration,
+     # Enable it with the code below:
      services.elasticsearch = {
        enable = true;
        package = pkgs.elasticsearch7;
