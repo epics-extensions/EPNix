@@ -7,10 +7,15 @@
   meta.maintainers = with epnixLib.maintainers; [minijackson];
 
   nodes = {
-    server = {
+    server = {pkgs, ...}: {
       services.phoebus-olog = {
         enable = true;
         settings."demo_auth.enabled" = true;
+      };
+
+      services.elasticsearch = {
+        enable = true;
+        package = pkgs.elasticsearch7;
       };
 
       nixpkgs.config.allowUnfreePredicate = pkg:
