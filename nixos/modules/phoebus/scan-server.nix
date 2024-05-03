@@ -23,8 +23,9 @@
     </scan_config>
   '';
 
+  schema = "${pkgs.epnix.phoebus-scan-server.src}/services/scan-server/src/main/resources/config/scan_config.xsd";
   configFile = pkgs.runCommand "scan_config.xml" {nativeBuildInputs = [pkgs.libxml2];} ''
-    xmllint --format ${rawConfigFile} > $out
+    xmllint --schema ${schema} --format ${rawConfigFile} > $out
   '';
 in {
   options.services.phoebus-scan-server = {
