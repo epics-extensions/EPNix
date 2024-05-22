@@ -190,3 +190,8 @@ with subtest("The data is still here after a server reboot"):
     assert alarm_states[2]["current_severity"] == "MAJOR"
     assert alarm_states[2]["severity"] == "MAJOR"
     assert alarm_states[2]["value"] == "4.0"
+
+with subtest("Can export alarm configuration"):
+    server.succeed("phoebus-alarm-server -settings /etc/phoebus/alarm-server.properties -export export.xml")
+    server.succeed("grep ALARM_TEST export.xml")
+    server.copy_from_vm("export.xml")

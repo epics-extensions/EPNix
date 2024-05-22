@@ -8,6 +8,7 @@
   cfg = config.services.phoebus-alarm-server;
   settingsFormat = pkgs.formats.javaProperties {};
   configFile = settingsFormat.generate "phoebus-alarm-server.properties" cfg.settings;
+  configLocation = "phoebus/alarm-server.properties";
 in {
   options.services.phoebus-alarm-server = {
     enable = lib.mkEnableOption ''
@@ -161,6 +162,12 @@ in {
       }
     ];
 
+    environment = {
+      etc."${configLocation}".source = configFile;
+      # Useful for importing alarm sets
+      systemPackages = [pkgs.epnix.phoebus-alarm-server];
+    };
+
     systemd.services.phoebus-alarm-server = {
       description = "Phoebus Alarm Server";
 
@@ -173,10 +180,10 @@ in {
           args =
             [
               "-noshell"
-              "-settings ${configFile}"
+              "-settings /etc/${configLocation}"
             ]
             ++ (lib.optional cfg.createTopics "-create_topics");
-        in "${pkgs.epnix.phoebus-alarm-server}/bin/phoebus-alarm-server ${lib.concatStringsSep " " args}";
+        in "${lib.getExe pkgs.epnix.phoebus-alarm-server} ${lib.concatStringsSep " " args}";
         DynamicUser = true;
         StateDirectory = "phoebus-alarm-server";
         # TODO: systemd hardening
