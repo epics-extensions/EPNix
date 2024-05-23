@@ -53,6 +53,7 @@ in
     meta = {
       description = "Monitor a configurable set of PVs and track their alarm state";
       homepage = "https://control-system-studio.readthedocs.io/en/latest/services/alarm-server/doc/index.html";
+      mainProgram = "phoebus-alarm-server";
       license = lib.licenses.epl10;
       maintainers = with epnixLib.maintainers; [minijackson];
       inherit (jdk.meta) platforms;
