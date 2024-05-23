@@ -57,7 +57,7 @@ Fill the file with these lines:
 {
   description = "Configuration for running Archiver Appliance in a VM";
 
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
   inputs.epnix.url = "github:epics-extensions/EPNix";
 
   outputs = { self, nixpkgs, epnix }: {
@@ -72,11 +72,7 @@ Fill the file with these lines:
 }
 ```
 
-```{=html}
-<!-- TODO: replace raw html with the kbd shortcode once we are using Quarto 1.3 -->
-<!-- https://quarto.org/docs/authoring/markdown-basics.html#keyboard-shortcuts -->
-```
-Save and quit by typing `<kbd>`{=html}Ctrl-x`</kbd>`{=html}, `<kbd>`{=html}y`</kbd>`{=html}, and `<kbd>`{=html}Enter`</kbd>`{=html},
+Save and quit by typing {{< kbd Ctrl-x >}}, {{< kbd y >}}, and {{< kbd Enter >}},
 and run `nixos-rebuild test` to test your changes.
 
 Some explanations:

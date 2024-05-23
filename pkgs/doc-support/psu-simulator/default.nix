@@ -3,12 +3,15 @@
   epnix,
   epnixLib,
 }:
+# Use recursiveUpdate so that it doesn't override meta.mainProgram
+lib.recursiveUpdate
 (epnix.mkLewisSimulator {
-  name = "psu_simulator";
-  package = "psu_simulator";
+  name = "psu-simulator";
   source = ./.;
+  package = "psu_simulator";
+  device = "psu_simulator";
 })
-// {
+{
   pname = "psu_simulator";
   version = "0.2.0";
 

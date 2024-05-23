@@ -3,7 +3,7 @@
   lib,
   epnixLib,
   epnix,
-  quarto,
+  quartoMinimal,
   writeText,
   documentedEpnixPkgs ? epnix,
   iocConfig ? {},
@@ -70,7 +70,7 @@ in
     name = "epnix-book";
     src = ../../doc;
 
-    nativeBuildInputs = [quarto];
+    nativeBuildInputs = [quartoMinimal];
 
     dontConfigure = true;
 

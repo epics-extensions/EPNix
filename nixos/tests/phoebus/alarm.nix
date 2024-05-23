@@ -1,22 +1,17 @@
 # This tests both the phoebus-alarm-server, and phoebus-alarm-logger services
-{
-  epnixLib,
-  lib,
-  pkgs,
-  ...
-}: {
+{epnixLib, ...}: {
   name = "phoebus-alarm-server-simple-check";
   meta.maintainers = with epnixLib.maintainers; [minijackson];
 
   nodes = {
-    client = {
+    client = {pkgs, ...}: {
       environment = {
         sessionVariables.EPICS_CA_ADDR_LIST = ["ioc"];
         systemPackages = [pkgs.kcat pkgs.epnix.epics-base];
       };
     };
 
-    ioc = {
+    ioc = {pkgs, ...}: {
       systemd.services.ioc = {
         description = "Test IOC to be monitored with the Phoebus Alarm server";
         serviceConfig.ExecStart = "${pkgs.epnix.epics-base}/bin/softIoc -S -d ${./ioc.db}";
@@ -32,12 +27,13 @@
 
     server = {
       config,
+      lib,
       pkgs,
       ...
     }: let
-      kafkaPort = toString config.services.apache-kafka.port;
       serverAddr = "192.168.1.3";
-      kafkaListenSockAddr = "${serverAddr}:${kafkaPort}";
+      kafkaListenSockAddr = "${serverAddr}:9092";
+      kafkaControllerListenSockAddr = "${serverAddr}:9093";
     in {
       services.phoebus-alarm-server = {
         enable = true;
@@ -51,42 +47,42 @@
 
       services.phoebus-alarm-logger.settings."bootstrap.servers" = kafkaListenSockAddr;
 
+      services.apache-kafka = {
+        enable = true;
+        clusterId = "Wwbk0wwKTueL2hJD0IGGdQ";
+        formatLogDirs = true;
+        settings = {
+          listeners = [
+            "PLAINTEXT://${kafkaListenSockAddr}"
+            "CONTROLLER://${kafkaControllerListenSockAddr}"
+          ];
+          "listener.security.protocol.map" = [
+            "PLAINTEXT:PLAINTEXT"
+            "CONTROLLER:PLAINTEXT"
+          ];
+          "controller.quorum.voters" = [
+            "1@${kafkaControllerListenSockAddr}"
+          ];
+          "controller.listener.names" = ["CONTROLLER"];
+
+          "node.id" = 1;
+          "process.roles" = ["broker" "controller"];
+
+          "log.dirs" = ["/var/lib/apache-kafka"];
+          "offsets.topic.replication.factor" = 1;
+          "transaction.state.log.replication.factor" = 1;
+          "transaction.state.log.min.isr" = 1;
+        };
+      };
+
+      systemd.services.apache-kafka.unitConfig.StateDirectory = ["apache-kafka"];
+
+      networking.firewall.allowedTCPPorts = [9092];
+
       services.elasticsearch = {
         enable = true;
         package = pkgs.elasticsearch7;
       };
-
-      # Single-server Kafka setup
-      services.apache-kafka = {
-        enable = true;
-        logDirs = ["/var/lib/apache-kafka"];
-        # Tell Apache Kafka to listen on this IP address
-        # If you don't have a DNS domain name, it's best to set a specific, non-local IP address.
-        extraProperties = ''
-          listeners=PLAINTEXT://${kafkaListenSockAddr}
-          offsets.topic.replication.factor=1
-          transaction.state.log.replication.factor=1
-          transaction.state.log.min.isr=1
-        '';
-      };
-
-      systemd.services.apache-kafka = {
-        after = ["zookeeper.service"];
-        unitConfig.StateDirectory = "apache-kafka";
-      };
-
-      services.zookeeper = {
-        enable = true;
-        extraConf = ''
-          # Port conflicts by default with phoebus-alarm-logger's port
-          admin.enableServer=false
-        '';
-      };
-
-      # Open kafka to the outside world
-      networking.firewall.allowedTCPPorts = [
-        config.services.apache-kafka.port
-      ];
 
       nixpkgs.config.allowUnfreePredicate = pkg:
         builtins.elem (lib.getName pkg) [

@@ -87,8 +87,6 @@ in {
           "bootstrap.servers" = lib.mkOption {
             description = "Location of the Kafka server";
             type = lib.types.str;
-            default = "localhost:${toString config.services.apache-kafka.port}";
-            defaultText = lib.literalExpression ''"localhost:''${toString config.services.apache-kafka.port}"'';
           };
 
           date_span_units = lib.mkOption {

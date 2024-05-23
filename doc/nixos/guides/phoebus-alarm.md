@@ -29,15 +29,17 @@ The Phoebus Alarm Logging Service can also be called the Phoebus Alarm Logger.
 # Single server Phoebus Alarm setup
 
 To configure Phoebus Alarm, Phoebus Alarm Logger, Apache Kafka, and ElasticSearch on a single server,
-add this to your configuration:
+add this to your configuration,
+while taking care of replacing the IP address
+and Kafka's `clusterId`:
 
 ``` nix
-{config, lib, ...}: let
-  kafkaPort = toString config.services.apache-kafka.port;
-  # Replace this with your machine's IP address
+{lib, pkgs, ...}: let
+  # Replace this with your machine's external IP address
   # or DNS domain name
   ip = "192.168.1.42";
-  kafkaListenSockAddr = "${ip}:${kafkaPort}";
+  kafkaListenSockAddr = "${ip}:9092";
+  kafkaControllerListenSockAddr = "${ip}:9093";
 in {
   # The Phoebus Alarm server also automatically enables the Phoebus Alarm Logger
   services.phoebus-alarm-server = {
@@ -48,42 +50,47 @@ in {
 
   services.phoebus-alarm-logger.settings."bootstrap.servers" = kafkaListenSockAddr;
 
+  # Single-server Kafka setup
+  services.apache-kafka = {
+    enable = true;
+    # Replace with a randomly generated uuid. You can get one by running:
+    # nix shell 'nixpkgs#apacheKafka' -c kafka-storage.sh random-uuid
+    clusterId = "xxxxxxxxxxxxxxxxxxxxxx";
+    formatLogDirs = true;
+    settings = {
+      listeners = [
+        "PLAINTEXT://${kafkaListenSockAddr}"
+        "CONTROLLER://${kafkaControllerListenSockAddr}"
+      ];
+      # Adapt depending on your security constraints
+      "listener.security.protocol.map" = [
+        "PLAINTEXT:PLAINTEXT"
+        "CONTROLLER:PLAINTEXT"
+      ];
+      "controller.quorum.voters" = [
+        "1@${kafkaControllerListenSockAddr}"
+      ];
+      "controller.listener.names" = ["CONTROLLER"];
+
+      "node.id" = 1;
+      "process.roles" = ["broker" "controller"];
+
+      "log.dirs" = ["/var/lib/apache-kafka"];
+      "offsets.topic.replication.factor" = 1;
+      "transaction.state.log.replication.factor" = 1;
+      "transaction.state.log.min.isr" = 1;
+    };
+  };
+
+  systemd.services.apache-kafka.unitConfig.StateDirectory = "apache-kafka";
+
+  # Open kafka to the outside world
+  networking.firewall.allowedTCPPorts = [9092];
+
   services.elasticsearch = {
     enable = true;
     package = pkgs.elasticsearch7;
   };
-
-  # Single-server Kafka setup
-  services.apache-kafka = {
-    enable = true;
-    logDirs = ["/var/lib/apache-kafka"];
-    # Tell Apache Kafka to listen on this IP address
-    # If you don't have a DNS domain name, it's best to set a specific, non-local IP address.
-    extraProperties = ''
-      listeners=PLAINTEXT://${kafkaListenSockAddr}
-      offsets.topic.replication.factor=1
-      transaction.state.log.replication.factor=1
-      transaction.state.log.min.isr=1
-    '';
-  };
-
-  systemd.services.apache-kafka = {
-    after = ["zookeeper.service"];
-    unitConfig.StateDirectory = "apache-kafka";
-  };
-
-  services.zookeeper = {
-    enable = true;
-    extraConf = ''
-      # Port conflicts by default with phoebus-alarm-logger's port
-      admin.enableServer=false
-    '';
-  };
-
-  # Open kafka to the outside world
-  networking.firewall.allowedTCPPorts = [
-    config.services.apache-kafka.port
-  ];
 
   # Elasticsearch, needed by Phoebus Alarm Logger, is not free software (SSPL | Elastic License).
   # To accept the license, add the code below:
@@ -205,4 +212,3 @@ Here is a list of options you might want to set:
 ::: callout-warning
 Currently, Phoebus Alarm Server only supports plain SMTP.
 :::
-
