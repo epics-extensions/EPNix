@@ -8,6 +8,7 @@
   copyDesktopItems,
   epnix,
   jdk,
+  openjfx,
 }: let
   buildDate = "2022-02-24T07:56:00Z";
 in
@@ -21,6 +22,14 @@ in
       copyDesktopItems
       makeWrapper
       (epnix.phoebus-setup-hook.override {jdk = jdk.override {enableJavaFX = true;};})
+      (epnix.phoebus-setup-hook.override {
+        jdk = jdk.override {
+          enableJavaFX = true;
+          openjfx = openjfx.override {
+            withWebKit = true;
+          };
+        };
+      })
     ];
 
     desktopItems = [
