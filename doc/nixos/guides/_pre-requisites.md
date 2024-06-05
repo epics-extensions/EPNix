@@ -18,8 +18,8 @@ For example:
 ``` {.diff filename="flake.nix"}
  {
    # ...
-+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
-+  inputs.epnix.url = "github:epics-extensions/EPNix";
+   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
++  inputs.epnix.url = "github:epics-extensions/EPNix/nixos-23.11";
 
    # ...
    outputs = {
