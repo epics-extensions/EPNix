@@ -41,10 +41,24 @@ However, since EPNix is a git repository, you will be able, through Nix, to use 
 ```{=html}
 <!-- TODO: link to an explanation, from the IOC side, and from the NixOS side -->
 ```
+
 ## The epics-base package
 
 The epics-base package has no significant modification compared to the upstream version at [Launchpad].
 One goal of EPNix is to keep those modifications to a minimum, and upstream what's possible.
+
+# Release branches
+
+EPNix has a `master` branch,
+which is considered unstable,
+meaning breaking changes might happen without notice.
+
+EPNix also has release branches,
+such as `nixos-23.11`,
+tied to the nixpkgs release branches,
+where breaking changes are forbidden.
+
+Backporting changes to older release branches is done on a "best-effort" basis.
 
 ------------------------------------------------------------------------
 
