@@ -31,5 +31,5 @@ installPhoebusJar() {
 		--set-default JAVA_XMX "4G" \
 		--add-flags '-Xms$JAVA_XMS' \
 		--add-flags '-Xmx$JAVA_XMX' \
-		--add-flags "-D${D[@]}"
+		--add-flags "-Dfile.encoding=UTF-8"
 }
