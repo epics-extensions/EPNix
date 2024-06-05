@@ -2,7 +2,7 @@
   description = "EPICS IOC for <...>";
 
   inputs.flake-utils.url = "github:numtide/flake-utils";
-  inputs.epnix.url = "github:epics-extensions/epnix";
+  inputs.epnix.url = "github:epics-extensions/epnix/nixos-23.11";
 
   # If you have a support module as a separate EPNix repository,
   # add it as an input here:
@@ -80,35 +80,34 @@
     # ---
     # "x86_64-linux" should still be specified so that the development
     # environment can be built on your machine.
-    flake-utils.lib.eachSystem ["x86_64-linux"] (system:
-      with epnix.lib; let
-        epnixDistribution = evalEpnixModules {
-          nixpkgsConfig = {
-            # This specifies the build architecture
-            inherit system;
+    flake-utils.lib.eachSystem ["x86_64-linux"] (system: let
+      epnixDistribution = epnix.lib.evalEpnixModules {
+        nixpkgsConfig = {
+          # This specifies the build architecture
+          inherit system;
 
-            # This specifies the host architecture, uncomment for cross-compiling
-            #
-            # The complete of example architectures is here:
-            # https://github.com/NixOS/nixpkgs/blob/nixos-22.11/lib/systems/examples.nix
-            # ---
-            #crossSystem = epnix.inputs.nixpkgs.lib.systems.examples.armv7l-hf-multiplatform;
-          };
-          epnixConfig = myEpnixConfig;
+          # This specifies the host architecture, uncomment for cross-compiling
+          #
+          # The complete of example architectures is here:
+          # https://github.com/NixOS/nixpkgs/blob/nixos-22.11/lib/systems/examples.nix
+          # ---
+          #crossSystem = epnix.inputs.nixpkgs.lib.systems.examples.armv7l-hf-multiplatform;
         };
-      in {
-        packages =
-          epnixDistribution.outputs
-          // {
-            default = self.packages.${system}.build;
-          };
+        epnixConfig = myEpnixConfig;
+      };
+    in {
+      packages =
+        epnixDistribution.outputs
+        // {
+          default = self.packages.${system}.build;
+        };
 
-        inherit epnixDistribution;
+      inherit epnixDistribution;
 
-        devShells.default = self.packages.${system}.devShell;
+      devShells.default = self.packages.${system}.devShell;
 
-        checks = epnixDistribution.config.epnix.checks.derivations;
-      })
+      checks = epnixDistribution.config.epnix.checks.derivations;
+    })
     // {
       overlays.default = final: prev:
         self.epnixDistribution.x86_64-linux.generatedOverlay final prev;
