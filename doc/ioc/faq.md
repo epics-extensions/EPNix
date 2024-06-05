@@ -22,7 +22,7 @@ Use `<consumerApp>_DEPEND_DIRS += <producerApp>`{.makefile} in your top-level `M
 Meaning, not versioning an App separate from the top.
 This might be justified if you don't intend to share an App in any other top.
 
-1.  First, create a top and an App, as in the [Getting Started] guide.
+1.  First, create a top and an App, as in the [StreamDevice tutorial].
 
 2.  Make sure to add an exception for the `exampleApp` folder at the end of the top's `.gitignore` file:
 
@@ -46,4 +46,4 @@ git add -N .
 
 4.  Finally, in your `flake.nix`, you can remove any input and value in `epnix.applications.apps` that refers to this directory.
 
-  [Getting Started]: ./tutorials/getting-started.md
+  [StreamDevice tutorial]: ./tutorials/streamdevice.md

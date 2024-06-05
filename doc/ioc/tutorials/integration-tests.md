@@ -6,7 +6,7 @@ title: Integration tests
 
 Through the [NixOS testing framework], EPNix provides a way of specifying a machine configuration, and running a Python script that can do various kind of testing.
 
-If you created your IOC using the EPNix template, like suggested in the [Getting Started] documentation, you will see a `checks/` directory.
+If you created your IOC using the EPNix template, like suggested in the [StreamDevice tutorial], you will see a `checks/` directory.
 This directory should contain the integration tests you want to run.
 
 To add an integration test to EPNix, record it in your `flake.nix` under the `epnix.checks.files` option.
@@ -43,7 +43,7 @@ For an overview of what you can input in the machine configuration, please refer
 You can also read about the Python test script API [here][NixOS testing framework].
 
   [NixOS testing framework]: https://nixos.org/manual/nixos/stable/index.html#sec-nixos-tests
-  [Getting Started]: ./getting-started.md
+  [StreamDevice tutorial]: ./streamdevice.md
   [NixOS documentation]: https://nixos.org/manual/nixos/stable/index.html#sec-configuration-syntax
 
 # Starting your IOC through systemd
@@ -115,7 +115,6 @@ You can also look at examples either in the EPNix repository under the [`checks`
 ```
 
   [here]: https://search.nixos.org/options?channel=21.11&from=0&size=50&sort=alpha_asc&type=packages&query=systemd.services.
-  [epics-systemd]: https://github.com/minijackson/epics-systemd
   [Packaging Python scripts]: ../guides/testing/packaging-python-scripts.md
   [NixOS tests documentation]: https://nixos.org/manual/nixos/stable/index.html#sec-nixos-tests
   [`checks` folder]: https://github.com/epics-extensions/epnix/tree/master/checks
