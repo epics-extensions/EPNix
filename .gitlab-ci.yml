@@ -1,4 +1,9 @@
+workflow:
+  auto_cancel:
+    on_new_commit: interruptible
+
 default:
+  interruptible: true
   tags:
     - nix
 
