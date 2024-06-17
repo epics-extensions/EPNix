@@ -14,7 +14,7 @@ stdenvNoCC.mkDerivation (self: {
   version = "1.1.0";
 
   src = fetchFromGitHub {
-    owner = "slacmshankar";
+    owner = "archiver-appliance";
     repo = "epicsarchiverap";
     rev = self.version;
     fetchSubmodules = true;
