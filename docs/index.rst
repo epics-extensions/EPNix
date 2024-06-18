@@ -58,7 +58,7 @@ which is considered unstable,
 meaning breaking changes might happen without notice.
 
 EPNix also has release branches,
-such as ``nixos-23.11``,
+such as ``nixos-24.05``,
 tied to the nixpkgs release branches,
 where breaking changes are forbidden.
 
