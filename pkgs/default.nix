@@ -48,6 +48,7 @@ in
         snmp = callPackage ./epnix/support/snmp {};
         sscan = callPackage ./epnix/support/sscan {};
         StreamDevice = callPackage ./epnix/support/StreamDevice {};
+        twincat-ads = callPackage ./epnix/support/twincat-ads {};
       });
 
       # EPICS related tools and extensions
