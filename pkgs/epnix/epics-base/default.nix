@@ -136,11 +136,14 @@ in
     # TODO: Some tests fail
     doCheck = false;
 
-    # _FORTIFY_SOURCE=3 causes a buffer overflow in some cases:
+    # _FORTIFY_SOURCE=3 detects a false-positive buffer overflow in some cases:
     #     *** buffer overflow detected ***: terminated
     #
-    # Fall back to _FORTIFY_SOURCE=2
-    hardeningDisable = ["fortify3"];
+    # EPICS automatically falls back to _FORTIFY_SOURCE=2 since 7.0.8.1
+    # Being tracked in https://github.com/epics-base/epics-base/issues/514, hopefully with a fix
+    # in EPICS 7.0.9
+
+    hardeningDisable = optional (versionOlder version "7.0.8.1") "fortify3";
 
     meta = {
       description = "The Experimental Physics and Industrial Control System";
