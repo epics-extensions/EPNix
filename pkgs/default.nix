@@ -14,6 +14,7 @@ in
       ++ [
         (final: prev: {
           lewis = final.callPackage ./epnix/tools/lewis {};
+          pyepics = final.callPackage ./epnix/python-modules/pyepics {};
           scanf = final.callPackage ./epnix/tools/scanf {};
         })
       ];
@@ -61,7 +62,7 @@ in
 
       ca-gateway = callPackage ./epnix/tools/ca-gateway {};
 
-      inherit (final.python3Packages) lewis;
+      inherit (final.python3Packages) lewis pyepics;
       inherit (callPackage ./epnix/tools/lewis/lib.nix {}) mkLewisSimulator;
 
       pcas = callPackage ./epnix/tools/pcas {};
