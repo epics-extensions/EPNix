@@ -19,6 +19,15 @@ in
         })
       ];
 
+    linuxKernel =
+      prev.linuxKernel
+      // {
+        packagesFor = kernel:
+          (prev.linuxKernel.packagesFor kernel).extend (final: _prev: {
+            mrf = final.callPackage ./epnix/kernel-modules/mrf {};
+          });
+      };
+
     epnix = recurseExtensible (self: {
       # EPICS base
 
