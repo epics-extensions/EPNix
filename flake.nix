@@ -32,6 +32,7 @@
             constituents = builtins.attrValues self.packages.${system};
           };
         }
+        // (import ./pkgs/tests {inherit pkgs self;})
         // (import ./ioc/tests {inherit pkgs self;})
         // (import ./nixos/tests/all-tests.nix {inherit nixpkgs pkgs self system;});
 
