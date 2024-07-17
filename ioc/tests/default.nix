@@ -4,6 +4,8 @@ with pkgs.lib;
     default-ioc-epics-base-3 = import ./default-ioc "3" args;
     default-ioc-epics-base-7 = import ./default-ioc "7" args;
 
+    pyepics = import ./pyepics args;
+
     support-autosave-simple = import ./support/autosave/simple args;
     support-pvxs-ioc = import ./support/pvxs/ioc args;
     support-pvxs-qsrv2 = import ./support/pvxs/qsrv2 args;
