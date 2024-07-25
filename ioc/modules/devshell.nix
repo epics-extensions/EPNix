@@ -212,7 +212,7 @@ in {
         The value of each variable can be either a string or a list of strings.
         The latter is concatenated, interspersed with colon characters.
 
-        If null is given, the environment variable is explicitely unset,
+        If null is given, the environment variable is explicitly unset,
         preventing said environment variable to "leak" from the host
         environment to the development shell.
       '';
@@ -320,7 +320,7 @@ in {
 
       edoc = {
         text = ''
-          ${pkgs.python3}/bin/python -m http.server --bind 127.0.0.1 --directory "${pkgs.epnix.book}"
+          ${pkgs.python3}/bin/python -m http.server --bind 127.0.0.1 --directory "${pkgs.epnix.docs}/share/doc/epnix/html/"
         '';
         category = "epnix commands";
         description = "Show the EPNix documentation book for the distribution";
@@ -572,7 +572,7 @@ in {
           (map (cmd: cmd.package) cfg.packages)
           ++ scriptPackages
           ++ config.epnix.outputs.build.depsBuildBuild
-          ++ [pkgs.epnix.manpages];
+          ++ [pkgs.epnix.docs];
 
         inherit (config.epnix.outputs.build) local_config_site local_release;
 
