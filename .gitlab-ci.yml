@@ -31,8 +31,8 @@ formatting:
 manpages:
   stage: deploy
   script:
-    - nix build $NIX_BUILD_FLAGS '.#manpages'
-    - cp -Lr ./result manpages
+    - nix build $NIX_BUILD_FLAGS '.#docs'
+    - cp -Lr ./result/share/man manpages
   artifacts:
     name: "manpages-$CI_COMMIT_REF_SLUG"
     paths:
@@ -41,8 +41,8 @@ manpages:
 pages:
   stage: deploy
   script:
-    - nix build $NIX_BUILD_FLAGS '.#book'
-    - cp -Lr ./result public
+    - nix build $NIX_BUILD_FLAGS '.#docs'
+    - cp -Lr ./result/share/doc/epnix/html public
   artifacts:
     name: "book"
     paths:
