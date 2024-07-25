@@ -55,15 +55,14 @@ in
         exec = "phoebus -server 4918 -resource %f";
         desktopName = "Phoebus";
         keywords = ["epics" "css"];
+        # https://specifications.freedesktop.org/menu-spec/menu-spec-1.0.html#category-registry
         categories = [
+          # Main
           "Office"
-          "Graphics"
-          "GUIDesigner"
-          "Viewer"
-          "Science"
-          "Physics"
-          "Monitor"
+
+          # Additional
           "Java"
+          "Viewer"
         ];
       })
     ];
