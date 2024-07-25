@@ -1,0 +1,5 @@
+24.05 Release notes
+===================
+
+.. role:: nix(code)
+   :language: nix

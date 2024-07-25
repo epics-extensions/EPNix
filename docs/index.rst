@@ -99,5 +99,13 @@ This documentation follows the `Diátaxis`_ documentation framework.
    nixos-services/user-guides/index
    nixos-services/options
 
+.. toctree::
+   :caption: Release notes
+   :hidden:
+   :titlesonly:
+   :glob:
+   :reversed:
+
+   release-notes/*
 
 .. TODO: link an index to Nix options and packages
