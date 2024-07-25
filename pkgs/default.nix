@@ -89,6 +89,7 @@ in
 
       # EPNix specific packages
       book = callPackage ./book {};
+      docs = callPackage ./docs {};
       manpages = callPackage ./manpages {};
 
       # Documentation support packages
