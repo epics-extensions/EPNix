@@ -56,13 +56,12 @@
               category = "development tools";
             }
             {
-              package = pkgs.quartoMinimal;
-              category = "development tools";
-            }
-            {
               package = pkgs.vale;
               category = "development tools";
             }
+          ];
+          devShell.attrs.inputsFrom = [
+            pkgs.epnix.docs
           ];
         };
       };
