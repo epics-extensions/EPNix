@@ -67,11 +67,7 @@ in
 
       pcas = callPackage ./epnix/tools/pcas {};
 
-      phoebus = callPackage ./epnix/tools/phoebus/client {
-        # TODO: uncomment when this works:
-        # TODO: add libjfxwebkit.so into openjfx
-        # jdk = final.openjdk17.override {enableJavaFX = true;};
-      };
+      phoebus = callPackage ./epnix/tools/phoebus/client {};
       phoebus-alarm-server = callPackage ./epnix/tools/phoebus/alarm-server {};
       phoebus-alarm-logger = callPackage ./epnix/tools/phoebus/alarm-logger {};
       phoebus-archive-engine = callPackage ./epnix/tools/phoebus/archive-engine {};
