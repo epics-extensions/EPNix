@@ -5,7 +5,6 @@
   ./checks.nix
   ./common.nix
   ./devshell.nix
-  ./documentation.nix
   ./meta.nix
   ./nixos-integration.nix
   ./outputs.nix
