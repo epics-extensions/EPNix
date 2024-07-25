@@ -88,9 +88,7 @@ in
       mariadb_jdbc = callPackage ./epnix/tools/mariadb_jdbc {};
 
       # EPNix specific packages
-      book = callPackage ./book {};
       docs = callPackage ./docs {};
-      manpages = callPackage ./manpages {};
 
       # Documentation support packages
       psu-simulator = callPackage ./doc-support/psu-simulator {};
