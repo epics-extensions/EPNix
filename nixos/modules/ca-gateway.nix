@@ -182,7 +182,7 @@ in {
       after = ["network-online.target"];
 
       serviceConfig = {
-        ExecStart = "${pkg}/bin/gateway ${commandLine}";
+        ExecStart = "${lib.getExe pkg} ${commandLine}";
         # ca-gateway doesn't always exit with a positive status code,
         # even on failure
         Restart = "always";

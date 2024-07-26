@@ -26,6 +26,7 @@ mkEpicsPackage rec {
   meta = {
     description = "Channel Access PV gateway";
     homepage = "https://epics.anl.gov/extensions/gateway/";
+    mainProgram = "gateway";
     license = epnixLib.licenses.epics;
     maintainers = with epnixLib.maintainers; [minijackson];
   };
