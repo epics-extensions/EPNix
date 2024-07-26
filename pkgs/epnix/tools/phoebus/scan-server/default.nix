@@ -50,6 +50,7 @@ in
     meta = {
       description = "Simple, well tested, and robust set of predefined commands for use by Python users";
       homepage = "https://epics.anl.gov/tech-talk/2022/msg01072.php";
+      mainProgram = "phoebus-scan-server";
       license = lib.licenses.epl10;
       maintainers = with epnixLib.maintainers; [minijackson];
       inherit (jdk.meta) platforms;
