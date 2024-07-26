@@ -49,6 +49,7 @@ buildPythonPackage rec {
   meta = with lib; {
     description = "Let's write intricate simulators";
     homepage = "https://github.com/ess-dmsc/lewis";
+    mainProgram = "lewis";
     license = licenses.gpl3Only;
     maintainers = with maintainers; [minijackson];
   };
