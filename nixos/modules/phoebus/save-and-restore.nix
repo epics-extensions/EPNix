@@ -84,7 +84,7 @@ in {
       after = lib.mkIf localElasticsearch ["elasticsearch.service"];
 
       serviceConfig = {
-        ExecStart = "${pkgs.epnix.phoebus-save-and-restore}/bin/phoebus-save-and-restore --spring.config.location=file://${configFile}";
+        ExecStart = "${lib.getExe pkgs.epnix.phoebus-save-and-restore} --spring.config.location=file://${configFile}";
         Restart = "on-failure";
         DynamicUser = true;
 

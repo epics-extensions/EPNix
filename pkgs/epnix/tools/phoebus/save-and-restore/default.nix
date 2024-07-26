@@ -50,6 +50,7 @@ in
     meta = {
       description = "Implements the MASAR (MAchine Save And Restore) service as a REST API";
       homepage = "https://control-system-studio.readthedocs.io/en/latest/services/save-and-restore/doc/index.html";
+      mainProgram = "phoebus-save-and-restore";
       license = lib.licenses.epl10;
       maintainers = with epnixLib.maintainers; [minijackson];
       inherit (jdk.meta) platforms;
