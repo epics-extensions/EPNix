@@ -104,6 +104,7 @@ in
     meta = {
       description = "Control System Studio's Phoebus client";
       homepage = "https://control-system-studio.readthedocs.io/en/latest/index.html";
+      mainProgram = "phoebus";
       license = lib.licenses.epl10;
       maintainers = with epnixLib.maintainers; [minijackson];
       inherit (jdk.meta) platforms;
