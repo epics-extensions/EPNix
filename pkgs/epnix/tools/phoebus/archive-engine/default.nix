@@ -50,6 +50,7 @@ in
     meta = {
       description = "Phoebus' RDB Archive Engine Service";
       homepage = "https://control-system-studio.readthedocs.io/en/latest/services/archive-engine/doc/index.html";
+      mainProgram = "phoebus-archive-engine";
       license = lib.licenses.epl10;
       maintainers = with epnixLib.maintainers; [minijackson];
       inherit (jdk.meta) platforms;
