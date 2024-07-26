@@ -2,6 +2,7 @@
   lib,
   epnixLib,
   stdenv,
+  substituteAll,
   maven,
   makeWrapper,
   makeDesktopItem,
@@ -9,12 +10,20 @@
   epnix,
   jdk,
   openjfx,
+  python3,
 }: let
   buildDate = "2022-02-24T07:56:00Z";
 in
   stdenv.mkDerivation {
     pname = "phoebus";
     inherit (epnix.phoebus-deps) version src;
+
+    patches = [
+      (substituteAll {
+        src = ./fix-python-path.patch;
+        python = lib.getExe python3;
+      })
+    ];
 
     # TODO: make a scope, so that we don't pass around the whole `epnix`
     nativeBuildInputs = [
@@ -32,21 +41,28 @@ in
       })
     ];
 
+    # Put runtime dependencies in propagated
+    # because references get thrown into a jar
+    # which is compressed,
+    # so the Nix scanner won't always be able to see them
+    propagatedBuildInputs = [
+      python3
+    ];
+
     desktopItems = [
       (makeDesktopItem {
         name = "phoebus";
         exec = "phoebus -server 4918 -resource %f";
         desktopName = "Phoebus";
         keywords = ["epics" "css"];
+        # https://specifications.freedesktop.org/menu-spec/menu-spec-1.0.html#category-registry
         categories = [
+          # Main
           "Office"
-          "Graphics"
-          "GUIDesigner"
-          "Viewer"
-          "Science"
-          "Physics"
-          "Monitor"
+
+          # Additional
           "Java"
+          "Viewer"
         ];
       })
     ];
