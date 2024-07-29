@@ -1,6 +1,6 @@
 # EPNix
 
-![](./doc/logo.svg)
+![](./docs/logo.svg)
 
 EPNix (pronunciation: like you are high on mushrooms) packages EPICS-related software by using the [Nix] package manager.
 
