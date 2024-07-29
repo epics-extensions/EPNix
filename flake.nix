@@ -114,8 +114,8 @@
 
           Useful links:
 
-          - EPNix IOC documentation: <https://epics-extensions.github.io/EPNix/ioc/introduction.html>
-          - Getting Started: <https://epics-extensions.github.io/EPNix/ioc/tutorials/getting-started.html>
+          - EPNix IOC documentation: <https://epics-extensions.github.io/EPNix/ioc/>
+          - EPNix IOC tutorials: <https://epics-extensions.github.io/EPNix/ioc/tutorials/>
         '';
       };
 
