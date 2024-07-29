@@ -3,8 +3,8 @@ name: "Check EditorConfig"
 permissions: read-all
 
 on:
-  push:
-  pull_request:
+  pull_request_target:
+    types: [opened, synchronize, reopened, edited]
 
 jobs:
   editorconfig:
