@@ -79,6 +79,7 @@
     package2pandoc = headingLevel: path: pkg: let
       header = lib.fixedWidthString headingLevel "#" "";
     in ''
+      (pkg-${path})=
       ${header} ${pkg.pname or pkg.name}
 
       Path
