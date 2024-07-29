@@ -6,7 +6,7 @@
     isVisible = pkg: !(pkg.value.meta.hidden or false);
 
     isNotIocSpecific = base: pkg: (self.isVisible pkg) && base != "support.";
-    isIocSpecific = base: pkg: (self.isVisible pkg) && (pkg.value.pname == "epics-base" || base == "support.");
+    isIocSpecific = base: pkg: (self.isVisible pkg) && base == "support.";
 
     filteredPkgsList = filt: headingLevel: pkgs:
       lib.concatStringsSep
@@ -79,6 +79,7 @@
     package2pandoc = headingLevel: path: pkg: let
       header = lib.fixedWidthString headingLevel "#" "";
     in ''
+      (pkg-${path})=
       ${header} ${pkg.pname or pkg.name}
 
       Path
