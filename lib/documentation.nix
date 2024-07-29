@@ -95,14 +95,10 @@
 
       ${lib.optionalString (pkg.meta ? position) (let
         filePath = lib.head (lib.splitString ":" pkg.meta.position);
-        relativePath = lib.pipe filePath [
-          (lib.splitString "/")
-          (lib.sublist 4 255)
-          (lib.concatStringsSep "/")
-        ];
+        declarationLink = self.markdown.sourceLink filePath;
       in ''
         Declared in
-        : ${self.markdown.inDefList "[${relativePath}](file://${filePath})"}
+        : ${self.markdown.inDefList declarationLink}
       '')}
 
       License(s)
@@ -113,7 +109,6 @@
       ${lib.optionalString
         ((lib.length pkg.meta.maintainers) > 1)
         "    - [Mail to all maintainers](mailto:${lib.concatStringsSep "," (map (m: m.email) pkg.meta.maintainers)})"}
-
     '';
   };
 in

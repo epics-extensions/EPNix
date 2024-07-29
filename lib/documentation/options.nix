@@ -5,7 +5,7 @@
   ...
 }:
 lib.fix (self: {
-  visibleOptionDocs = lib.filter (opt: opt.visible && !opt.internal);
+  visibleOptionDocs = lib.filter (opt: opt.visible && !opt.internal && (lib.head opt.loc) != "_module");
 
   optionsContent = options: headingLevel:
     lib.concatStringsSep "\n"

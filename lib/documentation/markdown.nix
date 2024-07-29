@@ -1,5 +1,11 @@
-{lib, ...}:
+{
+  inputs,
+  lib,
+  ...
+}:
 lib.fix (self: let
+  rev = inputs.self.sourceInfo.rev or "master";
+
   # Quote an option if it contains a "." in it
   maybeQuote = el:
     if lib.hasInfix "." el
@@ -8,6 +14,7 @@ lib.fix (self: let
 
   # Add a suggested word break after each "." so that it is easier to read
   wordBreakOption = loc: lib.concatStringsSep ".<wbr>" (map maybeQuote loc);
+  optionName = loc: lib.concatStringsSep "." (map maybeQuote loc);
 
   isLiteral = value:
     value
@@ -40,15 +47,25 @@ in {
   # ''
   inDefList = str: let
     lines = lib.splitString "\n" str;
-    firstLine = "  ${lib.head lines}";
-    otherLines = map (line: "    ${line}") (lib.drop 1 lines);
+    firstLine = "${lib.head lines}";
+    otherLines = map (line: "  ${line}") (lib.drop 1 lines);
   in
     lib.concatStringsSep "\n" ([firstLine] ++ otherLines);
+
+  # Takes an absolute path, returns a source:// markdown link
+  sourceLink = path: let
+    relativePath = lib.pipe path [
+      (lib.splitString "/")
+      (lib.sublist 4 255)
+      (lib.concatStringsSep "/")
+    ];
+  in "[${relativePath}](source://${rev}/${relativePath})";
 
   fromOption = headingLevel: option: let
     header = lib.fixedWidthString headingLevel "#" "";
   in ''
-    ${header} ${wordBreakOption (map lib.escapeXML option.loc)}
+    (opt-${optionName option.loc})=
+    ${header} `${optionName option.loc}`
 
     ${self.toText option.description}
 
@@ -74,7 +91,7 @@ in {
     ''}
 
     Declared in
-    : ${self.inDefList (lib.concatStringsSep "\n" (map (decl: "- ${decl}") option.declarations))}
+    : ${self.inDefList (lib.concatStringsSep "\n" (map self.sourceLink option.declarations))}
 
   '';
 })

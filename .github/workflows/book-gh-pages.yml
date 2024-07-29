@@ -27,8 +27,8 @@ jobs:
       - uses: cachix/install-nix-action@ba0dd844c9180cbf77aa72a116d6fbc515d0e87b # v27
       - name: "Build documentation book"
         run: |
-          nix build '.#book' --print-build-logs
-          cp -Lr --no-preserve=mode,ownership ./result/ ./book
+          nix build '.#docs' --print-build-logs
+          cp -Lr --no-preserve=mode,ownership ./result/share/doc/epnix/html ./book
       - name: Setup Pages
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0
       - name: Upload artifact

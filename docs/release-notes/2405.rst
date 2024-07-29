@@ -1,0 +1,11 @@
+24.05 Release notes
+===================
+
+.. role:: nix(code)
+   :language: nix
+
+Breaking changes
+----------------
+
+- The :nix:`config.epnix.outputs.mdbook` and :nix:`config.epnix.outputs.manpages` options
+  from the IOC module options, previously deprecated, are now removed.
