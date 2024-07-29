@@ -1,0 +1,21 @@
+diff --git a/iocBoot/iocSimple/st.cmd b/iocBoot/iocSimple/st.cmd
+index af59327..bc12277 100755
+--- a/iocBoot/iocSimple/st.cmd
++++ b/iocBoot/iocSimple/st.cmd
+@@ -17,13 +17,13 @@ dbLoadRecords "db/simpleVersion.db", "user=epnix"
+ dbLoadRecords "db/dbSubExample.db", "user=epnix"
+ 
+ #- Set this to see messages from mySub
+-#-var mySubDebug 1
++var mySubDebug 1
+ 
+ #- Run this to trace the stages of iocInit
+-#-traceIocInit
++traceIocInit
+ 
+ cd "${TOP}/iocBoot/${IOC}"
+ iocInit
+ 
+ ## Start any sequence programs
+-#seq sncExample, "user=epnix"
++seq sncExample, "user=epnix"

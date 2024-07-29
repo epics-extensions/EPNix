@@ -3,6 +3,7 @@ with pkgs.lib;
   {
     default-ioc-epics-base-3 = import ./default-ioc "3" args;
     default-ioc-epics-base-7 = import ./default-ioc "7" args;
+    example-ioc = import ./example-ioc args;
 
     pyepics = import ./pyepics args;
 
