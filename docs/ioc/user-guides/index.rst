@@ -13,6 +13,7 @@ User guides
    ./private-repo-setup.rst
    ./flake-registry.rst
    ./developing-modules.rst
+   ./mrf-devices.rst
    ./testing/packaging-python-scripts.rst
 
 .. TODO: make a NixOS test user-guide,
