@@ -50,6 +50,7 @@ in
     meta = {
       description = "Records all alarm messages to create an archive of all alarm state changes and the associated actions";
       homepage = "https://control-system-studio.readthedocs.io/en/latest/services/alarm-logger/doc/index.html";
+      mainProgram = "phoebus-alarm-logger";
       license = lib.licenses.epl10;
       maintainers = with epnixLib.maintainers; [minijackson];
       inherit (jdk.meta) platforms;

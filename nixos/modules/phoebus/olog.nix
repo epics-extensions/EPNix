@@ -108,7 +108,7 @@ in {
       after = ["elasticsearch.service" "mongodb.service"];
 
       serviceConfig = {
-        ExecStart = "${pkgs.epnix.phoebus-olog}/bin/phoebus-olog --spring.config.location=file://${configFile}";
+        ExecStart = "${lib.getExe pkgs.epnix.phoebus-olog} --spring.config.location=file://${configFile}";
         DynamicUser = true;
         # TODO: systemd hardening. Currently level 8.2 EXPOSED
       };

@@ -50,6 +50,7 @@ in
     meta = {
       description = "Phoebus' PV Access client and server";
       homepage = "https://github.com/ControlSystemStudio/phoebus/tree/master/core/pva";
+      mainProgram = "phoebus-pva";
       license = lib.licenses.epl10;
       maintainers = with epnixLib.maintainers; [minijackson];
       inherit (jdk.meta) platforms;

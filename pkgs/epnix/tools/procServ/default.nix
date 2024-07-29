@@ -27,6 +27,7 @@ stdenv.mkDerivation rec {
   meta = {
     description = "Wrapper to start arbitrary interactive commands in the background, with telnet or Unix domain socket access to stdin/stdout";
     homepage = "https://github.com/ralphlange/procServ";
+    mainProgram = "procServ";
     license = lib.licenses.gpl3Plus;
     maintainers = with epnixLib.maintainers; [minijackson];
   };

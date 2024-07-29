@@ -146,7 +146,7 @@ in {
             "-noshell"
             "-properties ${configFile}"
           ];
-        in "${pkgs.epnix.phoebus-alarm-logger}/bin/phoebus-alarm-logger ${lib.concatStringsSep " " args}";
+        in "${lib.getExe pkgs.epnix.phoebus-alarm-logger} ${lib.concatStringsSep " " args}";
         DynamicUser = true;
         StateDirectory = "phoebus-alarm-logger";
         # TODO: systemd hardening

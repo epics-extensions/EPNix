@@ -103,7 +103,7 @@ in {
 
           serviceConfig = {
             ExecStart = let
-              procServ = "${pkgs.epnix.procServ}/bin/procServ";
+              procServ = lib.getExe pkgs.epnix.procServ;
               arch = epnix.lib.toEpicsArch globalConfig.epnix.outputs.build.stdenv.hostPlatform;
             in ''
               ${procServ} ${lib.cli.toGNUCommandLineShell {} config.procServ.options} \
