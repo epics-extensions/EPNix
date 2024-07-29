@@ -5,7 +5,7 @@ releaseBranch: {pkgs, ...}: let
   result = epnixLib.evalEpnixModules {
     nixpkgsConfig.system = system;
     epnixConfig.imports = [
-      (import ./top/epnix.nix releaseBranch)
+      (import ./epnix.nix releaseBranch)
     ];
   };
 

@@ -1,0 +1,13 @@
+diff --git a/simpleApp/Db/Makefile b/simpleApp/Db/Makefile
+index 8eb9727..ea49598 100644
+--- a/simpleApp/Db/Makefile
++++ b/simpleApp/Db/Makefile
+@@ -6,7 +6,7 @@ include $(TOP)/configure/CONFIG
+ #----------------------------------------------------
+ # Create and install (or just install) into <top>/db
+ # databases, templates, substitutions like this
+-#DB += xxx.db
++DB += simple.db
+ 
+ #----------------------------------------------------
+ # If <anyname>.db template is not named <anyname>*.template add
