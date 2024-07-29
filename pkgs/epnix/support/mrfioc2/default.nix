@@ -31,7 +31,7 @@ mkEpicsPackage rec {
   '';
 
   meta = {
-    description = "Driver EPICS for MRF cards";
+    description = "EPICS driver for Micro Research Finland event timing system devices";
     homepage = "https://github.com/epics-modules/mrfioc2";
     license = epnixLib.licenses.epics;
     maintainers = with epnixLib.maintainers; [agaget];
