@@ -12,8 +12,6 @@ lib.fix (self: let
     then ''"${el}"''
     else el;
 
-  # Add a suggested word break after each "." so that it is easier to read
-  wordBreakOption = loc: lib.concatStringsSep ".<wbr>" (map maybeQuote loc);
   optionName = loc: lib.concatStringsSep "." (map maybeQuote loc);
 
   isLiteral = value:
