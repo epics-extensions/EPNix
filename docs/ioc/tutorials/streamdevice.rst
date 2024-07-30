@@ -147,11 +147,11 @@ and what to expect in return.
    Terminator = LF;
 
    getVoltage {
-       out ":VOLT?"; in "%f";
+       out ":volt?"; in "%f";
    }
 
    setVoltage {
-       out ":VOLT %f";
+       out ":volt %f";
        @init { getVoltage; }
    }
 
@@ -207,7 +207,7 @@ and how to connect to the remote power supply.
    # Where to find the protocol files
    epicsEnvSet("STREAM_PROTOCOL_PATH", "${TOP}/db")
    # The TCP/IP address of the power supply
-   drvAsynIPPortConfigure("PS1", "localhost:8727")
+   drvAsynIPPortConfigure("PS1", "localhost:9999")
 
    ## Load record instances
    dbLoadRecords("${TOP}/db/example.db", "PREFIX=, PORT=PS1")
@@ -252,7 +252,7 @@ Then, run:
 
    ./st.cmd
 
-You should see the IOC starting and connecting to ``localhost:8727``.
+You should see the IOC starting and connecting to ``localhost:9999``.
 
 Recompiling with make
 ---------------------
@@ -274,9 +274,9 @@ and open a direct connection to the simulator:
 
 .. code-block:: bash
 
-   nc localhost 8727
+   nc localhost 9999
    # or
-   telnet localhost 8727
+   telnet localhost 9999
 
 You can install the ``nc`` command through the ``netcat`` package,
 or you can install the ``telnet`` command through the ``telnet`` package,
