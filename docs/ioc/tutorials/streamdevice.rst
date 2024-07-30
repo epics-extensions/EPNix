@@ -85,7 +85,7 @@ change yours like so:
 
             # Add one of the supported modules here:
             # ---
-   -        #support.modules = with pkgs.epnix.support; [ StreamDevice ];
+   -        #support.modules = with pkgs.epnix.support; [ StreamDevice mySupportModule ];
    +        support.modules = with pkgs.epnix.support; [ StreamDevice ];
 
 Then,
