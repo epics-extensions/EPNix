@@ -160,7 +160,7 @@ That file specifies the name, type, and properties of the Process Variables (PV)
 that EPICS exposes over the network.
 It also specifies how they relate to the functions written in the protocol file.
 
-.. code-block:: perl
+.. code-block:: bash
    :caption: :file:`exampleApp/Db/example.db`
 
    record(ai, "${PREFIX}VOLT-RB") {
@@ -171,6 +171,7 @@ It also specifies how they relate to the functions written in the protocol file.
    record(ao, "${PREFIX}VOLT") {
        field(DTYP, "stream")
        field(OUT, "@example.proto setVoltage ${PORT}")
+       field(FLNK, "${PREFIX}VOLT-RB")
    }
 
 Change ``exampleApp/Db/Makefile``
