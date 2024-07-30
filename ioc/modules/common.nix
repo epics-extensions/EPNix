@@ -44,7 +44,7 @@ with lib; {
         `nixpkgs.overlays` option.
       '';
       default = pkgs;
-      defaultText = literalExpression "<the effective used packages>";
+      defaultText = literalExpression "<the-effective-used-packages>";
       readOnly = true;
       type = types.attrs;
     };
