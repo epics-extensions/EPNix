@@ -167,7 +167,7 @@ in {
             '';
             type = lib.types.path;
             default = "${cfg.package}/share/archappl/policies.py";
-            defaultText = lib.literalExpression "\${cfg.package}/share/archappl/policies.py";
+            defaultText = lib.literalExpression ''"''${cfg.package}/share/archappl/policies.py"'';
           };
 
           ARCHAPPL_SHORT_TERM_FOLDER = lib.mkOption {
