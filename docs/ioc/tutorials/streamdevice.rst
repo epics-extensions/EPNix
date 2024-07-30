@@ -254,6 +254,28 @@ Then, run:
 
 You should see the IOC starting and connecting to ``localhost:9999``.
 
+.. tip::
+   :file:`./result` is a symbolic link,
+   so if you made any changes to your IOC and re-ran ``nix build``,
+   a terminal window already in :file:`./result/iocBoot/iocExample` will still point to the old version.
+
+   To run the new version,
+   either re-open a new window
+   and ``cd`` into the new :file:`./result/`,
+   or in the old location,
+   you can run:
+
+   .. code-block:: console
+
+      user@machine .../result/iocBoot/iocExample $ cd .
+
+   For quickly re-running an IOC,
+   you can use this command:
+
+   .. code-block:: console
+
+      user@machine .../result/iocBoot/iocExample $ cd . ; ./st.cmd
+
 Recompiling with make
 ---------------------
 
