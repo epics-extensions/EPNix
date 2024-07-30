@@ -63,6 +63,12 @@ myst_url_schemes = {
     },
 }
 
+# -- Options for Sphinx Copybutton -------------------------------------------
+# https://sphinx-copybutton.readthedocs.io/en/latest/use.html
+
+# Exclude copying line numbers, prompts, and prompt outputs
+copybutton_exclude = ".linenos, .gp, .go"
+
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
