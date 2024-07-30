@@ -1,6 +1,6 @@
 # EPNix
 
-![](./doc/logo.svg)
+![](./docs/logo.svg)
 
 EPNix (pronunciation: like you are high on mushrooms) packages EPICS-related software by using the [Nix] package manager.
 
@@ -11,7 +11,7 @@ It's made of three parts:
 -   NixOS modules
 
 The EPICS IOC framework lets you package, deploy, and test EPICS IOCs by using the Nix package manager, which provides several benefits.
-For more information, see the [EPICS IOCs introduction].
+For more information, see the [EPICS IOC documentation].
 
 EPNix also packages other EPICS-related tools, such as procServ, Phoebus, and so on.
 You can build them by using Nix, while having a strong guarantee that they work as-is.
@@ -21,12 +21,12 @@ Note: providing a cache server that enables you to download dependencies pre-com
 
 EPNix also provides NixOS modules, which are instructions on how to configure various EPICS-related services on NixOS machines (for example the Phoebus alarm server).
 EPNix strives to have integration tests for each of those module.
-For more information, see the [NixOS modules introduction].
+For more information, see the [NixOS services documentation].
 
   [Nix]: https://nixos.org/guides/how-nix-works.html
-  [EPICS IOCs introduction]: https://epics-extensions.github.io/EPNix/ioc/introduction.html
+  [EPICS IOC documentation]: https://epics-extensions.github.io/EPNix/ioc/
   [Packages list]: https://epics-extensions.github.io/EPNix/pkgs/packages.html
-  [NixOS modules introduction]: https://epics-extensions.github.io/EPNix/nixos/introduction.html
+  [NixOS services documentation]: https://epics-extensions.github.io/EPNix/nixos-services/
 
 ## Getting started building IOCs
 
