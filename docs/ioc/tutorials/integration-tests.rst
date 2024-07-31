@@ -15,6 +15,50 @@ and checking that it behaves as expected.
 This method of testing can then be automated
 by running it inside a Continuous Integration (CI) system.
 
+Pre-requisites
+--------------
+
+.. warning::
+   Nix assumes you can run hardware-accelerated VMs,
+   through KVM.
+
+Make sure that you have KVM on your Linux machine
+by checking if the file :file:`/dev/kvm` is present.
+
+If the file is present,
+you can proceed to the next section.
+
+If you don't have KVM,
+and you're running Nix on a physical machine,
+examine your firmware settings
+to see if you can enable hardware-accelerated virtualization.
+The setting can show up as:
+
+- Virtualization
+- Intel Virtualization Technology
+- Intel VT
+- VT-d
+- SVM Mode
+- AMD-v
+
+If you don't have KVM,
+and you're running Nix on a virtual machine,
+check your firmware settings
+as said before,
+and look up your hypervisor documentation
+to enable nested virtualization.
+
+If this doesn't work,
+you can still proceed without hardware acceleration
+by adding this line to your :file:`nix.conf`:
+
+.. code-block::
+   :caption: :file:`/etc/nix/nix.conf`
+
+   extra-system-features = kvm
+
+Note that this means much slower integration tests.
+
 Writing the test
 ----------------
 
