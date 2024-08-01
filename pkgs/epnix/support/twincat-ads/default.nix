@@ -23,6 +23,9 @@ mkEpicsPackage rec {
     sha256 = "sha256-f7hod1N1AzCh+W7nHl9VCA+nuwpJAboSh19Dq80n/2E=";
   };
 
+  # See: https://gitlab.esss.lu.se/epics-modules/epics-twincat-ads/-/issues/2
+  patches = [./fix-missing-header.patch];
+
   propagatedBuildInputs = with epnix.support; [asyn calc];
 
   preBuild = ''
