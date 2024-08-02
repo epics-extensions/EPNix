@@ -70,7 +70,7 @@
 in
   stdenvNoCC.mkDerivation {
     pname = "epnix-docs";
-    version = "23.11";
+    version = "24.05";
 
     src = ../../docs;
 
