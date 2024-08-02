@@ -85,7 +85,7 @@ change yours like so:
 
             # Add one of the supported modules here:
             # ---
-   -        #support.modules = with pkgs.epnix.support; [ StreamDevice ];
+   -        #support.modules = with pkgs.epnix.support; [ StreamDevice mySupportModule ];
    +        support.modules = with pkgs.epnix.support; [ StreamDevice ];
 
 Then,
@@ -147,11 +147,11 @@ and what to expect in return.
    Terminator = LF;
 
    getVoltage {
-       out ":VOLT?"; in "%f";
+       out ":volt?"; in "%f";
    }
 
    setVoltage {
-       out ":VOLT %f";
+       out ":volt %f";
        @init { getVoltage; }
    }
 
@@ -160,7 +160,7 @@ That file specifies the name, type, and properties of the Process Variables (PV)
 that EPICS exposes over the network.
 It also specifies how they relate to the functions written in the protocol file.
 
-.. code-block:: perl
+.. code-block:: bash
    :caption: :file:`exampleApp/Db/example.db`
 
    record(ai, "${PREFIX}VOLT-RB") {
@@ -171,6 +171,7 @@ It also specifies how they relate to the functions written in the protocol file.
    record(ao, "${PREFIX}VOLT") {
        field(DTYP, "stream")
        field(OUT, "@example.proto setVoltage ${PORT}")
+       field(FLNK, "${PREFIX}VOLT-RB")
    }
 
 Change ``exampleApp/Db/Makefile``
@@ -207,7 +208,7 @@ and how to connect to the remote power supply.
    # Where to find the protocol files
    epicsEnvSet("STREAM_PROTOCOL_PATH", "${TOP}/db")
    # The TCP/IP address of the power supply
-   drvAsynIPPortConfigure("PS1", "localhost:8727")
+   drvAsynIPPortConfigure("PS1", "localhost:9999")
 
    ## Load record instances
    dbLoadRecords("${TOP}/db/example.db", "PREFIX=, PORT=PS1")
@@ -252,7 +253,29 @@ Then, run:
 
    ./st.cmd
 
-You should see the IOC starting and connecting to ``localhost:8727``.
+You should see the IOC starting and connecting to ``localhost:9999``.
+
+.. tip::
+   :file:`./result` is a symbolic link,
+   so if you made any changes to your IOC and re-ran ``nix build``,
+   a terminal window already in :file:`./result/iocBoot/iocExample` will still point to the old version.
+
+   To run the new version,
+   either re-open a new window
+   and ``cd`` into the new :file:`./result/`,
+   or in the old location,
+   you can run:
+
+   .. code-block:: console
+
+      user@machine .../result/iocBoot/iocExample $ cd .
+
+   For quickly re-running an IOC,
+   you can use this command:
+
+   .. code-block:: console
+
+      user@machine .../result/iocBoot/iocExample $ cd . ; ./st.cmd
 
 Recompiling with make
 ---------------------
@@ -274,9 +297,9 @@ and open a direct connection to the simulator:
 
 .. code-block:: bash
 
-   nc localhost 8727
+   nc localhost 9999
    # or
-   telnet localhost 8727
+   telnet localhost 9999
 
 You can install the ``nc`` command through the ``netcat`` package,
 or you can install the ``telnet`` command through the ``telnet`` package,
