@@ -29,6 +29,14 @@ add this to your configuration:
        openFirewall = true;
      };
 
+     # Phoebus save-and-restore needs ElasticSearch.
+     # If not already enabled elsewhere in your configuration,
+     # Enable it with the code below:
+     services.elasticsearch = {
+       enable = true;
+       package = pkgs.elasticsearch7;
+     };
+
      # Elasticsearch, needed by Phoebus Save-and-restore, is not free software (SSPL | Elastic License).
      # To accept the license, add the code below:
      nixpkgs.config.allowUnfreePredicate = pkg:

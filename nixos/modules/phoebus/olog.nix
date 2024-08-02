@@ -113,18 +113,8 @@ in {
         # TODO: systemd hardening. Currently level 8.2 EXPOSED
       };
     };
-
-    services.elasticsearch = {
-      enable = true;
-      # Should be kept in sync with the phoebus-alarm-logger and phoebus-save-and-restore services
-      package = pkgs.elasticsearch7;
-    };
     services.mongodb.enable = true;
   };
 
-  meta = {
-    maintainers = with epnixLib.maintainers; [minijackson];
-    # TODO:
-    # doc = ./olog.md;
-  };
+  meta.maintainers = with epnixLib.maintainers; [minijackson];
 }
