@@ -8,8 +8,6 @@
   cfg = config.services.phoebus-save-and-restore;
   settingsFormat = pkgs.formats.javaProperties {};
   configFile = settingsFormat.generate "phoebus-save-and-restore.properties" cfg.settings;
-
-  localElasticsearch = cfg.settings."elasticsearch.network.host" == "localhost";
 in {
   options.services.phoebus-save-and-restore = {
     enable = lib.mkEnableOption ''
@@ -81,7 +79,7 @@ in {
       description = "Phoebus Save-and-restore";
 
       wantedBy = ["multi-user.target"];
-      after = lib.mkIf localElasticsearch ["elasticsearch.service"];
+      after = ["elasticsearch.service"];
 
       serviceConfig = {
         ExecStart = "${lib.getExe pkgs.epnix.phoebus-save-and-restore} --spring.config.location=file://${configFile}";
@@ -138,12 +136,6 @@ in {
         # Disallowed system calls return EPERM instead of terminating the service
         SystemCallErrorNumber = "EPERM";
       };
-    };
-
-    services.elasticsearch = lib.mkIf localElasticsearch {
-      enable = true;
-      # Should be kept in sync with the phoebus-alarm-logger and phoebus-olog services
-      package = pkgs.elasticsearch7;
     };
 
     networking.firewall.allowedTCPPorts = lib.mkIf cfg.openFirewall [
