@@ -22,8 +22,8 @@ pkgs.nixosTest {
     machine.wait_for_unit("default.target")
     machine.wait_for_unit("ioc.service")
 
-    machine.wait_until_succeeds("caget stringin")
-    machine.wait_until_succeeds("caget stringout")
+    machine.wait_until_succeeds("caget stringin", timeout=10)
+    machine.wait_until_succeeds("caget stringout", timeout=10)
     machine.fail("caget non-existing")
 
     with subtest("testing stringout"):
