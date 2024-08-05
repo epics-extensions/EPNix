@@ -54,5 +54,6 @@ in
       license = lib.licenses.epl10;
       maintainers = with epnixLib.maintainers; [minijackson];
       inherit (jdk.meta) platforms;
+      mainProgram = "phoebus-scan-server";
     };
   }
