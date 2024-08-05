@@ -18,6 +18,7 @@ jobs:
       matrix:
         branch:
           - master
+          - nixos-24.05
           - nixos-23.11
           - nixos-23.05
     permissions:
