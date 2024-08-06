@@ -16,6 +16,7 @@ in
           lewis = final.callPackage ./epnix/tools/lewis {};
           channelfinder = final.callPackage ./epnix/tools/channel-finder/pyCFClient {};
           pyepics = final.callPackage ./epnix/python-modules/pyepics {};
+          recceiver = final.callPackage ./epnix/tools/channel-finder/recceiver {};
           scanf = final.callPackage ./epnix/tools/scanf {};
         })
       ];
