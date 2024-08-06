@@ -14,6 +14,7 @@ in
       ++ [
         (final: prev: {
           lewis = final.callPackage ./epnix/tools/lewis {};
+          channelfinder = final.callPackage ./epnix/tools/channel-finder/pyCFClient {};
           pyepics = final.callPackage ./epnix/python-modules/pyepics {};
           scanf = final.callPackage ./epnix/tools/scanf {};
         })
