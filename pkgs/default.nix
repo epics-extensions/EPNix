@@ -71,6 +71,8 @@ in
 
       ca-gateway = callPackage ./epnix/tools/ca-gateway {};
 
+      channel-finder-service = callPackage ./epnix/tools/channel-finder/service {};
+
       inherit (final.python3Packages) lewis pyepics;
       inherit (callPackage ./epnix/tools/lewis/lib.nix {}) mkLewisSimulator;
 
