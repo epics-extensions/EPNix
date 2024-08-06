@@ -137,8 +137,16 @@ in {
 
       wantedBy = ["multi-user.target"];
 
-      # Weirdly not "phoebus.user"
-      environment.JAVA_OPTS = "-Djava.util.prefs.userRoot=/var/lib/phoebus-alarm-logger";
+      environment = {
+        # Weirdly not "phoebus.user"
+        JAVA_OPTS = "-Djava.util.prefs.userRoot=/var/lib/phoebus-alarm-logger";
+
+        # Our config file is both the config file for phoebus-alarm-logger,
+        # and for SpringBoot.
+        # The '-properties' command-line argument is only for phoebus-alarm-logger,
+        # *not* SpringBoot.
+        SPRING_CONFIG_IMPORT = configFile;
+      };
 
       serviceConfig = {
         ExecStart = let
