@@ -60,6 +60,7 @@ in
         mrfioc2 = callPackage ./epnix/support/mrfioc2 {};
         opcua = callPackage ./epnix/support/opcua {open62541 = self.open62541_1_3;};
         pvxs = callPackage ./epnix/support/pvxs {};
+        reccaster = callPackage ./epnix/support/reccaster {};
         seq = callPackage ./epnix/support/seq {};
         snmp = callPackage ./epnix/support/snmp {};
         sscan = callPackage ./epnix/support/sscan {};
