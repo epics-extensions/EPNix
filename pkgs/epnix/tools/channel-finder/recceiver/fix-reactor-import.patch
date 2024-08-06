@@ -1,0 +1,120 @@
+diff --git a/recceiver/announce.py b/recceiver/announce.py
+index f315e46..10be4a6 100644
+--- a/recceiver/announce.py
++++ b/recceiver/announce.py
+@@ -3,7 +3,7 @@
+ import sys
+ import struct
+ 
+-from twisted.internet import protocol, reactor
++from twisted.internet import protocol
+ import logging
+ 
+ _log = logging.getLogger(__name__)
+@@ -14,12 +14,14 @@
+ __all__ = ['Announcer']
+ 
+ class Announcer(protocol.DatagramProtocol):
+-    reactor = reactor
+-
+     def __init__(self, tcpport, key=0,
+                  tcpaddr='\xff\xff\xff\xff',
+                  udpaddrs=[('<broadcast>',5049)],
+                  period=15.0):
++        from twisted.internet import reactor
++
++        self.reactor = reactor
++
+         if sys.version_info[0] < 3:
+             self.msg = _Ann.pack(0x5243, 0, tcpaddr, tcpport, 0, key)
+         else:
+diff --git a/recceiver/application.py b/recceiver/application.py
+index 50da82b..9bee474 100644
+--- a/recceiver/application.py
++++ b/recceiver/application.py
+@@ -7,7 +7,7 @@
+ 
+ from twisted import plugin
+ from twisted.python import usage, log
+-from twisted.internet import reactor, defer
++from twisted.internet import defer
+ from twisted.internet.error import CannotListenError
+ from twisted.application import service
+ 
+@@ -31,9 +31,12 @@ def flush(self):
+         pass
+ 
+ class RecService(service.MultiService):
+-    reactor = reactor
+ 
+     def __init__(self, config):
++        from twisted.internet import reactor
++
++        self.reactor = reactor
++
+         service.MultiService.__init__(self)
+         self.annperiod = float(config.get('announceInterval', '15.0'))
+         self.tcptimeout = float(config.get('tcptimeout', '15.0'))
+diff --git a/recceiver/recast.py b/recceiver/recast.py
+index 6f6fce2..daa91b4 100644
+--- a/recceiver/recast.py
++++ b/recceiver/recast.py
+@@ -16,7 +16,6 @@
+ from twisted.protocols import stateful
+ from twisted.internet import defer
+ from twisted.internet import protocol
+-from twisted.internet import reactor
+ 
+ from .interfaces import ITransaction
+ 
+@@ -42,11 +41,14 @@
+ 
+ class CastReceiver(stateful.StatefulProtocol):
+ 
+-    reactor = reactor
+     timeout = 3.0
+     version = 0
+ 
+     def __init__(self, active=True):
++        from twisted.internet import reactor
++
++        self.reactor = reactor
++
+         self.sess, self.active = None, active
+         self.uploadSize, self.uploadStart = 0, 0
+ 
+@@ -238,9 +240,12 @@ def __str__(self):
+ class CollectionSession(object):
+     timeout = 5.0
+     trlimit = 0
+-    reactor = reactor
+ 
+     def __init__(self, proto, endpoint):
++        from twisted.internet import reactor
++
++        self.reactor = reactor
++
+         _log.info("Open session from %s",endpoint)
+         self.proto, self.ep = proto, endpoint
+         self.TR = Transaction(self.ep, id(self))
+diff --git a/recceiver/udpbcast.py b/recceiver/udpbcast.py
+index 1f424aa..1b28a61 100644
+--- a/recceiver/udpbcast.py
++++ b/recceiver/udpbcast.py
+@@ -1,6 +1,6 @@
+ # -*- coding: utf-8 -*-
+ 
+-from twisted.internet import udp, reactor
++from twisted.internet import udp
+ from twisted.application import internet
+ 
+ __all__ = ['SharedUDP','SharedUDPServer']
+@@ -29,6 +29,8 @@ class SharedUDPServer(internet.UDPServer):
+     """A UDP server using SharedUDP
+     """
+     def _getPort(self):
++        from twisted.internet import reactor
++
+         R = getattr(self, 'reactor', reactor)
+         port = SharedUDP(reactor=R, *self.args, **self.kwargs)
+         port.startListening()
