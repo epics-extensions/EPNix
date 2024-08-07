@@ -1,0 +1,20 @@
+diff --git a/iocBoot/iocdemo/st.cmd b/iocBoot/iocdemo/st.cmd
+index 2dd8cda..4c39612 100755
+--- a/iocBoot/iocdemo/st.cmd
++++ b/iocBoot/iocdemo/st.cmd
+@@ -1,4 +1,4 @@
+-#!../../bin/linux-x86_64-debug/demo
++#!../../bin/linux-x86_64/demo
+ 
+ ## You may have to change demo to something else
+ ## everywhere it appears in this file
+diff --git a/iocBoot/iocdemo/st_test.cmd b/iocBoot/iocdemo/st_test.cmd
+index 420f865..12a74b7 100755
+--- a/iocBoot/iocdemo/st_test.cmd
++++ b/iocBoot/iocdemo/st_test.cmd
+@@ -1,4 +1,4 @@
+-#!../../bin/linux-x86_64-debug/demo
++#!../../bin/linux-x86_64/demo
+ 
+ ## You may have to change demo to something else
+ ## everywhere it appears in this file

@@ -14,7 +14,9 @@ in
       ++ [
         (final: prev: {
           lewis = final.callPackage ./epnix/tools/lewis {};
+          channelfinder = final.callPackage ./epnix/tools/channel-finder/pyCFClient {};
           pyepics = final.callPackage ./epnix/python-modules/pyepics {};
+          recceiver = final.callPackage ./epnix/tools/channel-finder/recceiver {};
           scanf = final.callPackage ./epnix/tools/scanf {};
         })
       ];
@@ -58,6 +60,7 @@ in
         mrfioc2 = callPackage ./epnix/support/mrfioc2 {};
         opcua = callPackage ./epnix/support/opcua {open62541 = self.open62541_1_3;};
         pvxs = callPackage ./epnix/support/pvxs {};
+        reccaster = callPackage ./epnix/support/reccaster {};
         seq = callPackage ./epnix/support/seq {};
         snmp = callPackage ./epnix/support/snmp {};
         sscan = callPackage ./epnix/support/sscan {};
@@ -70,6 +73,8 @@ in
       archiver-appliance = callPackage ./epnix/tools/archiver-appliance {};
 
       ca-gateway = callPackage ./epnix/tools/ca-gateway {};
+
+      channel-finder-service = callPackage ./epnix/tools/channel-finder/service {};
 
       inherit (final.python3Packages) lewis pyepics;
       inherit (callPackage ./epnix/tools/lewis/lib.nix {}) mkLewisSimulator;
