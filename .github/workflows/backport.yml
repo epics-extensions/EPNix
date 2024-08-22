@@ -23,6 +23,9 @@ jobs:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           ref: ${{ github.event.pull_request.head.sha }}
+          # Credentials are needed to push to a remote branch,
+          # before creating a pull request
+          persist-credentials: true
       - name: Create backport PRs
         uses: korthout/backport-action@bd410d37cdcae80be6d969823ff5a225fe5c833f # v3.0.2
         with:
