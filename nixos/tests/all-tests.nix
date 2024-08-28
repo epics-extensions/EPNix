@@ -17,6 +17,7 @@
 in {
   archiver-appliance = handleTest ./archiver-appliance {};
   ca-gateway = handleTest ./ca-gateway.nix {};
+  channel-finder = handleTest ./channel-finder {};
   phoebus-alarm = handleTest ./phoebus/alarm.nix {};
   phoebus-olog = handleTest ./phoebus/olog.nix {};
   phoebus-save-and-restore = handleTest ./phoebus/save-and-restore.nix {};
