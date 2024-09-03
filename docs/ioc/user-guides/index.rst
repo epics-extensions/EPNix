@@ -13,6 +13,7 @@ User guides
    ./private-repo-setup.rst
    ./flake-registry.rst
    ./developing-modules.rst
+   ./reccaster.rst
    ./mrf-devices.rst
    ./testing/index.rst
 
