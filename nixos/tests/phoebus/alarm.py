@@ -13,7 +13,7 @@ def wait_for_boot():
         server.wait_for_unit("phoebus-alarm-logger.service")
         server.wait_for_open_port(9092, "192.168.1.3")
         server.wait_for_open_port(9200)
-        server.wait_for_open_port(8080)
+        server.wait_for_open_port(8082)
 
         ioc.wait_for_unit("ioc.service")
 
@@ -47,7 +47,7 @@ def get_alarm() -> dict[str, Any]:
 
 
 def get_logger(uri: str):
-    result_s = client.succeed(f"curl 'http://server:8080{uri}'")
+    result_s = client.succeed(f"curl 'http://server:8082{uri}'")
     return json.loads(result_s)
 
 
