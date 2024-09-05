@@ -26,7 +26,6 @@
     };
 
     server = {
-      config,
       lib,
       pkgs,
       ...
@@ -45,7 +44,10 @@
         };
       };
 
-      services.phoebus-alarm-logger.settings."bootstrap.servers" = kafkaListenSockAddr;
+      services.phoebus-alarm-logger.settings = {
+        "bootstrap.servers" = kafkaListenSockAddr;
+        "server.port" = 8082;
+      };
 
       services.apache-kafka = {
         enable = true;
