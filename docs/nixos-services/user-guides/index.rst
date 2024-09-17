@@ -11,5 +11,6 @@ User guides
    :maxdepth: 1
 
    ./ca-gateway.rst
+   ./channel-finder.rst
    ./phoebus-alarm.rst
    ./phoebus-save-and-restore.rst

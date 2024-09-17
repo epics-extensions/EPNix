@@ -1,0 +1,13 @@
+record(ai, "RECORD1") {
+	alias("ALIAS_RECORD1")
+	info("test", "testing")
+}
+
+record(ai, "RECORD2") {
+	alias("ALIAS_RECORD2")
+	info("hello", "world")
+}
+
+record(ai, "RECORD3") {
+	field(DESC, "An empty ai record")
+}
