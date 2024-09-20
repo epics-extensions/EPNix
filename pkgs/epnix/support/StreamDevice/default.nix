@@ -8,7 +8,7 @@
   local_config_site ? {},
   local_release ? {},
 }: let
-  version = "2.8.24";
+  version = "2.8.26";
 in
   mkEpicsPackage {
     pname = "StreamDevice";
@@ -39,7 +39,7 @@ in
       # export-subst in .gitattributes for .VERSION
       # See: https://epics.anl.gov/tech-talk/2022/msg01842.php
       forceFetchGit = true;
-      hash = "sha256-2MJ6CSNFc5rKijx5TFwwXStzj6zypS4cpMrcSuW4+F0=";
+      hash = "sha256-/OgjdHvFr6sBRhOLa9F3KJeaxMiKuUuBduHUc4YLYBI=";
     };
 
     meta = {
