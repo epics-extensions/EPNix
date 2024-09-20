@@ -1,16 +1,14 @@
 {
-  lib,
   epnixLib,
   mkEpicsPackage,
   fetchFromGitHub,
-  fetchpatch,
   epnix,
   local_config_site ? {},
   local_release ? {},
 }:
 mkEpicsPackage rec {
   pname = "sscan";
-  version = "2-11-5";
+  version = "2-11-6";
   varname = "SSCAN";
 
   inherit local_config_site local_release;
@@ -19,9 +17,9 @@ mkEpicsPackage rec {
 
   src = fetchFromGitHub {
     owner = "epics-modules";
-    repo = "sscan";
+    repo = pname;
     rev = "R${version}";
-    sha256 = "sha256-WVjQS4b4VBJezKqXqSFaiNLGjKUgoPqHPyNBvKKN77U=";
+    sha256 = "sha256-hrPap4FBKMD4ddMrADOeTAmsG+rLFxALibT3qsAHNsk=";
   };
 
   meta = {
