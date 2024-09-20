@@ -11,16 +11,16 @@ mkEpicsPackage rec {
   version = "2-11-6";
   varname = "SSCAN";
 
-  inherit local_config_site local_release;
-
-  buildInputs = with epnix.support; [seq];
-
   src = fetchFromGitHub {
     owner = "epics-modules";
     repo = pname;
     rev = "R${version}";
     sha256 = "sha256-hrPap4FBKMD4ddMrADOeTAmsG+rLFxALibT3qsAHNsk=";
   };
+
+  buildInputs = with epnix.support; [seq];
+
+  inherit local_config_site local_release;
 
   meta = {
     description = "Contains the sscan record and related software for systematically moving positioners, triggering detectors, and acquiring and storing resulting data";
