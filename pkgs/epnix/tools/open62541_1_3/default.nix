@@ -41,6 +41,8 @@ in
     };
 
     patches = [
+      # https://github.com/epics-modules/opcua/blob/b5db09477eb6404187199753df9e626d9a432210/devOpcuaSup/open62541/README.md#bugfix-for-shared-build
+      ./shared_build.patch
       (fetchpatch {
         name = "Ensure-absolute-paths-in-pkg-config-file.patch";
         url = "https://github.com/open62541/open62541/commit/023d4b6b8bdec987f8f3ffee6c09801bbee4fa2d.patch";
