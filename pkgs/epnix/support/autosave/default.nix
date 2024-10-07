@@ -7,7 +7,7 @@
 }:
 mkEpicsPackage rec {
   pname = "autosave";
-  version = "5-10-2";
+  version = "5-11";
   varname = "AUTOSAVE";
 
   inherit local_config_site local_release;
@@ -16,7 +16,7 @@ mkEpicsPackage rec {
     owner = "epics-modules";
     repo = "autosave";
     rev = "R${version}";
-    sha256 = "sha256-PUUPkiQS3MSrnjG4PzvZ6XrK9Tmt0OohvpduBqnxyyw=";
+    sha256 = "sha256-T6b2SUxgh2l+F4Vi3oF1aaLIjghlg34tLlwJOgGceLQ=";
   };
 
   meta = {
