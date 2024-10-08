@@ -13,14 +13,14 @@
 }:
 mkEpicsPackage {
   pname = "opcua";
-  version = "0.10.0-dev";
+  version = "0.10.0";
   varname = "OPCUA";
 
   src = fetchFromGitHub {
     owner = "epics-modules";
     repo = "opcua";
-    rev = "3d10053";
-    hash = "sha256-EQra8PesO7Rlhj+pBlAfiqh5yjJwRkuh7gbGziY58iI=";
+    rev = "v0.10.0";
+    hash = "sha256-l2+TUqVeDh9yRSBXMV0xGrdqBETvc5lfvMRuoqYy1wg=";
   };
 
   inherit local_release;
