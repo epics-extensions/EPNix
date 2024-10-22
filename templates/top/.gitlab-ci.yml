@@ -18,26 +18,3 @@ test:
   script:
     - nix flake check $NIX_BUILD_FLAGS
   dependencies: []
-
-manpage:
-  stage: deploy
-  script:
-    - nix build $NIX_BUILD_FLAGS '.#manpage'
-    - cp -Lr ./result manpage
-  artifacts:
-    name: "manpage-$CI_COMMIT_REF_SLUG"
-    paths:
-      - manpage
-
-pages:
-  stage: deploy
-  script:
-    - nix build $NIX_BUILD_FLAGS '.#mdbook'
-    - cp -Lr ./result public
-  artifacts:
-    name: "mdbook"
-    paths:
-      - public
-  dependencies: []
-  rules:
-    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
