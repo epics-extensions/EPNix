@@ -8,8 +8,6 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 # Only one concurrent deployment
 concurrency:
@@ -19,6 +17,9 @@ concurrency:
 jobs:
   deploy:
     if: "github.repository_owner == 'epics-extensions'"
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
