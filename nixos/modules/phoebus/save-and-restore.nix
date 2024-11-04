@@ -16,14 +16,14 @@ in {
       This service is used by clients
       to manage configurations (aka save sets) and snapshots,
       to compare snapshots,
-      and to restore PV values from snapshots.
-    '';
+      and to restore PV values from snapshots'';
 
     openFirewall = lib.mkOption {
       description = ''
         Open the firewall for the Phoebus Save-and-restore service.
 
-        Warning: this opens the firewall on all network interfaces.
+        .. warning::
+           This opens the firewall on all network interfaces.
       '';
       type = lib.types.bool;
       default = false;
@@ -33,12 +33,12 @@ in {
       description = ''
         Configuration for the Phoebus Save-and-restore service.
 
-        These options will be put into a `.properties` file.
+        These options will be put into a ``.properties`` file.
 
         Note that options containing a "." must be quoted.
 
         Available options can be seen here:
-        <https://github.com/ControlSystemStudio/phoebus/blob/master/services/save-and-restore/src/main/resources/application.properties>
+        https://github.com/ControlSystemStudio/phoebus/blob/master/services/save-and-restore/src/main/resources/application.properties
       '';
       default = {};
       type = lib.types.submodule {
@@ -53,9 +53,9 @@ in {
 
           "elasticsearch.network.host" = lib.mkOption {
             description = ''
-              Elasticsearch server host
+              Elasticsearch server host.
 
-              If `localhost` (the default),
+              If ``localhost`` (the default),
               the Elasticsearch service will be automatically set up.
             '';
             type = lib.types.str;
@@ -63,7 +63,7 @@ in {
           };
 
           "elasticsearch.http.port" = lib.mkOption {
-            description = "Elasticsearch server port";
+            description = "Elasticsearch server port.";
             type = lib.types.port;
             default = config.services.elasticsearch.port;
             defaultText = lib.literalExpression "config.services.elasticsearch.port";

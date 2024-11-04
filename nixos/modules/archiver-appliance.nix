@@ -83,7 +83,7 @@ in {
     enable = lib.mkEnableOption ''
       Archiver Appliance.
 
-      Archiver Appliance will listen on port 8080'';
+      Archiver Appliance listens on port 8080'';
 
     package = lib.mkOption {
       description = "Archiver Appliance package to use.";
@@ -97,7 +97,8 @@ in {
       description = ''
         Open the firewall for the Archiver Appliance service.
 
-        Warning: this opens the firewall on all network interfaces.
+        .. warning::
+           This opens the firewall on all network interfaces.
       '';
       type = lib.types.bool;
       default = false;
@@ -105,11 +106,11 @@ in {
 
     appliancesXml = lib.mkOption {
       description = ''
-        Content of the `appliances.xml` file.
+        Content of the :file:`appliances.xml` file.
 
-        See the [ARCHAPPL_APPLIANCES documentation] for more details.
+        See the `appliances.xml documentation`_ for more details.
 
-          [ARCHAPPL_APPLIANCES documentation]: https://slacmshankar.github.io/epicsarchiver_docs/api/org/epics/archiverappliance/config/ConfigService.html#ARCHAPPL_APPLIANCES
+        .. _appliances.xml documentation: https://epicsarchiver.readthedocs.io/en/latest/sysadmin/installguide.html#appliances-xml
       '';
       type = lib.types.str;
       default = defaultAppliancesXml;
@@ -129,13 +130,12 @@ in {
             description = ''
               The identity of the current appliance.
 
-              If you change this value, you will need to modify the content of
-              `appliances.xml`: the specified identity must match an identity
-              of one of the appliance XML elements.
+              If you change this value,
+              you will need to modify the content of :file:`appliances.xml`:
+              the specified identity must match an identity of one of the appliance XML elements.
 
-              See the [ARCHAPPL_MYIDENTITY documentation] for more details.
-
-                [ARCHAPPL_MYIDENTITY documentation]: https://slacmshankar.github.io/epicsarchiver_docs/api/org/epics/archiverappliance/config/ConfigService.html#ARCHAPPL_MYIDENTITY
+              .. seealso::
+                :nix:option:`services.archiver-appliance.appliancesXml`
             '';
             type = lib.types.str;
             default = "appliance0";
@@ -143,11 +143,11 @@ in {
 
           ARCHAPPL_APPLIANCES = lib.mkOption {
             description = ''
-              Path to an `appliances.xml` file.
+              Path to an :file:`appliances.xml` file.
 
-              By default this NixOS module will generate a file from the
-              `appliancesXml` option, so you might want to modify the
-              `appliancesXml` option instead.
+              By default this NixOS module will generate a file
+              from the :nix:option:`services.archiver-appliance.appliancesXml` option,
+              so you might want to modify that instead.
             '';
             type = lib.types.path;
             default = pkgs.writeText "appliances.xml" cfg.appliancesXml;
@@ -156,14 +156,15 @@ in {
 
           ARCHAPPL_POLICIES = lib.mkOption {
             description = ''
-              Path to a `policies.py` file.
+              Path to a :file:`policies.py` file.
 
-              This file specifies the various policies that can be used when
-              archiving a PV. For example, you can specify that a given policy
-              archive PVs at a rate of 2Hz.
+              This file specifies the various policies
+              that can be used when archiving a PV.
+              For example,
+              you can specify that a given policy archives PVs at a rate of 2Hz.
 
-              By default, the `policies.py` found in
-              `src/sitespecific/tests/classpathfiles/policies.py` is used.
+              By default,
+              the :file:`policies.py` found in :file:`src/sitespecific/tests/classpathfiles/policies.py` is used.
             '';
             type = lib.types.path;
             default = "${cfg.package}/share/archappl/policies.py";
@@ -196,8 +197,8 @@ in {
 
           EPICS_CA_AUTO_ADDR_LIST = lib.mkOption {
             description = ''
-              If set, behave as if every broadcast address of every network
-              interface is added to EPICS_CA_ADDR_LIST.
+              If set,
+              behave as if every broadcast address of every network interface is added to ``EPICS_CA_ADDR_LIST``.
             '';
             type = lib.types.bool;
             default = true;
@@ -211,9 +212,10 @@ in {
             description = ''
               List of Channel Access destination IP addresses.
 
-              Each IP address can be a unicast address, or a broadcast address.
+              Each IP address can be a unicast address,
+              or a broadcast address.
 
-              This option is ignored of EPICS_CA_AUTO_ADDR_LIST is enabled (the default).
+              This option is ignored of ``EPICS_CA_AUTO_ADDR_LIST`` is enabled (the default).
             '';
             type = with lib.types; listOf str;
             default = [];
@@ -227,8 +229,7 @@ in {
     stores = {
       configure = lib.mkOption {
         description = ''
-          Whether to automatically configure the local STS, MTS, and LTS
-          directories.
+          Whether to automatically configure the local STS, MTS, and LTS directories.
         '';
         type = lib.types.bool;
         default = true;
@@ -238,11 +239,13 @@ in {
         description = ''
           Size of the STS in bytes.
 
-          If null, the size will depend on the amount of RAM available,
+          If null,
+          the size will depend on the amount of RAM available,
           normally half of your physical RAM without swap.
 
-          Warning: If you oversize it, the machine will deadlock since the
-          OOM handler will not be able to free that memory.
+          .. warning::
+            If you oversize it,
+            the machine will deadlock since the OOM handler will not be able to free that memory.
         '';
         example = "20g";
         type = with lib.types; nullOr str;

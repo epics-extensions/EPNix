@@ -16,12 +16,12 @@ in {
       description = ''
         Configuration for the Phoebus Olog service.
 
-        These options will be put into a `.properties` file.
+        These options will be put into a ``.properties`` file.
 
         Note that options containing a "." must be quoted.
 
         See here for supported options:
-        <https://github.com/Olog/phoebus-olog/blob/v${pkgs.epnix.phoebus-olog.version}/src/main/resources/application.properties>
+        https://github.com/Olog/phoebus-olog/blob/v${pkgs.epnix.phoebus-olog.version}/src/main/resources/application.properties
       '';
       default = {};
       type = lib.types.submodule {
@@ -34,14 +34,14 @@ in {
             # It says it supports integers and booleans, but during the build
             # only accepts strings?
             apply = toString;
-            description = "The server port for the REST service";
+            description = "The server port for the REST service.";
           };
 
           "server.http.enable" = lib.mkOption {
             type = lib.types.bool;
             default = false;
             apply = lib.boolToString;
-            description = "Enable unsecure HTTP";
+            description = "Enable unsecure HTTP.";
           };
 
           "demo_auth.enabled" = lib.mkOption {
@@ -53,8 +53,8 @@ in {
 
               Phoebus will provide two users:
 
-              - `admin:adminPass`
-              - `user:userPass`
+              - ``admin:adminPass``
+              - ``user:userPass``
             '';
           };
 

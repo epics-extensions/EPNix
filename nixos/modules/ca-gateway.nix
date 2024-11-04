@@ -22,7 +22,8 @@ in {
       description = ''
         Open the firewall for allowing Channel Access communications.
 
-        Warning: this opens the firewall on all network interfaces.
+        .. warning::
+           This opens the firewall on all network interfaces.
       '';
       type = lib.types.bool;
       default = false;
@@ -35,7 +36,7 @@ in {
         These options are passed onto the gateway command-line.
 
         Available options can be seen here:
-        <https://epics.anl.gov/EpicsDocumentation/ExtensionsManuals/Gateway/Gateway.html#Starting>
+        https://epics.anl.gov/EpicsDocumentation/ExtensionsManuals/Gateway/Gateway.html#Starting
       '';
       default = {};
       type = lib.types.submodule {
@@ -56,7 +57,7 @@ in {
               See the sample file gateway.pvlist in the source distribution
               for a description of how to create this file:
 
-              <https://github.com/epics-extensions/ca-gateway/blob/v${pkg.version}/example/GATEWAY.pvlist>
+              https://github.com/epics-extensions/ca-gateway/blob/v${pkg.version}/example/GATEWAY.pvlist
             '';
             type = with lib.types; nullOr (either path str);
             default = null;
@@ -81,7 +82,7 @@ in {
 
               See the sample file gateway.pvlist in the source distribution:
 
-              <https://github.com/epics-extensions/ca-gateway/blob/v${pkg.version}/example/GATEWAY.access>
+              https://github.com/epics-extensions/ca-gateway/blob/v${pkg.version}/example/GATEWAY.access
             '';
             type = with lib.types; nullOr (either path str);
             default = null;
@@ -98,9 +99,10 @@ in {
             description = ''
               IP address list that gateway's CA server listens for PV requests.
 
-              Sets env variable `EPICS_CAS_INTF_ADDR_LIST`.
+              Sets env variable ``EPICS_CAS_INTF_ADDR_LIST``.
 
-              By default, the CA server is accessible from all network interfaces configured into its host.
+              By default,
+              the CA server is accessible from all network interfaces configured into its host.
             '';
             type = with lib.types; nullOr (listOf str);
             default = null;
@@ -111,7 +113,7 @@ in {
             description = ''
               IP address list that gateway's CA server ignores.
 
-              Sets env variable `EPICS_CAS_IGNORE_ADDR_LIST`.
+              Sets env variable ``EPICS_CAS_IGNORE_ADDR_LIST``.
             '';
             type = with lib.types; nullOr (listOf str);
             default = null;
@@ -122,7 +124,7 @@ in {
             description = ''
               The port which the gateway's CA server uses to listen for PV requests.
 
-              Sets environment variable `EPICS_CAS_SERVER_PORT`.
+              Sets environment variable ``EPICS_CAS_SERVER_PORT``.
             '';
             type = lib.types.port;
             default = 5064;
@@ -132,13 +134,14 @@ in {
             description = ''
               IP address list that the gateway's CA client uses to find the real PVs.
 
-              See CA reference manual.
+              See the CA reference manual.
 
-              This sets environment variables `EPICS_CA_AUTO_LIST=NO` and `EPICS_CA_ADDR_LIST`.
+              This sets environment variables ``EPICS_CA_AUTO_LIST=NO`` and ``EPICS_CA_ADDR_LIST``.
 
-              Note: if you intend to broadcast on a port other than 5064,
-              you will need change your firewall configuration
-              and accept incoming UDP packets with your *source* port.
+              .. note::
+                 If you intend to broadcast on a port other than 5064,
+                 you will need change your firewall configuration
+                 and accept incoming UDP packets with your *source* port.
             '';
             type = with lib.types; nullOr (listOf str);
             default = null;
@@ -149,9 +152,9 @@ in {
             description = ''
               The port which the gateway's CA client uses to find the real PVs.
 
-              Sets environment variable `EPICS_CA_SERVER_PORT`.
+              Sets environment variable ``EPICS_CA_SERVER_PORT``.
 
-              With `openFirewall = true`,
+              With ``openFirewall = true``,
               this option sets the port in the firewall rule for the CA broadcast reply.
             '';
             type = lib.types.port;

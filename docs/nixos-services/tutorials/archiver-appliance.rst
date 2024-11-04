@@ -92,7 +92,7 @@ you can read the `Nixpkgs preface`_.
 
 Having the ``epnix`` input is what’s going to enable you to use :doc:`packages from EPNix <../../pkgs/packages>`,
 such as Archiver Appliance.
-It also enables you to use :doc:`EPNix' extra NixOS options <../options>`,
+It also enables you to use :doc:`EPNix' extra NixOS options <../options-reference/index>`,
 such as the options configuring Tomcat, the systemd service, the ``archappl`` user and group, MariaDB, and so on.
 
 .. _Nix flake command manual: https://nixos.org/manual/nix/stable/command-ref/new-cli/nix3-flake.html
@@ -141,11 +141,11 @@ you will see a helpful error message:
      is used but not defined.
     (use '--show-trace' to show detailed location information)
 
-This tells you that setting the ``services.archiver-appliance.stores.lts.location`` option is mandatory,
+This tells you that setting the :nix:option:`services.archiver-appliance.stores.lts.location` option is mandatory,
 but we didn’t set any value.
 
 To figure out what this option is about,
-you can examine the :doc:`options reference <../options>`.
+you can examine the :doc:`../options-reference/archiver-appliance` reference.
 
 The options reference gives a description for this option:
 
@@ -348,7 +348,7 @@ For example:
      };
    }
 
-See the :ref:`sts.size option <opt-services.archiver-appliance.stores.sts.size>` in the reference for a more in-depth description.
+See the :nix:option:`services.archiver-appliance.stores.sts.size` option in the reference for a more in-depth description.
 
 Restricting access
 ~~~~~~~~~~~~~~~~~~
