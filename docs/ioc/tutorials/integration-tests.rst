@@ -285,21 +285,21 @@ Change your Nix test file like this:
     important changes emphasized
    :emphasize-lines: 1,10-13
 
-     nodes.machine = {config, lib, ...}: {
-       imports = [
-         epnix.nixosModules.ioc
-         epnixConfig
-       ];
-       environment.systemPackages = [pkgs.epnix.epics-base];
+   nodes.machine = {config, lib, ...}: {
+     imports = [
+       epnix.nixosModules.ioc
+       epnixConfig
+     ];
+     environment.systemPackages = [pkgs.epnix.epics-base];
 
-       systemd.services = {
-         ioc = config.epnix.nixos.services.ioc.config;
-         simulator = {
-           serviceConfig.ExecStart = lib.getExe pkgs.epnix.psu-simulator;
-           wantedBy = ["multi-user.target"];
-         };
+     systemd.services = {
+       ioc = config.epnix.nixos.services.ioc.config;
+       simulator = {
+         serviceConfig.ExecStart = lib.getExe pkgs.epnix.psu-simulator;
+         wantedBy = ["multi-user.target"];
        };
      };
+   };
 
 The first emphasized line is about adding the ``lib`` argument used below.
 
