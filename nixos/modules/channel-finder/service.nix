@@ -16,9 +16,8 @@ in {
       description = ''
         Open the firewall for the ChannelFinder service.
 
-        ```{warning}
-        This opens the firewall on all network interfaces.
-        ```
+        .. warning::
+           This opens the firewall on all network interfaces.
 
         This option opens firewall for the HTTP/HTTPS API,
         and pvAccess server.
@@ -31,12 +30,12 @@ in {
       description = ''
         Configuration for the ChannelFinder service.
 
-        These options will be put into a `.properties` file.
+        These options will be put into a ``.properties`` file.
 
         Note that options containing a "." must be quoted.
 
         See upstream documentation for all supported options:
-        <https://channelfinder.readthedocs.io/en/latest/config.html#application-properties>
+        https://channelfinder.readthedocs.io/en/latest/config.html#application-properties
       '';
       default = {};
       type = lib.types.submodule {
@@ -97,8 +96,8 @@ in {
 
               ChannelFinder will provide two users:
 
-              - `admin:adminPass`
-              - `user:userPass`
+              - ``admin:adminPass``
+              - ``user:userPass``
             '';
           };
 

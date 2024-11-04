@@ -15,7 +15,7 @@ in {
       the Phoebus Alarm server
 
       By default this option will also enable the phoebus-alarm-logger service.
-      Set `services.phoebus-alarm-logger.enable = false;` to disable it.
+      Set :nix:option:`services.phoebus-alarm-logger.enable` to ``false`` to disable it.
     '';
 
     # TODO: why undocumented? Seems useful
@@ -31,11 +31,12 @@ in {
 
         This uses the port numbers configured in each related NixOS module.
 
-        Includes services:
+        Included services:
 
         - Phoebus Alarm Logger (if not disabled)
 
-        Warning: this opens the firewall on all network interfaces.
+        .. warning::
+           This opens the firewall on all network interfaces.
       '';
       type = lib.types.bool;
       default = false;
@@ -45,7 +46,7 @@ in {
       description = ''
         Configuration for the Phoebus Alarm Server.
 
-        These options will be put into a `.properties` file.
+        These options will be put into a ``.properties`` file.
 
         Note that options containing a "." must be quoted.
       '';
@@ -105,7 +106,7 @@ in {
             description = ''
               The SMTP server host.
 
-              If set to DISABLE (the default), email support is disabled.
+              If set to ``"DISABLE"`` (the default), email support is disabled.
             '';
             type = lib.types.str;
             default = "DISABLE";
@@ -132,7 +133,9 @@ in {
             description = ''
               Password for authenticating to the SMTP server.
 
-              Note: the password will be put in plaintext, in the world-readable `/nix/store`.
+              .. note::
+                 The password will be put in plaintext,
+                 in the world-readable ``/nix/store``.
             '';
             type = lib.types.str;
             default = "";
@@ -140,7 +143,7 @@ in {
 
           "org.phoebus.email/from" = lib.mkOption {
             description = ''
-              Default address to be used for the email field `From:`.
+              Default address to be used for the email field :mailheader:`From`.
 
               If left empty, then the last used from address is used.
             '';

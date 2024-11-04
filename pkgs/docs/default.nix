@@ -6,6 +6,7 @@
   writeText,
   python3,
   installShellFiles,
+  nixdomainLib,
   documentedEpnixPkgs ? epnix,
   iocConfig ? {},
   nixosConfig ? {},
@@ -14,6 +15,35 @@
 
   iocOptions = documentation.options.iocOptions iocConfig;
   nixosOptions = documentation.options.nixosOptions nixosConfig;
+
+  nixosOptionsAttrSet = (epnixLib.inputs.nixpkgs.lib.nixosSystem {
+    inherit (stdenvNoCC) system;
+    modules = [
+      epnixLib.inputs.self.nixosModules.nixos
+    ];
+  }).options;
+
+  isOurs = option: lib.any (lib.hasPrefix "${epnixLib.inputs.self}") option.declarations;
+  isVisible = option: !option.internal;
+
+  relativePath = path: lib.pipe path [
+    (lib.splitString "/")
+    (lib.sublist 4 255)
+    (lib.concatStringsSep "/")
+  ];
+
+  # rev = epnixLib.inputs.self.sourceInfo.rev or "master";
+
+  nixosOptionsSpec = lib.pipe nixosOptionsAttrSet [
+    nixdomainLib.optionAttrSetToDocList
+    (lib.filter isOurs)
+    (lib.filter isVisible)
+    (map (x: x // { declarations = map relativePath x.declarations; }))
+    (map (x: lib.nameValuePair x.name x))
+    lib.listToAttrs
+    builtins.toJSON
+    (writeText "nixos-options.json")
+  ];
 
   iocOptionsContent = documentation.options.optionsContent iocOptions 3;
   # Have a separate "Options" header for the Sphinx manpage output
@@ -25,17 +55,6 @@
     -------
 
     ${iocOptionsContent}
-  '';
-
-  nixosOptionsContent = documentation.options.optionsContent nixosOptions 3;
-  nixosOptionsPandoc = ''
-    NixOS options reference
-    =======================
-
-    Options
-    -------
-
-    ${nixosOptionsContent}
   '';
 
   iocPkgsListPandoc = ''
@@ -80,6 +99,7 @@ in
         myst-parser
         sphinx
         sphinx-copybutton
+        sphinxcontrib-nixdomain
       ])
       ++ [
         installShellFiles
@@ -91,10 +111,20 @@ in
       mkdir ioc/references
       mkdir pkgs
 
-      cp "${writeText "ioc-options.md" iocOptionsPandoc}" ioc/references/options.md
-      cp "${writeText "ioc-packages.md" iocPkgsListPandoc}" ioc/references/packages.md
-      cp "${writeText "nixos-options.md" nixosOptionsPandoc}" nixos-services/options.md
-      cp "${writeText "packages.md" pkgsListPandoc}" pkgs/packages.md
+      cp -v "${nixosOptionsSpec}" nixos-options.json
+      cp -v "${writeText "ioc-options.md" iocOptionsPandoc}" ioc/references/options.md
+      cp -v "${writeText "ioc-packages.md" iocPkgsListPandoc}" ioc/references/packages.md
+      cp -v "${writeText "packages.md" pkgsListPandoc}" pkgs/packages.md
+    '';
+
+    shellHook = ''
+      if [[ -f docs/index.rst ]]; then
+        install -v "${nixosOptionsSpec}" docs/nixos-options.json
+      elif [[ -f index.rst ]]; then
+        install -v "${nixosOptionsSpec}" nixos-options.json
+      else
+        echo "Couldn't find root of docs directory, not copying options.json files"
+      fi
     '';
 
     buildPhase = ''

@@ -21,7 +21,7 @@ ChannelFinder service
 ---------------------
 
 To enable the ChannelFinder service,
-use :ref:`opt-services.channel-finder.enable` and related options.
+use :nix:option:`services.channel-finder.enable` and related options.
 You will also need to enable ElasticSearch.
 
 For example:
@@ -65,7 +65,7 @@ You can open your browser at http://localhost:8082/ to see the ChannelFinder adm
 
 For more settings,
 examine the `ChannelFinder configuration`_ reference
-and the :ref:`opt-services.channel-finder.settings` option.
+and the :nix:option:`services.channel-finder.settings` option.
 
 .. _ChannelFinder configuration: https://channelfinder.readthedocs.io/en/latest/config.html
 
@@ -163,8 +163,8 @@ and use the ``settings`` option for configuring all other settings.
 For a list of available ``settings``,
 examine the `RecCeiver demo.conf`_ file.
 
-Also examine the :ref:`opt-services.recceiver.channelfinderapi`
-and :ref:`opt-services.recceiver.settings` options.
+Also examine the :nix:option:`services.recceiver.channelfinderapi`
+and :nix:option:`services.recceiver.settings` options.
 
 TODO: explain which cf role is needed
 

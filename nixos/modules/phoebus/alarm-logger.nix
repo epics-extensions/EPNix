@@ -11,17 +11,17 @@
 in {
   options.services.phoebus-alarm-logger = {
     enable = lib.mkEnableOption ''
-      the Phoebus Alarm logger
+      the Phoebus Alarm logger.
 
       The alarm logging service records all alarm messages to create an archive
-      of all alarm state changes and the associated actions.
-    '';
+      of all alarm state changes and the associated actions'';
 
     openFirewall = lib.mkOption {
       description = ''
         Open the firewall for the Phoebus Alarm Logger service.
 
-        Warning: this opens the firewall on all network interfaces.
+        .. warning::
+           This opens the firewall on all network interfaces.
       '';
       type = lib.types.bool;
       default = false;
@@ -31,12 +31,12 @@ in {
       description = ''
         Configuration for the Phoebus Alarm Logger.
 
-        These options will be put into a `.properties` file.
+        These options will be put into a ``.properties`` file.
 
         Note that options containing a "." must be quoted.
 
         Available options can be seen here:
-        <https://github.com/ControlSystemStudio/phoebus/blob/master/services/alarm-logger/src/main/resources/application.properties>
+        https://github.com/ControlSystemStudio/phoebus/blob/master/services/alarm-logger/src/main/resources/application.properties
       '';
       default = {};
       type = lib.types.submodule {
@@ -93,7 +93,7 @@ in {
             description = ''
               Units of the indices date span.
 
-              Can be Days (D), Weeks(W), Months(M), Years(Y)
+              Can be Days (D), Weeks (W), Months (M), Years (Y).
             '';
             type = lib.types.enum ["D" "W" "M" "Y"];
             default = "M";

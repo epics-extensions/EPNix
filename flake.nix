@@ -12,6 +12,10 @@
       url = "github:nix-community/poetry2nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sphinxcontrib-nixdomain = {
+      url = "github:minijackson/sphinxcontrib-nixdomain";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -20,7 +24,7 @@
     nixpkgs,
     ...
   } @ inputs: let
-    overlay = import ./pkgs self.lib;
+    overlay = import ./pkgs self.lib inputs;
 
     systemDependentOutputs = system: let
       pkgs = import nixpkgs {
@@ -29,6 +33,7 @@
           overlay
           inputs.bash-lib.overlay
           inputs.poetry2nix.overlays.default
+          inputs.sphinxcontrib-nixdomain.overlays.default
         ];
       };
     in {

@@ -1,4 +1,4 @@
-epnixLib: final: prev: let
+epnixLib: inputs: final: prev: let
   inherit (final) callPackage;
   # From prev, else it somehow causes an infinite recursion
   inherit (prev) recurseIntoAttrs;
@@ -100,7 +100,9 @@ in
       open62541_1_3 = callPackage ./epnix/tools/open62541_1_3 {};
 
       # EPNix specific packages
-      docs = callPackage ./docs {};
+      docs = callPackage ./docs {
+        nixdomainLib = inputs.sphinxcontrib-nixdomain.lib;
+      };
 
       # Documentation support packages
       psu-simulator = callPackage ./doc-support/psu-simulator {};

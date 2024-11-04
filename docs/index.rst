@@ -97,7 +97,7 @@ This documentation follows the `Diátaxis`_ documentation framework.
    nixos-services/index
    nixos-services/tutorials/index
    nixos-services/user-guides/index
-   nixos-services/options
+   nixos-services/options-reference/index
 
 .. toctree::
    :caption: Release notes
