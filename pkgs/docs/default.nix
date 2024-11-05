@@ -16,21 +16,24 @@
   iocOptions = documentation.options.iocOptions iocConfig;
   nixosOptions = documentation.options.nixosOptions nixosConfig;
 
-  nixosOptionsAttrSet = (epnixLib.inputs.nixpkgs.lib.nixosSystem {
-    inherit (stdenvNoCC) system;
-    modules = [
-      epnixLib.inputs.self.nixosModules.nixos
-    ];
-  }).options;
+  nixosOptionsAttrSet =
+    (epnixLib.inputs.nixpkgs.lib.nixosSystem {
+      inherit (stdenvNoCC) system;
+      modules = [
+        epnixLib.inputs.self.nixosModules.nixos
+      ];
+    })
+    .options;
 
   isOurs = option: lib.any (lib.hasPrefix "${epnixLib.inputs.self}") option.declarations;
   isVisible = option: !option.internal;
 
-  relativePath = path: lib.pipe path [
-    (lib.splitString "/")
-    (lib.sublist 4 255)
-    (lib.concatStringsSep "/")
-  ];
+  relativePath = path:
+    lib.pipe path [
+      (lib.splitString "/")
+      (lib.sublist 4 255)
+      (lib.concatStringsSep "/")
+    ];
 
   # rev = epnixLib.inputs.self.sourceInfo.rev or "master";
 
@@ -38,7 +41,7 @@
     nixdomainLib.optionAttrSetToDocList
     (lib.filter isOurs)
     (lib.filter isVisible)
-    (map (x: x // { declarations = map relativePath x.declarations; }))
+    (map (x: x // {declarations = map relativePath x.declarations;}))
     (map (x: lib.nameValuePair x.name x))
     lib.listToAttrs
     builtins.toJSON
