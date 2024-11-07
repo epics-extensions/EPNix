@@ -1,111 +1,50 @@
 {
-  lib,
-  epnixLib,
-  stdenv,
-  substituteAll,
-  maven,
   makeWrapper,
+  epnix,
+  epnixLib,
+  lib,
   makeDesktopItem,
   copyDesktopItems,
-  epnix,
-  jdk,
-  openjfx,
-  python3,
-}: let
-  buildDate = "2022-02-24T07:56:00Z";
-in
-  stdenv.mkDerivation {
-    pname = "phoebus";
-    inherit (epnix.phoebus-deps) version src;
+  stdenv,
+  # Inspired by:
+  # https://epics.anl.gov/tech-talk/2024/msg00895.php
+  java_opts ? "-XX:MinHeapSize=128m -XX:MaxHeapSize=4g -XX:InitialHeapSize=1g -XX:MaxHeapFreeRatio=10 -XX:MinHeapFreeRatio=5 -XX:-ShrinkHeapInSteps -XX:NativeMemoryTracking=detail",
+}:
+stdenv.mkDerivation {
+  pname = "phoebus";
+  inherit (epnix.phoebus-unwrapped) version;
+  nativeBuildInputs = [makeWrapper copyDesktopItems];
 
-    patches = [
-      (substituteAll {
-        src = ./fix-python-path.patch;
-        python = lib.getExe python3;
-      })
-    ];
+  dontUnpack = true;
+  dontBuild = true;
+  dontConfigure = true;
 
-    # TODO: make a scope, so that we don't pass around the whole `epnix`
-    nativeBuildInputs = [
-      maven
-      copyDesktopItems
-      makeWrapper
-      (epnix.phoebus-setup-hook.override {
-        jdk = jdk.override {
-          enableJavaFX = true;
-          openjfx_jdk = openjfx.override {
-            withWebKit = true;
-          };
-        };
-      })
-    ];
+  installPhase = ''
+    runHook preInstall
 
-    # Put runtime dependencies in propagated
-    # because references get thrown into a jar
-    # which is compressed,
-    # so the Nix scanner won't always be able to see them
-    propagatedBuildInputs = [
-      python3
-    ];
+    # This wrapper for the `phoebus-unwrapped` executable sets the `JAVA_OPTS`
+    makeWrapper "${lib.getExe epnix.phoebus-unwrapped}" "$out/bin/$pname" \
+      --prefix JAVA_OPTS " " "${java_opts}"
 
-    desktopItems = [
-      (makeDesktopItem {
-        name = "phoebus";
-        exec = "phoebus -server 4918 -resource %f";
-        desktopName = "Phoebus";
-        keywords = ["epics" "css"];
-        # https://specifications.freedesktop.org/menu-spec/menu-spec-1.0.html#category-registry
-        categories = [
-          # Main
-          "Office"
+    runHook postInstall
+  '';
 
-          # Additional
-          "Java"
-          "Viewer"
-        ];
-      })
-    ];
+  desktopItems = [
+    (makeDesktopItem {
+      name = "phoebus";
+      exec = "phoebus -server 4918 -resource %f";
+      desktopName = "Phoebus";
+      keywords = ["epics" "css"];
+      # https://specifications.freedesktop.org/menu-spec/menu-spec-1.0.html#category-registry
+      categories = [
+        # Main
+        "Office"
+        # Additional
+        "Java"
+        "Viewer"
+      ];
+    })
+  ];
 
-    buildPhase = ''
-      runHook preBuild
-
-      # Copy deps to a writable directory, due to the usage of "install-jars"
-      local deps=$PWD/deps
-      cp -r --no-preserve=mode "${epnix.phoebus-deps}" $deps
-
-      # TODO: tests fail
-      mvn package \
-        --projects "./phoebus-product" \
-        --also-make \
-        --offline \
-        -Dmaven.javadoc.skip=true -Dmaven.source.skip=true -DskipTests \
-        -Dproject.build.outputTimestamp=${buildDate} \
-        -Dmaven.repo.local="$deps"
-
-      runHook postBuild
-    '';
-
-    installPhase = ''
-      runHook preInstall
-
-      installPhoebusJar \
-        "phoebus-product/" \
-        "product-$version.jar" \
-        "phoebus" \
-        "org.phoebus.product.Launcher"
-
-      # MIME types for PV Tables
-      install -D -m 444 phoebus-product/phoebus.xml -t $out/share/mime/packages
-
-      runHook postInstall
-    '';
-
-    meta = {
-      description = "Control System Studio's Phoebus client";
-      homepage = "https://control-system-studio.readthedocs.io/en/latest/index.html";
-      mainProgram = "phoebus";
-      license = lib.licenses.epl10;
-      maintainers = with epnixLib.maintainers; [minijackson];
-      inherit (jdk.meta) platforms;
-    };
-  }
+  inherit (epnix.phoebus-unwrapped) meta;
+}
