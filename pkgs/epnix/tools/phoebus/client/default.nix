@@ -6,24 +6,26 @@
   makeDesktopItem,
   copyDesktopItems,
   stdenv,
+  # Inspired by:
+  # https://epics.anl.gov/tech-talk/2024/msg00895.php
   java_opts ? "-XX:MinHeapSize=128m -XX:MaxHeapSize=4g -XX:InitialHeapSize=1g -XX:MaxHeapFreeRatio=10 -XX:MinHeapFreeRatio=5 -XX:-ShrinkHeapInSteps -XX:NativeMemoryTracking=detail",
 }:
 stdenv.mkDerivation {
   pname = "phoebus";
-  name = "phoebus";
+  inherit (epnix.phoebus-unwrapped) version;
   nativeBuildInputs = [makeWrapper copyDesktopItems];
+
   dontBuild = true;
   dontConfigure = true;
-  dontUnpack = true;
 
   installPhase = ''
 
     runHook preInstall
-    # This wrapper for the `phoebus-unwrapped` executable sets the `JAVA_OPTS`
-    #environment variable with the provided `java_opts` value.
 
+    # This wrapper for the `phoebus-unwrapped` executable sets the `JAVA_OPTS`
     makeWrapper "${lib.getExe epnix.phoebus-unwrapped}" "$out/bin/$name" \
-    --prefix JAVA_OPTS ":" "${java_opts}"
+      --prefix JAVA_OPTS ":" "${java_opts}"
+
     runHook postInstall
   '';
 
@@ -44,12 +46,16 @@ stdenv.mkDerivation {
       ];
     })
   ];
+
   meta = {
-    inherit (epnix.phoebus-unwrapped.meta) description;
-    inherit (epnix.phoebus-unwrapped.meta) homepage;
-    inherit (epnix.phoebus-unwrapped.meta) platforms;
-    inherit (epnix.phoebus-unwrapped.meta) license;
-    inherit (epnix.phoebus-unwrapped.meta) maintainers;
-    inherit (epnix.phoebus-unwrapped.meta) mainProgram;
+    inherit
+      (epnix.phoebus-unwrapped.meta)
+      description
+      homepage
+      platforms
+      license
+      maintainers
+      mainProgram
+      ;
   };
 }

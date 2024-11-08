@@ -1,12 +1,10 @@
 # shellcheck shell=bash
 
-
 installPhoebusJar() {
 	local path="$1"
 	local jarName="$2"
 	local name="$3"
 	local mainClass="$4"
-
 
 	mkdir -p "$out/share/java"
 

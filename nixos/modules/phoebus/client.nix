@@ -15,8 +15,10 @@ in {
       default = "-XX:MinHeapSize=128m -XX:MaxHeapSize=4g -XX:InitialHeapSize=1g -XX:MaxHeapFreeRatio=10 -XX:MinHeapFreeRatio=5 -XX:-ShrinkHeapInSteps -XX:NativeMemoryTracking=detail";
       example = "-XX:MinHeapSize=128m -XX:MaxHeapSize=4g -XX:InitialHeapSize=1g";
       description = ''
-        This wrapper for the `phoebus-unwrapped` executable sets the `JAVA_OPTS`
-        environment variable with the provided `java_opts` value.
+        Set Java options for the Phoebus client.
+
+        For more information, see:
+        https://docs.oracle.com/en/java/javase/17/docs/specs/man/java.html#extra-options-for-java
       '';
     };
   };
