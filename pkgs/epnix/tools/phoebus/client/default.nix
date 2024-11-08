@@ -24,7 +24,7 @@ stdenv.mkDerivation {
     runHook preInstall
 
     # This wrapper for the `phoebus-unwrapped` executable sets the `JAVA_OPTS`
-    makeWrapper "${lib.getExe epnix.phoebus-unwrapped}" "$out/bin/$name" \
+    makeWrapper "${lib.getExe epnix.phoebus-unwrapped}" "$out/bin/$pname" \
       --prefix JAVA_OPTS ":" "${java_opts}"
 
     runHook postInstall
