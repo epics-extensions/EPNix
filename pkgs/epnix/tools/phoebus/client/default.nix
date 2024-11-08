@@ -14,7 +14,7 @@ stdenv.mkDerivation {
   pname = "phoebus";
   inherit (epnix.phoebus-unwrapped) version;
   nativeBuildInputs = [makeWrapper copyDesktopItems];
-
+  dontUnpack = true;
   dontBuild = true;
   dontConfigure = true;
 
