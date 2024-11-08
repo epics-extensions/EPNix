@@ -5,8 +5,6 @@
   substituteAll,
   maven,
   makeWrapper,
-  makeDesktopItem,
-  copyDesktopItems,
   epnix,
   jdk,
   openjfx,
@@ -28,7 +26,6 @@ in
     # TODO: make a scope, so that we don't pass around the whole `epnix`
     nativeBuildInputs = [
       maven
-      copyDesktopItems
       makeWrapper
       (epnix.phoebus-setup-hook.override {jdk = jdk.override {enableJavaFX = true;};})
       (epnix.phoebus-setup-hook.override {
