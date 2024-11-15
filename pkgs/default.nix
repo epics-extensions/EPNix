@@ -21,6 +21,7 @@ in
           epicscorelibs = final.callPackage ./epnix/python-modules/epicscorelibs {};
           pvxslibs = final.callPackage ./epnix/python-modules/pvxslibs {};
           aioca = final.callPackage ./epnix/python-modules/aioca/default.nix {};
+          epicsdbbuilder = final.callPackage ./epnix/python-modules/epicsdbbuilder {};
 
           # epicscorelibs needs at least 2.11.
           # TODO: remove for NixOS 24.11
