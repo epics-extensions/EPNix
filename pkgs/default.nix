@@ -19,6 +19,7 @@ in
           recceiver = final.callPackage ./epnix/tools/channel-finder/recceiver {};
           scanf = final.callPackage ./epnix/tools/scanf {};
           epicscorelibs = final.callPackage ./epnix/python-modules/epicscorelibs {};
+          pvxslibs = final.callPackage ./epnix/python-modules/pvxslibs {};
 
           # epicscorelibs needs at least 2.11.
           # TODO: remove for NixOS 24.11
