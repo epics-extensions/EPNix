@@ -20,6 +20,7 @@ in
           scanf = final.callPackage ./epnix/tools/scanf {};
           epicscorelibs = final.callPackage ./epnix/python-modules/epicscorelibs {};
           pvxslibs = final.callPackage ./epnix/python-modules/pvxslibs {};
+          aioca = final.callPackage ./epnix/python-modules/aioca/default.nix {};
 
           # epicscorelibs needs at least 2.11.
           # TODO: remove for NixOS 24.11
@@ -91,7 +92,7 @@ in
 
       channel-finder-service = callPackage ./epnix/tools/channel-finder/service {};
 
-      inherit (final.python3Packages) lewis pyepics;
+      inherit (final.python3Packages) lewis pyepics softioc;
       inherit (callPackage ./epnix/tools/lewis/lib.nix {}) mkLewisSimulator;
 
       pcas = callPackage ./epnix/tools/pcas {};
