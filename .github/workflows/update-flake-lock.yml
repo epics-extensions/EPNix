@@ -20,8 +20,6 @@ jobs:
         branch:
           - master
           - nixos-24.05
-          - nixos-23.11
-          - nixos-23.05
     permissions:
       contents: write # to create branch
       pull-requests: write # to create PR to backport
