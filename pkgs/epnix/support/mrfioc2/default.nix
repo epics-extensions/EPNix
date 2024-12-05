@@ -10,7 +10,7 @@
 }:
 mkEpicsPackage rec {
   pname = "mrfioc2";
-  version = "2.6.0";
+  version = "2.7.1";
   varname = "MRFIOC2";
 
   inherit local_config_site local_release;
@@ -19,7 +19,7 @@ mkEpicsPackage rec {
     owner = "epics-modules";
     repo = "mrfioc2";
     rev = version;
-    sha256 = "sha256-pmuM4HrHlZ63BcZACZOlMAPic1IOQ/kLpi9lo/raP0U=";
+    sha256 = "sha256-zK+cCWK9oOTH+NvCO0GiWKkwmtQYXvUuONSIV55pY1Y=";
   };
 
   propagatedBuildInputs = with epnix.support; [devlib2];
