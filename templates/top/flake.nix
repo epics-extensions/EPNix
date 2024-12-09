@@ -2,7 +2,7 @@
   description = "EPICS IOC for <...>";
 
   inputs.flake-utils.url = "github:numtide/flake-utils";
-  inputs.epnix.url = "github:epics-extensions/epnix/nixos-24.05";
+  inputs.epnix.url = "github:epics-extensions/epnix/nixos-24.11";
 
   # If you have a support module as a separate EPNix repository,
   # add it as an input here:
