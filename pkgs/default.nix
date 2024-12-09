@@ -100,7 +100,9 @@ in
 
       pcas = callPackage ./epnix/tools/pcas {};
 
-      phoebus = callPackage ./epnix/tools/phoebus/client {};
+      phoebus = callPackage ./epnix/tools/phoebus/client {
+        openjfx = prev.openjfx21;
+      };
       phoebus-alarm-server = callPackage ./epnix/tools/phoebus/alarm-server {};
       phoebus-alarm-logger = callPackage ./epnix/tools/phoebus/alarm-logger {};
       phoebus-archive-engine = callPackage ./epnix/tools/phoebus/archive-engine {};
