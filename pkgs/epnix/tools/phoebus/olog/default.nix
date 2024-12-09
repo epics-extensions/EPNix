@@ -17,7 +17,7 @@ maven.buildMavenPackage rec {
     hash = "sha256-AHZowe4mmBpiFd5MMVRrnUHeTOJDwE6f0sZFUF+07lo=";
   };
 
-  mvnHash = "sha256-xaoaoL1a9VP7e4HdI2YuOUPOADnMYlPesVbkhgLz3+M=";
+  mvnHash = "sha256-puUnYIbBVVXfoIcK9lkmBOH3TBfFAK+MeN8vsoxB8w0=";
   mvnParameters = "-Dmaven.javadoc.skip=true -Dmaven.source.skip=true -Pdeployable-jar -Dproject.build.outputTimestamp=1980-01-01T00:00:02Z";
 
   nativeBuildInputs = [makeWrapper];
