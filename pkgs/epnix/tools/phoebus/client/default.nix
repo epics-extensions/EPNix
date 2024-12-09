@@ -30,7 +30,6 @@ in
       maven
       copyDesktopItems
       makeWrapper
-      (epnix.phoebus-setup-hook.override {jdk = jdk.override {enableJavaFX = true;};})
       (epnix.phoebus-setup-hook.override {
         jdk = jdk.override {
           enableJavaFX = true;
