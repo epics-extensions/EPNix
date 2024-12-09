@@ -20,7 +20,6 @@ stdenv.mkDerivation {
   dontConfigure = true;
 
   installPhase = ''
-
     runHook preInstall
 
     # This wrapper for the `phoebus-unwrapped` executable sets the `JAVA_OPTS`
@@ -40,7 +39,6 @@ stdenv.mkDerivation {
       categories = [
         # Main
         "Office"
-
         # Additional
         "Java"
         "Viewer"
@@ -49,14 +47,6 @@ stdenv.mkDerivation {
   ];
 
   meta = {
-    inherit
-      (epnix.phoebus-unwrapped.meta)
-      description
-      homepage
-      platforms
-      license
-      maintainers
-      mainProgram
-      ;
+    inherit (epnix.phoebus-unwrapped) meta;
   };
 }
