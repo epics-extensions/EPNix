@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  epnix,
   pkgs,
   ...
 }: let
@@ -9,7 +8,7 @@
   pkg = pkgs.epnix.phoebus.override {java_opts = cfg.java_opts;};
 in {
   options.programs.phoebus-client = {
-    enable = lib.mkEnableOption ''Enable the Phoebus client'';
+    enable = lib.mkEnableOption ''installing and configuring the Phoebus client'';
     java_opts = lib.mkOption {
       type = lib.types.str;
       default = "-XX:MinHeapSize=128m -XX:MaxHeapSize=4g -XX:InitialHeapSize=1g -XX:MaxHeapFreeRatio=10 -XX:MinHeapFreeRatio=5 -XX:-ShrinkHeapInSteps -XX:NativeMemoryTracking=detail";
