@@ -117,7 +117,7 @@ in
       phoebus-pva = callPackage ./epnix/tools/phoebus/pva {};
       phoebus-save-and-restore = callPackage ./epnix/tools/phoebus/save-and-restore {};
       phoebus-scan-server = callPackage ./epnix/tools/phoebus/scan-server {};
-      phoebus-setup-hook = callPackage ./epnix/tools/phoebus/setup-hook {jdk = prev.jdk21;};
+      phoebus-setup-hook = callPackage ./epnix/tools/phoebus/setup-hook {jdk = prev.jdk21_headless;};
 
       procServ = callPackage ./epnix/tools/procServ {};
 
