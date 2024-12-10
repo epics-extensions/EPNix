@@ -94,8 +94,13 @@ in
 
       channel-finder-service = callPackage ./epnix/tools/channel-finder/service {};
 
-      inherit (final.python3Packages) lewis pyepics;
+      # Lewis needs Python < 3.12
+      inherit (final.python311Packages) lewis;
+
+      inherit (final.python3Packages) pyepics;
+
       pythonSoftIOC = final.python3Packages.softioc;
+
       inherit (callPackage ./epnix/tools/lewis/lib.nix {}) mkLewisSimulator;
 
       pcas = callPackage ./epnix/tools/pcas {};
