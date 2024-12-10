@@ -6,5 +6,5 @@
 {pkgs, ...}: {
   channelfinder-default-python = pkgs.python3Packages.channelfinder;
   mrf-driver-default-linux = pkgs.linuxPackages.mrf;
-  recceiver-default-python = pkgs.python3Packages.recceiver;
+  recceiver-default-python = pkgs.python311Packages.recceiver;
 }
