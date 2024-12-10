@@ -71,8 +71,6 @@
           ];
         };
       };
-
-      devShell = self.devShells.${system}.default;
     };
   in
     # Not eachDefaultSystem right now, because `nix flake check` tries to
@@ -126,7 +124,6 @@
       };
 
       templates.default = self.templates.top;
-      defaultTemplate = self.templates.default;
 
       formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
     };
