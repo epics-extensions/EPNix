@@ -46,7 +46,5 @@ stdenv.mkDerivation {
     })
   ];
 
-  meta = {
-    inherit (epnix.phoebus-unwrapped) meta;
-  };
+  inherit (epnix.phoebus-unwrapped) meta;
 }
