@@ -1,0 +1,15 @@
+24.11 Release notes
+===================
+
+.. role:: nix(code)
+   :language: nix
+
+Breaking changes
+----------------
+
+- the :ref:`pkg-support.modbus` support module was upgraded from 3-2 to 3-4,
+  which changed the name of the ``modbus.dbd`` file.
+  This file wasn't meant to be used,
+  but if you used it by mistake,
+  make sure to include ``modbusSupport.dbd``,
+  and ``drvAsynIPPort.dbd`` or ``drvAsynSerialPort.dbd`` instead.
