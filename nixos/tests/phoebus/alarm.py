@@ -28,17 +28,19 @@ alarm_path = "/Accelerator/ALARM_TEST"
 alarm_config = f"config:{alarm_path}"
 alarm_state = f"state:{alarm_path}"
 
+server_ip = "192.168.1.3"
+
 
 def send_kafka(key: str, value: dict[str, Any]):
     value_s = json.dumps(value)
     client.succeed(
-        f"echo '{key}={value_s}' | kcat -P -b server:9092 -t Accelerator -K="
+        f"echo '{key}={value_s}' | kcat -P -b {server_ip}:9092 -t Accelerator -K="
     )
 
 
 def get_alarm() -> dict[str, Any]:
     result_s = client.wait_until_succeeds(
-        f"kcat -b server:9092 -C -t Accelerator -e -qJ | grep -F '{alarm_state}' | tail -1"
+        f"kcat -b {server_ip}:9092 -C -t Accelerator -e -qJ | grep -F '{alarm_state}' | tail -1"
     )
     result = json.loads(result_s)
 
@@ -61,7 +63,7 @@ with subtest("We initialize the PV"):
     client.wait_until_succeeds("caput ALARM_TEST 2")
 
 with subtest("Topics are created"):
-    client.wait_until_succeeds("kcat -b server:9092 -L | grep Accelerator")
+    client.wait_until_succeeds(f"kcat -b {server_ip}:9092 -L | grep Accelerator")
 
 with subtest("Can monitor a PV"):
     send_kafka(
@@ -127,7 +129,7 @@ with subtest("We can acknowledge the previous alarm"):
 
 with subtest("We can see that the previous alarm was acknowledged"):
     result_s = client.wait_until_succeeds(
-        f"kcat -b server:9092 -C -t Accelerator -e -qJ | grep -F '{alarm_state}' | tail -1"
+        f"kcat -b {server_ip}:9092 -C -t Accelerator -e -qJ | grep -F '{alarm_state}' | tail -1"
     )
     result = json.loads(result_s)
 
@@ -192,6 +194,8 @@ with subtest("The data is still here after a server reboot"):
     assert alarm_states[2]["value"] == "4.0"
 
 with subtest("Can export alarm configuration"):
-    server.succeed("phoebus-alarm-server -settings /etc/phoebus/alarm-server.properties -export export.xml")
+    server.succeed(
+        "phoebus-alarm-server -settings /etc/phoebus/alarm-server.properties -export export.xml"
+    )
     server.succeed("grep ALARM_TEST export.xml")
     server.copy_from_vm("export.xml")
