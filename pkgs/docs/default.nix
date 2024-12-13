@@ -103,6 +103,7 @@ in
         sphinx
         sphinx-copybutton
         sphinxcontrib-nixdomain
+        sphinxext-opengraph
       ])
       ++ [
         installShellFiles
