@@ -30,6 +30,7 @@ extensions = [
     "sphinx.ext.githubpages",
     "sphinx_copybutton",
     "sphinxcontrib_nixdomain",
+    "sphinxext.opengraph",
 ]
 
 templates_path = ["_templates"]
@@ -126,3 +127,10 @@ man_pages = [
 ]
 
 man_show_urls = True
+
+# -- Options for OpenGraph ---------------------------------------------------
+# https://sphinxext-opengraph.readthedocs.io/en/latest/
+
+ogp_site_url = html_baseurl
+ogp_image = "_static/logo.svg"
+ogp_image_alt = "EPNix logo"
