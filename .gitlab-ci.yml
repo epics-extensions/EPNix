@@ -6,11 +6,15 @@ default:
   interruptible: true
   tags:
     - nix
+  cache:
+    paths: [".cache/nix"]
+    when: "always"
 
 variables:
   NIX_BUILD_FLAGS: "--no-update-lock-file --print-build-logs --show-trace"
 
 before_script:
+  - export XDG_CACHE_HOME="$PWD/.cache"
   - git config --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@drf-gitlab.cea.fr".insteadOf "ssh://git@drf-gitlab.cea.fr"
 
 run_checks:
