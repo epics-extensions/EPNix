@@ -113,8 +113,23 @@
 
           Useful links:
 
-          - EPNix IOC documentation: <https://epics-extensions.github.io/EPNix/ioc/>
-          - EPNix IOC tutorials: <https://epics-extensions.github.io/EPNix/ioc/tutorials/>
+          - EPNix IOC documentation: <https://epics-extensions.github.io/EPNix/nixos-24.11/ioc/>
+          - EPNix IOC tutorials: <https://epics-extensions.github.io/EPNix/nixos-24.11/ioc/tutorials/>
+        '';
+      };
+
+      templates.new-top = {
+        path = ./templates/new-top;
+        description = "An EPNix TOP project (next-generation)";
+        welcomeText = ''
+          You have created a next-generation EPNix top.
+
+          Don't forget to run `makeBaseApp.pl` and `epicsConfigurePhase` inside the development shell before compiling it.
+
+          Useful links:
+
+          - EPNix IOC documentation: <https://epics-extensions.github.io/EPNix/nixos-24.11/ioc/>
+          - EPNix IOC tutorials: <https://epics-extensions.github.io/EPNix/nixos-24.11/ioc/tutorials/>
         '';
       };
 
