@@ -3,8 +3,10 @@
 # For the full list of built-in configuration values, see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
+import json
 import os
 import sys
+from pathlib import Path
 
 # Enables importing our custom "pygments_styles" module
 sys.path.append(os.path.abspath("./_ext"))
@@ -15,6 +17,7 @@ sys.path.append(os.path.abspath("./_ext"))
 project = "EPNix"
 copyright = "The EPNix Contributors"
 author = "The EPNix Contributors"
+release = "dev"
 
 source_repository = "https://github.com/epics-extensions/EPNix"
 
@@ -77,14 +80,16 @@ copybutton_exclude = ".linenos, .gp, .go"
 
 nix_options_json_files = ["./nixos-options.json"]
 
+
 def nix_linkcode_resolve(path: str) -> str:
     return f"{source_repository}/blob/master/{path}"
+
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_static_path = ["_static"]
-html_baseurl = "https://epics-extensions.github.io/EPNix/"
+html_baseurl = f"https://epics-extensions.github.io/EPNix/{release}/"
 
 html_theme = "furo"
 html_theme_options = {
@@ -115,6 +120,34 @@ html_theme_options = {
 
 html_logo = "logo.svg"
 html_favicon = "favicon.svg"
+
+# Multi version
+
+html_sidebars = {
+    "**": [
+        "sidebar/brand.html",
+        "sidebar/search.html",
+        "sidebar/scroll-start.html",
+        "sidebar/navigation.html",
+        "sidebar/scroll-end.html",
+        "multi-version.html",
+    ]
+}
+
+html_css_files = ["multi-version.css"]
+
+html_context = {}
+
+versions = Path("./versions.json")
+if versions.exists():
+    with versions.open() as f:
+        html_context["versions"] = json.load(f)
+
+    # Mark current version as current
+    current_version = next(
+        el for el in html_context["versions"] if el["name"] == release
+    )
+    current_version["current"] = True
 
 # -- Options for Man output --------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-manual-page-output

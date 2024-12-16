@@ -106,5 +106,9 @@ in
 
       # Documentation support packages
       psu-simulator = callPackage ./doc-support/psu-simulator {};
+
+      ci-scripts = recurseExtensible (_self: {
+        build-docs-multiversion = callPackage ./ci-scripts/build-docs-multiversion.nix {};
+      });
     });
   }
