@@ -1,0 +1,18 @@
+{% if versions %}
+<div class="multi-version">
+  <details>
+    <summary>{{ _('Versions') }}:</summary>
+    <ul>
+      {%- for item in versions %}
+      <li>
+        {% if item.current %}
+        <a href="{{ item.url }}" class="current">{{ item.name }}</a>
+        {% else %}
+        <a href="{{ item.url }}">{{ item.name }}</a>
+        {% endif %}
+      </li>
+      {%- endfor %}
+    </ul>
+  </details>
+</div>
+{% endif %}
