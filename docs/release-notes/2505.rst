@@ -6,6 +6,17 @@
 .. role:: nix(code)
    :language: nix
 
+New features
+------------
+
+- New module :option:`services.iocs`
+  to deploy EPICS IOCs as systemd services.
+
+  If you deployed EPICS IOCs manually by using ``systemd.services``,
+  or used the configuration :samp:`epnix.nixos.services.{ioc}.config`
+  generated from the now deprecated IOC module system,
+  read the :doc:`../nixos-services/user-guides/ioc-services` NixOS guide.
+
 Breaking changes
 ----------------
 
