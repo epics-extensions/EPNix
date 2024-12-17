@@ -1,0 +1,153 @@
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  iocSubmodule = {
+    name,
+    config,
+    ...
+  }: {
+    options = {
+      enable = lib.mkOption {
+        description = "Whether to enable the given IOC.";
+        type = lib.types.bool;
+        default = true;
+      };
+
+      name = lib.mkOption {
+        description = "The name of the IOC, used for the systemd service.";
+        type = lib.types.str;
+        default = name;
+      };
+
+      description = lib.mkOption {
+        description = "A description for your EPICS IOC";
+        type = lib.types.str;
+        default = config.package.meta.description or "";
+        defaultText = lib.literalExpression ''package.meta.description or "EPICS IOC"'';
+      };
+
+      package = lib.mkOption {
+        description = "The packaged EPICS top containing the IOC.";
+        type = lib.types.package;
+        example = lib.literalExpression "pkgs.myIoc";
+      };
+
+      startupScript = lib.mkOption {
+        description = ''
+          The script used to start the IOC.
+
+          The path is relative to the given :nix:option:`workingDirectory`.
+        '';
+        type = lib.types.str;
+        default = "./st.cmd";
+        example = "./other-st.cmd";
+      };
+
+      workingDirectory = lib.mkOption {
+        description = "The working directory from which to start the IOC.";
+        example = "iocBoot/iocExample";
+      };
+
+      procServ = {
+        port = lib.mkOption {
+          default = 2000;
+          type = lib.types.port;
+          description = ''
+            Port where the procServ utility will listen.
+          '';
+        };
+
+        options = lib.mkOption {
+          default = {};
+          example = {
+            allow = true;
+            info-file = "/var/run/ioc/procServ_info";
+          };
+          type = with lib.types; attrsOf (oneOf [str int bool (listOf str)]);
+          description = ''
+            Extra command-line options to pass to procServ.
+
+            .. note::
+               using ``lib.mkForce`` overrides the default options needed
+               for the systemd service to work.
+               If you wish to do this,
+               you need to specify needed arguments
+               like ``foreground`` and ``chdir``.
+          '';
+        };
+      };
+
+      generatedSystemdService = lib.mkOption {
+        description = "The generated systemd service.";
+        internal = true;
+        type = lib.types.attrs;
+      };
+    };
+
+    config.procServ.options = {
+      foreground = true;
+      oneshot = true;
+      logfile = "-";
+      holdoff = 0;
+      chdir = "${config.package}/${config.workingDirectory}";
+    };
+
+    config.generatedSystemdService = {
+      inherit (config) description;
+
+      wantedBy = lib.mkIf config.enable (lib.mkDefault ["multi-user.target"]);
+
+      # When initializing the IOC, PV Access looks for network interfaces that
+      # have IP addresses. "network.target" may be too early, especially for
+      # systems with DHCP.
+      wants = lib.mkDefault ["network-online.target"];
+      after = lib.mkDefault ["network-online.target"];
+
+      # Enable indefinite restarts
+      unitConfig.StartLimitIntervalSec = lib.mkDefault "0";
+
+      serviceConfig = {
+        Restart = "always";
+        RestartSec = lib.mkDefault "1s";
+        ExecStart = let
+          procServ = lib.getExe pkgs.epnix.procServ;
+        in ''
+          ${procServ} ${lib.cli.toGNUCommandLineShell {} config.procServ.options} \
+            ${toString config.procServ.port} \
+            ${config.startupScript}
+        '';
+
+        DynamicUser = true;
+      };
+    };
+  };
+in {
+  options.services.iocs = lib.mkOption {
+    description = ''
+      A set of IOCs for which to generate a systemd service
+
+      .. versionadded:: 25.05
+    '';
+    type = lib.types.attrsOf (lib.types.submodule iocSubmodule);
+    default = {};
+    example = lib.literalExpression ''
+      {
+        myIoc = {
+          package = pkgs.myIoc;
+          workingDirectory = "iocBoot/iocExample";
+        };
+      };
+    '';
+  };
+
+  config.systemd.services =
+    lib.mapAttrs'
+    (_name: iocCfg: {
+      inherit (iocCfg) name;
+      value = iocCfg.generatedSystemdService;
+    })
+    config.services.iocs;
+}
