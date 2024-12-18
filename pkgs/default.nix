@@ -61,6 +61,8 @@ in
       };
       epics-base = self.epics-base7;
 
+      epicsSetupHook = callPackage ./build-support/epics-setup-hook {};
+
       # EPICS support modules
 
       support = recurseExtensible (_self: {
