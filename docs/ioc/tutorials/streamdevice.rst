@@ -33,7 +33,7 @@ leave it running in a separate terminal.
 Creating your top
 -----------------
 
-We can use these command to create an EPNix top:
+Use these commands to create an EPNix top:
 
 .. code-block:: bash
 
@@ -215,7 +215,7 @@ and how to connect to the remote power supply.
 
    iocInit()
 
-And run ``chmod +x iocBoot/iocExample/st.cmd``
+Run ``chmod +x iocBoot/iocExample/st.cmd``
 so that you can run your command file as-is.
 
 You can test that your top builds by running:
@@ -234,12 +234,12 @@ and try a ``nix build -L`` again.
 If everything goes right,
 you can examine your compiled top under ``./result``.
 
-You can observe that:
+You can observe that the EPICS build system:
 
--  the ``example`` app is installed under ``bin/`` and ``bin/linux-x86_64``,
+-  installs the ``example`` app under ``bin/`` and ``bin/linux-x86_64``,
    and links to the correct libraries
--  ``example.proto`` and ``example.db`` are installed under ``db/``
--  ``example.dbd`` is generated and installed under ``dbd/``
+-  installs ``example.proto`` and ``example.db`` under ``db/``
+-  generates ``example.dbd`` and installs it under ``dbd/``
 
 Running your IOC
 ----------------
@@ -258,7 +258,7 @@ You should see the IOC starting and connecting to ``localhost:9999``.
 .. tip::
    :file:`./result` is a symbolic link,
    so if you made any changes to your IOC and re-ran ``nix build``,
-   a terminal window already in :file:`./result/iocBoot/iocExample` will still point to the old version.
+   a terminal window already in :file:`./result/iocBoot/iocExample` would still point to the old version.
 
    To run the new version,
    either re-open a new window
@@ -312,9 +312,9 @@ Try to edit the protocol file and the database file
 to add those features to your IOC.
 
 For more information about how to write the StreamDevice protocol,
-have a look at the `Protocol Files`_ documentation.
+examine the `Protocol Files`_ documentation.
 
-You might also be interested in reading :doc:`../user-guides/flake-registry`.
+You might also want to read :doc:`../user-guides/flake-registry`.
 
 .. _Protocol Files: https://paulscherrerinstitute.github.io/StreamDevice/protocol.html
 
