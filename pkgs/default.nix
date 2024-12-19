@@ -7,7 +7,7 @@ in
   recurseIntoAttrs {
     inherit epnixLib;
 
-    mkEpicsPackage = callPackage ./build-support/mk-epics-package.nix {};
+    mkEpicsPackage = callPackage ./build-support/mk-epics-package {};
 
     pythonPackagesExtensions =
       prev.pythonPackagesExtensions
