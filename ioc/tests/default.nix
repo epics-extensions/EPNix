@@ -1,8 +1,23 @@
-{pkgs, ...} @ args:
-with pkgs.lib;
+{
+  nixpkgs,
+  pkgs,
+  self,
+  system,
+} @ args: let
+  inherit (pkgs) lib;
+
+  nixosTesting = import (nixpkgs + "/nixos/lib/testing-python.nix") {
+    inherit pkgs system;
+    extraConfigurations = [
+      self.nixosModules.nixos
+    ];
+  };
+
+  handleTest = path: args: nixosTesting.simpleTest (import path (pkgs // args));
+in
   {
-    default-ioc-epics-base-3 = import ./default-ioc "3" args;
-    default-ioc-epics-base-7 = import ./default-ioc "7" args;
+    default-ioc-epics-base-3 = handleTest ./default-ioc {releaseBranch = "3";};
+    default-ioc-epics-base-7 = handleTest ./default-ioc {releaseBranch = "7";};
     example-ioc = import ./example-ioc args;
 
     pyepics = import ./pyepics args;
@@ -16,13 +31,13 @@ with pkgs.lib;
   }
   // (let
     checkCrossFor = crossSystem: let
-      system-name = (systems.elaborate crossSystem).system;
+      system-name = (lib.systems.elaborate crossSystem).system;
     in
-      nameValuePair
+      lib.nameValuePair
       "cross-for-${system-name}"
       (import ./cross/default.nix (args // {inherit crossSystem system-name;}));
 
-    systemsToCheck = with systems.examples; [
+    systemsToCheck = with lib.systems.examples; [
       # Maybe one day...
       #mingwW64
 
@@ -40,4 +55,4 @@ with pkgs.lib;
       raspberryPi
     ];
   in
-    listToAttrs (map checkCrossFor systemsToCheck))
+    lib.listToAttrs (map checkCrossFor systemsToCheck))

@@ -48,7 +48,7 @@
           };
         }
         // (import ./pkgs/tests {inherit pkgs self;})
-        // (import ./ioc/tests {inherit pkgs self;})
+        // (import ./ioc/tests {inherit nixpkgs pkgs self system;})
         // (import ./nixos/tests/all-tests.nix {inherit nixpkgs pkgs self system;});
 
       devShells.default = pkgs.epnixLib.mkEpnixDevShell {
