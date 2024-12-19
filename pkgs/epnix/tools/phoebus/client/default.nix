@@ -34,7 +34,7 @@ in
       (epnix.phoebus-setup-hook.override {
         jdk = jdk.override {
           enableJavaFX = true;
-          openjfx = openjfx.override {
+          openjfx_jdk = openjfx.override {
             withWebKit = true;
           };
         };
