@@ -8,6 +8,6 @@ Tutorials
 ----
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
-   ./archiver-appliance.rst
+   archiver-appliance

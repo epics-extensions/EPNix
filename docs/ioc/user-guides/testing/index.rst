@@ -8,7 +8,7 @@ Testing
 ----
 
 .. toctree::
-   :titlesonly:
+   :maxdepth: 2
 
-   ./unit-testing.rst
-   ./packaging-python-scripts.rst
+   unit-testing
+   packaging-python-scripts
