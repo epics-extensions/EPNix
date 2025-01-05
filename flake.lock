@@ -144,11 +144,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1733384649,
-        "narHash": "sha256-K5DJ2LpPqht7K76bsxetI+YHhGGRyVteTPRQaIIKJpw=",
+        "lastModified": 1735563628,
+        "narHash": "sha256-OnSAY7XDSx7CtDoqNh8jwVwh4xNL/2HaJxGjryLWzX8=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "190c31a89e5eec80dd6604d7f9e5af3802a58a13",
+        "rev": "b134951a4c9f3c995fd7be05f3243f8ecd65d798",
         "type": "github"
       },
       "original": {
@@ -169,11 +169,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1731205797,
-        "narHash": "sha256-F7N1mxH1VrkVNHR3JGNMRvp9+98KYO4b832KS8Gl2xI=",
+        "lastModified": 1735852239,
+        "narHash": "sha256-Xrg/HahR9SW1UzT5pwtpQR6D12ZIwwHjxav9YzB1q4U=",
         "owner": "nix-community",
         "repo": "poetry2nix",
-        "rev": "f554d27c1544d9c56e5f1f8e2b8aff399803674e",
+        "rev": "bb182fd661f5f8a7d6c50dd44cf9a6ddca7ccc1a",
         "type": "github"
       },
       "original": {
@@ -222,11 +222,11 @@
         "pyproject-nix": "pyproject-nix"
       },
       "locked": {
-        "lastModified": 1727724513,
-        "narHash": "sha256-yXWzoUpoDpboHyuE12UZEmefSj4nb7pHUcepP5CPWJY=",
+        "lastModified": 1734545628,
+        "narHash": "sha256-PsgtOX8ISyqRVDAinOb2HmPu4lFdNncfVtcqQupp2LU=",
         "owner": "minijackson",
         "repo": "sphinxcontrib-nixdomain",
-        "rev": "62d8bb399d607404258a77b0010394d3b9173c2e",
+        "rev": "9c404d5a5bdae9cbd1aed69d5a7c0c7eac2c7389",
         "type": "github"
       },
       "original": {
