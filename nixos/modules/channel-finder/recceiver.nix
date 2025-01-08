@@ -7,8 +7,8 @@
 }: let
   cfg = config.services.recceiver;
 
-  pkg = pkgs.python3Packages.recceiver;
-  python = pkgs.python3.withPackages (
+  pkg = pkgs.python311Packages.recceiver;
+  python = pkgs.python311.withPackages (
     ps: [
       ps.recceiver
       ps.twisted

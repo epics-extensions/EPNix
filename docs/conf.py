@@ -79,6 +79,10 @@ copybutton_exclude = ".linenos, .gp, .go"
 # -- Options for the Nix domain ----------------------------------------------
 
 nix_options_json_files = ["./nixos-options.json"]
+# Sphinx 7.4.0, the display of the hierarchy of objects in the TOC changed,
+# and sphinxcontrib-nixdomain doesn't support it,
+# so we just display the full option path in the TOC
+nix_toc_display_full_path = True
 
 
 def nix_linkcode_resolve(path: str) -> str:

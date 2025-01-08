@@ -1,6 +1,7 @@
 {
   epnixLib,
   buildPythonPackage,
+  pythonAtLeast,
   fetchFromGitHub,
   python,
   setuptools-scm,
@@ -12,6 +13,10 @@ buildPythonPackage rec {
   pname = "RecCeiver";
   version = "1.6";
   pyproject = true;
+
+  # Should be fixed by https://github.com/ChannelFinder/recsync/pull/88
+  # but the patch doesn't apply cleanly
+  disabled = pythonAtLeast "3.12";
 
   src = fetchFromGitHub {
     owner = "ChannelFinder";
