@@ -36,6 +36,7 @@ with pkgs.lib;
       # D-TACQ
       {system = "armv7a-linux";}
 
+      aarch64-multiplatform
       raspberryPi
     ];
   in
