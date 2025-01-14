@@ -13,3 +13,40 @@ Breaking changes
   but if you used it by mistake,
   make sure to include ``modbusSupport.dbd``,
   and ``drvAsynIPPort.dbd`` or ``drvAsynSerialPort.dbd`` instead.
+
+- :nix:option:`services.phoebus-olog` now uses FerretDB instead of MongoDB,
+  which prevents having to compile a resource intensive project
+  due to its license.
+  Migrate your data by following :ref:`mongodb-to-ferretdb`.
+
+Detailed migration information
+------------------------------
+
+.. _mongodb-to-ferretdb:
+
+From MongoDB to FerretDB
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Before upgrading to ``nixos-24.11``,
+install the ``mongodb-tools`` package,
+by adding it to your ``environment.systemPackages``.
+
+On the target machine,
+run:
+
+.. code-block:: bash
+
+   mkdir mongodb-dump
+   cd mongodb-dump
+   mongodump
+
+Then,
+upgrade your system to ``nixos-24.11``.
+
+On the target machine,
+run:
+
+.. code-block:: bash
+
+   cd mongodb-dump
+   mongorestore
