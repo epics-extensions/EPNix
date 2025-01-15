@@ -25,7 +25,7 @@ in
     support-autosave-simple = handleTest ./support/autosave/simple {};
     support-pvxs-ioc = handleTest ./support/pvxs/ioc {};
     support-pvxs-qsrv2 = handleTest ./support/pvxs/qsrv2 {};
-    support-pvxs-standalone-server = import ./support/pvxs/standalone-server args;
+    support-pvxs-standalone-server = handleTest ./support/pvxs/standalone-server {};
     support-seq-simple = import ./support/seq/simple args;
     support-StreamDevice-simple = import ./support/StreamDevice/simple args;
   }
