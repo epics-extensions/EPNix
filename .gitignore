@@ -16,3 +16,6 @@ outputs
 
 # Created by running NixOS tests in interactive mode
 .nixos-test-history
+
+#VScode extra files
+*.code-workspace
