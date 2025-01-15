@@ -18,7 +18,7 @@ in
   {
     default-ioc-epics-base-3 = handleTest ./default-ioc {releaseBranch = "3";};
     default-ioc-epics-base-7 = handleTest ./default-ioc {releaseBranch = "7";};
-    example-ioc = import ./example-ioc args;
+    example-ioc = handleTest ./example-ioc {};
 
     pyepics = import ./pyepics args;
 

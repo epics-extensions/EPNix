@@ -1,69 +1,62 @@
 {pkgs, ...}: let
   inherit (pkgs) epnixLib;
-  inherit (pkgs.stdenv.hostPlatform) system;
 
-  result = epnixLib.evalEpnixModules {
-    nixpkgsConfig.system = system;
-    epnixConfig.imports = [
-      (import ./epnix.nix)
-    ];
+  ioc = pkgs.callPackage ./ioc.nix {};
+in {
+  name = "example-ioc";
+  meta.maintainers = with epnixLib.maintainers; [minijackson];
+
+  nodes.machine = {
+    environment.systemPackages = [pkgs.epnix.epics-base];
+
+    services.iocs.ioc = {
+      package = ioc;
+      workingDirectory = "iocBoot/iocSimple";
+    };
   };
 
-  service = result.config.epnix.nixos.services.ioc.config;
+  testScript = ''
+    machine.wait_for_unit("default.target")
+    machine.wait_for_unit("ioc.service")
 
-  ioc = result.outputs.build;
-in
-  pkgs.nixosTest {
-    name = "example-ioc";
-    meta.maintainers = with epnixLib.maintainers; [minijackson];
+    def logs_has(content: str) -> None:
+      machine.wait_until_succeeds(f"journalctl --no-pager -u ioc.service | grep -F '{content}'")
 
-    nodes.machine = {
-      environment.systemPackages = [pkgs.epnix.epics-base];
-      systemd.services.ioc = service;
-    };
+    with subtest("wait until started"):
+      machine.wait_until_succeeds("caget -t epnix:aiExample")
 
-    testScript = ''
-      machine.wait_for_unit("default.target")
-      machine.wait_for_unit("ioc.service")
+    with subtest("EPICS revision is correct"):
+      logs_has("## EPICS R7")
 
-      def logs_has(content: str) -> None:
-        machine.wait_until_succeeds(f"journalctl --no-pager -u ioc.service | grep -F '{content}'")
+    with subtest("ai/calc records"):
+      ai_example = int(machine.wait_until_succeeds("caget -t epnix:aiExample").strip())
+      assert 0 <= ai_example <= 9
 
-      with subtest("wait until started"):
-        machine.wait_until_succeeds("caget -t epnix:aiExample")
+    with subtest("version record"):
+      assert machine.succeed("caget -t epnix:simple:version").strip() == "EPNix"
 
-      with subtest("EPICS revision is correct"):
-        logs_has("## EPICS R7")
+    with subtest("aSub record"):
+      logs_has("Record epnix:aSubExample called myAsubInit")
+      logs_has("Record epnix:aSubExample called myAsubProcess")
 
-      with subtest("ai/calc records"):
-        ai_example = int(machine.wait_until_succeeds("caget -t epnix:aiExample").strip())
-        assert 0 <= ai_example <= 9
+    # Also needs the debug mode activated above
+    with subtest("sub record"):
+      logs_has("Record epnix:subExample called mySubInit")
+      machine.succeed("caput epnix:subExample 42")
+      logs_has("Record epnix:subExample called mySubProcess")
 
-      with subtest("version record"):
-        assert machine.succeed("caget -t epnix:simple:version").strip() == "EPNix"
+    with subtest("Sequencer program is running"):
+      logs_has("sncExample: Startup delay over")
+      logs_has("sncExample: Changing to")
 
-      with subtest("aSub record"):
-        logs_has("Record epnix:aSubExample called myAsubInit")
-        logs_has("Record epnix:aSubExample called myAsubProcess")
+    with subtest("Sequencer program is running"):
+      machine.succeed("echo 'hello world' | nc localhost 2000 -N")
+      logs_has("Hello world, from simple")
 
-      # Also needs the debug mode activated above
-      with subtest("sub record"):
-        logs_has("Record epnix:subExample called mySubInit")
-        machine.succeed("caput epnix:subExample 42")
-        logs_has("Record epnix:subExample called mySubProcess")
+    # TODO: test QSRV, but it feels flaky, pvget times-out most of the time
+  '';
 
-      with subtest("Sequencer program is running"):
-        logs_has("sncExample: Startup delay over")
-        logs_has("sncExample: Changing to")
-
-      with subtest("Sequencer program is running"):
-        machine.succeed("echo 'hello world' | nc localhost 2000 -N")
-        logs_has("Hello world, from simple")
-
-      # TODO: test QSRV, but it feels flaky, pvget times-out most of the time
-    '';
-
-    passthru = {
-      inherit ioc;
-    };
-  }
+  passthru = {
+    inherit ioc;
+  };
+}
