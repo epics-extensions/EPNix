@@ -35,7 +35,10 @@ in
     in
       lib.nameValuePair
       "cross-for-${system-name}"
-      (import ./cross/default.nix (args // {inherit crossSystem system-name;}));
+      (import ./cross/default.nix (args
+        // {
+          inherit self nixpkgs crossSystem system-name;
+        }));
 
     systemsToCheck = with lib.systems.examples; [
       # Maybe one day...
