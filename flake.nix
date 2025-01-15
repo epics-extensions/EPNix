@@ -2,7 +2,7 @@
   description = "A Nix flake containing EPICS-related modules and packages";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
     bash-lib = {
       url = "github:minijackson/bash-lib";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -71,8 +71,6 @@
           ];
         };
       };
-
-      devShell = self.devShells.${system}.default;
     };
   in
     # Not eachDefaultSystem right now, because `nix flake check` tries to
@@ -126,7 +124,6 @@
       };
 
       templates.default = self.templates.top;
-      defaultTemplate = self.templates.default;
 
       formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
     };

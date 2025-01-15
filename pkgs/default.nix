@@ -94,13 +94,20 @@ in
 
       channel-finder-service = callPackage ./epnix/tools/channel-finder/service {};
 
-      inherit (final.python3Packages) lewis pyepics;
+      # Lewis needs Python < 3.12
+      inherit (final.python311Packages) lewis;
+
+      inherit (final.python3Packages) pyepics;
+
       pythonSoftIOC = final.python3Packages.softioc;
+
       inherit (callPackage ./epnix/tools/lewis/lib.nix {}) mkLewisSimulator;
 
       pcas = callPackage ./epnix/tools/pcas {};
 
-      phoebus = callPackage ./epnix/tools/phoebus/client {};
+      phoebus = callPackage ./epnix/tools/phoebus/client {
+        openjfx = prev.openjfx21;
+      };
       phoebus-alarm-server = callPackage ./epnix/tools/phoebus/alarm-server {};
       phoebus-alarm-logger = callPackage ./epnix/tools/phoebus/alarm-logger {};
       phoebus-archive-engine = callPackage ./epnix/tools/phoebus/archive-engine {};

@@ -1,6 +1,7 @@
 {
   lib,
   buildPythonPackage,
+  pythonAtLeast,
   fetchFromGitHub,
   approvaltests,
   setuptools,
@@ -17,6 +18,9 @@ buildPythonPackage rec {
   pname = "lewis";
   version = "1.3.1";
   pyproject = true;
+
+  # Due to mrjob, which is needed by approvaltests
+  disabled = pythonAtLeast "3.12";
 
   src = fetchFromGitHub {
     owner = "ess-dmsc";
