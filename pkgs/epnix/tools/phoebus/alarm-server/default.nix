@@ -5,7 +5,6 @@
   maven,
   makeWrapper,
   epnix,
-  jdk,
 }: let
   buildDate = "2022-02-24T07:56:00Z";
 in
@@ -56,6 +55,6 @@ in
       mainProgram = "phoebus-alarm-server";
       license = lib.licenses.epl10;
       maintainers = with epnixLib.maintainers; [minijackson];
-      inherit (jdk.meta) platforms;
+      inherit (epnix.phoebus-setup-hook.meta) platforms;
     };
   }
