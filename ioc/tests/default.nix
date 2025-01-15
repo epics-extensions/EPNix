@@ -27,7 +27,7 @@ in
     support-pvxs-qsrv2 = handleTest ./support/pvxs/qsrv2 {};
     support-pvxs-standalone-server = handleTest ./support/pvxs/standalone-server {};
     support-seq-simple = handleTest ./support/seq/simple {};
-    support-StreamDevice-simple = import ./support/StreamDevice/simple args;
+    support-StreamDevice-simple = handleTest ./support/StreamDevice/simple {};
   }
   // (let
     checkCrossFor = crossSystem: let
