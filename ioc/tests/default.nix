@@ -26,7 +26,7 @@ in
     support-pvxs-ioc = handleTest ./support/pvxs/ioc {};
     support-pvxs-qsrv2 = handleTest ./support/pvxs/qsrv2 {};
     support-pvxs-standalone-server = handleTest ./support/pvxs/standalone-server {};
-    support-seq-simple = import ./support/seq/simple args;
+    support-seq-simple = handleTest ./support/seq/simple {};
     support-StreamDevice-simple = import ./support/StreamDevice/simple args;
   }
   // (let
