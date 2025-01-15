@@ -131,7 +131,7 @@ in {
           == "true"
           || settings."embedded_ldap.enabled" == "true"
           || settings."demo_auth.enabled" == "true";
-        message = "One type of authentication for Phoebus Olog must be provided";
+        message = "One type of authentication for ChannelFinder must be provided";
       }
     ];
 
