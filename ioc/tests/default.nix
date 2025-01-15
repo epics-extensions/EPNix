@@ -20,7 +20,7 @@ in
     default-ioc-epics-base-7 = handleTest ./default-ioc {releaseBranch = "7";};
     example-ioc = handleTest ./example-ioc {};
 
-    pyepics = import ./pyepics args;
+    pyepics = handleTest ./pyepics {};
 
     support-autosave-simple = import ./support/autosave/simple args;
     support-pvxs-ioc = import ./support/pvxs/ioc args;
