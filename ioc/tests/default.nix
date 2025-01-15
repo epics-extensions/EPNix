@@ -23,7 +23,7 @@ in
     pyepics = handleTest ./pyepics {};
 
     support-autosave-simple = handleTest ./support/autosave/simple {};
-    support-pvxs-ioc = import ./support/pvxs/ioc args;
+    support-pvxs-ioc = handleTest ./support/pvxs/ioc {};
     support-pvxs-qsrv2 = import ./support/pvxs/qsrv2 args;
     support-pvxs-standalone-server = import ./support/pvxs/standalone-server args;
     support-seq-simple = import ./support/seq/simple args;
