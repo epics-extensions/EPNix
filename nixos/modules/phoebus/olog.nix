@@ -105,7 +105,7 @@ in {
       description = "Phoebus Alarm Server";
 
       wantedBy = ["multi-user.target"];
-      after = ["elasticsearch.service" "mongodb.service"];
+      after = ["elasticsearch.service" "ferretdb.service"];
 
       serviceConfig = {
         ExecStart = "${lib.getExe pkgs.epnix.phoebus-olog} --spring.config.location=file://${configFile}";
@@ -113,7 +113,10 @@ in {
         # TODO: systemd hardening. Currently level 8.2 EXPOSED
       };
     };
-    services.mongodb.enable = true;
+    services.ferretdb = {
+      enable = true;
+      settings.FERRETDB_TELEMETRY = "disable";
+    };
   };
 
   meta.maintainers = with epnixLib.maintainers; [minijackson];

@@ -24,9 +24,6 @@
           # not open-source. But as we're using it run tests, not exposing
           # any service, this should be fine.
           "elasticsearch"
-
-          # MongoDB also uses the SSPL.
-          "mongodb"
         ];
 
       networking.firewall.allowedTCPPorts = [8181];
@@ -56,7 +53,7 @@
     with subtest("Olog connected to ElasticSearch"):
         assert status["elastic"]["status"] == "Connected"
 
-    with subtest("Olog connected to MongoDB"):
+    with subtest("Olog connected to MongoDB (FerretDB)"):
         assert "state=CONNECTED" in status["mongoDB"]
 
     def get(uri: str) -> Any:
