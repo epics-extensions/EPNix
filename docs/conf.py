@@ -17,7 +17,7 @@ sys.path.append(os.path.abspath("./_ext"))
 project = "EPNix"
 copyright = "The EPNix Contributors"
 author = "The EPNix Contributors"
-release = "dev"
+release = "nixos-24.11"
 
 source_repository = "https://github.com/epics-extensions/EPNix"
 
