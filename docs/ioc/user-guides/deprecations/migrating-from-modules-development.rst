@@ -9,7 +9,7 @@ Explanation
 -----------
 
 NixOS-like modules were used to define your IOC,
-for example using code such as this:
+for example:
 
 .. code-block:: nix
    :caption: Deprecated IOC definition
@@ -35,7 +35,7 @@ This style of development is deprecated since EPNix version ``nixos-25.05``
 and will be removed in EPNix version ``nixos-26.05``.
 
 This style of development was deprecated
-because it lead to complex logic inside of EPNix,
+because it led to complex logic inside of EPNix,
 and provided no tangible benefit.
 Moreover,
 support top IOCs are packaged differently inside of EPNix,
@@ -64,14 +64,14 @@ Edit the new template
 Flake
 ^^^^^
 
-For every flake input that you added in your :file:`flake.nix.old` file,
-add them in your new :file:`flake.nix` file.
+- For every flake input that you added in your :file:`flake.nix.old` file,
+  add them in your new :file:`flake.nix` file.
 
-For every overlay that's in your :file:`flake.nix.old`'s ``nixpkgs.overlays`` attribute,
-add them in your new :file:`flake.nix` file,
-in ``pkgs``' ``overlays``.
+- For every overlay that's in your :file:`flake.nix.old`'s ``nixpkgs.overlays`` attribute,
+  add them in your new :file:`flake.nix` file,
+  in ``pkgs``' ``overlays``.
 
-Change the name of your IOC by replacing every instance of ``myIoc`` in :file:`flake.nix`.
+- Change the name of your IOC by replacing every instance of ``myIoc`` in :file:`flake.nix`.
 
 .. warning::
 
@@ -94,15 +94,24 @@ Edit the :file:`ioc.nix` file to match your IOC:
 If you had :samp:`buildConfig.attrs.{something} = {value};` defined in :file:`flake.nix.old`,
 add :samp:`{something} = {value};` to your :file:`ioc.nix` file.
 
+If you used ``applications.apps``,
+see :ref:`external-apps`.
+
 Checks
 ^^^^^^
 
-For each :file:`checks.old/{check}.nix` file directory,
+For each :file:`checks.old/{check}.nix` file,
 take the new :file:`checks/simple.nix` as a base and:
 
+- replace ``myIoc`` with your the name of your IOC
+- make sure the name of your :samp:`systemd.services.{myIoc}` in :file:`checks.old/{check.nix}`
+  corresponds to :samp:`services.iocs.{myIoc}` in your new check
+- set your ``iocBoot`` directory by setting :nix:option:`services.iocs.<name>.workingDirectory`
 - copy the ``testScript`` from your old check into the new one
-- if you made changes to ``nodes`` or ``nodes.machine``,
-  add them to the new check
+- if you made changes to ``nodes`` or ``nodes.machine`` in your old check,
+  add them to the new one
+
+.. _external-apps:
 
 External apps (IEE)
 -------------------
@@ -116,8 +125,7 @@ If you defined external apps in :file:`flake.nix.old` such as this:
      "inputs.exampleApp"
    ];
 
-You will need to copy them manually in :file:`ioc.nix`.
-
+You need to copy them manually in :file:`ioc.nix`.
 
 To do this,
 make sure you've re-added :samp:`inputs.{example}App` to your new :file:`flake.nix`,
