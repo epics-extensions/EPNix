@@ -8,10 +8,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     flake-utils.url = "github:numtide/flake-utils";
-    poetry2nix = {
-      url = "github:nix-community/poetry2nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     sphinxcontrib-nixdomain = {
       url = "github:minijackson/sphinxcontrib-nixdomain";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -32,7 +28,6 @@
         overlays = [
           overlay
           inputs.bash-lib.overlay
-          inputs.poetry2nix.overlays.default
           inputs.sphinxcontrib-nixdomain.overlays.default
         ];
       };
