@@ -23,19 +23,6 @@ in
           aioca = final.callPackage ./epnix/python-modules/aioca/default.nix {};
           epicsdbbuilder = final.callPackage ./epnix/python-modules/epicsdbbuilder {};
           softioc = final.callPackage ./epnix/python-modules/softioc {};
-
-          # epicscorelibs needs at least 2.11.
-          # TODO: remove for NixOS 24.11
-          setuptools-dso = prev.setuptools-dso.overrideAttrs (old:
-            final.lib.optionalAttrs (final.lib.versionOlder old.version "2.11") rec {
-              name = "${old.pname}-${version}";
-              version = "2.11";
-
-              src = old.src.override {
-                inherit version;
-                hash = "sha256-lT5mp0TiHbvkrXPiK5/uLke65znya8Y6s3RzpFuXVFY=";
-              };
-            });
         })
       ];
 
