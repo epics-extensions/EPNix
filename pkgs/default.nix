@@ -7,7 +7,7 @@ in
   recurseIntoAttrs {
     inherit epnixLib;
 
-    mkEpicsPackage = callPackage ./build-support/mk-epics-package.nix {};
+    mkEpicsPackage = callPackage ./build-support/mk-epics-package {};
 
     pythonPackagesExtensions =
       prev.pythonPackagesExtensions
@@ -47,6 +47,8 @@ in
         hash = "sha256-QWScmCEaG0F6OW6LPCaFur4W57oRl822p7wpzbYhOuA=";
       };
       epics-base = self.epics-base7;
+
+      epicsSetupHook = callPackage ./build-support/epics-setup-hook {};
 
       # EPICS support modules
 
