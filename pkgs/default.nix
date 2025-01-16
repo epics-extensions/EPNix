@@ -113,7 +113,6 @@ in
 
       # Other utilities
 
-      mariadb_jdbc = callPackage ./epnix/tools/mariadb_jdbc {};
       # Needed by support/opcua
       open62541_1_3 = callPackage ./epnix/tools/open62541_1_3 {};
 
