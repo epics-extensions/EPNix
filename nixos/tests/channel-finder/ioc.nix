@@ -1,13 +1,13 @@
-{pkgs, ...}: {
-  epnix = {
-    meta.name = "channel-finder-test-ioc";
-    buildConfig.src = ./ioc;
+{
+  mkEpicsPackage,
+  epnix,
+}:
+mkEpicsPackage {
+  pname = "channel-finder-test-ioc";
+  version = "0.0.1";
+  varname = "CHANNEL_FINDER_TEST_IOC";
 
-    support.modules = [pkgs.epnix.support.reccaster];
+  src = ./ioc;
 
-    nixos.services.ioc = {
-      app = "simple";
-      ioc = "iocSimple";
-    };
-  };
+  propagatedBuildInputs = [epnix.support.reccaster];
 }
