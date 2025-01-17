@@ -4,9 +4,10 @@
   writers,
   epnixLib,
 }: let
-  stable = "nixos-24.05";
+  stable = "nixos-24.11";
   versions = [
     "dev"
+    "nixos-24.11"
     "nixos-24.05"
   ];
   baseurl = "https://epics-extensions.github.io/EPNix";

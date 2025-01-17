@@ -4,9 +4,10 @@ on:
   # Allows running this workflow manually
   workflow_dispatch:
   push:
-    branches:
-      - master
-      - nixos-24.05
+    # The book must be built from only the master branch,
+    # in order to have a single file that defines the build,
+    # and not 3+ 'book-gh-pages.yml' files on each branch which must be the same.
+    branches: [master]
 
 permissions:
   contents: read
@@ -37,6 +38,11 @@ jobs:
         with:
           ref: master
           path: dev
+          persist-credentials: false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: nixos-24.11
+          path: nixos-24.11
           persist-credentials: false
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
