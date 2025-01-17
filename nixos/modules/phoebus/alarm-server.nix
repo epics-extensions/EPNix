@@ -55,16 +55,32 @@ in {
         freeformType = settingsFormat.type;
         options = {
           "org.phoebus.pv.ca/addr_list" = lib.mkOption {
-            description = "Channel Access address list";
+            description = ''
+              Channel Access address list.
+
+              Use `lib.mkForce` to override values from {nix:option}`environment.epics.ca_addr_list`.
+            '';
             type = with lib.types; listOf str;
-            default = [];
+            defaultText = lib.literalExpression ''
+              if config.environment.epics.enable
+              then config.environment.epics.ca_addr_list
+              else [];
+            '';
             apply = lib.concatStringsSep " ";
           };
 
           "org.phoebus.pv.ca/auto_addr_list" = lib.mkOption {
-            description = "Derive the CA address list from the available network interfaces";
+            description = ''
+              Derive the CA address list from the available network interfaces.
+
+              Use `lib.mkForce` to override values from {nix:option}`environment.epics.ca_auto_addr_list`.
+            '';
             type = lib.types.bool;
-            default = true;
+            defaultText = lib.literalExpression ''
+              if config.environment.epics.enable
+              then config.environment.epics.ca_auto_addr_list
+              else [];
+            '';
             apply = lib.boolToString;
           };
 
@@ -163,6 +179,17 @@ in {
         message = "Phoebus Alarm Server doesn't support multiple topics, yet";
       }
     ];
+
+    services.phoebus-alarm-server.settings = {
+      "org.phoebus.pv.ca/addr_list" =
+        if config.environment.epics.enable
+        then config.environment.epics.ca_addr_list
+        else [];
+      "org.phoebus.pv.ca/auto_addr_list" =
+        if config.environment.epics.enable
+        then config.environment.epics.ca_auto_addr_list
+        else true;
+    };
 
     environment = {
       etc."${configLocation}".source = configFile;
