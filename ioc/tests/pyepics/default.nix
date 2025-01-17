@@ -1,5 +1,5 @@
 {pkgs, ...}: let
-  inherit (pkgs) epnixLib lib;
+  inherit (pkgs) epnixLib;
 in {
   name = "pytest";
   meta.maintainers = with epnixLib.maintainers; [minijackson];
@@ -17,30 +17,32 @@ in {
   };
 
   testScript = let
-    python = lib.getExe (pkgs.python3.withPackages (p: [p.pyepics]));
-    iocTestScript = pkgs.writeText "iocTestScript.py" ''
-      import os
+    iocTestScript =
+      pkgs.writers.writePython3 "iocTestScript.py" {
+        libraries = [pkgs.python3Packages.pyepics];
+      } ''
+        import os
 
-      import epics
+        import epics
 
-      os.environ["EPICS_CA_AUTO_ADDR_LIST"] = "NO"
-      os.environ["EPICS_CA_ADDR_LIST"] = "localhost"
+        os.environ["EPICS_CA_AUTO_ADDR_LIST"] = "NO"
+        os.environ["EPICS_CA_ADDR_LIST"] = "localhost"
 
-      stringout = epics.PV("STRINGOUT")
+        stringout = epics.PV("STRINGOUT")
 
-      assert epics.caget("AI") == 0
-      assert stringout.get() == ""
+        assert epics.caget("AI") == 0
+        assert stringout.get() == ""
 
-      assert epics.caput("AI", 42.0, wait=True) == 1
-      assert stringout.put("hello", wait=True) == 1
+        assert epics.caput("AI", 42.0, wait=True) == 1
+        assert stringout.put("hello", wait=True) == 1
 
-      assert epics.caget("AI") == 42
-      assert stringout.get() == "hello"
-    '';
+        assert epics.caget("AI") == 42
+        assert stringout.get() == "hello"
+      '';
   in ''
     start_all()
     ioc.wait_for_unit("ioc.service")
 
-    print(ioc.succeed("${python} ${iocTestScript}"))
+    print(ioc.succeed("${iocTestScript}"))
   '';
 }
