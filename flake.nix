@@ -51,25 +51,14 @@
         // (import ./ioc/tests {inherit nixpkgs pkgs self system;})
         // (import ./nixos/tests/all-tests.nix {inherit nixpkgs pkgs self system;});
 
-      devShells.default = pkgs.epnixLib.mkEpnixDevShell {
-        nixpkgsConfig.system = system;
-        epnixConfig.epnix = {
-          meta.name = "epnix";
-          buildConfig.src = pkgs.emptyDirectory;
-          devShell.packages = [
-            {
-              package = pkgs.poetry;
-              category = "development tools";
-            }
-            {
-              package = pkgs.vale;
-              category = "development tools";
-            }
-          ];
-          devShell.attrs.inputsFrom = [
-            pkgs.epnix.docs
-          ];
-        };
+      devShells.default = pkgs.mkShell {
+        packages = [
+          pkgs.epnix.epics-base
+          pkgs.vale
+        ];
+        inputsFrom = [
+          pkgs.epnix.docs
+        ];
       };
     };
   in
