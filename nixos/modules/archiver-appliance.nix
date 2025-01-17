@@ -205,19 +205,6 @@ in {
             default = "/arch/lts/ArchiverStore";
           };
 
-          EPICS_CA_AUTO_ADDR_LIST = lib.mkOption {
-            description = ''
-              If set,
-              behave as if every broadcast address of every network interface is added to `EPICS_CA_ADDR_LIST`.
-            '';
-            type = lib.types.bool;
-            default = true;
-            apply = b:
-              if b
-              then "YES"
-              else "NO";
-          };
-
           EPICS_CA_ADDR_LIST = lib.mkOption {
             description = ''
               List of Channel Access destination IP addresses.
@@ -225,12 +212,35 @@ in {
               Each IP address can be a unicast address,
               or a broadcast address.
 
-              This option is ignored of `EPICS_CA_AUTO_ADDR_LIST` is enabled (the default).
+              Use `lib.mkForce` to override values from {nix:option}`environment.epics.ca_addr_list`.
             '';
             type = with lib.types; listOf str;
-            default = [];
+            defaultText = lib.literalExpression ''
+              if config.environment.epics.enable
+              then config.environment.epics.ca_addr_list
+              else [];
+            '';
             # Separated by spaces
             apply = toString;
+          };
+
+          EPICS_CA_AUTO_ADDR_LIST = lib.mkOption {
+            description = ''
+              If set,
+              behave as if every broadcast address of every network interface is added to `EPICS_CA_ADDR_LIST`.
+
+              Use `lib.mkForce` to override values from {nix:option}`environment.epics.ca_auto_addr_list`.
+            '';
+            type = lib.types.bool;
+            defaultText = lib.literalExpression ''
+              if config.environment.epics.enable
+              then config.environment.epics.ca_auto_addr_list
+              else [];
+            '';
+            apply = b:
+              if b
+              then "YES"
+              else "NO";
           };
         };
       };
@@ -282,7 +292,17 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    services.archiver-appliance.settings.CATALINA_OUT_CMD = "cat";
+    services.archiver-appliance.settings = {
+      CATALINA_OUT_CMD = "cat";
+      EPICS_CA_ADDR_LIST =
+        if config.environment.epics.enable
+        then config.environment.epics.ca_addr_list
+        else [];
+      EPICS_CA_AUTO_ADDR_LIST =
+        if config.environment.epics.enable
+        then config.environment.epics.ca_auto_addr_list
+        else true;
+    };
 
     services.tomcat = {
       enable = true;
