@@ -108,4 +108,13 @@ This documentation follows the `Diátaxis`_ documentation framework.
 
    release-notes/*
 
+.. toctree::
+   :caption: EPNix development
+   :hidden:
+   :titlesonly:
+   :glob:
+   :reversed:
+
+   development/guides/index
+
 .. TODO: link an index to Nix options and packages
