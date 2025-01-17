@@ -17,6 +17,10 @@
       };
 
       environment.systemPackages = [pkgs.epnix.epics-base];
+      environment.epics = {
+        ca_addr_list = ["localhost"];
+        ca_auto_addr_list = false;
+      };
 
       networking.firewall.allowedTCPPorts = [5064];
       networking.firewall.allowedUDPPorts = [5064];
@@ -37,6 +41,11 @@
           mts.location = "/tmp/mts";
           lts.location = "/tmp/lts";
         };
+      };
+
+      environment.epics = {
+        ca_addr_list = ["ioc"];
+        ca_auto_addr_list = false;
       };
 
       networking.firewall.allowedTCPPorts = [8080];

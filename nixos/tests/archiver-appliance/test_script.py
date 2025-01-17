@@ -10,9 +10,7 @@ JSON = str | int | float | bool | None | Dict[str, Any] | List[Any]
 def get(uri: str):
     return json.loads(
         server.succeed(
-            "curl -sSf "
-            "-H 'Accept: application/json' "
-            f"'http://localhost:8080{uri}'"
+            f"curl -sSf -H 'Accept: application/json' 'http://localhost:8080{uri}'"
         )
     )
 
@@ -45,11 +43,7 @@ def get_data(pv_name: str) -> List[Dict[str, Any]]:
 
 
 def caput(pv_name: str, value: str):
-    ioc.succeed(
-        "EPICS_CA_AUTO_ADDR_LIST=NO "
-        "EPICS_CA_ADDR_LIST=localhost "
-        f"caput '{pv_name}' '{value}'"
-    )
+    ioc.succeed(f"caput '{pv_name}' '{value}'")
 
 
 start_all()
@@ -108,16 +102,15 @@ with subtest("aiExample"):
                 expected_val = previous_val + 1
 
             assert value == expected_val, "inconsistent archiving of aiExample"
-            assert data[i]["severity"] == alarm(
-                value
-            ), "incoherent severity of the aiExample alarm"
+            assert data[i]["severity"] == alarm(value), (
+                "incoherent severity of the aiExample alarm"
+            )
 
             previous_val = value
 
     with subtest("csv of aiExample is valid"):
         csv_content = server.succeed(
-            "curl -sSf "
-            "'http://localhost:8080/retrieval/data/getData.csv?pv=aiExample'"
+            "curl -sSf 'http://localhost:8080/retrieval/data/getData.csv?pv=aiExample'"
         )
 
         csv_lines = csv_content.split("\n")
@@ -126,21 +119,21 @@ with subtest("aiExample"):
         for i in range(5):
             cols = csv_lines[i].split(",")
 
-            assert (
-                int(cols[0]) == data[i]["secs"]
-            ), "secs CSV value incoherent with JSON"
-            assert (
-                float(cols[1]) == data[i]["val"]
-            ), "val CSV value incoherent with JSON"
-            assert (
-                int(cols[2]) == data[i]["severity"]
-            ), "severity CSV value incoherent with JSON"
-            assert (
-                int(cols[3]) == data[i]["status"]
-            ), "status CSV value incoherent with JSON"
-            assert (
-                int(cols[4]) == data[i]["nanos"]
-            ), "nanos CSV value incoherent with JSON"
+            assert int(cols[0]) == data[i]["secs"], (
+                "secs CSV value incoherent with JSON"
+            )
+            assert float(cols[1]) == data[i]["val"], (
+                "val CSV value incoherent with JSON"
+            )
+            assert int(cols[2]) == data[i]["severity"], (
+                "severity CSV value incoherent with JSON"
+            )
+            assert int(cols[3]) == data[i]["status"], (
+                "status CSV value incoherent with JSON"
+            )
+            assert int(cols[4]) == data[i]["nanos"], (
+                "nanos CSV value incoherent with JSON"
+            )
 
 with subtest("static records"):
     with subtest("wait until static is being archived"):
@@ -172,12 +165,12 @@ with subtest("ADEL field"):
 
     with subtest("staticDeadband should have 1 value"):
         data = get_data("staticDeadband")
-        assert (
-            len(data) == 1
-        ), "only the first datapoint should have been archived for 'staticDeadband'"
-        assert (
-            data[0]["val"] == 0
-        ), "the first datapoint for 'staticDeadband' is incorrect"
+        assert len(data) == 1, (
+            "only the first datapoint should have been archived for 'staticDeadband'"
+        )
+        assert data[0]["val"] == 0, (
+            "the first datapoint for 'staticDeadband' is incorrect"
+        )
 
     with subtest("we can change the value of staticDeadband within the deadband"):
         caput("staticDeadband", "1")
@@ -187,9 +180,9 @@ with subtest("ADEL field"):
 
     with subtest("change of staticDead is not visible in the archiver"):
         data = get_data("staticDeadband")
-        assert (
-            len(data) == 1
-        ), "no additional data should have been archived for 'staticDeadband'"
+        assert len(data) == 1, (
+            "no additional data should have been archived for 'staticDeadband'"
+        )
 
     caput("staticDeadband", "10")
 
@@ -202,9 +195,9 @@ with subtest("ADEL field"):
 
         retry(static_deadband_has_more_data)
         assert len(data) == 2, "staticDeadband should have two datapoints"
-        assert (
-            data[1]["val"] == 10
-        ), "staticDeadband's additional datapoint should be 10"
+        assert data[1]["val"] == 10, (
+            "staticDeadband's additional datapoint should be 10"
+        )
 
 with subtest("static processed record"):
     with subtest("wait until staticProcessed is being archived"):
@@ -223,9 +216,9 @@ with subtest("static processed record"):
 
         mean_delay = delay_sum / 5
 
-        assert (
-            round(mean_delay) == 1
-        ), "staticProcessed should be processed every second"
+        assert round(mean_delay) == 1, (
+            "staticProcessed should be processed every second"
+        )
 
 with subtest("waveform record"):
     with subtest("wait until staticDeadband is being archived"):
@@ -246,9 +239,9 @@ with subtest("waveform record"):
         assert data[0]["val"] == ["1,2,3,4,5"], "waveform datapoint is incorrect"
 
 with subtest("non existing record"):
-    assert (
-        pv_status("nonExisting")[0]["status"] != "Being archived"
-    ), "nonExisting record shouldn't be archived"
+    assert pv_status("nonExisting")[0]["status"] != "Being archived", (
+        "nonExisting record shouldn't be archived"
+    )
 
     never_connected_pvs = get("/mgmt/bpl/getNeverConnectedPVs")
 
@@ -260,17 +253,17 @@ with subtest("manual sampling period"):
         retry(lambda _: check_pv_archived("calcExample"))
 
     # Somehow these ones has capital P
-    assert (
-        pv_status("calcExample")[0]["samplingPeriod"] == "2.0"
-    ), "wrong sampling period returned in status"
+    assert pv_status("calcExample")[0]["samplingPeriod"] == "2.0", (
+        "wrong sampling period returned in status"
+    )
 
     pv_type_info = get("/mgmt/bpl/getPVTypeInfo?pv=calcExample")
-    assert (
-        pv_type_info["samplingMethod"] == "SCAN"
-    ), "wrong sampling method returned in type info"
-    assert (
-        pv_type_info["samplingPeriod"] == "2.0"
-    ), "wrong sampling period returned in type info"
+    assert pv_type_info["samplingMethod"] == "SCAN", (
+        "wrong sampling method returned in type info"
+    )
+    assert pv_type_info["samplingPeriod"] == "2.0", (
+        "wrong sampling period returned in type info"
+    )
 
     with subtest("json of calcExample is valid"):
         data = get_data("calcExample")
