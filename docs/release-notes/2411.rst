@@ -19,6 +19,12 @@ Breaking changes
   due to its license.
   Migrate your data by following :ref:`mongodb-to-ferretdb`.
 
+New features
+------------
+
+- A new module :nix:option:`programs.phoebus-client` was added
+  to install Phoebus and set up Java options.
+
 Detailed migration information
 ------------------------------
 
