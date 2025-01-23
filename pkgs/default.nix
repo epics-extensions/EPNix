@@ -94,7 +94,8 @@ in
 
       pcas = callPackage ./epnix/tools/pcas {};
 
-      phoebus = callPackage ./epnix/tools/phoebus/client {
+      phoebus = callPackage ./epnix/tools/phoebus/client {};
+      phoebus-unwrapped = callPackage ./epnix/tools/phoebus/client-unwrapped {
         jdk = prev.jdk21;
         openjfx = prev.openjfx21;
       };
