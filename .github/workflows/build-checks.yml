@@ -28,6 +28,8 @@ jobs:
     name: ${{ matrix.name }} (${{ matrix.system }})
     needs: nix-matrix
     runs-on: ${{ matrix.os }}
+    permissions:
+      actions: write
     env:
       CHECK_ATTR: ${{ matrix.attr }}
     strategy:
@@ -36,8 +38,22 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           persist-credentials: false
-      - uses: cachix/install-nix-action@3715ab1a11cac9e991980d7b4a28d80c7ebdd8f9 # v27
-      - uses: DeterminateSystems/magic-nix-cache-action@87b14cf437d03d37989d87f0fa5ce4f5dc1a330b # v8
+      - run: |
+          # Enable KVM on Linux so NixOS tests can run.
+          # Do this early in the process so nix installation detects the KVM feature.
+          enable_kvm() {
+            echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-install-nix-action-kvm.rules
+            sudo udevadm control --reload-rules && sudo udevadm trigger --name-match=kvm
+          }
+          if [[ "$OSTYPE" =~ linux* ]]; then
+            enable_kvm && echo 'Enabled KVM' || echo 'KVM is not available'
+          fi
+      - uses: nixbuild/nix-quick-install-action@25aff27c252e0c8cdda3264805f7b6bcd92c8718 # v29
+      - uses: nix-community/cache-nix-action@8351fb9f51c580c96c509987ebb99e38aed956ce # v5.2.1
         with:
-          diagnostic-endpoint: ""
+          primary-key: build-${{ runner.os }}-${{ matrix.name }}-${{ hashFiles('.github/workflows/build-checks.yml', 'flake.lock') }}
+          purge: true
+          purge-last-accessed: 2629800 # 1 month
+          purge-prefixes: build-${{ runner.os }}-${{ matrix.name }}-
+          purge-primary-key: never
       - run: nix build -L ".#${CHECK_ATTR}"
