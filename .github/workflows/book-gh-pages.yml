@@ -50,8 +50,14 @@ jobs:
           path: nixos-24.05
           persist-credentials: false
 
-      - uses: cachix/install-nix-action@3715ab1a11cac9e991980d7b4a28d80c7ebdd8f9 # v27
-      - uses: DeterminateSystems/magic-nix-cache-action@87b14cf437d03d37989d87f0fa5ce4f5dc1a330b # v8
+      - uses: nixbuild/nix-quick-install-action@25aff27c252e0c8cdda3264805f7b6bcd92c8718 # v29
+      - uses: nix-community/cache-nix-action@8351fb9f51c580c96c509987ebb99e38aed956ce # v5.2.1
+        with:
+          primary-key: build-docs-${{ hashFiles('.github/workflows/book-gh-pages.yml', 'flake.lock') }}
+          purge: true
+          purge-last-accessed: 2629800 # 1 month
+          purge-prefixes: build-docs-
+          purge-primary-key: never
 
       - name: "Build documentation books"
         run: |
