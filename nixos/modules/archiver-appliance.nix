@@ -288,7 +288,7 @@ in {
 
         # We use the mariadb connecter, since it supports UNIX socket connection,
         # which allows us not not store the password in plaintext in the config.
-        "${pkgs.epnix.mariadb_jdbc}/share/java/mariadb-java-client.jar"
+        "${pkgs.mariadb-connector-java}/share/java/mariadb-java-client.jar"
 
         # Dependencies of the mariadb connector, for UNIX sockets:
         "${pkgs.jna}/share/java/jna.jar"
