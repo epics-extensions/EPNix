@@ -460,6 +460,10 @@
    "jar": "sha256-sQyiSpcycDW/4votddHP+ngVHQg3710C/78ZAbsObWw=",
    "pom": "sha256-aB+BaHnt/rA3qiG6N3IwL/8Qb+LuQb8iFyEJPIgEGOU="
   },
+  "com/lmax#disruptor/3.4.4": {
+   "jar": "sha256-FSTtMfE7yr7hthRuZ74wxjF8uU/NDHwvfHofPoIIfFE=",
+   "pom": "sha256-34QNrLNYveyOnBZAlyHksOsFJGF9QkJt9yg3b8WHQi8="
+  },
   "com/opencsv#opencsv/5.7.1": {
    "jar": "sha256-0Fp70l/WK/J4A9cbgPmK0tkpQgByZIwJom1FNE0l1rg=",
    "pom": "sha256-ZDoromrncLYhUUSIOl/OR1eldCA1jkQl0f7Hk4nckfQ="

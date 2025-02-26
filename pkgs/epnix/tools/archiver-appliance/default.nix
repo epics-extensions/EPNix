@@ -13,13 +13,13 @@
 }:
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "archiver-appliance";
-  version = "2.0.5";
+  version = "2.0.7";
 
   src = fetchFromGitHub {
     owner = "archiver-appliance";
     repo = "epicsarchiverap";
     rev = finalAttrs.version;
-    hash = "sha256-X1q87+3QZaNv4bY9UjTEEr0Jrv9AEIezhygI9jgNay0=";
+    hash = "sha256-USOeIHryVi7JqU1rHnR2JHMyLMXR7FP1YdImfhoPiao=";
   };
 
   patches = [
@@ -61,7 +61,8 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     runHook preInstall
 
     install -Dt $out/webapps build/libs/{retrieval,engine,etl,mgmt}.war
-    install --mode=644 -Dt $out/share/doc/archappl LICENSE NOTICE
+    mkdir -p $out/share/doc/archappl
+    cp -r LICENSE LICENCES $out/share/doc/archappl
 
     install --mode=644 -Dt $out/share/archappl/sql src/main/org/epics/archiverappliance/config/persistence/*.sql
     install -Dt $out/share/archappl/ src/sitespecific/tests/classpathfiles/policies.py
