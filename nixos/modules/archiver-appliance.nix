@@ -284,6 +284,12 @@ in {
     services.tomcat = {
       enable = true;
 
+      # Needed to purge old configurations on upgrades,
+      # such as old `commonLibs`
+      # and also `webapps` which are extracted,
+      # but wouldn't change when updated.
+      purifyOnStart = true;
+
       webapps = [cfg.package];
 
       extraConfigFiles = [
