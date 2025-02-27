@@ -10,6 +10,7 @@
   tomcat9,
   python3Packages,
   python3,
+  sitespecific ? ./sitespecific/epnix,
 }:
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "archiver-appliance";
@@ -55,7 +56,15 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   # Some PV tests fail
   #doCheck = true;
 
-  TOMCAT_HOME = "${tomcat9}";
+  env = {
+    ARCHAPPL_SITEID = "epnix";
+    TOMCAT_HOME = "${tomcat9}";
+  };
+
+  postPatch = ''
+    echo "Copying sitespecific directory"
+    cp -rT ${sitespecific} src/sitespecific/epnix
+  '';
 
   installPhase = ''
     runHook preInstall
