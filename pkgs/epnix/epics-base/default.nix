@@ -4,7 +4,7 @@
   epnixLib,
   buildPackages,
   mkEpicsPackage,
-  fetchgit,
+  fetchFromGitHub,
   version,
   hash,
   local_config_site ? {},
@@ -29,10 +29,12 @@ in
 
     isEpicsBase = true;
 
-    src = fetchgit {
-      url = "https://git.launchpad.net/epics-base";
-      rev = "R${version}";
+    src = fetchFromGitHub {
+      owner = "epics-base";
+      repo = "epics-base";
+      tag = "R${version}";
       inherit hash;
+      fetchSubmodules = true;
     };
 
     patches = optionals (older "7.0.5") [
