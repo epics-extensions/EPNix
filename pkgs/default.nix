@@ -39,8 +39,8 @@ in
       # EPICS base
 
       epics-base7 = callPackage ./epnix/epics-base {
-        version = "7.0.8.1";
-        hash = "sha256-JDSMBwBLZj9aaxJHGg0QmZ1zYTSY8J7+ZGihAwEuz3w=";
+        version = "7.0.9";
+        hash = "sha256-RPlJhh7ORobYlM7gq6uDZkrO5z579Q7hyLEQ1xiHvFY=";
       };
       epics-base3 = callPackage ./epnix/epics-base {
         version = "3.15.9";
