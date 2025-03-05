@@ -4,8 +4,7 @@
   epnixLib,
   buildPackages,
   mkEpicsPackage,
-  fetchgit,
-  fetchpatch,
+  fetchFromGitHub,
   version,
   hash,
   local_config_site ? {},
@@ -13,7 +12,6 @@
 }:
 with lib; let
   older = versionOlder version;
-  atLeast = versionAtLeast version;
 
   generateConf = (epnixLib.formats.make {}).generate;
 
@@ -31,10 +29,12 @@ in
 
     isEpicsBase = true;
 
-    src = fetchgit {
-      url = "https://git.launchpad.net/epics-base";
-      rev = "R${version}";
+    src = fetchFromGitHub {
+      owner = "epics-base";
+      repo = "epics-base";
+      tag = "R${version}";
       inherit hash;
+      fetchSubmodules = true;
     };
 
     patches = optionals (older "7.0.5") [
@@ -135,16 +135,6 @@ in
 
     # TODO: Some tests fail
     doCheck = false;
-
-    # _FORTIFY_SOURCE=3 detects a false-positive buffer overflow in some cases:
-    #     *** buffer overflow detected ***: terminated
-    #
-    # EPICS automatically falls back to _FORTIFY_SOURCE=2 since 7.0.8.1, but this doesn't work in
-    # the nix build.
-    # Being tracked in https://github.com/epics-base/epics-base/issues/514, hopefully with a fix
-    # in EPICS 7.0.9
-
-    hardeningDisable = ["fortify3"];
 
     meta = {
       description = "The Experimental Physics and Industrial Control System";
