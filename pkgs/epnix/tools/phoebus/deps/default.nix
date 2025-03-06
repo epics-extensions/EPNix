@@ -32,7 +32,7 @@ stdenv.mkDerivation {
   buildPhase = ''
     runHook preBuild
 
-    mvn package -Dmaven.javadoc.skip=true -Dmaven.source.skip=true -DskipTests -Dmaven.repo.local=$out
+    mvn package -Dmaven.javadoc.skip=true -Dmaven.source.skip=true -Dmaven.test.skip -Dmaven.repo.local=$out
 
     runHook postBuild
   '';

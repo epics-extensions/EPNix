@@ -27,7 +27,7 @@ in
         --projects "./services/alarm-logger" \
         --also-make \
         --offline \
-        -Dmaven.javadoc.skip=true -Dmaven.source.skip=true -DskipTests \
+        -Dmaven.javadoc.skip=true -Dmaven.source.skip=true -Dmaven.test.skip \
         -Dproject.build.outputTimestamp=${buildDate} \
         -Dmaven.repo.local="$deps"
 
