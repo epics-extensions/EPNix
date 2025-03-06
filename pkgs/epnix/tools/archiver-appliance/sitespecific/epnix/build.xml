@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="epnix" default="updateui">
+	<property name="site" value="EPNix"/>
+	<target name="echo">
+		<echo message="From within the site specific build for ${archapplsite}."/>
+		<echo message="${site} SITE ID : ${archapplsite}" />
+		<echo message="${site} : STAGE_FOLDER - ${stage}" />
+		<echo message="${site} : Classes folder - ${classes}" />
+	</target>
+	<target name="updateui" depends="updateTemplate">
+		<echo message="${site} : ${site} image files to STAGE_FOLDER/org/epics/archiverappliance/staticcontent/img" />
+		<copy todir="${stage}/org/epics/archiverappliance/staticcontent/img" overwrite="true">
+			<fileset dir="img" />
+		</copy>
+	</target>
+	<target name="updateTemplate" depends="echo">
+		<echo message="${site} : Apply template_changes.html to mgmt to STAGE_FOLDER/org/epics/archiverappliance/staticcontent" />
+		<java classname = "org.epics.archiverappliance.mgmt.bpl.SyncStaticContentHeadersFooters"
+			  fork="true"
+			  failonerror="true" >
+			<classpath path="${classes}" />
+			<arg value="template_changes.html" />
+			<arg value="${stage}/org/epics/archiverappliance/mgmt/staticcontent/"/>
+		</java>
+	</target>
+</project>
