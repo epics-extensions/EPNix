@@ -1,0 +1,20 @@
+default:
+  tags:
+    - nix
+
+variables:
+  NIX_BUILD_FLAGS: "--no-update-lock-file --print-build-logs --show-trace"
+
+before_script:
+  - git config --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@drf-gitlab.cea.fr".insteadOf "ssh://git@drf-gitlab.cea.fr"
+
+build:
+  stage: build
+  script:
+    - nix build $NIX_BUILD_FLAGS
+
+test:
+  stage: test
+  script:
+    - nix flake check $NIX_BUILD_FLAGS
+  dependencies: []
