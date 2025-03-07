@@ -17,6 +17,11 @@ with lib; let
 
     inherit (self.evaluation) evalEpnixModules mkEpnixBuild mkEpnixDevShell;
 
+    # The epnix nixosModules.nixos flake output,
+    # re-exposed in epnixLib,
+    # in case you're not in flake.nix.
+    nixosModule = self.inputs.self.nixosModules.nixos;
+
     # Like lib.getName, but also supports paths
     getName = thing:
       if builtins.isPath thing
