@@ -80,6 +80,35 @@
         };
       };
 
+      # Re-exposed systemd options:
+
+      environment = lib.mkOption {
+        description = "Environment variables passed to the IOC process";
+        type = with lib.types; attrsOf (nullOr (oneOf [str path package]));
+        default = {};
+        example = {
+          EPICS_CA_MAX_ARRAY_BYTES = 10000;
+          AUTOSAVE_DIRECTORY = "/var/lib/epics/myIoc/autosave";
+        };
+      };
+
+      path = lib.mkOption {
+        description = ''
+          Packages added to the service's ``PATH`` environment variable.
+
+          Both the :file:`bin` and :file:`sbin` subdirectories of each package are added.
+        '';
+        type = with lib.types; listOf (oneOf [package str]);
+        default = [];
+        example = lib.literalExpression ''
+          [
+            pkgs.pciutils
+          ]
+        '';
+      };
+
+      # ---
+
       generatedSystemdService = lib.mkOption {
         description = "The generated systemd service.";
         internal = true;
@@ -87,16 +116,20 @@
       };
     };
 
-    config.procServ.options = {
-      foreground = true;
-      oneshot = true;
-      logfile = "-";
-      holdoff = 0;
-      chdir = "${config.package}/${config.workingDirectory}";
+    config = {
+      environment.EPICS_IOCSH_HISTFILE = "/var/lib/epics/${name}/iocsh_history";
+
+      procServ.options = {
+        foreground = true;
+        oneshot = true;
+        logfile = "-";
+        holdoff = 0;
+        chdir = "${config.package}/${config.workingDirectory}";
+      };
     };
 
     config.generatedSystemdService = {
-      inherit (config) description;
+      inherit (config) description environment path;
 
       wantedBy = lib.mkIf config.enable (lib.mkDefault ["multi-user.target"]);
 
@@ -121,6 +154,7 @@
         '';
 
         DynamicUser = true;
+        StateDirectory = ["epics/${name}"];
       };
     };
   };
