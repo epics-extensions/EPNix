@@ -177,11 +177,20 @@ in {
     '';
   };
 
-  config.systemd.services =
-    lib.mapAttrs'
-    (_name: iocCfg: {
-      inherit (iocCfg) name;
-      value = iocCfg.generatedSystemdService;
-    })
-    config.services.iocs;
+  config = {
+    systemd.services =
+      lib.mapAttrs'
+      (_name: iocCfg: {
+        inherit (iocCfg) name;
+        value = iocCfg.generatedSystemdService;
+      })
+      config.services.iocs;
+
+    # If there's at least one IOC configured,
+    # add telnet to the environment,
+    # to be able to connect to procServ
+    environment.systemPackages = lib.mkIf (config.services.iocs != {}) [
+      pkgs.inetutils
+    ];
+  };
 }
