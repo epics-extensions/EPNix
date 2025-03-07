@@ -4,6 +4,8 @@
   pkgs,
   ...
 }: let
+  cfg = config.services.iocs;
+
   iocSubmodule = {
     name,
     config,
@@ -114,6 +116,12 @@
         internal = true;
         type = lib.types.attrs;
       };
+
+      generatedTelnetScript = lib.mkOption {
+        description = "The generated telnet script package.";
+        internal = true;
+        type = lib.types.package;
+      };
     };
 
     config = {
@@ -126,35 +134,43 @@
         holdoff = 0;
         chdir = "${config.package}/${config.workingDirectory}";
       };
-    };
 
-    config.generatedSystemdService = {
-      inherit (config) description environment path;
+      generatedSystemdService = {
+        inherit (config) description environment path;
 
-      wantedBy = lib.mkIf config.enable (lib.mkDefault ["multi-user.target"]);
+        wantedBy = lib.mkIf config.enable (lib.mkDefault ["multi-user.target"]);
 
-      # When initializing the IOC, PV Access looks for network interfaces that
-      # have IP addresses. "network.target" may be too early, especially for
-      # systems with DHCP.
-      wants = lib.mkDefault ["network-online.target"];
-      after = lib.mkDefault ["network-online.target"];
+        # When initializing the IOC, PV Access looks for network interfaces that
+        # have IP addresses. "network.target" may be too early, especially for
+        # systems with DHCP.
+        wants = lib.mkDefault ["network-online.target"];
+        after = lib.mkDefault ["network-online.target"];
 
-      # Enable indefinite restarts
-      unitConfig.StartLimitIntervalSec = lib.mkDefault "0";
+        # Enable indefinite restarts
+        unitConfig.StartLimitIntervalSec = lib.mkDefault "0";
 
-      serviceConfig = {
-        Restart = "always";
-        RestartSec = lib.mkDefault "1s";
-        ExecStart = let
-          procServ = lib.getExe pkgs.epnix.procServ;
-        in ''
-          ${procServ} ${lib.cli.toGNUCommandLineShell {} config.procServ.options} \
-            ${toString config.procServ.port} \
-            ${config.startupScript}
+        serviceConfig = {
+          Restart = "always";
+          RestartSec = lib.mkDefault "1s";
+          ExecStart = let
+            procServ = lib.getExe pkgs.epnix.procServ;
+          in ''
+            ${procServ} ${lib.cli.toGNUCommandLineShell {} config.procServ.options} \
+              ${toString config.procServ.port} \
+              ${config.startupScript}
+          '';
+
+          DynamicUser = true;
+          StateDirectory = ["epics/${name}"];
+        };
+      };
+
+      generatedTelnetScript = pkgs.writeShellApplication {
+        name = "telnet-${name}";
+        runtimeInputs = [pkgs.inetutils];
+        text = ''
+          telnet localhost ${toString config.procServ.port} "$@"
         '';
-
-        DynamicUser = true;
-        StateDirectory = ["epics/${name}"];
       };
     };
   };
@@ -184,13 +200,16 @@ in {
         inherit (iocCfg) name;
         value = iocCfg.generatedSystemdService;
       })
-      config.services.iocs;
+      cfg;
 
-    # If there's at least one IOC configured,
-    # add telnet to the environment,
-    # to be able to connect to procServ
-    environment.systemPackages = lib.mkIf (config.services.iocs != {}) [
-      pkgs.inetutils
+    environment.systemPackages = lib.mkMerge [
+      # If there's at least one IOC configured,
+      # add telnet to the environment,
+      # to be able to connect to procServ
+      (lib.mkIf (cfg != {}) [pkgs.inetutils])
+
+      # The generated telnet scripts
+      (lib.mapAttrsToList (_name: config: config.generatedTelnetScript) cfg)
     ];
   };
 }
