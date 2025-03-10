@@ -34,6 +34,7 @@ extensions = [
     "sphinx.ext.githubpages",
     "sphinx_copybutton",
     "sphinxcontrib_nixdomain",
+    "sphinxcontrib_typstbuilder",
     "sphinxext.opengraph",
 ]
 
@@ -164,6 +165,19 @@ if versions.exists():
         el for el in html_context["versions"] if el["name"] == release
     )
     current_version["current"] = True
+
+# -- Options for Typst output ------------------------------------------------
+# https://minijackson.github.io/sphinxcontrib-typstbuilder/configuration.html
+
+typst_documents = [
+    {
+        "startdocname": "cheatsheet",
+        "targetname": "cheatsheet",
+        "title": "EPNix cheatsheet",
+        "template": "cheatsheet",
+        "metadata": {"release": release, "html_baseurl": html_baseurl},
+    }
+]
 
 # -- Options for Man output --------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-manual-page-output

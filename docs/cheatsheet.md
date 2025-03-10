@@ -1,5 +1,10 @@
 # Cheatsheet
 
+:::{only} html
+You can download the cheatsheet in PDF format here:
+{download}`cheatsheet.pdf`
+:::
+
 See the {doc}`../ioc/tutorials/pre-requisites`
 and the {doc}`../ioc/user-guides/flake-registry` guide
 before getting started.

@@ -162,13 +162,35 @@
         "type": "github"
       }
     },
+    "pyproject-nix_2": {
+      "inputs": {
+        "nixpkgs": [
+          "sphinxcontrib-typstbuilder",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1740921768,
+        "narHash": "sha256-4d27TdYoJ8B99b4kU7qESB4QVjiV9gPSuP2/MDqjDWo=",
+        "owner": "nix-community",
+        "repo": "pyproject.nix",
+        "rev": "ca5d23f044943a23cc4274b2d3dea45682dc025f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "pyproject.nix",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "bash-lib": "bash-lib",
         "flake-utils": "flake-utils_2",
         "nix-github-actions": "nix-github-actions",
         "nixpkgs": "nixpkgs",
-        "sphinxcontrib-nixdomain": "sphinxcontrib-nixdomain"
+        "sphinxcontrib-nixdomain": "sphinxcontrib-nixdomain",
+        "sphinxcontrib-typstbuilder": "sphinxcontrib-typstbuilder"
       }
     },
     "sphinxcontrib-nixdomain": {
@@ -189,6 +211,27 @@
       "original": {
         "owner": "minijackson",
         "repo": "sphinxcontrib-nixdomain",
+        "type": "github"
+      }
+    },
+    "sphinxcontrib-typstbuilder": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "pyproject-nix": "pyproject-nix_2"
+      },
+      "locked": {
+        "lastModified": 1741773288,
+        "narHash": "sha256-VlcjVUntOphqXKuajkeyqdUIU0rKinjDyeHNL3m8UkE=",
+        "owner": "minijackson",
+        "repo": "sphinxcontrib-typstbuilder",
+        "rev": "dae42af4b0c23c360114da1ee24c21409d7976ba",
+        "type": "github"
+      },
+      "original": {
+        "owner": "minijackson",
+        "repo": "sphinxcontrib-typstbuilder",
         "type": "github"
       }
     },
