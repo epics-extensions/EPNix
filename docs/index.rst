@@ -100,6 +100,11 @@ This documentation follows the `Diátaxis`_ documentation framework.
    nixos-services/options-reference/index
 
 .. toctree::
+   :caption: Misc
+
+   cheatsheet
+
+.. toctree::
    :caption: Release notes
    :hidden:
    :titlesonly:
