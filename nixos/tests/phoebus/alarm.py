@@ -49,7 +49,7 @@ def get_alarm() -> dict[str, Any]:
 
 
 def get_logger(uri: str):
-    result_s = client.succeed(f"curl 'http://server:8082{uri}'")
+    result_s = client.succeed(f"curl -sSf 'http://server:8082{uri}'")
     return json.loads(result_s)
 
 
