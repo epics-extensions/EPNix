@@ -186,19 +186,28 @@ with subtest("The data is still here after a server reboot"):
 
     wait_for_boot()
 
-    alarm = get_alarm()
-    assert alarm["current_severity"] == "OK"
-    assert alarm["severity"] == "OK"
+    with subtest("Phoebus alarm server data still coherent after reboot"):
+        alarm = get_alarm()
+        assert alarm["current_severity"] == "OK"
+        assert alarm["severity"] == "OK"
 
-    logger_alarms = get_logger("/search/alarm/pv/ALARM_TEST")
-    logger_alarms.sort(key=lambda event: event.get("time", ""), reverse=True)
-    alarm_states = [
-        alarm for alarm in logger_alarms if alarm["config"].startswith("state:")
-    ]
+    def test_reboot_data(_):
+        logger_alarms = get_logger("/search/alarm/pv/ALARM_TEST")
+        logger_alarms.sort(key=lambda event: event.get("time", ""), reverse=True)
+        alarm_states = [
+            alarm for alarm in logger_alarms if alarm["config"].startswith("state:")
+        ]
 
-    assert alarm_states[2]["current_severity"] == "MAJOR"
-    assert alarm_states[2]["severity"] == "MAJOR"
-    assert alarm_states[2]["value"] == "4.0"
+        if len(alarm_states) < 2:
+            return False
+
+        assert alarm_states[2]["current_severity"] == "MAJOR"
+        assert alarm_states[2]["severity"] == "MAJOR"
+        assert alarm_states[2]["value"] == "4.0"
+        return True
+
+    with subtest("Phoebus alarm logger data still coherent after reboot"):
+        retry(test_reboot_data)
 
 with subtest("Can export alarm configuration"):
     server.succeed(
