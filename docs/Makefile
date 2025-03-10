@@ -8,9 +8,17 @@ SPHINXBUILD   ?= sphinx-build
 SOURCEDIR     = .
 BUILDDIR      = _build
 
+CHEATSHEETDIR = "$(BUILDDIR)/typst/cheatsheet"
+
 # Put it first so that "make" without argument is like "make help".
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+
+cheatsheet: typst
+	typst compile --root "$(SOURCEDIR)" "$(CHEATSHEETDIR)/cheatsheet.typ"
+	cp "$(CHEATSHEETDIR)/cheatsheet.pdf" "$(SOURCEDIR)/"
+
+html: cheatsheet
 
 .PHONY: help Makefile
 
