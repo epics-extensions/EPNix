@@ -19,6 +19,13 @@ def wait_for_boot():
 
         client.wait_for_unit("multi-user.target")
 
+    with subtest("Elasticsearch cluster is healthy"):
+        print(
+            server.succeed(
+                "curl -sSf http://localhost:9200/_cluster/health?wait_for_status=green&timeout=60s"
+            )
+        )
+
     with subtest("Alarm logger is connected to Elasticsearch"):
         status = get_logger("/")
         assert status["elastic"]["status"] == "Connected"
