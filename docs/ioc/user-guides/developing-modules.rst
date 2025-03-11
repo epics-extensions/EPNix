@@ -4,9 +4,9 @@ Developing support modules
 .. TODO: rewrite, not clear enough, probably move most of it into day-to-day tutorial
 
 It can happen that one needs to hack on an EPICS support module,
-while also developing an App.
+while also developing an IOC.
 This might be to develop and test the support module,
-or to patch and test the support module, etc.
+or to patch and test the support module.
 
 This is where Nix’s reproducibility guarantees might seem to be in the way:
 dependencies are taken from the ``/nix/store`` instead of your local repository.
@@ -47,11 +47,14 @@ Using it on your EPICS top
 --------------------------
 
 Before trying to compile your top,
-make sure that your support module is included in the ``support.modules`` option of your EPNix top:
+make sure that your support module is in the build environment:
 
 .. code-block:: nix
+   :caption: :file:`ioc.nix` --- Adding your support module to the build environment
 
-   support.modules = with pkgs.epnix.support; [ mySupport ];
+   propagatedBuildInputs = [
+     epnix.support.mySupport
+   ];
 
 Now that the support module is compiled and installed in a local directory,
 you can ask Nix to use it as is.
