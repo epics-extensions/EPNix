@@ -73,9 +73,7 @@ containing the compilation result.
 Adding StreamDevice to the EPNix environment
 --------------------------------------------
 
-Adding dependencies to the EPNix environment happen inside the ``flake.nix`` file.
-This file is the main entry point for specifying your build environment:
-most Nix commands used here read this file to work.
+Adding dependencies to the EPNix environment happens inside the :file:`ioc.nix` file.
 
 For adding StreamDevice,
 change yours like so:
@@ -83,28 +81,46 @@ change yours like so:
 .. code-block:: diff
    :caption: :file:`flake.nix`
 
-            # Add one of the supported modules here:
-            # ---
-   -        #support.modules = with pkgs.epnix.support; [ StreamDevice mySupportModule ];
-   +        support.modules = with pkgs.epnix.support; [ StreamDevice ];
+      # EPICS support modules can be only in propagatedBuildInputs
+      # --
+      propagatedBuildInputs = [
+   -    #epnix.support.StreamDevice
+   +    epnix.support.StreamDevice
+      ];
 
 Then,
 leave your EPNix development shell by running ``exit``,
 and re-enter it with ``nix develop``.
+Then,
+run ``epicsConfigurePhase``.
 
-Because you modified the support modules,
-run ``eregen-config`` to regenerate ``configure/RELEASE.local``.
+By modifying the dependencies of your package,
+your build environment changed:
+before the change,
+the build environment didn't have StreamDevice installed.
+With this change,
+StreamDevice must be available to build your EPICS top.
+
+Separate from having StreamDevice in the build environment,
+the EPICS build system must know where to find it.
+EPICS uses the :file:`configure/RELEASE` and :file:`configure/RELEASE.local` files
+to find EPICS-specific dependencies,
+often called "EPICS support modules".
+
+During the "configure" phase,
+EPNix automatically generates the :file:`configure/RELEASE.local` file,
+which is why you have to run ``epicsConfigurePhase``.
 
 With this,
 your development shell has StreamDevice available,
-and StreamDevice is also added in the ``RELEASE.local`` file.
+the EPICS build system can find StreamDevice
+by reading the :file:`configure/RELEASE.local` file.
 
 .. tip::
-
    As a rule,
-   each time you edit the ``flake.nix`` file,
+   each time you edit the :file:`ioc.nix` file,
    leave and re-enter your development shell (``exit`` then ``nix develop``),
-   and run ``eregen-config``.
+   and run ``epicsConfigurePhase``.
 
 Adding StreamDevice to your EPICS app
 -------------------------------------
@@ -116,7 +132,6 @@ Change the ``exampleApp/src/Makefile``
 so that your App knows the record types of StreamDevice and its dependencies.
 Also change that file so that it links to the StreamDevice library and its dependencies,
 during compilation.
-For example:
 
 .. code-block:: makefile
    :caption: :file:`exampleApp/src/Makefile`
@@ -236,10 +251,10 @@ you can examine your compiled top under ``./result``.
 
 You can observe that the EPICS build system:
 
--  installs the ``example`` app under ``bin/`` and ``bin/linux-x86_64``,
+-  installs the ``example`` app :file:`bin/linux-x86_64`,
    and links to the correct libraries
--  installs ``example.proto`` and ``example.db`` under ``db/``
--  generates ``example.dbd`` and installs it under ``dbd/``
+-  installs :file:`example.proto` and :file:`example.db` under :file:`db/`
+-  generates :file:`example.dbd` and installs it under :file:`dbd/`
 
 Running your IOC
 ----------------
@@ -286,6 +301,10 @@ This is because Nix re-compiles your IOC from scratch each time.
 If you want a more “traditional” edit / compile / run workflow,
 you can place yourself in the development shell with ``nix develop``,
 and use ``make`` from here.
+
+Make sure to exit and re-enter the development shell
+each time you edit Nix files,
+and re-run ``epicsConfigurePhase``.
 
 Next steps
 ----------
