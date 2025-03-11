@@ -10,13 +10,12 @@ Installing the ``mrfioc2`` EPICS support module
 To use the ``mrfioc2`` module in your EPNix IOC,
 make sure to add the :ref:`pkg-support.mrfioc2` package in your support modules:
 
-.. code-block:: diff
-   :caption: :file:`flake.nix`
+.. code-block:: nix
+   :caption: :file:`ioc.nix` --- Add the mrfioc2 support module to the build environment
 
-            # Add your support modules here:
-            # ---
-   -        #support.modules = with pkgs.epnix.support; [ StreamDevice mySupportModule ];
-   +        support.modules = with pkgs.epnix.support; [ mrfioc2 ];
+   propagatedBuildInputs = [
+     epnix.support.mrfioc2
+   ];
 
 This makes sure that the ``mrfioc2`` is available during compilation.
 
