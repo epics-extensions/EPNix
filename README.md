@@ -46,23 +46,3 @@ The epics-base package has no significant modification compared to the upstream 
 One goal of EPNix is to have as little modification as possible, and upstream what's possible.
 
   [GitHub]: https://github.com/epics-base/epics-base/
-
-## Quick example of an EPNix configuration
-
-``` nix
-epnix = {
-  meta.name = "my-top";
-
-  # You can choose the version of EPICS-base here:
-  # ---
-  epics-base.releaseBranch = "3"; # Defaults to "7"
-
-  # Add one of the supported modules here:
-  # ---
-  support.modules = with pkgs.epnix.support; [ StreamDevice ];
-
-  # You can specify environment variables for your development shell like this:
-  # ---
-  devShell.environment.variables."EPICS_CA_ADDR_LIST" = "localhost";
-};
-```
