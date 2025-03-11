@@ -80,15 +80,12 @@ Adding gtest to the top
 Add :ref:`pkg-support.gtest` to the build environment:
 
 .. code-block:: nix
-   :caption: :file:`flake.nix`: adding the ``gtest`` support module
-   :emphasize-lines: 5
+   :caption: :file:`ioc.nix` --- adding the ``gtest`` support module to the build environment
 
-           # Add one of the supported modules here:
-           # ---
-           support.modules = with pkgs.epnix.support; [
-             # other support modules...
-             gtest
-           ];
+   propagatedBuildInputs = [
+     # other support modules...
+     epnix.support.gtest
+   ];
 
 
 Writing tests
