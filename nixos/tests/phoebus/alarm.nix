@@ -84,6 +84,9 @@
       services.elasticsearch = {
         enable = true;
         package = pkgs.elasticsearch7;
+        extraConf = ''
+          xpack.security.enabled: false
+        '';
       };
 
       nixpkgs.config.allowUnfreePredicate = pkg:
