@@ -1,17 +1,14 @@
 {
+  mkEpicsPackage,
   stdenv,
   lib,
   epnixLib,
   buildPackages,
-  mkEpicsPackage,
   fetchFromGitHub,
   version,
   hash,
-  local_config_site ? {},
-  local_release ? {},
-}:
-with lib; let
-  older = versionOlder version;
+}: let
+  older = lib.versionOlder version;
 
   generateConf = (epnixLib.formats.make {}).generate;
 
@@ -25,8 +22,6 @@ in
     inherit version;
     varname = "EPICS_BASE";
 
-    inherit local_config_site local_release;
-
     isEpicsBase = true;
 
     src = fetchFromGitHub {
@@ -37,17 +32,17 @@ in
       fetchSubmodules = true;
     };
 
-    patches = optionals (older "7.0.5") [
+    patches = lib.optionals (older "7.0.5") [
       # Support "undefine MYVAR" in convertRelease.pl
       # Fixed by commit 79d7ac931502e1c25b247a43b7c4454353ac13a6
       ./handle-make-undefine-variable.patch
     ];
 
-    # "build" as in Nix terminology (the build machine)
-    build_config_site =
-      generateConf
-      (with buildPackages.stdenv;
-        {
+    # Configuration file for how to compile for the build machine.
+    build_config_site = let
+      inherit (buildPackages.stdenv) cc;
+    in
+      generateConf ({
           CC = "${cc.targetPrefix}cc";
           CCC = "${cc.targetPrefix}c++";
           CXX = "${cc.targetPrefix}c++";
@@ -58,16 +53,18 @@ in
 
           ARFLAGS = "rc";
         }
-        // optionalAttrs cc.isClang {
+        // lib.optionalAttrs cc.isClang {
           GNU = "NO";
           CMPLR_CLASS = "clang";
         });
 
-    # "host" as in Nix terminology (the machine which will run the generated code)
-    host_config_site =
-      generateConf
-      (with stdenv;
-        {
+    # Configuration file for how to compile for the "host" machine,
+    # the machine that will run the final code
+    # (what EPICS calls the "target" machine).
+    host_config_site = let
+      inherit (stdenv) cc;
+    in
+      generateConf ({
           CC = "${cc.targetPrefix}cc";
 
           CCC =
@@ -87,12 +84,12 @@ in
 
           COMMANDLINE_LIBRARY = "READLINE_NCURSES";
         }
-        // optionalAttrs cc.isClang {
+        // lib.optionalAttrs cc.isClang {
           GNU = "NO";
           CMPLR_CLASS = "clang";
         });
 
-    preBuild = ''
+    postConfigure = ''
       echo "$build_config_site" > configure/os/CONFIG_SITE.${build_arch}.${build_arch}
       echo "$host_config_site" > configure/os/CONFIG_SITE.${build_arch}.${host_arch}
 
@@ -104,6 +101,7 @@ in
       echo "CONFIG_SITE.${build_arch}.${host_arch}"
       echo "------------------------------"
       cat "configure/os/CONFIG_SITE.${build_arch}.${host_arch}"
+      echo "------------------------------"
     '';
 
     # TODO: removing build platform Perl library actually removes every Perl
@@ -122,7 +120,7 @@ in
           sed -i '/^#/d' "$file"
         done
       ''
-      + (optionalString (stdenv.buildPlatform != stdenv.hostPlatform) ''
+      + (lib.optionalString (stdenv.buildPlatform != stdenv.hostPlatform) ''
         # Remove the build platform pkg-config file, since we are stripping the
         # build platform outputs from the result
         # TODO: the architecture may be differently named in certain cases (e.g. windows)
