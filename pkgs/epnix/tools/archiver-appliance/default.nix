@@ -1,24 +1,26 @@
 {
   stdenvNoCC,
   lib,
+  epnix,
   epnixLib,
   fetchFromGitHub,
   jdk,
-  ant,
-  dos2unix,
+  gradle,
+  sphinx,
   tomcat9,
+  python3Packages,
   python3,
+  sitespecific ? ./sitespecific/epnix,
 }:
-stdenvNoCC.mkDerivation (self: {
+stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "archiver-appliance";
-  version = "1.1.0";
+  version = "2.0.7";
 
   src = fetchFromGitHub {
     owner = "archiver-appliance";
     repo = "epicsarchiverap";
-    rev = self.version;
-    fetchSubmodules = true;
-    hash = "sha256-ezsjqp23BMLpqA6cdd6k0wXhAR1imOm0tyWJUaSWmiA=>";
+    rev = finalAttrs.version;
+    hash = "sha256-USOeIHryVi7JqU1rHnR2JHMyLMXR7FP1YdImfhoPiao=";
   };
 
   patches = [
@@ -27,41 +29,59 @@ stdenvNoCC.mkDerivation (self: {
 
     # Messes up the shebang auto-patching
     ./fix-policies-shebang.patch
+
+    ./fix-docs-build-script.patch
   ];
 
-  nativeBuildInputs = [jdk ant dos2unix];
+  nativeBuildInputs = [
+    jdk
+    gradle
+    sphinx
+    python3Packages.myst-parser
+    python3Packages.sphinx-rtd-theme
+  ];
   buildInputs = [python3];
 
-  TOMCAT_HOME = "${tomcat9}";
+  gradleFlags = [
+    "-PprojVersion=${finalAttrs.version}"
+    "-Dorg.gradle.java.home=${jdk}"
+  ];
 
-  buildPhase = ''
-    runHook preBuild
+  # Update by running `nix build .#archiver-appliance.mitmCache.updateScript && ./result`
+  mitmCache = gradle.fetchDeps {
+    pkg = epnix.archiver-appliance;
+    data = ./deps.json;
+  };
 
-    ant
+  # Some PV tests fail
+  #doCheck = true;
 
-    runHook postBuild
+  env = {
+    ARCHAPPL_SITEID = "epnix";
+    TOMCAT_HOME = "${tomcat9}";
+  };
+
+  postPatch = ''
+    echo "Copying sitespecific directory"
+    cp -rT ${sitespecific} src/sitespecific/epnix
   '';
 
   installPhase = ''
     runHook preInstall
 
-    install -Dt $out/webapps ../retrieval.war ../engine.war ../etl.war ../mgmt.war
-    install -Dt $out/share/doc/archappl LICENSE NOTICE
-    cp -R docs $out/share/doc/archappl
+    install -Dt $out/webapps build/libs/{retrieval,engine,etl,mgmt}.war
+    mkdir -p $out/share/doc/archappl
+    cp -r LICENSE LICENCES $out/share/doc/archappl
 
-    install -Dt $out/share/archappl/sql src/main/org/epics/archiverappliance/config/persistence/*.sql
+    install --mode=644 -Dt $out/share/archappl/sql src/main/org/epics/archiverappliance/config/persistence/*.sql
     install -Dt $out/share/archappl/ src/sitespecific/tests/classpathfiles/policies.py
-    # DOS-style line-ending messes up shebang auto-patching
-    dos2unix $out/share/archappl/policies.py
-
-    install -Dt $out ../archappl*.tar.gz
 
     runHook postInstall
   '';
 
   meta = {
     description = "Implementation of an archiver for EPICS control systems that aims to archive millions of PVs";
-    homepage = "https://slacmshankar.github.io/epicsarchiver_docs/index.html";
+    homepage = "https://epicsarchiver.readthedocs.io/en/stable/";
     license = with lib.licenses;
     with epnixLib.licenses; [
       epics
@@ -75,5 +95,10 @@ stdenvNoCC.mkDerivation (self: {
     ];
     maintainers = with epnixLib.maintainers; [minijackson];
     inherit (jdk.meta) platforms;
+    sourceProvenance = with lib.sourceTypes; [
+      fromSource
+      # gradle dependencies
+      binaryBytecode
+    ];
   };
 })
