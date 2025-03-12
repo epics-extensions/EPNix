@@ -277,3 +277,38 @@ and the man pages :manpage:`systemd.unit(5)`,
 and other related systemd documentation.
 
 .. _systemd.services options: https://search.nixos.org/options?query=systemd.services.
+
+Systemd hardening
+^^^^^^^^^^^^^^^^^
+
+By default,
+the :nix:option:`services.iocs` module configures some systemd security hardening options.
+For example,
+the IOC can't change the system clock,
+or change the machine's hostname.
+
+To examine the list of the enabled systemd hardening options,
+examine the :file:`nixos/modules/iocs.nix` file in the EPNix source code.
+
+You can turn off systemd hardening options by overriding the setting:
+
+.. code-block:: nix
+   :caption: Turning off a systemd hardening option
+
+     services.iocs.myIoc = {
+       package = pkgs.myTop;
+       workingDirectory = "iocBoot/iocMyIoc";
+     };
+
+     # These options will modify the generated systemd service
+     systemd.services.myIoc = {
+       # In the [Service] section,
+       # ProtectClock was enabled by default,
+       # but we override it here
+       # to allow the IOC to change the system clock:
+       serviceConfig.ProtectClock = false;
+     };
+
+For more information about hardening options,
+examine the man pages :manpage:`systemd.exec(5)`
+and :manpage:`systemd.resource-control(5)`.
