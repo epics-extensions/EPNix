@@ -140,9 +140,10 @@
 
         wantedBy = lib.mkIf config.enable (lib.mkDefault ["multi-user.target"]);
 
-        # When initializing the IOC, PV Access looks for network interfaces that
-        # have IP addresses. "network.target" may be too early, especially for
-        # systems with DHCP.
+        # When initializing the IOC,
+        # PV Access looks for network interfaces that have IP addresses.
+        # "network.target" may be too early,
+        # especially for systems with DHCP.
         wants = lib.mkDefault ["network-online.target"];
         after = lib.mkDefault ["network-online.target"];
 
@@ -150,8 +151,6 @@
         unitConfig.StartLimitIntervalSec = lib.mkDefault "0";
 
         serviceConfig = {
-          Restart = "always";
-          RestartSec = lib.mkDefault "1s";
           ExecStart = let
             procServ = lib.getExe pkgs.epnix.procServ;
           in ''
@@ -160,8 +159,53 @@
               ${config.startupScript}
           '';
 
-          DynamicUser = true;
+          Restart = lib.mkDefault "always";
+          RestartSec = lib.mkDefault "1s";
           StateDirectory = ["epics/${name}"];
+
+          # Hardening options,
+          # can be disabled by the end user, if needed
+
+          DynamicUser = lib.mkDefault true;
+
+          PrivateUsers = lib.mkDefault true;
+          PrivateMounts = lib.mkDefault true;
+
+          ProtectKernelLogs = lib.mkDefault true;
+          ProtectKernelModules = lib.mkDefault true;
+          ProtectKernelTunables = lib.mkDefault true;
+          ProtectClock = lib.mkDefault true;
+          ProtectControlGroups = lib.mkDefault true;
+          ProtectHostname = lib.mkDefault true;
+          ProtectHome = lib.mkDefault true;
+          ProtectProc = lib.mkDefault true;
+
+          RestrictNamespaces = lib.mkDefault true;
+
+          LockPersonality = lib.mkDefault true;
+
+          SystemCallArchitectures = lib.mkDefault "native";
+
+          # Don't allow these syscalls by default
+          SystemCallFilter = lib.mkDefault [
+            "~@clock"
+            "~@cpu-emulation"
+            "~@debug"
+            "~@module"
+            "~@obsolete"
+            "~@reboot"
+            "~@swap"
+          ];
+          # Don't allow these capabilities by default
+          CapabilityBoundingSet = lib.mkDefault [
+            "~CAP_SYS_PACCT"
+            "~CAP_SETUID"
+            "~CAP_SETGID"
+            "~CAP_SETPCAP"
+            "~CAP_SYS_PTRACE"
+            "~CAP_NET_ADMIN"
+            "~CAP_SYS_ADMIN"
+          ];
         };
       };
 
