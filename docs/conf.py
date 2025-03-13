@@ -49,6 +49,8 @@ exclude_patterns = [
 pygments_style = "pygments_styles.EpnixNordLight"
 pygments_dark_style = "pygments_styles.EpnixNordDarker"
 
+manpages_url = "https://manpages.debian.org/{path}"
+
 # -- Options for MyST --------------------------------------------------------
 # https://myst-parser.readthedocs.io/en/latest/configuration.html
 
