@@ -35,8 +35,7 @@ mkEpicsPackage {
   meta = {
     description = "Module providing EPICS support for ADS Protocol (Automation Device Specification)";
     homepage = "https://github.com/epics-modules/twincat-ads/";
-    # Wait for ESS team answer about the license :  https://gitlab.esss.lu.se/epics-modules/epics-twincat-ads/-/issues/1
-    license = lib.licenses.free;
+    license = lib.licenses.lgpl3Plus;
     maintainers = with epnixLib.maintainers; [agaget minijackson];
   };
 }
