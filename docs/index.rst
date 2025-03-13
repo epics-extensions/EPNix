@@ -45,10 +45,10 @@ However, since EPNix is a git repository, you will be able, through Nix, to use 
 The epics-base package
 ^^^^^^^^^^^^^^^^^^^^^^
 
-The epics-base package has no significant modification compared to the upstream version at `Launchpad`_.
+The epics-base package has no significant modification compared to the upstream version on `GitHub`_.
 One goal of EPNix is to keep those modifications to a minimum, and upstream what’s possible.
 
-.. _Launchpad: https://git.launchpad.net/epics-base
+.. _GitHub: https://github.com/epics-base/epics-base/
 
 Release branches
 ~~~~~~~~~~~~~~~~
