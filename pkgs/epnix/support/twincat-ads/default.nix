@@ -9,7 +9,7 @@
 }:
 mkEpicsPackage {
   pname = "twincat-ads";
-  version = "2024.01.11";
+  version = "2024.09.04";
   varname = "TWINCATADS";
 
   inherit local_config_site local_release;
@@ -17,9 +17,9 @@ mkEpicsPackage {
   src = fetchFromGitHub {
     owner = "epics-modules";
     repo = "twincat-ads";
-    rev = "c8e8b52c1f34640eca97b8fb053e793dc68acc0a";
+    rev = "be1ea2fbef1713b95f75f545eed202e10a980366";
     fetchSubmodules = true;
-    sha256 = "sha256-f7hod1N1AzCh+W7nHl9VCA+nuwpJAboSh19Dq80n/2E=";
+    sha256 = "sha256-rp2o0V+Jr4FRIG9mZKcwYDbitwSYhNVHaxm4MWBElQQ=";
   };
 
   # See: https://gitlab.esss.lu.se/epics-modules/epics-twincat-ads/-/issues/2
