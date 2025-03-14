@@ -226,7 +226,69 @@ Here is a list of options you might want to set:
 Currently, Phoebus Alarm Server only supports plain SMTP.
 :::
 
+## Custom alert channels
+
+Alert channels other than mails must be configured
+through running external commands.
+
+The Phoebus Alarm service is heavily hardened,
+for reasons explained in the {ref}`danger indication <phoebus-alarm-danger>`,
+meaning that the service will have restricted access to available commands
+and files from the host.
+
+To create host-accessible files and directories,
+use the `$STATE_DIRECTORY` environment variable,
+which corresponds to the {file}`/var/lib/phoebus-alarm-server` directory
+on the host.
+
+To make a command available to the Phoebus Alarm service,
+use the {nix:option}`services.phoebus-alarm-server.path` option.
+
+Nixpkgs provides a [`writeShellApplication`] function
+to create custom commands with dependencies.
+One example of a configuration that creates a `phoebus-alarm-send-alert` command,
+which uses {program}`curl`
+to send an alert through an HTTP API:
+
+```{code-block} nix
+:caption: {file}`phoebus-alarm.nix` --- {program}`curl` example
+
+{lib, pkgs, ...}: let
+  alertCommand = ;
+in {
+  services.phoebus-alarm-server = {
+    # ...
+    path = [
+      (pkgs.writeShellApplication {
+        # Name of the command
+        name = "phoebus-alarm-send-alert";
+        # Make your script depend on the 'curl' package
+        runtimeInputs = [ pkgs.curl ];
+        # Content of the script
+        text = ''
+          # If "*" is given as argument in the configuration,
+          # the first argument is the PV name
+          ALARM_PV="$1"
+          # and the second argument is the alarm severity
+          ALARM_SEVERITY="$2"
+
+          curl -sSfL "https://my-server.example.com/api/alarm/webhook" \
+            -X POST \
+            --header "Content-Type: application/json" \
+            -d '{"pv": "'$ALARM_PV'", "severity": "'$ALARM_SEVERITY'"}'
+        '';
+      })
+    ];
+  };
+}
+```
+
+To use this command,
+make sure your alarm node uses `cmd:phoebus-alarm-send-alert *` as command,
+including the `*` to pass the PV and severity as argument.
+
 [alarm logging service]: https://control-system-studio.readthedocs.io/en/latest/services/alarm-logger/doc/index.html
 [alarm server]: https://control-system-studio.readthedocs.io/en/latest/services/alarm-server/doc/index.html
 [service architecture]: https://control-system-studio.readthedocs.io/en/latest/services_architecture.html
 [the readme of alarm server]: https://github.com/ControlSystemStudio/phoebus/blob/master/app/alarm/Readme.md
+[`writeShellApplication`]: https://nixos.org/manual/nixpkgs/stable/#trivial-builder-writeShellApplication
