@@ -49,7 +49,7 @@ jobs:
             enable_kvm && echo 'Enabled KVM' || echo 'KVM is not available'
           fi
       - uses: nixbuild/nix-quick-install-action@5bb6a3b3abe66fd09bbf250dce8ada94f856a703 # v30
-      - uses: nix-community/cache-nix-action@dab0514428ae3988852b7787a6d86a6fc571cc9d # v6.0.0
+      - uses: nix-community/cache-nix-action@c448f065ba14308da81de769632ca67a3ce67cf5 # v6.1.2
         with:
           primary-key: build-${{ runner.os }}-${{ matrix.name }}-${{ hashFiles('.github/workflows/build-checks.yml', 'flake.lock') }}
           purge: true
