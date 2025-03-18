@@ -42,12 +42,23 @@
       packages.default = pkgs.myIoc;
 
       checks = {
-        simple = pkgs.callPackage ./checks/simple.nix {};
+        simple = pkgs.callPackage ./checks/simple.nix {
+          inherit (self.nixosModules) iocService;
+        };
       };
     })
     // {
       overlays.default = final: _prev: {
         myIoc = final.callPackage ./ioc.nix {};
+      };
+
+      nixosModules.iocService = {config, ...}: {
+        services.iocs.myIoc = {
+          description = "An optional description of your IOC";
+          package = self.packages.x86_64-linux.default;
+          # Directory where to find the 'st.cmd' file
+          workingDirectory = "iocBoot/iocMyIoc";
+        };
       };
     };
 }

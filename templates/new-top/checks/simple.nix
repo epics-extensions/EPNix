@@ -2,25 +2,27 @@
   nixosTest,
   epnix,
   epnixLib,
-  myIoc,
+  iocService,
   ...
 }:
 nixosTest {
   name = "simple";
 
   nodes.machine = {
-    imports = [epnixLib.inputs.self.nixosModules.nixos];
-    environment.systemPackages = [epnix.epics-base];
+    imports = [
+      epnixLib.nixosModule
 
-    services.iocs.myIoc = {
-      package = myIoc;
-      workingDirectory = "iocBoot/iocMyIoc";
-    };
+      # Import the IOC service,
+      # as defined in flake.nix' nixosModules.iocService
+      iocService
+    ];
+
+    environment.systemPackages = [epnix.epics-base];
   };
 
   testScript = ''
     machine.wait_for_unit("default.target")
-    machine.wait_for_unit("ioc.service")
+    machine.wait_for_unit("myIoc.service")
 
     machine.wait_until_succeeds("caget stringin", timeout=10)
     machine.wait_until_succeeds("caget stringout", timeout=10)
