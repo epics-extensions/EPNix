@@ -42,10 +42,10 @@ This doesn't cause much issues: since EPNix is a Git repository, you use a fixed
 
 ### The epics-base package
 
-The epics-base package has no significant modification compared to the upstream version at [Launchpad].
+The epics-base package has no significant modification compared to the upstream version on [GitHub].
 One goal of EPNix is to have as little modification as possible, and upstream what's possible.
 
-  [Launchpad]: https://git.launchpad.net/epics-base
+  [GitHub]: https://github.com/epics-base/epics-base/
 
 ## Quick example of an EPNix configuration
 
