@@ -23,3 +23,13 @@ Breaking changes
 - The old way of developing IOCs was deprecated,
   and will be removed in version ``nixos-26.05``.
   Please follow the migration guide :doc:`../ioc/user-guides/deprecations/migrating-from-modules-development`.
+
+Highlights
+----------
+
+- Archiver Appliance was upgrade from 1.1.0 -> 2.0.5,
+  see the `Archiver Appliance 2.0.5 release notes`_.
+  None of the breaking change should affect users of the
+  :option:`services.archiver-appliance` NixOS options.
+
+.. _Archiver Appliance 2.0.5 release notes: https://github.com/archiver-appliance/epicsarchiverap/releases/tag/2.0.5
