@@ -7,7 +7,6 @@
 }:
 with lib; let
   cfg = config.epnix.epics-base;
-  settingsFormat = epnix.lib.formats.make {};
 in {
   options.epnix.epics-base = {
     releaseBranch = mkOption {
@@ -17,15 +16,9 @@ in {
     };
 
     package = mkOption {
-      default = pkgs.epnix."epics-base${cfg.releaseBranch}".override {
-        local_config_site = cfg.siteConfig;
-        local_release = cfg.releaseConfig;
-      };
+      default = pkgs.epnix."epics-base${cfg.releaseBranch}";
       defaultText = literalExpression ''
-        pkgs.epnix."epics-base''${releaseBranch}".override {
-          local_config_site = siteConfig;
-          local_release = releaseConfig;
-        }
+        pkgs.epnix."epics-base''${releaseBranch}"
       '';
       type = types.package;
       description = ''
@@ -34,24 +27,6 @@ in {
         Defaults to the official distribution from the given release branch and
         with the given RELEASE and CONFIG_SITE.
       '';
-    };
-
-    releaseConfig = mkOption {
-      default = {};
-      description = "Configuration installed as RELEASE";
-      type = types.submodule {
-        freeformType = settingsFormat.type;
-        options = {};
-      };
-    };
-
-    siteConfig = mkOption {
-      default = {};
-      description = "Configuration installed as CONFIG_SITE";
-      type = types.submodule {
-        freeformType = settingsFormat.type;
-        options = {};
-      };
     };
   };
 
