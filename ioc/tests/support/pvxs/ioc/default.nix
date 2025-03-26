@@ -1,84 +1,78 @@
 {pkgs, ...}: let
   inherit (pkgs) epnixLib;
-  inherit (pkgs.stdenv.hostPlatform) system;
 
-  result = epnixLib.evalEpnixModules {
-    nixpkgsConfig.system = system;
-    epnixConfig.imports = [./pvxsIocTestTop/epnix.nix];
+  ioc = pkgs.callPackage ./ioc.nix {};
+in {
+  name = "support-pvxs-ioc";
+  meta.maintainers = with epnixLib.maintainers; [minijackson];
+
+  nodes = {
+    client = {
+      environment.systemPackages = [
+        pkgs.epnix.epics-base
+        pkgs.epnix.support.pvxs
+      ];
+      networking.firewall.allowedTCPPorts = [5075];
+      networking.firewall.allowedUDPPorts = [5076];
+    };
+    ioc = {
+      services.iocs.ioc = {
+        package = ioc;
+        workingDirectory = "iocBoot/iocSimple";
+      };
+      networking.firewall.allowedTCPPorts = [5075];
+      networking.firewall.allowedUDPPorts = [5076];
+    };
   };
 
-  service = result.config.epnix.nixos.services.ioc.config;
+  extraPythonPackages = p: [p.json5];
+  # Type checking on extra packages doesn't work yet
+  skipTypeCheck = true;
 
-  ioc = result.outputs.build;
-in
-  pkgs.nixosTest {
-    name = "support-pvxs-ioc";
-    meta.maintainers = with epnixLib.maintainers; [minijackson];
+  testScript = ''
+    import json5
 
-    nodes = {
-      client = {
-        environment.systemPackages = [
-          pkgs.epnix.epics-base
-          pkgs.epnix.support.pvxs
-        ];
-        networking.firewall.allowedTCPPorts = [5075];
-        networking.firewall.allowedUDPPorts = [5076];
-      };
-      ioc = {
-        systemd.services.ioc = service;
-        networking.firewall.allowedTCPPorts = [5075];
-        networking.firewall.allowedUDPPorts = [5076];
-      };
-    };
+    start_all()
 
-    extraPythonPackages = p: [p.json5];
-    # Type checking on extra packages doesn't work yet
-    skipTypeCheck = true;
+    addr_list = "EPICS_PVA_ADDR_LIST=192.168.1.2"
 
-    testScript = ''
-      import json5
+    def pvget(name: str):
+      return json5.loads(client.succeed(f"{addr_list} pvget {name} -M json | cut -d' ' -f2-"))
 
-      start_all()
+    def pvxget(name: str):
+      output = client.succeed(f"{addr_list} pvxget {name}")
+      return output.splitlines()[1].split()[-1]
 
-      addr_list = "EPICS_PVA_ADDR_LIST=192.168.1.2"
+    def _pvput(utility: str, name: str, value: str):
+      client.succeed(f"{addr_list} {utility} {name} {value}")
 
-      def pvget(name: str):
-        return json5.loads(client.succeed(f"{addr_list} pvget {name} -M json | cut -d' ' -f2-"))
+    def pvput(name: str, value: str):
+      _pvput("pvput", name, value)
 
-      def pvxget(name: str):
-        output = client.succeed(f"{addr_list} pvxget {name}")
-        return output.splitlines()[1].split()[-1]
+    def pvxput(name: str, value: str):
+      _pvput("pvxput", name, value)
 
-      def _pvput(utility: str, name: str, value: str):
-        client.succeed(f"{addr_list} {utility} {name} {value}")
+    with subtest("wait until IOC starts"):
+      ioc.wait_for_unit("ioc.service")
+      client.wait_until_succeeds(f"{addr_list} pvget my:pv:name", timeout=60)
 
-      def pvput(name: str, value: str):
-        _pvput("pvput", name, value)
+    with subtest("PV has the correct value"):
+      value = pvget("my:pv:name")
+      assert value["value"] == 42
+      assert value["display"]["description"] == "My PV description"
 
-      def pvxput(name: str, value: str):
-        _pvput("pvxput", name, value)
+    with subtest("PV can be set"):
+      pvput("my:pv:name", "1337")
+      assert pvget("my:pv:name")["value"] == 1337
 
-      with subtest("wait until IOC starts"):
-        ioc.wait_for_unit("ioc.service")
-        client.wait_until_succeeds(f"{addr_list} pvget my:pv:name", timeout=60)
+    with subtest("PVXS command-line utilities work"):
+      assert pvxget("my:pv:name") == "1337"
+      pvxput("my:pv:name", "42")
+      assert pvxget("my:pv:name") == "42"
+      client.succeed(f"{addr_list} pvxinfo my:pv:name")
+  '';
 
-      with subtest("PV has the correct value"):
-        value = pvget("my:pv:name")
-        assert value["value"] == 42
-        assert value["display"]["description"] == "My PV description"
-
-      with subtest("PV can be set"):
-        pvput("my:pv:name", "1337")
-        assert pvget("my:pv:name")["value"] == 1337
-
-      with subtest("PVXS command-line utilities work"):
-        assert pvxget("my:pv:name") == "1337"
-        pvxput("my:pv:name", "42")
-        assert pvxget("my:pv:name") == "42"
-        client.succeed(f"{addr_list} pvxinfo my:pv:name")
-    '';
-
-    passthru = {
-      inherit ioc;
-    };
-  }
+  passthru = {
+    inherit ioc;
+  };
+}

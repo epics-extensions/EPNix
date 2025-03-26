@@ -1,5 +1,7 @@
 {
   pkgs,
+  self,
+  nixpkgs,
   crossSystem,
   system-name,
   ...
@@ -7,15 +9,14 @@
   inherit (pkgs) epnixLib;
   inherit (pkgs.stdenv.hostPlatform) system;
 
-  result = epnixLib.evalEpnixModules {
-    nixpkgsConfig = {
-      inherit system crossSystem;
-    };
-    epnixConfig.imports = [./top/epnix.nix];
+  crossPkgs = import nixpkgs {
+    inherit system crossSystem;
+    overlays = [self.overlays.default];
   };
 
-  ioc = result.config.epnix.outputs.build;
-  inherit (result.config.epnix.pkgs.stdenv) hostPlatform;
+  ioc = crossPkgs.callPackage ./ioc.nix {};
+
+  inherit (crossPkgs.stdenv) hostPlatform;
   iocBin = "../../bin/${epnixLib.toEpicsArch hostPlatform}/simple";
   emulator = pkgs.lib.replaceStrings ["\""] ["\\\""] (hostPlatform.emulator pkgs);
 in

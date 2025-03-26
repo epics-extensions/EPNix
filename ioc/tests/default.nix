@@ -1,28 +1,46 @@
-{pkgs, ...} @ args:
-with pkgs.lib;
+{
+  nixpkgs,
+  pkgs,
+  self,
+  system,
+} @ args: let
+  inherit (pkgs) lib;
+
+  nixosTesting = import (nixpkgs + "/nixos/lib/testing-python.nix") {
+    inherit pkgs system;
+    extraConfigurations = [
+      self.nixosModules.nixos
+    ];
+  };
+
+  handleTest = path: args: nixosTesting.simpleTest (import path (pkgs // args));
+in
   {
-    default-ioc-epics-base-3 = import ./default-ioc "3" args;
-    default-ioc-epics-base-7 = import ./default-ioc "7" args;
-    example-ioc = import ./example-ioc args;
+    default-ioc-epics-base-3 = handleTest ./default-ioc {releaseBranch = "3";};
+    default-ioc-epics-base-7 = handleTest ./default-ioc {releaseBranch = "7";};
+    example-ioc = handleTest ./example-ioc {};
 
-    pyepics = import ./pyepics args;
+    pyepics = handleTest ./pyepics {};
 
-    support-autosave-simple = import ./support/autosave/simple args;
-    support-pvxs-ioc = import ./support/pvxs/ioc args;
-    support-pvxs-qsrv2 = import ./support/pvxs/qsrv2 args;
-    support-pvxs-standalone-server = import ./support/pvxs/standalone-server args;
-    support-seq-simple = import ./support/seq/simple args;
-    support-StreamDevice-simple = import ./support/StreamDevice/simple args;
+    support-autosave-simple = handleTest ./support/autosave/simple {};
+    support-pvxs-ioc = handleTest ./support/pvxs/ioc {};
+    support-pvxs-qsrv2 = handleTest ./support/pvxs/qsrv2 {};
+    support-pvxs-standalone-server = handleTest ./support/pvxs/standalone-server {};
+    support-seq-simple = handleTest ./support/seq/simple {};
+    support-StreamDevice-simple = handleTest ./support/StreamDevice/simple {};
   }
   // (let
     checkCrossFor = crossSystem: let
-      system-name = (systems.elaborate crossSystem).system;
+      system-name = (lib.systems.elaborate crossSystem).system;
     in
-      nameValuePair
+      lib.nameValuePair
       "cross-for-${system-name}"
-      (import ./cross/default.nix (args // {inherit crossSystem system-name;}));
+      (import ./cross/default.nix (args
+        // {
+          inherit self nixpkgs crossSystem system-name;
+        }));
 
-    systemsToCheck = with systems.examples; [
+    systemsToCheck = with lib.systems.examples; [
       # Maybe one day...
       #mingwW64
 
@@ -40,4 +58,4 @@ with pkgs.lib;
       raspberryPi
     ];
   in
-    listToAttrs (map checkCrossFor systemsToCheck))
+    lib.listToAttrs (map checkCrossFor systemsToCheck))

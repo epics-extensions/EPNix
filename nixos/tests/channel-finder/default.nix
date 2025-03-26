@@ -4,14 +4,7 @@
   pkgs,
   ...
 }: let
-  inherit (pkgs.stdenv.hostPlatform) system;
-
-  iocConfig = epnixLib.evalEpnixModules {
-    nixpkgsConfig.system = system;
-    epnixConfig.imports = [./ioc.nix];
-  };
-
-  iocService = iocConfig.config.epnix.nixos.services.ioc.config;
+  ioc = pkgs.callPackage ./ioc.nix {};
 in {
   name = "channel-finder-simple-check";
   meta.maintainers = with epnixLib.maintainers; [minijackson];
@@ -84,7 +77,10 @@ in {
 
     client = {
       environment.systemPackages = [pkgs.epnix.epics-base];
-      systemd.services.ioc = iocService;
+      services.iocs.ioc = {
+        package = ioc;
+        workingDirectory = "iocBoot/iocSimple";
+      };
       networking.firewall.allowedUDPPorts = [announcerPort];
     };
   };
