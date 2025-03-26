@@ -8,14 +8,12 @@ User guides
 ----
 
 .. toctree::
-   :titlesonly:
+   :maxdepth: 2
 
-   ./private-repo-setup.rst
-   ./flake-registry.rst
-   ./developing-modules.rst
-   ./reccaster.rst
-   ./mrf-devices.rst
-   ./testing/index.rst
-   ./deprecations/index.rst
-
-.. TODO: make a NixOS test user-guide
+   private-repo-setup
+   flake-registry
+   developing-modules
+   reccaster
+   mrf-devices
+   testing/index
+   deprecations/index

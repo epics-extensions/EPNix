@@ -17,13 +17,12 @@ Configuration
 To configure RecCaster,
 first add it to your build environment:
 
-.. code-block:: diff
-   :caption: :file:`flake.nix`
+.. code-block:: nix
+   :caption: :file:`ioc.nix` --- Add the RecCaster support module to the build environment
 
-            # Add your support modules here:
-            # ---
-   -        #support.modules = with pkgs.epnix.support; [ StreamDevice mySupportModule ];
-   +        support.modules = with pkgs.epnix.support; [ reccaster ];
+   propagatedBuildInputs = [
+     epnix.support.reccaster
+   ];
 
 Make sure your app depends on the RecCaster library and DBD file:
 

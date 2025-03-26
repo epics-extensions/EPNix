@@ -2,6 +2,7 @@ and so on
 alarm
 Alarm
 Archiver Appliance
+ChannelFinder
 colmena
 disnix
 EPICS
@@ -13,7 +14,10 @@ Nix
 NixOS
 NixOps
 procServ
+RecCaster
+RecCeiver
 SELinux
+shell
 StreamDevice
 systemd
 RedHat

@@ -33,7 +33,7 @@ leave it running in a separate terminal.
 Creating your top
 -----------------
 
-We can use these command to create an EPNix top:
+Use these commands to create an EPNix top:
 
 .. code-block:: bash
 
@@ -73,9 +73,7 @@ containing the compilation result.
 Adding StreamDevice to the EPNix environment
 --------------------------------------------
 
-Adding dependencies to the EPNix environment happen inside the ``flake.nix`` file.
-This file is the main entry point for specifying your build environment:
-most Nix commands used here read this file to work.
+Adding dependencies to the EPNix environment happens inside the :file:`ioc.nix` file.
 
 For adding StreamDevice,
 change yours like so:
@@ -83,28 +81,46 @@ change yours like so:
 .. code-block:: diff
    :caption: :file:`flake.nix`
 
-            # Add one of the supported modules here:
-            # ---
-   -        #support.modules = with pkgs.epnix.support; [ StreamDevice mySupportModule ];
-   +        support.modules = with pkgs.epnix.support; [ StreamDevice ];
+      # EPICS support modules can be only in propagatedBuildInputs
+      # --
+      propagatedBuildInputs = [
+   -    #epnix.support.StreamDevice
+   +    epnix.support.StreamDevice
+      ];
 
 Then,
 leave your EPNix development shell by running ``exit``,
 and re-enter it with ``nix develop``.
+Then,
+run ``epicsConfigurePhase``.
 
-Because you modified the support modules,
-run ``eregen-config`` to regenerate ``configure/RELEASE.local``.
+By modifying the dependencies of your package,
+your build environment changed:
+before the change,
+the build environment didn't have StreamDevice installed.
+With this change,
+StreamDevice must be available to build your EPICS top.
+
+Separate from having StreamDevice in the build environment,
+the EPICS build system must know where to find it.
+EPICS uses the :file:`configure/RELEASE` and :file:`configure/RELEASE.local` files
+to find EPICS-specific dependencies,
+often called "EPICS support modules".
+
+During the "configure" phase,
+EPNix automatically generates the :file:`configure/RELEASE.local` file,
+which is why you have to run ``epicsConfigurePhase``.
 
 With this,
 your development shell has StreamDevice available,
-and StreamDevice is also added in the ``RELEASE.local`` file.
+the EPICS build system can find StreamDevice
+by reading the :file:`configure/RELEASE.local` file.
 
 .. tip::
-
    As a rule,
-   each time you edit the ``flake.nix`` file,
+   each time you edit the :file:`ioc.nix` file,
    leave and re-enter your development shell (``exit`` then ``nix develop``),
-   and run ``eregen-config``.
+   and run ``epicsConfigurePhase``.
 
 Adding StreamDevice to your EPICS app
 -------------------------------------
@@ -116,7 +132,6 @@ Change the ``exampleApp/src/Makefile``
 so that your App knows the record types of StreamDevice and its dependencies.
 Also change that file so that it links to the StreamDevice library and its dependencies,
 during compilation.
-For example:
 
 .. code-block:: makefile
    :caption: :file:`exampleApp/src/Makefile`
@@ -215,7 +230,7 @@ and how to connect to the remote power supply.
 
    iocInit()
 
-And run ``chmod +x iocBoot/iocExample/st.cmd``
+Run ``chmod +x iocBoot/iocExample/st.cmd``
 so that you can run your command file as-is.
 
 You can test that your top builds by running:
@@ -234,12 +249,12 @@ and try a ``nix build -L`` again.
 If everything goes right,
 you can examine your compiled top under ``./result``.
 
-You can observe that:
+You can observe that the EPICS build system:
 
--  the ``example`` app is installed under ``bin/`` and ``bin/linux-x86_64``,
+-  installs the ``example`` app :file:`bin/linux-x86_64`,
    and links to the correct libraries
--  ``example.proto`` and ``example.db`` are installed under ``db/``
--  ``example.dbd`` is generated and installed under ``dbd/``
+-  installs :file:`example.proto` and :file:`example.db` under :file:`db/`
+-  generates :file:`example.dbd` and installs it under :file:`dbd/`
 
 Running your IOC
 ----------------
@@ -258,7 +273,7 @@ You should see the IOC starting and connecting to ``localhost:9999``.
 .. tip::
    :file:`./result` is a symbolic link,
    so if you made any changes to your IOC and re-ran ``nix build``,
-   a terminal window already in :file:`./result/iocBoot/iocExample` will still point to the old version.
+   a terminal window already in :file:`./result/iocBoot/iocExample` would still point to the old version.
 
    To run the new version,
    either re-open a new window
@@ -287,6 +302,10 @@ If you want a more “traditional” edit / compile / run workflow,
 you can place yourself in the development shell with ``nix develop``,
 and use ``make`` from here.
 
+Make sure to exit and re-enter the development shell
+each time you edit Nix files,
+and re-run ``epicsConfigurePhase``.
+
 Next steps
 ----------
 
@@ -312,9 +331,9 @@ Try to edit the protocol file and the database file
 to add those features to your IOC.
 
 For more information about how to write the StreamDevice protocol,
-have a look at the `Protocol Files`_ documentation.
+examine the `Protocol Files`_ documentation.
 
-You might also be interested in reading :doc:`../user-guides/flake-registry`.
+You might also want to read :doc:`../user-guides/flake-registry`.
 
 .. _Protocol Files: https://paulscherrerinstitute.github.io/StreamDevice/protocol.html
 
