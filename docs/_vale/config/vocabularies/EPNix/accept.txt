@@ -2,6 +2,8 @@ and so on
 alarm
 Alarm
 Archiver Appliance
+Backport
+backport
 ChannelFinder
 colmena
 disnix
