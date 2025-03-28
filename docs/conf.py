@@ -16,7 +16,6 @@ sys.path.append(os.path.abspath("./_ext"))
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = "EPNix"
-copyright = "The EPNix Contributors"
 author = "The EPNix Contributors"
 release = "dev"
 
@@ -30,6 +29,7 @@ if date_ts := os.environ.get("SOURCE_DATE_EPOCH"):
     source_date = date.fromtimestamp(float(date_ts))
 
 today = source_date.isoformat()
+copyright = f"2021-{source_date.year}, The EPNix Contributors"
 
 nitpicky = True
 
@@ -184,7 +184,11 @@ typst_documents = [
         "targetname": "cheatsheet",
         "title": "EPNix cheatsheet",
         "template": "cheatsheet",
-        "metadata": {"release": release, "html_baseurl": html_baseurl},
+        "metadata": {
+            "copyright": copyright,
+            "release": release,
+            "html_baseurl": html_baseurl,
+        },
     }
 ]
 

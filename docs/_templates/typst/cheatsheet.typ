@@ -28,6 +28,7 @@
   let author = metadata.at("author")
   let date = get_date(metadata.at("date", default: none))
   let language = metadata.at("language")
+  let copyright = metadata.at("copyright")
   let release = metadata.at("release")
 
   html_baseurl.update(metadata.at("html_baseurl"))
@@ -42,7 +43,11 @@
     paper: "a4",
     flipped: true,
     margin: 1cm,
-    footer: [Version #release, #date.display()],
+    footer: [
+		Version #release, #date.display()
+		#h(1fr)
+		Copyright © #copyright
+	],
   )
 
   set document(
