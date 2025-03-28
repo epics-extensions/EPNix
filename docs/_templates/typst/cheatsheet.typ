@@ -42,7 +42,7 @@
     paper: "a4",
     flipped: true,
     margin: 1cm,
-    footer: [Version #release],
+    footer: [Version #release, #date.display()],
   )
 
   set document(

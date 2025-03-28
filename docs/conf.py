@@ -6,6 +6,7 @@
 import json
 import os
 import sys
+from datetime import date
 from pathlib import Path
 
 # Enables importing our custom "pygments_styles" module
@@ -22,6 +23,12 @@ release = "dev"
 source_repository = "https://github.com/epics-extensions/EPNix"
 
 language = "en"
+
+source_date = date.today()
+if date_ts := os.environ.get("SOURCE_DATE_EPOCH"):
+    source_date = date.fromtimestamp(float(date_ts))
+
+today = source_date.isoformat()
 
 nitpicky = True
 
@@ -158,6 +165,8 @@ if versions.exists():
 
 # -- Options for Typst output ------------------------------------------------
 # https://minijackson.github.io/sphinxcontrib-typstbuilder/configuration.html
+
+typst_date = source_date
 
 typst_documents = [
     {
