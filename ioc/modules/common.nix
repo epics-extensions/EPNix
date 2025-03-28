@@ -68,6 +68,7 @@ with lib; {
     nixpkgs.overlays = [
       epnix.inputs.bash-lib.overlay
       epnix.inputs.sphinxcontrib-nixdomain.overlays.default
+      epnix.inputs.sphinxcontrib-typstbuilder.overlays.default
       epnix.overlays.default
     ];
   };
