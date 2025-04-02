@@ -17,7 +17,7 @@ in {
         Set Java options for the Phoebus client.
 
         For more information, see:
-        https://docs.oracle.com/en/java/javase/21/docs/specs/man/java.html#extra-options-for-java
+        <https://docs.oracle.com/en/java/javase/21/docs/specs/man/java.html#extra-options-for-java>
       '';
     };
   };
