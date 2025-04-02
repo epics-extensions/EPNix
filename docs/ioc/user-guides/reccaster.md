@@ -54,7 +54,7 @@ The RecCeiver server scans for available IOCs on the network.
 ## Firewall
 
 To accept connection from the RecCeiver service,
-the firewall needs to allow the UDP announcert port,
+the firewall needs to allow the UDP announcer port,
 which by default is 5049.
 
 If your IOC is a NixOS machine,
