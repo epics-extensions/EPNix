@@ -20,6 +20,7 @@ author = "The EPNix Contributors"
 release = "dev"
 
 source_repository = "https://github.com/epics-extensions/EPNix"
+branch = "master" if release == "dev" else release
 
 language = "en"
 
@@ -64,9 +65,13 @@ myst_url_schemes = {
     "http": None,
     "https": None,
     "mailto": None,
-    "source": "https://github.com/epics-extensions/EPNix/blob/{{netloc}}{{path}}",
+    "source": {
+        "url": f"{source_repository}/blob/{branch}/{{{{path}}}}",
+        "title": "{{path}}",
+        "classes": ["github"],
+    },
     "gh-issue": {
-        "url": "https://github.com/executablebooks/MyST-Parser/issue/{{path}}#{{fragment}}",
+        "url": f"{source_repository}/issues/{{{{path}}}}#{{{{fragment}}}}",
         "title": "Issue #{{path}}",
         "classes": ["github"],
     },
@@ -88,7 +93,7 @@ nix_toc_display_full_path = True
 
 
 def nix_linkcode_resolve(path: str) -> str:
-    return f"{source_repository}/blob/master/{path}"
+    return f"{source_repository}/blob/{branch}/{path}"
 
 
 # -- Options for HTML output -------------------------------------------------
