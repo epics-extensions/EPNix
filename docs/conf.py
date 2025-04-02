@@ -55,11 +55,16 @@ manpages_url = "https://manpages.debian.org/{path}"
 # -- Options for MyST --------------------------------------------------------
 # https://myst-parser.readthedocs.io/en/latest/configuration.html
 
-myst_enable_extensions = [
+myst_enable_extensions = {
     "attrs_inline",
     "colon_fence",
     "deflist",
-]
+    "fieldlist",
+    "replacements",
+    "smartquotes",
+}
+
+myst_heading_anchors = 2
 
 myst_url_schemes = {
     "http": None,
