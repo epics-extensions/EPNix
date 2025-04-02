@@ -89,7 +89,7 @@ Then apply your NixOS configuration.
 
 As an alternative,
 if the IOC you want to run doesn't expose a pre-configured service,
-or if you don't wan't to use that configuration,
+or if you don't want to use that configuration,
 you can define it directly in your NixOS configuration.
 
 From your NixOS configuration repository,
