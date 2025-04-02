@@ -35,9 +35,9 @@ when appropriate.
 
 You should find at least:
 
-- the `nixpkgs` flake input in {file}`flake.nix`
-- the `epnix` flake input in {file}`templates/top/flake.nix`
-- workflows in {file}`.github/workflows/`
+- the `nixpkgs` flake input in <source:flake.nix>
+- the `epnix` flake input in <source:templates/top/flake.nix>
+- workflows in <source:.github/workflows/>
 - documentation code examples
 
 Once done,
@@ -152,7 +152,7 @@ and create a new {samp}`nixos-{new.version}` branch on master.
 
 Create a new commit
 on the new {samp}`nixos-{new.version}` branch,
-and update the `release` variable in {file}`docs/conf.py`,
+and update the `release` variable in <source:docs/conf.py>,
 so that it is {samp}`nixos-{new.version}`.
 
 :::{admonition} Example
@@ -168,7 +168,7 @@ release = "nixos-24.05"
 ```
 :::
 
-Also remove the now obsolete {file}`.github/workflows/book-gh-pages.yml`,
+Also remove the now obsolete <source:.github/workflows/book-gh-pages.yml>,
 since the book must be built from the default branch.
 
 Open a Pull Request with that commit,
@@ -178,7 +178,7 @@ targeting the {samp}`nixos-{new.version}` branch.
 
 Create a new commit
 on the `master` branch,
-and update the :file\`book-gh-pages.yml\` workflow to clone the newest release:
+and update the <source:.github/workflows/book-gh-pages.yml> workflow to clone the newest release:
 
 :::{admonition} Example
 ```{code-block} yaml
