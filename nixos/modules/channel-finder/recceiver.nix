@@ -27,7 +27,7 @@ in {
         Configuration for the ChannelFinder client.
 
         See upstream documentation for all supported options:
-        https://github.com/ChannelFinder/pyCFClient?tab=readme-ov-file#configuration
+        <https://github.com/ChannelFinder/pyCFClient?tab=readme-ov-file#configuration>
       '';
       default = {};
       type = lib.types.submodule {
@@ -59,7 +59,7 @@ in {
         Configuration for the RecCeiver service.
 
         See upstream documentation for all supported options:
-        https://github.com/ChannelFinder/recsync/blob/${pkg.version}/server/demo.conf
+        <https://github.com/ChannelFinder/recsync/blob/${pkg.version}/server/demo.conf>
       '';
       default = {};
       type = lib.types.submodule {
@@ -99,20 +99,20 @@ in {
               description = ''
                 Processing chain, sequence of plugin names.
 
-                Plugin names may be followed by an instance name (eg. ``db:arbitrary``)
+                Plugin names may be followed by an instance name (eg. `db:arbitrary`)
                 which allows for more than one instance of a plugin with different
                 configuration.
 
                 Default plugins:
 
-                ``show``
-                   Prints information to daemon log
+                `show`
+                : Prints information to daemon log
 
-                ``db``
-                   Stores in sqlite3 database
+                `db`
+                : Stores in sqlite3 database
 
-                ``cf``
-                   Stores in a ChannelFinder server
+                `cf`
+                : Stores in a ChannelFinder server
               '';
             };
           };
@@ -128,10 +128,10 @@ in {
               };
               apply = val: lib.concatStringsSep "," (lib.mapAttrsToList (k: v: "${k}:${v}") val);
               description = ''
-                Attribute set of ``VARIABLE = "PropertyName";``
+                Attribute set of `VARIABLE = "PropertyName";`
 
-                Specifies which environment ``VARIABLEs`` to pass on to the ChannelFinder server,
-                and defining the corresponding ``PropertyName``.
+                Specifies which environment `VARIABLEs` to pass on to the ChannelFinder server,
+                and defining the corresponding `PropertyName`.
               '';
             };
           };

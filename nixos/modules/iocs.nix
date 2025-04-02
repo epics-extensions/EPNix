@@ -41,7 +41,7 @@
         description = ''
           The script used to start the IOC.
 
-          The path is relative to the given :nix:option:`workingDirectory`.
+          The path is relative to the given {nix:option}`workingDirectory`.
         '';
         type = lib.types.str;
         default = "./st.cmd";
@@ -72,12 +72,13 @@
           description = ''
             Extra command-line options to pass to procServ.
 
-            .. note::
-               using ``lib.mkForce`` overrides the default options needed
-               for the systemd service to work.
-               If you wish to do this,
-               you need to specify needed arguments
-               like ``foreground`` and ``chdir``.
+            :::{note}
+            using `lib.mkForce` overrides the default options needed
+            for the systemd service to work.
+            If you wish to do this,
+            you need to specify needed arguments
+            like `foreground` and `chdir`.
+            :::
           '';
         };
       };
@@ -96,9 +97,9 @@
 
       path = lib.mkOption {
         description = ''
-          Packages added to the service's ``PATH`` environment variable.
+          Packages added to the service's `PATH` environment variable.
 
-          Both the :file:`bin` and :file:`sbin` subdirectories of each package are added.
+          Both the {file}`bin` and {file}`sbin` subdirectories of each package are added.
         '';
         type = with lib.types; listOf (oneOf [package str]);
         default = [];
@@ -223,7 +224,8 @@ in {
     description = ''
       A set of IOCs for which to generate a systemd service
 
-      .. versionadded:: 25.05
+      :::{versionadded} 25.05
+      :::
     '';
     type = lib.types.attrsOf (lib.types.submodule iocSubmodule);
     default = {};

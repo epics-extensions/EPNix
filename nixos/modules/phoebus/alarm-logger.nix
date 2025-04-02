@@ -20,8 +20,9 @@ in {
       description = ''
         Open the firewall for the Phoebus Alarm Logger service.
 
-        .. warning::
-           This opens the firewall on all network interfaces.
+        :::{warning}
+        This opens the firewall on all network interfaces.
+        :::
       '';
       type = lib.types.bool;
       default = false;
@@ -31,12 +32,12 @@ in {
       description = ''
         Configuration for the Phoebus Alarm Logger.
 
-        These options will be put into a ``.properties`` file.
+        These options will be put into a `.properties` file.
 
         Note that options containing a "." must be quoted.
 
         Available options can be seen here:
-        https://github.com/ControlSystemStudio/phoebus/blob/master/services/alarm-logger/src/main/resources/application.properties
+        <https://github.com/ControlSystemStudio/phoebus/blob/master/services/alarm-logger/src/main/resources/application.properties>
       '';
       default = {};
       type = lib.types.submodule {

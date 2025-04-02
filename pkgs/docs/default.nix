@@ -122,9 +122,9 @@ in
     '';
 
     shellHook = ''
-      if [[ -f docs/index.rst ]]; then
+      if [[ -f docs/conf.py ]]; then
         install -v "${nixosOptionsSpec}" docs/nixos-options.json
-      elif [[ -f index.rst ]]; then
+      elif [[ -f conf.py ]]; then
         install -v "${nixosOptionsSpec}" nixos-options.json
       else
         echo "Couldn't find root of docs directory, not copying options.json files"
