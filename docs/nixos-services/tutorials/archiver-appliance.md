@@ -50,7 +50,7 @@ by running `nano flake.nix`.
 Fill the file with these lines:
 
 ```{code-block} nix
-:caption: flake.nix
+:caption: {file}`flake.nix`
 :linenos:
 
 {
