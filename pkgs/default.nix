@@ -97,6 +97,35 @@ in
 
       pcas = callPackage ./epnix/tools/pcas {};
 
+      oac-tree = recurseExtensible (_self: {
+        oac-tree = callPackage ./epnix/tools/oac-tree/oac-tree {};
+        oac-tree-gui-unwrapped = callPackage ./epnix/tools/oac-tree/oac-tree-gui/unwrapped.nix {};
+        oac-tree-gui-minimal = callPackage ./epnix/tools/oac-tree/oac-tree-gui {
+          inherit (_self) oac-tree-gui-unwrapped;
+        };
+        oac-tree-server = callPackage ./epnix/tools/oac-tree/oac-tree-server {};
+
+        oac-tree-epics = callPackage ./epnix/tools/oac-tree/oac-tree-epics {};
+        oac-tree-control = callPackage ./epnix/tools/oac-tree/oac-tree-control {};
+        oac-tree-mathexpr = callPackage ./epnix/tools/oac-tree/oac-tree-mathexpr {};
+
+        oac-tree-gui-full = _self.oac-tree-gui-minimal.override {
+          plugins = with _self; [oac-tree-epics oac-tree-control oac-tree-mathexpr];
+        };
+
+        sup-epics = callPackage ./epnix/tools/oac-tree/sup-epics {};
+        sup-protocol = callPackage ./epnix/tools/oac-tree/sup-protocol {};
+        sup-di = callPackage ./epnix/tools/oac-tree/sup-di {};
+        sup-dto = callPackage ./epnix/tools/oac-tree/sup-dto {};
+        sup-gui-core = callPackage ./epnix/tools/oac-tree/sup-gui-core {};
+        sup-gui-extra = callPackage ./epnix/tools/oac-tree/sup-gui-extra {};
+        sup-mvvm = callPackage ./epnix/tools/oac-tree/sup-mvvm {};
+        sup-mathexpr = callPackage ./epnix/tools/oac-tree/sup-mathexpr {};
+        sup-utils = callPackage ./epnix/tools/oac-tree/sup-utils {};
+      });
+
+      oac-tree-gui = self.oac-tree.oac-tree-gui-full;
+
       phoebus = callPackage ./epnix/tools/phoebus/client {};
       phoebus-unwrapped = callPackage ./epnix/tools/phoebus/client-unwrapped {
         jdk = prev.jdk21;
