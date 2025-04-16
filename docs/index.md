@@ -95,6 +95,8 @@ nixos-services/options-reference/index
 
 ```{toctree}
 :caption: Misc
+:hidden:
+:titlesonly:
 
 cheatsheet
 ```
