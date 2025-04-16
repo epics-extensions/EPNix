@@ -1,7 +1,7 @@
 # Creating an Archiver Appliance instance
 
 In this tutorial,
-we’re going to see how to create a virtual machine that runs Archiver Appliance,
+we’re going to create a virtual machine that runs Archiver Appliance,
 under the NixOS Linux distribution.
 
 Installing Archiver Appliance on a physical machine is definitely possible,
