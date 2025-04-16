@@ -1,7 +1,7 @@
 # Creating a StreamDevice IOC
 
 In this tutorial,
-you’re going to learn how to create an EPICS IOC with EPNix
+we're going to create an EPICS IOC with EPNix
 that communicates with a power supply,
 using the [StreamDevice] support module.
 
