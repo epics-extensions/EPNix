@@ -13,6 +13,9 @@ package,
 deploy IOCs and other EPICS-related software
 by using the [Nix] package manager.
 
+For more information about this approach,
+examine {doc}`advantages-disadvantages`.
+
 Before getting started,
 make sure to follow the {doc}`pre-requisites`.
 
@@ -81,6 +84,7 @@ EPNix is under the MIT license.
 :hidden:
 :titlesonly:
 
+advantages-disadvantages
 pre-requisites
 cheatsheet
 release-notes/index
@@ -91,7 +95,6 @@ release-notes/index
 :hidden:
 :titlesonly:
 
-ioc/index
 ioc/tutorials/index
 ioc/user-guides/index
 ioc/explanations/index
@@ -113,7 +116,6 @@ pkgs/packages
 :hidden:
 :titlesonly:
 
-nixos-services/index
 nixos-services/tutorials/index
 nixos-services/user-guides/index
 nixos-services/options-reference/index

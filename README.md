@@ -11,6 +11,9 @@ package,
 deploy IOCs and other EPICS-related software
 by using the [Nix] package manager.
 
+For more information about this approach,
+examine [Advantages / disadvantages].
+
 Before getting started,
 make sure to follow the [Pre-requisites].
 
@@ -75,6 +78,7 @@ see the "EPNix development" documentation section.
 
 EPNix is under the MIT license.
 
+[Advantages / disadvantages]: https://epics-extensions.github.io/EPNix/dev/advantages-disadvantages.html
 [Documentation]: https://epics-extensions.github.io/EPNix/
 [EPICS Tech-Talk mailing list]: https://epics.anl.gov/tech-talk/
 [EPNix Matrix room]: https://matrix.to/#/#epnix:epics-controls.org
