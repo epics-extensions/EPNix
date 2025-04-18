@@ -105,8 +105,9 @@ in {
       description = ''
         Open the firewall for the Archiver Appliance service.
 
-        .. warning::
-           This opens the firewall on all network interfaces.
+        :::{warning}
+        This opens the firewall on all network interfaces.
+        :::
       '';
       type = lib.types.bool;
       default = false;
@@ -114,11 +115,11 @@ in {
 
     appliancesXml = lib.mkOption {
       description = ''
-        Content of the :file:`appliances.xml` file.
+        Content of the {file}`appliances.xml` file.
 
-        See the `appliances.xml documentation`_ for more details.
+        See the [appliances.xml documentation] for more details.
 
-        .. _appliances.xml documentation: https://epicsarchiver.readthedocs.io/en/latest/sysadmin/installguide.html#appliances-xml
+        [appliances.xml documentation]: https://epicsarchiver.readthedocs.io/en/latest/sysadmin/installguide.html#appliances-xml
       '';
       type = lib.types.str;
       default = defaultAppliancesXml;
@@ -139,11 +140,12 @@ in {
               The identity of the current appliance.
 
               If you change this value,
-              you will need to modify the content of :file:`appliances.xml`:
+              you will need to modify the content of {file}`appliances.xml`:
               the specified identity must match an identity of one of the appliance XML elements.
 
-              .. seealso::
-                :nix:option:`services.archiver-appliance.appliancesXml`
+              :::{seealso}
+              {nix:option}`services.archiver-appliance.appliancesXml`
+              :::
             '';
             type = lib.types.str;
             default = "appliance0";
@@ -151,10 +153,10 @@ in {
 
           ARCHAPPL_APPLIANCES = lib.mkOption {
             description = ''
-              Path to an :file:`appliances.xml` file.
+              Path to an {file}`appliances.xml` file.
 
               By default this NixOS module will generate a file
-              from the :nix:option:`services.archiver-appliance.appliancesXml` option,
+              from the {nix:option}`services.archiver-appliance.appliancesXml` option,
               so you might want to modify that instead.
             '';
             type = lib.types.path;
@@ -164,7 +166,7 @@ in {
 
           ARCHAPPL_POLICIES = lib.mkOption {
             description = ''
-              Path to a :file:`policies.py` file.
+              Path to a {file}`policies.py` file.
 
               This file specifies the various policies
               that can be used when archiving a PV.
@@ -172,7 +174,7 @@ in {
               you can specify that a given policy archives PVs at a rate of 2Hz.
 
               By default,
-              the :file:`policies.py` found in :file:`src/sitespecific/tests/classpathfiles/policies.py` is used.
+              the {file}`policies.py` found in {file}`src/sitespecific/tests/classpathfiles/policies.py` is used.
             '';
             type = lib.types.path;
             default = "${cfg.package}/share/archappl/policies.py";
@@ -206,7 +208,7 @@ in {
           EPICS_CA_AUTO_ADDR_LIST = lib.mkOption {
             description = ''
               If set,
-              behave as if every broadcast address of every network interface is added to ``EPICS_CA_ADDR_LIST``.
+              behave as if every broadcast address of every network interface is added to `EPICS_CA_ADDR_LIST`.
             '';
             type = lib.types.bool;
             default = true;
@@ -223,7 +225,7 @@ in {
               Each IP address can be a unicast address,
               or a broadcast address.
 
-              This option is ignored of ``EPICS_CA_AUTO_ADDR_LIST`` is enabled (the default).
+              This option is ignored of `EPICS_CA_AUTO_ADDR_LIST` is enabled (the default).
             '';
             type = with lib.types; listOf str;
             default = [];
@@ -251,9 +253,10 @@ in {
           the size will depend on the amount of RAM available,
           normally half of your physical RAM without swap.
 
-          .. warning::
-            If you oversize it,
-            the machine will deadlock since the OOM handler will not be able to free that memory.
+          :::{warning}
+          If you oversize it,
+          the machine will deadlock since the OOM handler will not be able to free that memory.
+          :::
         '';
         example = "20g";
         type = with lib.types; nullOr str;

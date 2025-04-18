@@ -20,6 +20,7 @@ author = "The EPNix Contributors"
 release = "dev"
 
 source_repository = "https://github.com/epics-extensions/EPNix"
+branch = "master" if release == "dev" else release
 
 language = "en"
 
@@ -54,19 +55,28 @@ manpages_url = "https://manpages.debian.org/{path}"
 # -- Options for MyST --------------------------------------------------------
 # https://myst-parser.readthedocs.io/en/latest/configuration.html
 
-myst_enable_extensions = [
+myst_enable_extensions = {
     "attrs_inline",
     "colon_fence",
     "deflist",
-]
+    "fieldlist",
+    "replacements",
+    "smartquotes",
+}
+
+myst_heading_anchors = 2
 
 myst_url_schemes = {
     "http": None,
     "https": None,
     "mailto": None,
-    "source": "https://github.com/epics-extensions/EPNix/blob/{{netloc}}{{path}}",
+    "source": {
+        "url": f"{source_repository}/blob/{branch}/{{{{path}}}}",
+        "title": "{{path}}",
+        "classes": ["github"],
+    },
     "gh-issue": {
-        "url": "https://github.com/executablebooks/MyST-Parser/issue/{{path}}#{{fragment}}",
+        "url": f"{source_repository}/issues/{{{{path}}}}#{{{{fragment}}}}",
         "title": "Issue #{{path}}",
         "classes": ["github"],
     },
@@ -88,7 +98,7 @@ nix_toc_display_full_path = True
 
 
 def nix_linkcode_resolve(path: str) -> str:
-    return f"{source_repository}/blob/master/{path}"
+    return f"{source_repository}/blob/{branch}/{path}"
 
 
 # -- Options for HTML output -------------------------------------------------
