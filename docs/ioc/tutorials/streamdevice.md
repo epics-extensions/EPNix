@@ -7,9 +7,8 @@ using the [StreamDevice] support module.
 
 ## Pre-requisites
 
-Verify that you have all pre-requisites installed.
-If not,
-follow the {doc}`./pre-requisites` section.
+Verify that you have all pre-requisites installed,
+by following the {doc}`../../pre-requisites` section.
 
 ## Running the power supply simulator
 

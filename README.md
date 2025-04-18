@@ -2,47 +2,86 @@
 
 ![](./docs/logo.svg)
 
-EPNix (pronunciation: like you are high on mushrooms) packages EPICS-related software by using the [Nix] package manager.
+[Documentation]
 
-It's made of three parts:
+EPNix
+(pronunciation: as if you are high on mushrooms)
+enables you to build,
+package,
+deploy IOCs and other EPICS-related software
+by using the [Nix] package manager.
 
--   the EPICS IOC framework
--   other EPICS-related packages
--   NixOS modules
+Before getting started,
+make sure to follow the [Pre-requisites].
 
-The EPICS IOC framework lets you package, deploy, and test EPICS IOCs by using the Nix package manager, which provides several benefits.
-For more information, see the [EPICS IOC documentation].
+## Features
 
-EPNix also packages other EPICS-related tools, such as procServ, Phoebus, and so on.
-You can build them by using Nix, while having a strong guarantee that they work as-is.
+### EPICS IOCs
+
+The EPNix IOC framework enables you to you package,
+deploy,
+and test EPICS IOCs.
+
+To get started,
+read the [IOC tutorials].
+
+### Other packages
+
+EPNix also packages other EPICS-related tools, such as procServ, or Phoebus.
+You can build them by using Nix on any Linux distribution.
+
 For a list of all supported EPICS-related packages, see the [Packages list].
 
-Note: providing a cache server that enables you to download dependencies pre-compiled is anticipated.
+### NixOS services
 
-EPNix also provides NixOS modules, which are instructions on how to configure various EPICS-related services on NixOS machines (for example the Phoebus alarm server).
-EPNix strives to have integration tests for each of those module.
-For more information, see the [NixOS services documentation].
+EPNix also provides NixOS modules,
+which are instructions
+on how to configure various EPICS-related services
+on NixOS machines,
+such as Archiver Appliance.
 
-  [Nix]: https://nixos.org/guides/how-nix-works.html
-  [EPICS IOC documentation]: https://epics-extensions.github.io/EPNix/ioc/
-  [Packages list]: https://epics-extensions.github.io/EPNix/pkgs/packages.html
-  [NixOS services documentation]: https://epics-extensions.github.io/EPNix/nixos-services/
+To get started,
+read the [NixOS services tutorials].
 
-## Getting started building IOCs
+## Release branches
 
-See [over there] in the documentation book.
+EPNix has a `master` branch,
+which is considered unstable,
+meaning breaking changes might happen without notice.
 
-  [over there]: https://epics-extensions.github.io/EPNix/
+EPNix also has release branches,
+such as `nixos-24.11`,
+tied to the nixpkgs release branches,
+where breaking changes are forbidden.
 
-## Packaging policy
+Backporting changes to older release branches is done on a "best-effort" basis.
 
-In its package repository, EPNix officially supports the latest upstream version.
+## Getting help
 
-This doesn't cause much issues: since EPNix is a Git repository, you use a fixed version of EPNix, without being forced to upgrade your dependencies.
+You can get help by:
 
-### The epics-base package
+-   asking questions in:
+    -   the [EPNix Matrix room]
+    -   the [EPNix repository's discussions]
+    -   the [EPICS Tech-Talk mailing list]
+-   reporting issues in the [EPNix repository's issue tracker]
 
-The epics-base package has no significant modification compared to the upstream version on [GitHub].
-One goal of EPNix is to have as little modification as possible, and upstream what's possible.
+## How to contribute
 
-  [GitHub]: https://github.com/epics-base/epics-base/
+To contribute to the EPNix repository,
+see the "EPNix development" documentation section.
+
+## License
+
+EPNix is under the MIT license.
+
+[Documentation]: https://epics-extensions.github.io/EPNix/
+[EPICS Tech-Talk mailing list]: https://epics.anl.gov/tech-talk/
+[EPNix Matrix room]: https://matrix.to/#/#epnix:epics-controls.org
+[EPNix repository's discussions]: https://github.com/epics-extensions/EPNix/discussions
+[EPNix repository's issue tracker]: https://github.com/epics-extensions/EPNix/issues
+[IOC tutorials]: https://epics-extensions.github.io/EPNix/dev/ioc/tutorials/index.html
+[NixOS services tutorials]: https://epics-extensions.github.io/EPNix/dev/nixos-services/tutorials/index.html
+[Nix]: https://nixos.org/guides/how-nix-works/
+[Packages list]: https://epics-extensions.github.io/EPNix/dev/pkgs/packages.html
+[Pre-requisites]: https://epics-extensions.github.io/EPNix/dev/pre-requisites.html
