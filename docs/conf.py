@@ -6,6 +6,7 @@
 import json
 import os
 import sys
+from datetime import date
 from pathlib import Path
 
 # Enables importing our custom "pygments_styles" module
@@ -15,7 +16,6 @@ sys.path.append(os.path.abspath("./_ext"))
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = "EPNix"
-copyright = "The EPNix Contributors"
 author = "The EPNix Contributors"
 release = "dev"
 
@@ -23,6 +23,13 @@ source_repository = "https://github.com/epics-extensions/EPNix"
 branch = "master" if release == "dev" else release
 
 language = "en"
+
+source_date = date.today()
+if date_ts := os.environ.get("SOURCE_DATE_EPOCH"):
+    source_date = date.fromtimestamp(float(date_ts))
+
+today = source_date.isoformat()
+copyright = f"2021-{source_date.year}, The EPNix Contributors"
 
 nitpicky = True
 
@@ -34,6 +41,7 @@ extensions = [
     "sphinx.ext.githubpages",
     "sphinx_copybutton",
     "sphinxcontrib_nixdomain",
+    "sphinxcontrib_typstbuilder",
     "sphinxext.opengraph",
 ]
 
@@ -164,6 +172,25 @@ if versions.exists():
         el for el in html_context["versions"] if el["name"] == release
     )
     current_version["current"] = True
+
+# -- Options for Typst output ------------------------------------------------
+# https://minijackson.github.io/sphinxcontrib-typstbuilder/configuration.html
+
+typst_date = source_date
+
+typst_documents = [
+    {
+        "startdocname": "cheatsheet",
+        "targetname": "cheatsheet",
+        "title": "EPNix cheatsheet",
+        "template": "cheatsheet",
+        "metadata": {
+            "copyright": copyright,
+            "release": release,
+            "html_baseurl": html_baseurl,
+        },
+    }
+]
 
 # -- Options for Man output --------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-manual-page-output

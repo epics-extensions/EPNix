@@ -12,6 +12,10 @@
       url = "github:minijackson/sphinxcontrib-nixdomain";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sphinxcontrib-typstbuilder = {
+      url = "github:minijackson/sphinxcontrib-typstbuilder";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-github-actions = {
       url = "github:nix-community/nix-github-actions";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -34,6 +38,7 @@
           overlay
           inputs.bash-lib.overlay
           inputs.sphinxcontrib-nixdomain.overlays.default
+          inputs.sphinxcontrib-typstbuilder.overlays.default
         ];
       };
     in {
