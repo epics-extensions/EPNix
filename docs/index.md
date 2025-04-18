@@ -78,6 +78,15 @@ see the "EPNix development" documentation section.
 EPNix is under the MIT license.
 
 ```{toctree}
+:hidden:
+:titlesonly:
+
+pre-requisites
+cheatsheet
+release-notes/index
+```
+
+```{toctree}
 :caption: EPICS IOCs
 :hidden:
 :titlesonly:
@@ -111,35 +120,12 @@ nixos-services/options-reference/index
 ```
 
 ```{toctree}
-:caption: Misc
-:hidden:
-:titlesonly:
-
-pre-requisites
-cheatsheet
-```
-
-```{toctree}
-:caption: Release notes
-:glob:
-:hidden:
-:reversed:
-:titlesonly:
-
-release-notes/*
-```
-
-```{toctree}
 :caption: EPNix development
-:glob:
 :hidden:
-:reversed:
 :titlesonly:
 
 development/guides/index
 ```
-
-% TODO: link an index to Nix options and packages
 
 [Nix]: https://nixos.org/guides/how-nix-works/
 [EPNix Matrix room]: https://matrix.to/#/#epnix:epics-controls.org
