@@ -57,18 +57,16 @@ in {
             apply = lib.concatStringsSep ",";
           };
 
-          es_host = lib.mkOption {
-            description = "Elasticsearch server host";
-            type = lib.types.str;
-            default = "localhost";
-          };
+          es_urls = lib.mkOption {
+            description = ''
+              List of Elasticsearch node URLs.
 
-          es_port = lib.mkOption {
-            description = "Elasticsearch server port";
-            type = lib.types.port;
-            default = config.services.elasticsearch.port;
-            defaultText = lib.literalExpression "config.services.elasticsearch.port";
-            apply = toString;
+              All nodes must belong to the same cluster.
+            '';
+            type = with lib.types; listOf str;
+            default = ["http://localhost:${toString config.services.elasticsearch.port}"];
+            defaultText = lib.literalExpression ''[ "http://localhost:''${toString config.services.elasticsearch.port}" ]'';
+            apply = lib.concatStringsSep ",";
           };
 
           es_sniff = lib.mkOption {
