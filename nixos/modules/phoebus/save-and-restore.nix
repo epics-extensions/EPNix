@@ -38,7 +38,7 @@ in {
         Note that options containing a "." must be quoted.
 
         Available options can be seen here:
-        https://github.com/ControlSystemStudio/phoebus/blob/master/services/save-and-restore/src/main/resources/application.properties
+        <https://github.com/ControlSystemStudio/phoebus/blob/v${pkgs.epnix.phoebus-save-and-restore.version}/services/save-and-restore/src/main/resources/application.properties>
       '';
       default = {};
       type = lib.types.submodule {
@@ -49,6 +49,114 @@ in {
             type = lib.types.port;
             default = 8080;
             apply = toString;
+          };
+
+          "auth.impl" = lib.mkOption {
+            description = ''
+              Authentication implementation.
+
+              Supported options:
+
+              `"ad"`
+              :   Microsoft Active Directory
+
+              `"ldap"`
+              :   LDAP
+
+              `"ldap_embedded"`
+              :   Embedded LDAP. Config in sar.ldif
+
+              `"demo"`
+              :   Hard coded users and passwords.
+                  Provides 3 users:
+
+                  -   an admin
+                  -   a read-only user
+                  -   a normal user
+
+                  See the following options:
+
+                  -   {nix:option}`"demo.admin"`
+                  -   {nix:option}`"demo.admin.password"`
+                  -   {nix:option}`"demo.readOnly"`
+                  -   {nix:option}`"demo.readOnly.password"`
+                  -   {nix:option}`"demo.user"`
+                  -   {nix:option}`"demo.user.password"`
+            '';
+            type = lib.types.enum ["ad" "ldap" "ldap_embedded" "demo"];
+          };
+
+          "demo.user" = lib.mkOption {
+            description = ''
+              Username for the normal demo user.
+
+              Only valid for if {nix:option}`"auth.impl"` is `"demo"`.
+            '';
+            type = lib.types.str;
+            default = "user";
+          };
+
+          "demo.user.password" = lib.mkOption {
+            description = ''
+              Password for the normal demo user.
+
+              Only valid for if {nix:option}`"auth.impl"` is `"demo"`.
+            '';
+            type = lib.types.str;
+            default = "userPass";
+          };
+
+          "demo.admin" = lib.mkOption {
+            description = ''
+              Username for the admin demo user.
+
+              Only valid for if {nix:option}`"auth.impl"` is `"demo"`.
+            '';
+            type = lib.types.str;
+            default = "admin";
+          };
+
+          "demo.admin.password" = lib.mkOption {
+            description = ''
+              Password for the admin demo user.
+
+              Only valid for if {nix:option}`"auth.impl"` is `"demo"`.
+            '';
+            type = lib.types.str;
+            default = "adminPass";
+          };
+
+          "demo.readOnly" = lib.mkOption {
+            description = ''
+              Username for the normal demo user.
+
+              Only valid for if {nix:option}`"auth.impl"` is `"demo"`.
+            '';
+            type = lib.types.str;
+            default = "johndoe";
+          };
+
+          "demo.readOnly.password" = lib.mkOption {
+            description = ''
+              Password for the read-only demo user.
+
+              Only valid for if {nix:option}`"auth.impl"` is `"demo"`.
+            '';
+            type = lib.types.str;
+            default = "1234";
+          };
+
+          "spring.ldap.embedded.ldif" = lib.mkOption {
+            description = ''
+              Path to [LDIF] file describing the content of the embedded LDAP server.
+
+              Only valid for if {nix:option}`"auth.impl"` is `"embedded_ldap"`.
+
+                [LDIF]: https://en.wikipedia.org/wiki/LDAP_Data_Interchange_Format
+            '';
+            type = lib.types.str;
+            default = "classpath:sar.ldif";
+            example = lib.literalExpression ''"file://''${./sar.ldif}"'';
           };
 
           "elasticsearch.network.host" = lib.mkOption {

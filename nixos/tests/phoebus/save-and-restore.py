@@ -25,6 +25,7 @@ def put(uri: str, data: JSON):
         client.succeed(
             "curl -sSf "
             "-X PUT "
+            "-u customAdmin:customAdminPass "
             "-H 'Content-Type: application/json' "
             "-H 'Accept: application/json' "
             f"'{base_url}{uri}' "
@@ -37,6 +38,7 @@ def delete(uri: str):
     client.succeed(
         "curl -sSf "
         "-X DELETE "
+        "-u customAdmin:customAdminPass "
         "-H 'Content-Type: application/json' "
         "-H 'Accept: application/json' "
         f"'{base_url}{uri}'"
@@ -60,6 +62,7 @@ with subtest("We can create a subnode"):
     result = put(
         f"/node?parentNodeId={root_node_id}",
         {
+            "nodeType": "FOLDER",
             "name": "subnode",
             "description": "A test subnode",
             "userName": user,
@@ -79,6 +82,7 @@ with subtest("We can create a config"):
         {
             "configurationNode": {
                 "name": "test configuration",
+                "nodeType": "CONFIGURATION",
                 "userName": user,
             },
             "configurationData": {
@@ -145,6 +149,7 @@ with subtest("We can create a snapshot"):
         {
             "snapshotNode": {
                 "name": "test snapshot",
+                "nodeType": "SNAPSHOT",
                 "userName": user,
             },
             "snapshotData": {
