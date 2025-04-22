@@ -180,8 +180,8 @@ with subtest("The data is still here after a server reboot"):
     wait_for_boot()
 
     alarm = get_alarm()
-    assert alarm["current_severity"] == "OK"
-    assert alarm["severity"] == "OK"
+    assert alarm["current_severity"] == "OK", "wrong current severity"
+    assert alarm["severity"] == "OK", "wrong severity"
 
     logger_alarms = get_logger("/search/alarm/pv/ALARM_TEST")
     logger_alarms.sort(key=lambda event: event.get("time", ""), reverse=True)
@@ -189,9 +189,9 @@ with subtest("The data is still here after a server reboot"):
         alarm for alarm in logger_alarms if alarm["config"].startswith("state:")
     ]
 
-    assert alarm_states[2]["current_severity"] == "MAJOR"
-    assert alarm_states[2]["severity"] == "MAJOR"
-    assert alarm_states[2]["value"] == "4.0"
+    assert alarm_states[2]["current_severity"] == "MAJOR", "wrong current severity"
+    assert alarm_states[2]["severity"] == "MAJOR", "wrong severity"
+    assert alarm_states[2]["value"] == "4.0", "wrong value"
 
 with subtest("Can export alarm configuration"):
     server.succeed(
