@@ -37,7 +37,7 @@ in {
         Note that options containing a "." must be quoted.
 
         Available options can be seen here:
-        <https://github.com/ControlSystemStudio/phoebus/blob/master/services/alarm-logger/src/main/resources/application.properties>
+        <https://github.com/ControlSystemStudio/phoebus/blob/v${pkgs.epnix.phoebus-alarm-logger.version}/services/alarm-logger/src/main/resources/application.properties>
       '';
       default = {};
       type = lib.types.submodule {
