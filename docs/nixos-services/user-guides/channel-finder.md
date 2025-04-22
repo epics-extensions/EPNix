@@ -124,13 +124,14 @@ This section assumes you already have a configured LDAP server.
 This configured LDAP server can be an embedded LDAP server of another service.
 
 If you want to use your company's LDAP server,
-contact your IT team for the LDAP configuration:
+ask your IT team for the LDAP configuration.
+The configuration must include:
 
 - URL,
 - base DN,
 - user DN pattern,
-- search base,
-- and search path.
+- group search base,
+- and group search path.
 
 Here is an example configuration:
 
