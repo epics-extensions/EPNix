@@ -188,8 +188,8 @@ with subtest("The data is still here after a server reboot"):
 
     with subtest("Phoebus alarm server data still coherent after reboot"):
         alarm = get_alarm()
-        assert alarm["current_severity"] == "OK"
-        assert alarm["severity"] == "OK"
+        assert alarm["current_severity"] == "OK", "wrong current severity"
+        assert alarm["severity"] == "OK", "wrong severity"
 
     def test_reboot_data(_):
         logger_alarms = get_logger("/search/alarm/pv/ALARM_TEST")
@@ -201,9 +201,9 @@ with subtest("The data is still here after a server reboot"):
         if len(alarm_states) < 2:
             return False
 
-        assert alarm_states[2]["current_severity"] == "MAJOR"
-        assert alarm_states[2]["severity"] == "MAJOR"
-        assert alarm_states[2]["value"] == "4.0"
+        assert alarm_states[-3]["current_severity"] == "MAJOR", "wrong current severity"
+        assert alarm_states[-3]["severity"] == "MAJOR", "wrong severity"
+        assert alarm_states[-3]["value"] == "4.0", "wrong value"
         return True
 
     with subtest("Phoebus alarm logger data still coherent after reboot"):

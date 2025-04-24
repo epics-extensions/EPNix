@@ -9,10 +9,13 @@ EPICS
 epics-base
 EPNix
 IOCs?
+LDAP
+LDIF
 nginx
 Nix
 NixOS
 NixOps
+OpenLDAP
 procServ
 RecCaster
 RecCeiver

@@ -11,6 +11,11 @@
       services.phoebus-save-and-restore = {
         enable = true;
         openFirewall = true;
+
+        settings = {
+          "auth.impl" = "ldap_embedded";
+          "spring.ldap.embedded.ldif" = "file://${./save-and-restore.ldif}";
+        };
       };
 
       services.elasticsearch = {

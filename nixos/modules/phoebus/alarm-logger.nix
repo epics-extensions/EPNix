@@ -37,7 +37,7 @@ in {
         Note that options containing a "." must be quoted.
 
         Available options can be seen here:
-        <https://github.com/ControlSystemStudio/phoebus/blob/master/services/alarm-logger/src/main/resources/application.properties>
+        <https://github.com/ControlSystemStudio/phoebus/blob/v${pkgs.epnix.phoebus-alarm-logger.version}/services/alarm-logger/src/main/resources/application.properties>
       '';
       default = {};
       type = lib.types.submodule {
@@ -57,18 +57,16 @@ in {
             apply = lib.concatStringsSep ",";
           };
 
-          es_host = lib.mkOption {
-            description = "Elasticsearch server host";
-            type = lib.types.str;
-            default = "localhost";
-          };
+          es_urls = lib.mkOption {
+            description = ''
+              List of Elasticsearch node URLs.
 
-          es_port = lib.mkOption {
-            description = "Elasticsearch server port";
-            type = lib.types.port;
-            default = config.services.elasticsearch.port;
-            defaultText = lib.literalExpression "config.services.elasticsearch.port";
-            apply = toString;
+              All nodes must belong to the same cluster.
+            '';
+            type = with lib.types; listOf str;
+            default = ["http://localhost:${toString config.services.elasticsearch.port}"];
+            defaultText = lib.literalExpression ''[ "http://localhost:''${toString config.services.elasticsearch.port}" ]'';
+            apply = lib.concatStringsSep ",";
           };
 
           es_sniff = lib.mkOption {
