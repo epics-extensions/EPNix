@@ -15,7 +15,8 @@ variables:
 
 before_script:
   - export XDG_CACHE_HOME="$PWD/.cache"
-  - git config --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@drf-gitlab.cea.fr".insteadOf "ssh://git@drf-gitlab.cea.fr"
+  - git config --global --add url."https://gitlab-ci-token:${CI_JOB_TOKEN}@drf-gitlab.cea.fr/".insteadOf "ssh://git@drf-gitlab.cea.fr/"
+  - git config --global --add url."https://gitlab-ci-token:${CI_JOB_TOKEN}@drf-gitlab.cea.fr/".insteadOf "git@drf-gitlab.cea.fr:"
 
 run_checks:
   stage: test
