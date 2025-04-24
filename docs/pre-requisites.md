@@ -6,10 +6,7 @@ or in Windows’ WSL2.
 Nix must be configured with "flakes" enabled.
 
 You *don’t* need to have EPICS base installed globally,
-EPNix makes it available to you
-when you enter your top’s development shell.
-
-Having a global EPICS base installation shouldn’t pose any issue.
+but having a global EPICS base installation shouldn’t pose any issue.
 
 ## Installing Nix
 

@@ -8,7 +8,6 @@
 :maxdepth: 2
 :numbered:
 
-pre-requisites
 streamdevice
 integration-tests
 ```

@@ -158,7 +158,10 @@ html_sidebars = {
     ]
 }
 
-html_css_files = ["multi-version.css"]
+html_css_files = [
+    "logo-size.css",
+    "multi-version.css",
+]
 
 html_context = {}
 
