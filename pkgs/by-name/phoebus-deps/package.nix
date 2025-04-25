@@ -3,7 +3,7 @@
   lib,
   epnixLib,
   fetchFromGitHub,
-  jdk,
+  jdk21,
   maven,
 }:
 stdenv.mkDerivation {
@@ -17,7 +17,7 @@ stdenv.mkDerivation {
     hash = "sha256-Ig5l3WlO6cqJ9Xpo1DwpKLbAeZlCOFYCID4S1fsaCmA=";
   };
 
-  nativeBuildInputs = [jdk maven];
+  nativeBuildInputs = [jdk21 maven];
 
   MAVEN_OPTS = "-Xmx1G";
 
@@ -67,7 +67,7 @@ stdenv.mkDerivation {
     homepage = "https://github.com/ControlSystemStudio/phoebus/";
     license = lib.licenses.epl10;
     maintainers = with epnixLib.maintainers; [minijackson];
-    inherit (jdk.meta) platforms;
+    inherit (jdk21.meta) platforms;
     hidden = true;
   };
 }

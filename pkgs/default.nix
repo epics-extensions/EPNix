@@ -110,7 +110,6 @@ in
         phoebus-alarm-server = callPackage ./epnix/tools/phoebus/alarm-server {};
         phoebus-alarm-logger = callPackage ./epnix/tools/phoebus/alarm-logger {};
         phoebus-archive-engine = callPackage ./epnix/tools/phoebus/archive-engine {};
-        phoebus-deps = callPackage ./epnix/tools/phoebus/deps {jdk = prev.jdk21;};
         phoebus-olog = callPackage ./epnix/tools/phoebus/olog {jdk = prev.jdk21;};
         phoebus-pva = callPackage ./epnix/tools/phoebus/pva {};
         phoebus-save-and-restore = callPackage ./epnix/tools/phoebus/save-and-restore {};
