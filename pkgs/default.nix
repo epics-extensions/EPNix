@@ -87,12 +87,6 @@ in
           twincat-ads = callPackage ./epnix/support/twincat-ads {};
         });
 
-        # EPICS related tools and extensions
-
-        archiver-appliance = callPackage ./epnix/tools/archiver-appliance {
-          jdk = prev.jdk17;
-        };
-
         # Lewis needs Python < 3.12
         inherit (final.python311Packages) lewis;
 

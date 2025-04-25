@@ -4,7 +4,7 @@
   epnix,
   epnixLib,
   fetchFromGitHub,
-  jdk,
+  jdk17,
   gradle,
   sphinx,
   tomcat9,
@@ -34,7 +34,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   ];
 
   nativeBuildInputs = [
-    jdk
+    jdk17
     gradle
     sphinx
     python3Packages.myst-parser
@@ -44,7 +44,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
   gradleFlags = [
     "-PprojVersion=${finalAttrs.version}"
-    "-Dorg.gradle.java.home=${jdk}"
+    "-Dorg.gradle.java.home=${jdk17}"
   ];
 
   # Update by running `nix build .#archiver-appliance.mitmCache.updateScript && ./result`
@@ -94,7 +94,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
       psfl
     ];
     maintainers = with epnixLib.maintainers; [minijackson];
-    inherit (jdk.meta) platforms;
+    inherit (jdk17.meta) platforms;
     sourceProvenance = with lib.sourceTypes; [
       fromSource
       # gradle dependencies
