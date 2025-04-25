@@ -31,7 +31,7 @@ editorconfig:
 formatting:
   stage: test
   script:
-    - nix fmt -- --check .
+    - nix fmt -- --ci
 
 manpages:
   stage: deploy
