@@ -2,7 +2,7 @@
   lib,
   epnixLib,
   fetchFromGitHub,
-  jdk,
+  jdk21,
   maven,
   makeWrapper,
 }:
@@ -32,7 +32,7 @@ maven.buildMavenPackage rec {
 
     install -Dm644 target/service-olog-${version}.jar $out/share/java
 
-    makeWrapper ${lib.getExe jdk} $out/bin/${meta.mainProgram} \
+    makeWrapper ${lib.getExe jdk21} $out/bin/${meta.mainProgram} \
       --add-flags "-jar $out/share/java/$jarName"
 
     runHook postInstall
@@ -44,6 +44,6 @@ maven.buildMavenPackage rec {
     mainProgram = "phoebus-olog";
     license = lib.licenses.epl10;
     maintainers = with epnixLib.maintainers; [minijackson];
-    inherit (jdk.meta) platforms;
+    inherit (jdk21.meta) platforms;
   };
 }
