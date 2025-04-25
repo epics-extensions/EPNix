@@ -23,7 +23,6 @@ in
       ++ [
         (final: _prev:
           {
-            pyepics = final.callPackage ./epnix/python-modules/pyepics {};
             recceiver = final.callPackage ./epnix/tools/channel-finder/recceiver {};
             scanf = final.callPackage ./epnix/tools/scanf {};
             epicscorelibs = final.callPackage ./epnix/python-modules/epicscorelibs {};
