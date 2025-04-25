@@ -134,7 +134,7 @@
 
       templates.default = self.templates.top;
 
-      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
+      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.callPackage ./formatter.nix {};
 
       githubActions = nix-github-actions.lib.mkGithubMatrix {inherit (self) checks;};
     };
