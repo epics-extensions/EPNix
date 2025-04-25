@@ -15,7 +15,8 @@ in
   recurseIntoAttrs {
     inherit epnixLib;
 
-    mkEpicsPackage = callPackage ./build-support/mk-epics-package {};
+    # TODO: remove once every package uses the EPNix scope
+    mkEpicsPackage = callPackage ./by-name/mkEpicsPackage/package.nix {};
 
     pythonPackagesExtensions =
       prev.pythonPackagesExtensions
