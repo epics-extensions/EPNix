@@ -103,10 +103,6 @@ in
         inherit (callPackage ./epnix/tools/lewis/lib.nix {}) mkLewisSimulator;
 
         phoebus = callPackage ./epnix/tools/phoebus/client {};
-        phoebus-unwrapped = callPackage ./epnix/tools/phoebus/client-unwrapped {
-          jdk = prev.jdk21;
-          openjfx = prev.openjfx21;
-        };
 
         # Other utilities
 

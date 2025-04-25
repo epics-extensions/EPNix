@@ -6,8 +6,8 @@
   maven,
   makeWrapper,
   epnix,
-  jdk,
-  openjfx,
+  jdk21,
+  openjfx21,
   python3,
 }: let
   buildDate = "2022-02-24T07:56:00Z";
@@ -28,9 +28,9 @@ in
       maven
       makeWrapper
       (epnix.phoebus-setup-hook.override {
-        jdk = jdk.override {
+        jdk21_headless = jdk21.override {
           enableJavaFX = true;
-          openjfx_jdk = openjfx.override {
+          openjfx_jdk = openjfx21.override {
             withWebKit = true;
           };
         };
@@ -85,6 +85,6 @@ in
       mainProgram = "phoebus";
       license = lib.licenses.epl10;
       maintainers = with epnixLib.maintainers; [minijackson];
-      inherit (jdk.meta) platforms;
+      inherit (jdk21.meta) platforms;
     };
   }
