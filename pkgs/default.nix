@@ -21,9 +21,8 @@ in
     pythonPackagesExtensions =
       prev.pythonPackagesExtensions
       ++ [
-        (final: prev:
+        (final: _prev:
           {
-            lewis = final.callPackage ./epnix/tools/lewis {};
             channelfinder = final.callPackage ./epnix/tools/channel-finder/pyCFClient {};
             pyepics = final.callPackage ./epnix/python-modules/pyepics {};
             recceiver = final.callPackage ./epnix/tools/channel-finder/recceiver {};
@@ -95,7 +94,7 @@ in
 
         pythonSoftIOC = final.python3Packages.softioc;
 
-        inherit (callPackage ./epnix/tools/lewis/lib.nix {}) mkLewisSimulator;
+        inherit (callPackage ./python-modules/by-name/lewis/lib.nix {}) mkLewisSimulator;
 
         # EPNix specific packages
         ci-scripts = scope self (_self: {
