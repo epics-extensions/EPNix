@@ -93,8 +93,6 @@ in
           jdk = prev.jdk17;
         };
 
-        ca-gateway = callPackage ./epnix/tools/ca-gateway {};
-
         channel-finder-service = callPackage ./epnix/tools/channel-finder/service {};
 
         # Lewis needs Python < 3.12
