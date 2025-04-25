@@ -107,7 +107,6 @@ in
           jdk = prev.jdk21;
           openjfx = prev.openjfx21;
         };
-        phoebus-save-and-restore = callPackage ./epnix/tools/phoebus/save-and-restore {};
         phoebus-scan-server = callPackage ./epnix/tools/phoebus/scan-server {};
 
         # Other utilities
