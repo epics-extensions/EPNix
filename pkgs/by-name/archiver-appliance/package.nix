@@ -1,7 +1,6 @@
 {
   stdenvNoCC,
   lib,
-  epnix,
   epnixLib,
   fetchFromGitHub,
   jdk17,
@@ -10,6 +9,7 @@
   tomcat9,
   python3Packages,
   python3,
+  archiver-appliance,
   sitespecific ? ./sitespecific/epnix,
 }:
 stdenvNoCC.mkDerivation (finalAttrs: {
@@ -49,7 +49,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
   # Update by running `nix build .#archiver-appliance.mitmCache.updateScript && ./result`
   mitmCache = gradle.fetchDeps {
-    pkg = epnix.archiver-appliance;
+    pkg = archiver-appliance;
     data = ./deps.json;
   };
 
