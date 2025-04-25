@@ -21,19 +21,21 @@ in
     pythonPackagesExtensions =
       prev.pythonPackagesExtensions
       ++ [
-        (final: prev: {
-          lewis = final.callPackage ./epnix/tools/lewis {};
-          channelfinder = final.callPackage ./epnix/tools/channel-finder/pyCFClient {};
-          pyepics = final.callPackage ./epnix/python-modules/pyepics {};
-          recceiver = final.callPackage ./epnix/tools/channel-finder/recceiver {};
-          scanf = final.callPackage ./epnix/tools/scanf {};
-          epicscorelibs = final.callPackage ./epnix/python-modules/epicscorelibs {};
-          pvxslibs = final.callPackage ./epnix/python-modules/pvxslibs {};
-          aioca = final.callPackage ./epnix/python-modules/aioca/default.nix {};
-          epicsdbbuilder = final.callPackage ./epnix/python-modules/epicsdbbuilder {};
-          softioc = final.callPackage ./epnix/python-modules/softioc {};
-          p4p = final.callPackage ./epnix/python-modules/p4p {};
-        })
+        (final: prev:
+          {
+            lewis = final.callPackage ./epnix/tools/lewis {};
+            channelfinder = final.callPackage ./epnix/tools/channel-finder/pyCFClient {};
+            pyepics = final.callPackage ./epnix/python-modules/pyepics {};
+            recceiver = final.callPackage ./epnix/tools/channel-finder/recceiver {};
+            scanf = final.callPackage ./epnix/tools/scanf {};
+            epicscorelibs = final.callPackage ./epnix/python-modules/epicscorelibs {};
+            pvxslibs = final.callPackage ./epnix/python-modules/pvxslibs {};
+            aioca = final.callPackage ./epnix/python-modules/aioca/default.nix {};
+            epicsdbbuilder = final.callPackage ./epnix/python-modules/epicsdbbuilder {};
+            softioc = final.callPackage ./epnix/python-modules/softioc {};
+            p4p = final.callPackage ./epnix/python-modules/p4p {};
+          }
+          // (importByName ./python-modules/by-name final))
       ];
 
     linuxKernel =
