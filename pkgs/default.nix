@@ -107,7 +107,6 @@ in
           jdk = prev.jdk21;
           openjfx = prev.openjfx21;
         };
-        phoebus-scan-server = callPackage ./epnix/tools/phoebus/scan-server {};
 
         # Other utilities
 
