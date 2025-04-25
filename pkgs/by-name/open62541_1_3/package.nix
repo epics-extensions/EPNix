@@ -1,3 +1,4 @@
+# This specific version is needed by the opcua support module
 {
   stdenv,
   lib,
