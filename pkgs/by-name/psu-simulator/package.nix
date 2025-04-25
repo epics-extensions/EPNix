@@ -1,11 +1,11 @@
 {
   lib,
-  epnix,
   epnixLib,
+  mkLewisSimulator,
 }:
 # Use recursiveUpdate so that it doesn't override meta.mainProgram
 lib.recursiveUpdate
-(epnix.mkLewisSimulator {
+(mkLewisSimulator {
   name = "psu-simulator";
   source = ./.;
   package = "psu_simulator";
