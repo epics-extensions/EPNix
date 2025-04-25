@@ -97,10 +97,6 @@ in
         inherit (callPackage ./epnix/tools/lewis/lib.nix {}) mkLewisSimulator;
 
         # EPNix specific packages
-        docs = callPackage ./docs {
-          nixdomainLib = inputs.sphinxcontrib-nixdomain.lib;
-        };
-
         ci-scripts = scope self (_self: {
           build-docs-multiversion = callPackage ./ci-scripts/build-docs-multiversion.nix {};
         });

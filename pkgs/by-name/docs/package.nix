@@ -8,11 +8,11 @@
   cacert,
   typst,
   installShellFiles,
-  nixdomainLib,
   documentedEpnixPkgs ? epnix,
   iocConfig ? {},
 }: let
   inherit (epnixLib) documentation;
+  nixdomainLib = epnixLib.inputs.sphinxcontrib-nixdomain.lib;
 
   iocOptions = documentation.options.iocOptions iocConfig;
 
@@ -94,7 +94,7 @@
   typst-packages-vendor = stdenvNoCC.mkDerivation {
     name = "epnix-docs-typst-packages-vendor";
 
-    src = ../../docs/_templates/typst;
+    src = ../../../docs/_templates/typst;
 
     nativeBuildInputs = [cacert typst];
 
@@ -120,7 +120,7 @@ in
     pname = "epnix-docs";
     version = "24.11";
 
-    src = ../../docs;
+    src = ../../../docs;
 
     nativeBuildInputs =
       (with python3.pkgs; [
