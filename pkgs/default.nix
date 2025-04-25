@@ -107,7 +107,6 @@ in
           jdk = prev.jdk21;
           openjfx = prev.openjfx21;
         };
-        phoebus-archive-engine = callPackage ./epnix/tools/phoebus/archive-engine {};
         phoebus-olog = callPackage ./epnix/tools/phoebus/olog {jdk = prev.jdk21;};
         phoebus-pva = callPackage ./epnix/tools/phoebus/pva {};
         phoebus-save-and-restore = callPackage ./epnix/tools/phoebus/save-and-restore {};
