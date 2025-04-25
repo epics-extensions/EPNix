@@ -102,8 +102,6 @@ in
 
         inherit (callPackage ./epnix/tools/lewis/lib.nix {}) mkLewisSimulator;
 
-        phoebus = callPackage ./epnix/tools/phoebus/client {};
-
         # Other utilities
 
         # Needed by support/opcua
