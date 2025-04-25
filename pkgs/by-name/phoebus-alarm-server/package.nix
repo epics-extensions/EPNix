@@ -4,26 +4,26 @@
   stdenv,
   maven,
   makeWrapper,
-  epnix,
+  phoebus-deps,
+  phoebus-setup-hook,
 }: let
   buildDate = "2022-02-24T07:56:00Z";
 in
   stdenv.mkDerivation {
     pname = "phoebus-alarm-server";
-    inherit (epnix.phoebus-deps) version src;
+    inherit (phoebus-deps) version src;
 
     # Use larger heap size, necessary for building the alarm server
     MAVEN_OPTS = "-Xmx1G";
 
-    # TODO: make a scope, so that we don't pass around the whole `epnix`
-    nativeBuildInputs = [maven makeWrapper epnix.phoebus-setup-hook];
+    nativeBuildInputs = [maven makeWrapper phoebus-setup-hook];
 
     buildPhase = ''
       runHook preBuild
 
       # Copy deps to a writable directory, due to the usage of "install-jars"
       local deps=$PWD/deps
-      cp -r --no-preserve=mode "${epnix.phoebus-deps}" $deps
+      cp -r --no-preserve=mode "${phoebus-deps}" $deps
 
       # TODO: tests fail
       mvn package \
@@ -55,6 +55,6 @@ in
       mainProgram = "phoebus-alarm-server";
       license = lib.licenses.epl10;
       maintainers = with epnixLib.maintainers; [minijackson];
-      inherit (epnix.phoebus-setup-hook.meta) platforms;
+      inherit (phoebus-setup-hook.meta) platforms;
     };
   }
