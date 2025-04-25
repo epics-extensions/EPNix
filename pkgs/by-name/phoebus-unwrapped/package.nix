@@ -5,16 +5,17 @@
   substituteAll,
   maven,
   makeWrapper,
-  epnix,
   jdk21,
   openjfx21,
+  phoebus-deps,
+  phoebus-setup-hook,
   python3,
 }: let
   buildDate = "2022-02-24T07:56:00Z";
 in
   stdenv.mkDerivation {
     pname = "phoebus-unwrapped";
-    inherit (epnix.phoebus-deps) version src;
+    inherit (phoebus-deps) version src;
 
     patches = [
       (substituteAll {
@@ -23,11 +24,10 @@ in
       })
     ];
 
-    # TODO: make a scope, so that we don't pass around the whole `epnix`
     nativeBuildInputs = [
       maven
       makeWrapper
-      (epnix.phoebus-setup-hook.override {
+      (phoebus-setup-hook.override {
         jdk21_headless = jdk21.override {
           enableJavaFX = true;
           openjfx_jdk = openjfx21.override {
@@ -50,7 +50,7 @@ in
 
       # Copy deps to a writable directory, due to the usage of "install-jars"
       local deps=$PWD/deps
-      cp -r --no-preserve=mode "${epnix.phoebus-deps}" $deps
+      cp -r --no-preserve=mode "${phoebus-deps}" $deps
 
       # TODO: tests fail
       mvn package \
