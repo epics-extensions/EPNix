@@ -3,7 +3,7 @@
   mkEpicsPackage,
   fetchFromGitHub,
   python3Packages,
-  epnix,
+  pcas,
 }:
 mkEpicsPackage rec {
   pname = "ca-gateway";
@@ -17,7 +17,7 @@ mkEpicsPackage rec {
     hash = "sha256-PUe/MPvmBUFOKsrgIZvz65K1/HhD/ugmldKGY6SnMck=";
   };
 
-  buildInputs = with epnix; [pcas];
+  buildInputs = [pcas];
 
   # Needs pyepics
   doCheck = false;
