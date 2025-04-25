@@ -93,8 +93,6 @@ in
           jdk = prev.jdk17;
         };
 
-        channel-finder-service = callPackage ./epnix/tools/channel-finder/service {};
-
         # Lewis needs Python < 3.12
         inherit (final.python311Packages) lewis;
 
