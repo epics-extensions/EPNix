@@ -23,7 +23,6 @@ in
       ++ [
         (final: _prev:
           {
-            pvxslibs = final.callPackage ./epnix/python-modules/pvxslibs {};
             aioca = final.callPackage ./epnix/python-modules/aioca/default.nix {};
             epicsdbbuilder = final.callPackage ./epnix/python-modules/epicsdbbuilder {};
             softioc = final.callPackage ./epnix/python-modules/softioc {};
