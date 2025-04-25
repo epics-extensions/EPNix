@@ -123,8 +123,6 @@ in
         phoebus-scan-server = callPackage ./epnix/tools/phoebus/scan-server {};
         phoebus-setup-hook = callPackage ./epnix/tools/phoebus/setup-hook {jdk = prev.jdk21_headless;};
 
-        procServ = callPackage ./epnix/tools/procServ {};
-
         # Other utilities
 
         # Needed by support/opcua
