@@ -123,7 +123,7 @@ html_theme_options = {
 }
 
 html_logo = "logo.svg"
-html_favicon = "favicon.svg"
+html_favicon = "favicon.ico"
 
 # Multi version
 
