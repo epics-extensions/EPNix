@@ -23,7 +23,6 @@ in
       ++ [
         (final: _prev:
           {
-            epicsdbbuilder = final.callPackage ./epnix/python-modules/epicsdbbuilder {};
             softioc = final.callPackage ./epnix/python-modules/softioc {};
             p4p = final.callPackage ./epnix/python-modules/p4p {};
           }
