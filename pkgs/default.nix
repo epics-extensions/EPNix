@@ -51,7 +51,6 @@ in
 
         support = scope self (self:
           {
-            asyn = callPackage ./epnix/support/asyn {};
             autoparamDriver = callPackage ./epnix/support/autoparamDriver {};
             autosave = callPackage ./epnix/support/autosave {};
             busy = callPackage ./epnix/support/busy {};
