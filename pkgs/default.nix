@@ -51,7 +51,6 @@ in
 
         support = scope self (self:
           {
-            autosave = callPackage ./epnix/support/autosave {};
             busy = callPackage ./epnix/support/busy {};
             calc = callPackage ./epnix/support/calc {};
             devlib2 = callPackage ./epnix/support/devlib2 {};
