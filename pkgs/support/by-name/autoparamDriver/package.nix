@@ -1,9 +1,9 @@
 {
   mkEpicsPackage,
   fetchFromGitHub,
-  epnix,
   lib,
   epnixLib,
+  asyn,
 }:
 mkEpicsPackage rec {
   pname = "autoparamDriver";
@@ -18,7 +18,7 @@ mkEpicsPackage rec {
     hash = "sha256-J2fy/pMwrbwVFULfANuJBl6iE3wju5bQkhkxxk8zRYs=";
   };
 
-  propagatedBuildInputs = with epnix.support; [asyn];
+  propagatedBuildInputs = [asyn];
 
   meta = {
     description = "An asyn driver that creates parameters dynamically based on content of record links";
