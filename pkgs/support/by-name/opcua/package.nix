@@ -4,10 +4,10 @@
   mkEpicsPackage,
   fetchFromGitHub,
   pkg-config,
-  epnix,
   open62541_1_3,
   openssl,
   libxml2,
+  gtest,
   local_config_site ? {},
   local_release ? {},
 }:
@@ -42,7 +42,7 @@ mkEpicsPackage {
   nativeBuildInputs = [pkg-config open62541_1_3 openssl libxml2];
   buildInputs = [open62541_1_3 openssl libxml2];
   propagatedNativeBuildInputs = [pkg-config];
-  propagatedBuildInputs = [libxml2] ++ (with epnix.support; [gtest]);
+  propagatedBuildInputs = [libxml2 gtest];
 
   meta = {
     description = "EPICS support for communication with OPC UA protocol";
