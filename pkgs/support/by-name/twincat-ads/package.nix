@@ -1,9 +1,10 @@
 {
   lib,
   epnixLib,
-  epnix,
   mkEpicsPackage,
   fetchFromGitHub,
+  asyn,
+  calc,
   local_config_site ? {},
   local_release ? {},
 }:
@@ -25,7 +26,7 @@ mkEpicsPackage {
   # See: https://gitlab.esss.lu.se/epics-modules/epics-twincat-ads/-/issues/2
   patches = [./fix-missing-header.patch];
 
-  propagatedBuildInputs = with epnix.support; [asyn calc];
+  propagatedBuildInputs = [asyn calc];
 
   preBuild = ''
     touch configure/RELEASE_PATHS.local
