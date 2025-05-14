@@ -2,7 +2,7 @@
   epnixLib,
   mkEpicsPackage,
   fetchFromGitHub,
-  epnix,
+  sscan,
   local_config_site ? {},
   local_release ? {},
 }:
@@ -18,7 +18,7 @@ mkEpicsPackage rec {
     sha256 = "sha256-S40HtO7HXDS27u7wmlxuo7oV1abtj1EaXfIz0Kj1IM0=";
   };
 
-  buildInputs = with epnix.support; [sscan];
+  buildInputs = [sscan];
 
   inherit local_config_site local_release;
 
