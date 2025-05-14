@@ -1,10 +1,10 @@
 {
   lib,
-  epnix,
   epnixLib,
   mkEpicsPackage,
   fetchFromGitHub,
   fetchpatch,
+  devlib2,
   local_config_site ? {},
   local_release ? {},
 }:
@@ -22,7 +22,7 @@ mkEpicsPackage rec {
     sha256 = "sha256-zK+cCWK9oOTH+NvCO0GiWKkwmtQYXvUuONSIV55pY1Y=";
   };
 
-  propagatedBuildInputs = with epnix.support; [devlib2];
+  propagatedBuildInputs = [devlib2];
 
   postInstall = ''
     if [[ -d iocBoot ]]; then
