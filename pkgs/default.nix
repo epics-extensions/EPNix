@@ -47,11 +47,7 @@ in
 
         # EPICS support modules
 
-        support = scope self (self:
-          {
-            twincat-ads = callPackage ./epnix/support/twincat-ads {};
-          }
-          // (importByName ./support/by-name self));
+        support = scope self (self: importByName ./support/by-name self);
 
         # Lewis needs Python < 3.12
         inherit (final.python311Packages) lewis;
