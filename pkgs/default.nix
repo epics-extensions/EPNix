@@ -49,7 +49,6 @@ in
 
         support = scope self (self:
           {
-            seq = callPackage ./epnix/support/seq {};
             snmp = callPackage ./epnix/support/snmp {};
             sscan = callPackage ./epnix/support/sscan {};
             twincat-ads = callPackage ./epnix/support/twincat-ads {};
