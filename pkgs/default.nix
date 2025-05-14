@@ -20,13 +20,7 @@ in
 
     pythonPackagesExtensions =
       prev.pythonPackagesExtensions
-      ++ [
-        (final: _prev:
-          {
-            softioc = final.callPackage ./epnix/python-modules/softioc {};
-          }
-          // (importByName ./python-modules/by-name final))
-      ];
+      ++ [(final: _prev: importByName ./python-modules/by-name final)];
 
     linuxKernel =
       prev.linuxKernel
