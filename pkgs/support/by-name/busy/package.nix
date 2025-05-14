@@ -2,7 +2,9 @@
   epnixLib,
   mkEpicsPackage,
   fetchFromGitHub,
-  epnix,
+  asyn,
+  autosave,
+  calc,
   local_config_site ? {},
   local_release ? {},
 }:
@@ -22,7 +24,7 @@ mkEpicsPackage rec {
 
   patches = [./fix-release.patch];
 
-  buildInputs = with epnix.support; [calc asyn autosave];
+  buildInputs = [calc asyn autosave];
 
   meta = {
     description = "APS BCDA synApps module: busy";
