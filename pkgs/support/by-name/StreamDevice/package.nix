@@ -3,8 +3,10 @@
   epnixLib,
   mkEpicsPackage,
   fetchFromGitHub,
-  epnix,
+  asyn,
+  calc,
   pcre,
+  sscan,
   local_config_site ? {},
   local_release ? {},
 }: let
@@ -27,8 +29,8 @@ in
     };
 
     nativeBuildInputs = [pcre];
-    buildInputs = [pcre] ++ (with epnix.support; [sscan]);
-    propagatedBuildInputs = with epnix.support; [asyn calc];
+    buildInputs = [pcre sscan];
+    propagatedBuildInputs = [asyn calc];
 
     inherit local_config_site;
     local_release =
