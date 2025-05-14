@@ -141,6 +141,7 @@ stdenvNoCC.mkDerivation {
       myst-parser
       sphinx
       sphinx-copybutton
+      sphinx-tippy
       sphinxcontrib-nixdomain
       sphinxcontrib-typstbuilder
       sphinxext-opengraph

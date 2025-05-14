@@ -41,6 +41,7 @@ extensions = [
     "sphinx.ext.githubpages",
     "sphinx_copybutton",
     "sphinxcontrib_nixdomain",
+    "sphinx_tippy",
     "sphinxcontrib_typstbuilder",
     "sphinxext.opengraph",
 ]
@@ -171,6 +172,7 @@ html_css_files = [
     "external-links.css",
     "logo-size.css",
     "multi-version.css",
+    "tippy.css",
 ]
 
 html_context = {}
