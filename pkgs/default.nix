@@ -51,7 +51,6 @@ in
 
         support = scope self (self:
           {
-            gtest = callPackage ./epnix/support/gtest {};
             ipac = callPackage ./epnix/support/ipac {};
             modbus = callPackage ./epnix/support/modbus {};
             mrfioc2 = callPackage ./epnix/support/mrfioc2 {};
