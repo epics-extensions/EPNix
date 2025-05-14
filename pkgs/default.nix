@@ -49,7 +49,6 @@ in
 
         support = scope self (self:
           {
-            reccaster = callPackage ./epnix/support/reccaster {};
             seq = callPackage ./epnix/support/seq {};
             snmp = callPackage ./epnix/support/snmp {};
             sscan = callPackage ./epnix/support/sscan {};
