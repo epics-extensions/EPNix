@@ -5,7 +5,7 @@
   fetchFromGitHub,
   pkg-config,
   epnix,
-  open62541,
+  open62541_1_3,
   openssl,
   libxml2,
   local_config_site ? {},
@@ -27,10 +27,10 @@ mkEpicsPackage {
   local_config_site =
     local_config_site
     // {
-      OPEN62541 = "${open62541}";
+      OPEN62541 = "${open62541_1_3}";
       OPEN62541_DEPLOY_MODE = "PROVIDED";
-      OPEN62541_LIB_DIR = "${open62541}/lib";
-      OPEN62541_SHRLIB_DIR = "${open62541}/lib";
+      OPEN62541_LIB_DIR = "${open62541_1_3}/lib";
+      OPEN62541_SHRLIB_DIR = "${open62541_1_3}/lib";
       #for the moment, we're not able to use the last version of openssl to manage a safety connection with the open62541 librairy
       OPEN62541_USE_CRYPTO = "NO";
       OPEN62541_USE_XMLPARSER = "YES";
@@ -39,8 +39,8 @@ mkEpicsPackage {
   patches = [./dir_xml2.patch];
 
   depsBuildBuild = [pkg-config];
-  nativeBuildInputs = [pkg-config open62541 openssl libxml2];
-  buildInputs = [open62541 openssl libxml2];
+  nativeBuildInputs = [pkg-config open62541_1_3 openssl libxml2];
+  buildInputs = [open62541_1_3 openssl libxml2];
   propagatedNativeBuildInputs = [pkg-config];
   propagatedBuildInputs = [libxml2] ++ (with epnix.support; [gtest]);
 

@@ -31,9 +31,7 @@ in
           });
       };
 
-    epnix = scope prev (self: let
-      epnixScope = self;
-    in
+    epnix = scope prev (self:
       {
         # EPICS base
 
@@ -51,7 +49,6 @@ in
 
         support = scope self (self:
           {
-            opcua = callPackage ./epnix/support/opcua {open62541 = epnixScope.open62541_1_3;};
             pvxs = callPackage ./epnix/support/pvxs {};
             reccaster = callPackage ./epnix/support/reccaster {};
             seq = callPackage ./epnix/support/seq {};
