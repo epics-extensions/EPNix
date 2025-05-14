@@ -27,7 +27,7 @@ in
       // {
         packagesFor = kernel:
           (prev.linuxKernel.packagesFor kernel).extend (final: _prev: {
-            mrf = final.callPackage ./epnix/kernel-modules/mrf {};
+            mrf = final.callPackage ./kernel-modules/mrf {};
           });
       };
 
