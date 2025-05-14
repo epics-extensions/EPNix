@@ -2,10 +2,11 @@
   epnixLib,
   mkEpicsPackage,
   fetchFromGitHub,
-  epnix,
   pkg-config,
   rpcsvc-proto,
   libtirpc,
+  ipac,
+  seq,
   local_config_site ? {},
   local_release ? {},
 }: let
@@ -25,7 +26,7 @@ in
 
     depsBuildBuild = [pkg-config];
     nativeBuildInputs = [pkg-config rpcsvc-proto libtirpc];
-    buildInputs = [libtirpc] ++ (with epnix.support; [ipac seq]);
+    buildInputs = [libtirpc ipac seq];
 
     patches = [./use-pkg-config.patch];
 
