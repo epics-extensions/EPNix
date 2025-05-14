@@ -3,7 +3,7 @@
   epnixLib,
   mkEpicsPackage,
   fetchFromGitHub,
-  epnix,
+  asyn,
 }:
 mkEpicsPackage rec {
   pname = "modbus";
@@ -17,7 +17,7 @@ mkEpicsPackage rec {
     hash = "sha256-0v6eLWdjgYKbFOHWaW1NSfN/gG5XHVRD9jan55dXWW0=";
   };
 
-  propagatedBuildInputs = with epnix.support; [asyn];
+  propagatedBuildInputs = [asyn];
 
   meta = {
     description = "EPICS support for communication with PLCs and other devices via the Modbus protocol";
