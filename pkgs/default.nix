@@ -49,28 +49,29 @@ in
 
         # EPICS support modules
 
-        support = scope self (self: {
-          adsDriver = callPackage ./epnix/support/adsDriver {};
-          asyn = callPackage ./epnix/support/asyn {};
-          autoparamDriver = callPackage ./epnix/support/autoparamDriver {};
-          autosave = callPackage ./epnix/support/autosave {};
-          busy = callPackage ./epnix/support/busy {};
-          calc = callPackage ./epnix/support/calc {};
-          devlib2 = callPackage ./epnix/support/devlib2 {};
-          epics-systemd = callPackage ./epnix/support/epics-systemd {};
-          gtest = callPackage ./epnix/support/gtest {};
-          ipac = callPackage ./epnix/support/ipac {};
-          modbus = callPackage ./epnix/support/modbus {};
-          mrfioc2 = callPackage ./epnix/support/mrfioc2 {};
-          opcua = callPackage ./epnix/support/opcua {open62541 = epnixScope.open62541_1_3;};
-          pvxs = callPackage ./epnix/support/pvxs {};
-          reccaster = callPackage ./epnix/support/reccaster {};
-          seq = callPackage ./epnix/support/seq {};
-          snmp = callPackage ./epnix/support/snmp {};
-          sscan = callPackage ./epnix/support/sscan {};
-          StreamDevice = callPackage ./epnix/support/StreamDevice {};
-          twincat-ads = callPackage ./epnix/support/twincat-ads {};
-        });
+        support = scope self (self:
+          {
+            adsDriver = callPackage ./epnix/support/adsDriver {};
+            asyn = callPackage ./epnix/support/asyn {};
+            autoparamDriver = callPackage ./epnix/support/autoparamDriver {};
+            autosave = callPackage ./epnix/support/autosave {};
+            busy = callPackage ./epnix/support/busy {};
+            calc = callPackage ./epnix/support/calc {};
+            devlib2 = callPackage ./epnix/support/devlib2 {};
+            epics-systemd = callPackage ./epnix/support/epics-systemd {};
+            gtest = callPackage ./epnix/support/gtest {};
+            ipac = callPackage ./epnix/support/ipac {};
+            modbus = callPackage ./epnix/support/modbus {};
+            mrfioc2 = callPackage ./epnix/support/mrfioc2 {};
+            opcua = callPackage ./epnix/support/opcua {open62541 = epnixScope.open62541_1_3;};
+            pvxs = callPackage ./epnix/support/pvxs {};
+            reccaster = callPackage ./epnix/support/reccaster {};
+            seq = callPackage ./epnix/support/seq {};
+            snmp = callPackage ./epnix/support/snmp {};
+            sscan = callPackage ./epnix/support/sscan {};
+            twincat-ads = callPackage ./epnix/support/twincat-ads {};
+          }
+          // (importByName ./support/by-name self));
 
         # Lewis needs Python < 3.12
         inherit (final.python311Packages) lewis;
