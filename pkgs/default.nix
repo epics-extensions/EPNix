@@ -51,7 +51,6 @@ in
 
         support = scope self (self:
           {
-            mrfioc2 = callPackage ./epnix/support/mrfioc2 {};
             opcua = callPackage ./epnix/support/opcua {open62541 = epnixScope.open62541_1_3;};
             pvxs = callPackage ./epnix/support/pvxs {};
             reccaster = callPackage ./epnix/support/reccaster {};
