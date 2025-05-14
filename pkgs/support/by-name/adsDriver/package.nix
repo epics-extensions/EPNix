@@ -1,7 +1,8 @@
 {
   mkEpicsPackage,
   fetchFromGitHub,
-  epnix,
+  asyn,
+  autoparamDriver,
   boost,
   epnixLib,
   lib,
@@ -22,7 +23,7 @@ mkEpicsPackage rec {
 
   nativeBuildInputs = [boost];
   buildInputs = [boost];
-  propagatedBuildInputs = with epnix.support; [
+  propagatedBuildInputs = [
     asyn
     autoparamDriver
   ];
