@@ -35,11 +35,11 @@ in
       {
         # EPICS base
 
-        epics-base7 = callPackage ./epnix/epics-base {
+        epics-base7 = callPackage ./epics-base {
           version = "7.0.9";
           hash = "sha256-RPlJhh7ORobYlM7gq6uDZkrO5z579Q7hyLEQ1xiHvFY=";
         };
-        epics-base3 = callPackage ./epnix/epics-base {
+        epics-base3 = callPackage ./epics-base {
           version = "3.15.9";
           hash = "sha256-QWScmCEaG0F6OW6LPCaFur4W57oRl822p7wpzbYhOuA=";
         };
