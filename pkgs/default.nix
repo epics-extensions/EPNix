@@ -24,7 +24,6 @@ in
         (final: _prev:
           {
             softioc = final.callPackage ./epnix/python-modules/softioc {};
-            p4p = final.callPackage ./epnix/python-modules/p4p {};
           }
           // (importByName ./python-modules/by-name final))
       ];
