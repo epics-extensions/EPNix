@@ -59,9 +59,7 @@ in
         inherit (self.callPackage ./python-modules/by-name/lewis/lib.nix {}) mkLewisSimulator;
 
         # EPNix specific packages
-        ci-scripts = scope self (_self: {
-          build-docs-multiversion = callPackage ./ci-scripts/build-docs-multiversion.nix {};
-        });
+        ci-scripts = scope self (self: importByName ./ci-scripts/by-name self);
       }
       // (importByName ./by-name self));
   }
