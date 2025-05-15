@@ -94,7 +94,7 @@ in
 
         pythonSoftIOC = final.python3Packages.softioc;
 
-        inherit (callPackage ./python-modules/by-name/lewis/lib.nix {}) mkLewisSimulator;
+        inherit (self.callPackage ./python-modules/by-name/lewis/lib.nix {}) mkLewisSimulator;
 
         # EPNix specific packages
         ci-scripts = scope self (_self: {
