@@ -221,5 +221,5 @@ man_show_urls = True
 # https://sphinxext-opengraph.readthedocs.io/en/latest/
 
 ogp_site_url = html_baseurl
-ogp_image = "_static/logo.svg"
+ogp_image = "_static/logo.png"
 ogp_image_alt = "EPNix logo"

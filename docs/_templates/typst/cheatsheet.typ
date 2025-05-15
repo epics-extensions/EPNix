@@ -33,7 +33,7 @@
 
   html_baseurl.update(metadata.at("html_baseurl"))
 
-  let icon = image("../../../../logo.png")
+  let icon = image("../../../../_static/logo.png")
   let column-number = 2
   let fill-color = "F2F2F2"
 
