@@ -23,6 +23,7 @@ in
           aioca = final.callPackage ./epnix/python-modules/aioca/default.nix {};
           epicsdbbuilder = final.callPackage ./epnix/python-modules/epicsdbbuilder {};
           softioc = final.callPackage ./epnix/python-modules/softioc {};
+          p4p = final.callPackage ./epnix/python-modules/p4p {};
         })
       ];
 
