@@ -1,5 +1,5 @@
 {
-  epnix,
+  lewis,
   writeShellApplication,
 }: {
   mkLewisSimulator = {
@@ -10,7 +10,7 @@
   }:
     writeShellApplication {
       inherit name;
-      runtimeInputs = [epnix.lewis];
+      runtimeInputs = [lewis];
       text = ''
         lewis -a "${source}" -k "${package}" "${device}" "$@"
       '';
