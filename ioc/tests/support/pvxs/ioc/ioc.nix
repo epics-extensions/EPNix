@@ -1,6 +1,6 @@
 {
   mkEpicsPackage,
-  epnix,
+  pvxs,
 }:
 mkEpicsPackage {
   pname = "checks-support-pvxs-ioc";
@@ -9,5 +9,5 @@ mkEpicsPackage {
 
   src = ./pvxsIocTestTop;
 
-  propagatedBuildInputs = [epnix.support.pvxs];
+  propagatedBuildInputs = [pvxs];
 }
