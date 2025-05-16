@@ -1,6 +1,6 @@
 {
   mkEpicsPackage,
-  epnix,
+  pvxs,
 }:
 mkEpicsPackage {
   pname = "checks-support-pvxs-standalone-server";
@@ -9,5 +9,5 @@ mkEpicsPackage {
 
   src = ./pvxsStandaloneServerTestTop;
 
-  propagatedBuildInputs = [epnix.support.pvxs];
+  propagatedBuildInputs = [pvxs];
 }
