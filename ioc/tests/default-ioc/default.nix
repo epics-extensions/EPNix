@@ -5,7 +5,7 @@
 }: let
   inherit (pkgs) epnixLib;
 
-  ioc = pkgs.callPackage ./ioc.nix {inherit releaseBranch;};
+  ioc = pkgs.epnix.support.callPackage ./ioc.nix {inherit releaseBranch;};
 in {
   name = "default-ioc-epics-base-${releaseBranch}";
   meta.maintainers = with epnixLib.maintainers; [minijackson];
