@@ -38,6 +38,7 @@ in
         cp -LrT --no-preserve=mode,ownership ./result/share/doc/epnix/html "./book/$version"
       done
       cp ${redirect} ./book/index.html
+      echo "google-site-verification: googlec2385d4b797d68b3.html" > ./book/googlec2385d4b797d68b3.html
     '';
 
     meta = {
