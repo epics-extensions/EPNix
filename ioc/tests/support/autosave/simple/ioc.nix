@@ -1,6 +1,6 @@
 {
   mkEpicsPackage,
-  epnix,
+  autosave,
 }:
 mkEpicsPackage {
   pname = "checks-support-autosave-simple";
@@ -9,5 +9,5 @@ mkEpicsPackage {
 
   src = ./autosaveSimpleTestTop;
 
-  propagatedBuildInputs = [epnix.support.autosave];
+  propagatedBuildInputs = [autosave];
 }
