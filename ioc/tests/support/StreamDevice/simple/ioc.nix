@@ -1,6 +1,7 @@
 {
   mkEpicsPackage,
-  epnix,
+  StreamDevice,
+  epics-systemd,
 }:
 mkEpicsPackage {
   pname = "checks-support-StreamDevice-simple";
@@ -10,7 +11,7 @@ mkEpicsPackage {
   src = ./top;
 
   propagatedBuildInputs = [
-    epnix.support.StreamDevice
-    epnix.support.epics-systemd
+    StreamDevice
+    epics-systemd
   ];
 }
