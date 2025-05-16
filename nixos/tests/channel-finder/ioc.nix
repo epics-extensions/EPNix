@@ -1,6 +1,6 @@
 {
   mkEpicsPackage,
-  epnix,
+  reccaster,
 }:
 mkEpicsPackage {
   pname = "channel-finder-test-ioc";
@@ -9,5 +9,5 @@ mkEpicsPackage {
 
   src = ./ioc;
 
-  propagatedBuildInputs = [epnix.support.reccaster];
+  propagatedBuildInputs = [reccaster];
 }
