@@ -1,7 +1,8 @@
 {
   mkEpicsPackage,
-  epnix,
   runCommand,
+  epics-base,
+  seq,
 }:
 mkEpicsPackage {
   pname = "checks-example-ioc";
@@ -10,7 +11,7 @@ mkEpicsPackage {
 
   src =
     runCommand "default-top" {
-      nativeBuildInputs = [epnix.epics-base];
+      nativeBuildInputs = [epics-base];
     } ''
       mkdir $out
       cd $out
@@ -22,7 +23,7 @@ mkEpicsPackage {
     ./example-top.patch
   ];
 
-  propagatedBuildInputs = [epnix.support.seq];
+  propagatedBuildInputs = [seq];
 
   postPatch = ''
     chmod +x iocBoot/iocSimple/st.cmd

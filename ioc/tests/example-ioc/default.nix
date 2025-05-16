@@ -1,7 +1,7 @@
 {pkgs, ...}: let
   inherit (pkgs) epnixLib;
 
-  ioc = pkgs.callPackage ./ioc.nix {};
+  ioc = pkgs.epnix.support.callPackage ./ioc.nix {};
 in {
   name = "example-ioc";
   meta.maintainers = with epnixLib.maintainers; [minijackson];

@@ -1,6 +1,6 @@
 {
   mkEpicsPackage,
-  epnix,
+  pvxs,
 }:
 mkEpicsPackage {
   pname = "checks-support-pvxs-qsrv2";
@@ -9,5 +9,5 @@ mkEpicsPackage {
 
   src = ./pvxsQsrv2TestTop;
 
-  propagatedBuildInputs = [epnix.support.pvxs];
+  propagatedBuildInputs = [pvxs];
 }
