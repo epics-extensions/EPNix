@@ -1,6 +1,6 @@
 {
   mkEpicsPackage,
-  epnix,
+  seq,
 }:
 mkEpicsPackage {
   pname = "checks-support-seq-simple";
@@ -9,5 +9,5 @@ mkEpicsPackage {
 
   src = ./top;
 
-  propagatedBuildInputs = [epnix.support.seq];
+  propagatedBuildInputs = [seq];
 }
