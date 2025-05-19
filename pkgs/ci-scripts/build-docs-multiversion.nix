@@ -45,6 +45,12 @@
     </urlset>
   '';
 
+  robots = writeText "robots.txt" ''
+    User-agent: *
+    Disallow:
+    Sitemap: ${baseurl}/sitemap.xml
+  '';
+
   versionInfo = ver: {
     name = ver;
     url = "${baseurl}/${ver}/";
@@ -64,6 +70,7 @@ in
       done
       cp ${redirect} ./book/index.html
       cp ${sitemap} ./book/sitemap.xml
+      cp ${robots} ./book/robots.txt
       echo "google-site-verification: googlec2385d4b797d68b3.html" > ./book/googlec2385d4b797d68b3.html
     '';
 
