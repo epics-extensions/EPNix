@@ -1,4 +1,5 @@
 {
+  lib,
   writeShellApplication,
   writeText,
   writers,
@@ -20,6 +21,30 @@
     <meta http-equiv=refresh content="1;url=${stable}/">
   '';
 
+  # Put the stable version first
+  versionsbyPriority = [stable] ++ (lib.remove stable versions);
+
+  versionsPriorities =
+    lib.imap0 (i: version: {
+      name = version;
+      priority = 1 - (i * 0.1);
+    })
+    versionsbyPriority;
+
+  sitemapUrl = version: ''
+    <url>
+      <loc>${baseurl}/${version.name}/</loc>
+      <priority>${toString version.priority}</priority>
+    </url>
+  '';
+
+  sitemap = writeText "sitemap.xml" ''
+    <?xml version="1.0" encoding="UTF-8"?>
+    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+      ${lib.concatStringsSep "\n" (map sitemapUrl versionsPriorities)}
+    </urlset>
+  '';
+
   versionInfo = ver: {
     name = ver;
     url = "${baseurl}/${ver}/";
@@ -38,6 +63,7 @@ in
         cp -LrT --no-preserve=mode,ownership ./result/share/doc/epnix/html "./book/$version"
       done
       cp ${redirect} ./book/index.html
+      cp ${sitemap} ./book/sitemap.xml
       echo "google-site-verification: googlec2385d4b797d68b3.html" > ./book/googlec2385d4b797d68b3.html
     '';
 
