@@ -2,16 +2,18 @@
   stdenv,
   cmake,
   epnix,
-  fetchzip,
+  fetchFromGitHub,
   gtest,
 }:
-stdenv.mkDerivation {
+stdenv.mkDerivation (self: {
   pname = "sup-protocol";
-  version = "0.0.0-spring-2025-harwell";
+  version = "2.4";
 
-  src = fetchzip {
-    url = "https://github.com/epics-training/oac-tree-zips/raw/95045a9ac0deec83b06628068e8ef7c08ea34419/sup-protocol.zip";
-    hash = "sha256-e0da1VgUF3jWuxmINYrpa9msQtw3R71YDYyHpjANSkU=";
+  src = fetchFromGitHub {
+    owner = "oac-tree";
+    repo = self.pname;
+    rev = "v${self.version}";
+    hash = "sha256-mTGWWtXRuFiH/tCm1C1TIOaOJMlOz2RGcs/w8xHVMHg=";
   };
 
   nativeBuildInputs = [cmake];
@@ -23,4 +25,4 @@ stdenv.mkDerivation {
   ];
 
   doCheck = true;
-}
+})

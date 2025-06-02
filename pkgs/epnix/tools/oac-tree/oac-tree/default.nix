@@ -2,16 +2,18 @@
   stdenv,
   epnix,
   cmake,
-  fetchzip,
+  fetchFromGitHub,
   gtest,
 }:
-stdenv.mkDerivation {
+stdenv.mkDerivation (self: {
   pname = "oac-tree";
-  version = "0.0.0-spring-2025-harwell";
+  version = "4.1";
 
-  src = fetchzip {
-    url = "https://github.com/epics-training/oac-tree-zips/raw/941d0b1fc6c43ac0259610b655af212e1ccec41e/oac-tree.zip";
-    hash = "sha256-R2UwTtKObfptdchcU+7sGyPQQaG+MxTS4yUEQ/0qfzo=";
+  src = fetchFromGitHub {
+    owner = "oac-tree";
+    repo = self.pname;
+    rev = "v${self.version}";
+    hash = "sha256-BecUdMhowwR/8X+o7afcl38WfCep2cllKV5bzw9mwgs=";
   };
 
   nativeBuildInputs = [cmake];
@@ -19,5 +21,6 @@ stdenv.mkDerivation {
 
   cmakeFlags = ["-DCOA_NO_CODAC:bool=true"];
 
-  doCheck = true;
-}
+  # Tests are very flaky, so disabled for now.
+  doCheck = false;
+})

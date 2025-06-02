@@ -3,19 +3,21 @@
   cmake,
   lib,
   epnix,
-  fetchzip,
+  fetchFromGitHub,
   gtest,
   libxml2,
   screen,
   which,
 }:
-stdenv.mkDerivation rec {
+stdenv.mkDerivation (self: {
   pname = "sup-epics";
-  version = "0.0.0-spring-2025-harwell";
+  version = "1.7";
 
-  src = fetchzip {
-    url = "https://github.com/epics-training/oac-tree-zips/raw/95045a9ac0deec83b06628068e8ef7c08ea34419/sup-epics.zip";
-    hash = "sha256-tB4ErvZt8a8/IbNvHQ3h0800JsdvHghWkoQGp/lsJMo=";
+  src = fetchFromGitHub {
+    owner = "oac-tree";
+    repo = self.pname;
+    rev = "v${self.version}";
+    hash = "sha256-JscVogvU2xjujGht+ORdkd0OGlsFIe+2EwyAjmecQ+o=";
   };
 
   # postPatch = ''
@@ -42,4 +44,4 @@ stdenv.mkDerivation rec {
   # Tests currently failing
   # doCheck = true;
   # checkInputs = [screen which];
-}
+})

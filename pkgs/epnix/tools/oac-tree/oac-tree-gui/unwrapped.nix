@@ -3,7 +3,7 @@
   lib,
   cmake,
   epnix,
-  fetchzip,
+  fetchFromGitHub,
   gtest,
   qt6,
   libxml2,
@@ -14,13 +14,15 @@
     "${epnix.epics-base}/lib/linux-x86_64"
   ];
 in
-  stdenv.mkDerivation {
+  stdenv.mkDerivation (self: {
     pname = "oac-tree-gui-unwrapped";
-    version = "0.0.0-spring-2025-harwell";
+    version = "1.8";
 
-    src = fetchzip {
-      url = "https://github.com/epics-training/oac-tree-zips/raw/95045a9ac0deec83b06628068e8ef7c08ea34419/oac-tree-gui.zip";
-      hash = "sha256-riZw9xmCNLZn6+7JL4Wa8yysxrA12rAY7UVnvSz5RYA=";
+    src = fetchFromGitHub {
+      owner = "oac-tree";
+      repo = "oac-tree-gui";
+      rev = "v${self.version}";
+      hash = "sha256-bwyJ1e9lpHTI60WHGJzKYrWPJaMsz5X4JC9mna254Lo=";
     };
 
     nativeBuildInputs = [
@@ -48,4 +50,4 @@ in
       patchelf --add-rpath "${rpath}" $out/bin/sup-pvmonitor
       patchelf --add-rpath "${rpath}" $out/bin/oac-tree-operation
     '';
-  }
+  })

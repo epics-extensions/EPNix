@@ -2,22 +2,24 @@
   stdenv,
   cmake,
   epnix,
-  fetchzip,
+  fetchFromGitHub,
   gtest,
   qt6,
   # libxml2,
 }:
-stdenv.mkDerivation {
+stdenv.mkDerivation (self: {
   pname = "sup-gui-extra";
-  version = "0.0.0-spring-2025-harwell";
+  version = "1.8";
 
-  src = fetchzip {
-    url = "https://github.com/epics-training/oac-tree-zips/raw/95045a9ac0deec83b06628068e8ef7c08ea34419/sup-gui-extra.zip";
-    hash = "sha256-03zXryquNFbHjkAVFK9WSKKDx0JqN/H66M5R3pR7d68=";
+  src = fetchFromGitHub {
+    owner = "oac-tree";
+    repo = self.pname;
+    rev = "v${self.version}";
+    hash = "sha256-cfoY8HbTwGWIeMhz8LPZLvyXxQmzBSShJgKdlAtUFtY=";
   };
 
   nativeBuildInputs = [cmake];
   buildInputs = [gtest qt6.full];
 
   doCheck = true;
-}
+})

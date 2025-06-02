@@ -2,16 +2,18 @@
   stdenv,
   epnix,
   cmake,
-  fetchzip,
+  fetchFromGitHub,
   gtest,
 }:
-stdenv.mkDerivation {
+stdenv.mkDerivation (self: {
   pname = "oac-tree-epics";
-  version = "0.0.0-spring-2025-harwell";
+  version = "4.1";
 
-  src = fetchzip {
-    url = "https://github.com/epics-training/oac-tree-zips/raw/941d0b1fc6c43ac0259610b655af212e1ccec41e/oac-tree-epics.zip";
-    hash = "sha256-HDfQ1sVYPYybk+M8Uq4N8fB9mDJcaa8mcNzv+sSOf2Q=";
+  src = fetchFromGitHub {
+    owner = "oac-tree";
+    repo = self.pname;
+    rev = "v${self.version}";
+    hash = "sha256-NEcAuPSeg2ZYdYOAjzXFHm3X2bwa0/B5OlFcYUjOsDs=";
   };
 
   nativeBuildInputs = [cmake];
@@ -24,4 +26,4 @@ stdenv.mkDerivation {
     sup-di
     oac-tree
   ];
-}
+})

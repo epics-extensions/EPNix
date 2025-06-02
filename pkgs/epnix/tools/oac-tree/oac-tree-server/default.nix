@@ -3,7 +3,7 @@
   lib,
   epnix,
   cmake,
-  fetchzip,
+  fetchFromGitHub,
   gtest,
 }: let
   rpath = lib.concatStringsSep ":" [
@@ -11,13 +11,15 @@
     "${epnix.epics-base}/lib/linux-x86_64"
   ];
 in
-  stdenv.mkDerivation {
+  stdenv.mkDerivation (self: {
     pname = "oac-tree-server";
-    version = "0.0.0-spring-2025-harwell";
+    version = "2.1";
 
-    src = fetchzip {
-      url = "https://github.com/epics-training/oac-tree-zips/raw/941d0b1fc6c43ac0259610b655af212e1ccec41e/oac-tree-server.zip";
-      hash = "sha256-CYKbEZViUQGWL9SaSN3HUdH5M7gkYsfH0gP0VZtttVM=";
+    src = fetchFromGitHub {
+      owner = "oac-tree";
+      repo = self.pname;
+      rev = "v${self.version}";
+      hash = "sha256-CRNGwaPsRFbjTWvaCpNoyhtpKwzOjhwzW+n+QmigN80=";
     };
 
     nativeBuildInputs = [cmake];
@@ -34,4 +36,4 @@ in
     postFixup = ''
       patchelf --add-rpath "${rpath}" $out/bin/oac-tree-server
     '';
-  }
+  })

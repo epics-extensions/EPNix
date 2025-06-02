@@ -1,20 +1,22 @@
 {
   stdenv,
   cmake,
-  fetchzip,
+  fetchFromGitHub,
   gtest,
 }:
-stdenv.mkDerivation {
+stdenv.mkDerivation (self: {
   pname = "sup-dto";
-  version = "0.0.0-spring-2025-harwell";
+  version = "1.7";
 
-  src = fetchzip {
-    url = "https://github.com/epics-training/oac-tree-zips/raw/95045a9ac0deec83b06628068e8ef7c08ea34419/sup-dto.zip";
-    hash = "sha256-1xZcopgjexmZBdhKEjHtOJAU+3pKZz+xgoW6zgOc8xA=";
+  src = fetchFromGitHub {
+    owner = "oac-tree";
+    repo = self.pname;
+    rev = "v${self.version}";
+    hash = "sha256-2rtMwZY4fAKfAtvw6N2hKK8OrZrYO0kGIbRqG1snSpE=";
   };
 
   nativeBuildInputs = [cmake];
   buildInputs = [gtest];
 
   doCheck = true;
-}
+})
