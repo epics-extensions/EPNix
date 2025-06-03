@@ -14,7 +14,7 @@
     overlays = [self.overlays.default];
   };
 
-  ioc = crossPkgs.callPackage ./ioc.nix {};
+  ioc = crossPkgs.epnix.support.callPackage ./ioc.nix {};
 
   inherit (crossPkgs.stdenv) hostPlatform;
   iocBin = "../../bin/${epnixLib.toEpicsArch hostPlatform}/simple";
