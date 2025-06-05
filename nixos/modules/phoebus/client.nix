@@ -65,6 +65,50 @@ in {
       };
     };
 
+    fontDef = lib.mkOption {
+      description = ''
+        Phoebus font definitions.
+
+        If unset,
+        use the fonts from Phoebus' [{file}`examples/font.def`].
+
+        If set,
+        expand on the default fonts from Phoebus.
+
+        :::{warning}
+        If {nix:option}`fontDef` is set,
+        the example fonts from [{file}`examples/font.def`],
+        such as `Oddball`,
+        won't be provided by default.
+        :::
+
+          [{file}`examples/font.def`]: https://github.com/ControlSystemStudio/phoebus/blob/v${pkgs.epnix.phoebus.version}/app/display/model/src/main/resources/examples/font.def
+
+        :Name format:
+          ```
+          NamedFont
+          NamedFont(OS)
+          ```
+        :Font format:
+          ```
+          Family - Style - Size
+          @PreviouslyDefinedNamedFont
+          ```
+        :Style: `regular`, `bold`, `italic`, or `bold italic`.
+        :Size: Font height in pixels
+        :Family: Font family name,
+          such as `Liberation Sans`, `Liberation Mono`, or `Liberation Serif`;
+        :OS: `windows`, `linux`, or `macosx`.
+      '';
+      type = with lib.types; nullOr (attrsOf str);
+      default = null;
+      example = {
+        Oddball = "Comic Sans MS-regular-40";
+        "Oddball(linux)" = "PakTypeNaqsh-regular-40";
+        "Oddball(macosx)" = "Herculanum-regular-40";
+      };
+    };
+
     settings = lib.mkOption {
       description = ''
         Phoebus preference setting,
@@ -106,6 +150,33 @@ in {
               else "examples:color.def";
             defaultText = "<file generated from 'colorDef' if defined, else the default colors>";
             example = lib.literalExpression "./color.def";
+          };
+
+          "org.csstudio.display.builder.model/font_files" = lib.mkOption {
+            description = ''
+              Named fonts definition files.
+
+              One or more {file}`{font}.def` files, separated by `;`.
+
+              By default,
+              the file is generated from the {nix:option}`fontDef` option,
+              if defined,
+              or to built-in copy of [{file}`examples/font.def`]
+              if {nix:option}`fontDef` isn't defined.
+
+              :::{note}
+              Use the this option
+              if you want to import an already existing {file}`font.def` file.
+              If you override this option, {nix:option}`fontDef` options are ignored.
+              :::
+            '';
+            type = with lib.types; either path str;
+            default =
+              if cfg.fontDef != null
+              then defFilesFormat.generate "phoebus-font.def" cfg.fontDef
+              else "examples:font.def";
+            defaultText = "<file generated from 'fontDef' if defined, else the default fonts>";
+            example = lib.literalExpression "./font.def";
           };
 
           "org.csstudio.display.builder.model/macros" = lib.mkOption {
