@@ -5,7 +5,18 @@
   ...
 }: let
   cfg = config.programs.phoebus-client;
+
   settingsFormat = pkgs.formats.javaProperties {};
+  toMacrosXML = macros:
+    lib.concatStrings (
+      lib.mapAttrsToList
+      (name: value: let
+        name' = lib.escapeXML name;
+        value' = lib.escapeXML value;
+      in "<${name'}>${value'}</${name'}>")
+      macros
+    );
+
   pkg = pkgs.epnix.phoebus.override {
     inherit (cfg) settingsFile java_opts;
   };
@@ -29,6 +40,29 @@ in {
       type = lib.types.submodule {
         freeformType = settingsFormat.type;
         options = {
+          "org.csstudio.display.builder.model/macros" = lib.mkOption {
+            description = ''
+              Global macros, used for all displays.
+
+              Displays start with these macros,
+              and can then add new macros or overwrite
+              the values of these macros.
+
+              :Format:
+                The macro name must be a valid XML tag name:
+
+                -   Must start with character
+                -   May then contain characters or numbers
+                -   May also contain underscores
+            '';
+            type = with lib.types; attrsOf str;
+            apply = toMacrosXML;
+            default = {};
+            example = {
+              EXAMPLE_MACRO = "Value from Preferences";
+              TEST = "true";
+            };
+          };
         };
       };
     };
