@@ -7,6 +7,7 @@
   cfg = config.programs.phoebus-client;
 
   settingsFormat = pkgs.formats.javaProperties {};
+  defFilesFormat = pkgs.formats.keyValue {};
   toMacrosXML = macros:
     lib.concatStrings (
       lib.mapAttrsToList
@@ -24,6 +25,46 @@ in {
   options.programs.phoebus-client = {
     enable = lib.mkEnableOption "installing and configuring the Phoebus client";
 
+    colorDef = lib.mkOption {
+      description = ''
+        Phoebus color definitions.
+
+        If unset,
+        use the colors from Phoebus' [{file}`examples/color.def`].
+
+        If set,
+        expand on the default colors from Phoebus.
+
+        :::{warning}
+        If {nix:option}`colorDef` is set,
+        the "additional colors" from [{file}`examples/color.def`],
+        such as `Header_Background`, `On`, or `Off`,
+        won't be provided by default.
+        :::
+
+          [{file}`examples/color.def`]: https://github.com/ControlSystemStudio/phoebus/blob/v${pkgs.epnix.phoebus.version}/app/display/model/src/main/resources/examples/color.def
+
+        :Color format:
+          ```
+          red, green, blue
+          red, green, blue, alpha
+          PreviouslyDefinedNameOfColor
+          ```
+
+          with values in 0-255 range.
+
+        Whenever possible, use named colors in displays
+        instead of arbitrary red/green/blue values.
+      '';
+      type = with lib.types; nullOr (attrsOf str);
+      default = null;
+      example = {
+        OK = "0, 255, 0";
+        On = "OK";
+        Transparent = "255, 255, 255, 0";
+      };
+    };
+
     settings = lib.mkOption {
       description = ''
         Phoebus preference setting,
@@ -40,6 +81,33 @@ in {
       type = lib.types.submodule {
         freeformType = settingsFormat.type;
         options = {
+          "org.csstudio.display.builder.model/color_files" = lib.mkOption {
+            description = ''
+              Named colors definition files.
+
+              One or more {file}`{color}.def` files, separated by `;`.
+
+              By default,
+              the file is generated from the {nix:option}`colorDef` option,
+              if defined,
+              or to built-in copy of [{file}`examples/color.def`]
+              if {nix:option}`colorDef` isn't defined.
+
+              :::{note}
+              Use the this option
+              if you want to import an already existing {file}`color.def` file.
+              If you override this option, {nix:option}`colorDef` options are ignored.
+              :::
+            '';
+            type = with lib.types; either path str;
+            default =
+              if cfg.colorDef != null
+              then defFilesFormat.generate "phoebus-color.def" cfg.colorDef
+              else "examples:color.def";
+            defaultText = "<file generated from 'colorDef' if defined, else the default colors>";
+            example = lib.literalExpression "./color.def";
+          };
+
           "org.csstudio.display.builder.model/macros" = lib.mkOption {
             description = ''
               Global macros, used for all displays.
