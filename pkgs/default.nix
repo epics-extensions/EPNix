@@ -54,6 +54,7 @@ in
       # EPICS support modules
 
       support = recurseExtensible (_self: {
+        adcore = callPackage ./epnix/support/adcore {};
         adsDriver = callPackage ./epnix/support/adsDriver {};
         asyn = callPackage ./epnix/support/asyn {};
         autoparamDriver = callPackage ./epnix/support/autoparamDriver {};
