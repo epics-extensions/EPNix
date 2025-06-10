@@ -125,6 +125,36 @@ in {
       type = lib.types.submodule {
         freeformType = settingsFormat.type;
         options = {
+          "org.phoebus.pv.ca/addr_list" = lib.mkOption {
+            description = ''
+              Channel Access address list.
+
+              Use `lib.mkForce` to override values from {nix:option}`environment.epics.ca_addr_list`.
+            '';
+            type = with lib.types; listOf str;
+            defaultText = lib.literalExpression ''
+              if config.environment.epics.enable
+              then config.environment.epics.ca_addr_list
+              else [];
+            '';
+            apply = lib.concatStringsSep " ";
+          };
+
+          "org.phoebus.pv.ca/auto_addr_list" = lib.mkOption {
+            description = ''
+              Derive the CA address list from the available network interfaces.
+
+              Use `lib.mkForce` to override values from {nix:option}`environment.epics.ca_auto_addr_list`.
+            '';
+            type = lib.types.bool;
+            defaultText = lib.literalExpression ''
+              if config.environment.epics.enable
+              then config.environment.epics.ca_auto_addr_list
+              else [];
+            '';
+            apply = lib.boolToString;
+          };
+
           "org.csstudio.display.builder.model/color_files" = lib.mkOption {
             description = ''
               Named colors definition files.
@@ -241,6 +271,16 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
+    programs.phoebus-client.settings = {
+      "org.phoebus.pv.ca/addr_list" =
+        if config.environment.epics.enable
+        then config.environment.epics.ca_addr_list
+        else [];
+      "org.phoebus.pv.ca/auto_addr_list" =
+        if config.environment.epics.enable
+        then config.environment.epics.ca_auto_addr_list
+        else true;
+    };
     environment.systemPackages = [pkg];
   };
 }
