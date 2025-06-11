@@ -5,6 +5,7 @@
   ...
 }: let
   cfg = config.services.iocs;
+  globalCfg = config;
 
   iocSubmodule = {
     name,
@@ -86,7 +87,18 @@
       # Re-exposed systemd options:
 
       environment = lib.mkOption {
-        description = "Environment variables passed to the IOC process";
+        description = ''
+          Environment variables passed to the IOC process.
+
+          :::{seealso}
+          If enabled,
+          which is the default,
+          it will inherit environment variables from {nix:option}`environment.epics`.
+
+          If you want to configure the CA address list,
+          prefer using the {nix:option}`environment.epics` options.
+          :::
+        '';
         type = with lib.types; attrsOf (nullOr (oneOf [str path package]));
         default = {};
         example = {
@@ -126,7 +138,16 @@
     };
 
     config = {
-      environment.EPICS_IOCSH_HISTFILE = "/var/lib/epics/${name}/iocsh_history";
+      environment = lib.mkMerge [
+        {EPICS_IOCSH_HISTFILE = "/var/lib/epics/${name}/iocsh_history";}
+        (lib.mkIf globalCfg.environment.epics.enable {
+          inherit
+            (globalCfg.environment.variables)
+            EPICS_CA_AUTO_ADDR_LIST
+            EPICS_CA_ADDR_LIST
+            ;
+        })
+      ];
 
       procServ.options = {
         foreground = true;

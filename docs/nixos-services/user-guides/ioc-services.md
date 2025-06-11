@@ -191,6 +191,11 @@ For example:
   };
 ```
 
+## Configuring the address list
+The address list is configured by default
+using the {nix:option}`environment.epics` module.
+See the {doc}`epics-environment` guide for mode information.
+
 ## Passing environment variables
 
 You can set environment variables for your IOC
