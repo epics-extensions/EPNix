@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  ioc = pkgs.callPackage ./ioc.nix {};
+  ioc = pkgs.epnix.support.callPackage ./ioc.nix {};
 in {
   name = "channel-finder-simple-check";
   meta.maintainers = with epnixLib.maintainers; [minijackson];
