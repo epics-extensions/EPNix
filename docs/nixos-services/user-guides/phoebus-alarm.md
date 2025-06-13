@@ -168,25 +168,9 @@ org.phoebus.applications.alarm/config_names = Project
 
 ## Configuring the address list
 
-If you want to limit the IOCs reachable by the Phoebus Alarm Server,
-use these option:
-
-```{code-block} nix
-:caption: {file}`phoebus-alarm.nix`
-
-{
-  services.phoebus-alarm-server = {
-    # ...
-    settings = {
-      # ...
-
-      # The Phoebus Alarm Server will only have access to these IOCs
-      "org.phoebus.pv.ca/addr_list" = ["192.168.1.5" "192.168.1.42"];
-      "org.phoebus.pv.ca/auto_addr_list" = false;
-    };
-  };
-}
-```
+The address list is configured by default
+using the {nix:option}`environment.epics` module.
+See the {doc}`epics-environment` guide for mode information.
 
 ## Configuring email support
 

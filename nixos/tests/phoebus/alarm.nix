@@ -6,7 +6,7 @@
   nodes = {
     client = {pkgs, ...}: {
       environment = {
-        sessionVariables.EPICS_CA_ADDR_LIST = ["ioc"];
+        epics.ca_addr_list = ["ioc"];
         systemPackages = [pkgs.kcat pkgs.epnix.epics-base];
       };
     };
@@ -37,11 +37,12 @@
       services.phoebus-alarm-server = {
         enable = true;
         openFirewall = true;
-        settings = {
-          "org.phoebus.pv.ca/addr_list" = ["ioc"];
-          "org.phoebus.pv.ca/auto_addr_list" = false;
-          "org.phoebus.applications.alarm/server" = kafkaListenSockAddr;
-        };
+        settings."org.phoebus.applications.alarm/server" = kafkaListenSockAddr;
+      };
+
+      environment.epics = {
+        ca_addr_list = ["ioc"];
+        ca_auto_addr_list = false;
       };
 
       services.phoebus-alarm-logger.settings = {

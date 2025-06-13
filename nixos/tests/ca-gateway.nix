@@ -66,6 +66,10 @@
 
     client = {
       environment.systemPackages = [pkgs.epnix.epics-base];
+      environment.epics = {
+        ca_addr_list = ["gateway"];
+        ca_auto_addr_list = false;
+      };
       virtualisation.vlans = [3];
     };
   };
@@ -78,12 +82,9 @@
     invisible_ioc.wait_for_unit("ioc.service")
     client.wait_for_unit("multi-user.target")
 
-    def caget(pv: str) -> str:
-        return f"EPICS_CA_AUTO_ADDR_LIST=NO EPICS_CA_ADDR_LIST=gateway caget {pv}"
-
-    client.wait_until_succeeds(caget("PV_CLIENT"))
-    client.wait_until_succeeds(caget("PV_FROM_BROADCAST"))
-    client.fail(caget("PV_INVISIBLE_CLIENT"))
-    client.fail(caget("PV_CLIENT_IGNORED"))
+    client.wait_until_succeeds("caget PV_CLIENT")
+    client.wait_until_succeeds("caget PV_FROM_BROADCAST")
+    client.fail("caget PV_INVISIBLE_CLIENT")
+    client.fail("caget PV_CLIENT_IGNORED")
   '';
 }
