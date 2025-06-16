@@ -14,6 +14,7 @@ with lib; let
     licenses = import ./licenses.nix args;
     maintainers = import ./maintainers/maintainer-list.nix;
     testing = import ./testing.nix;
+    versions = import ./versions.nix;
 
     inherit (self.evaluation) evalEpnixModules mkEpnixBuild mkEpnixDevShell;
 
@@ -60,7 +61,9 @@ with lib; let
             then "windows"
             else (throw "Unsupported architecture for windows: ${arch}");
         }
-        .${parsed.kernel.name}
+        .${
+          parsed.kernel.name
+        }
         or (throw "Unsupported kernel type: ${parsed.kernel.name}");
 
       arch =
@@ -85,7 +88,9 @@ with lib; let
 
           sparc = "sparc";
         }
-        .${parsed.cpu.family}
+        .${
+          parsed.cpu.family
+        }
         or (throw "Unsupported architecture: ${parsed.cpu.name}");
     in "${kernel}-${arch}";
 
