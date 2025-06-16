@@ -5,12 +5,8 @@
   writers,
   epnixLib,
 }: let
-  stable = "nixos-24.11";
-  versions = [
-    "dev"
-    "nixos-24.11"
-    "nixos-24.05"
-  ];
+  inherit (epnixLib.versions) stable;
+  versions = epnixLib.versions.all;
   baseurl = "https://epics-extensions.github.io/EPNix";
   # Make a redirection using the <meta> tag,
   # with a delay of 1 second, because Google considers them not permanent
