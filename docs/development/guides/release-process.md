@@ -29,7 +29,7 @@ running the tests will most likely show whether an incompatible change was intro
 ## Upgrade Nixpkgs
 
 Search for the old release version,
-for example `nixos-23.11`,
+for example *{{versions.stable}}*,
 and make sure to replace with the newer version,
 when appropriate.
 

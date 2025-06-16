@@ -70,6 +70,15 @@ myst_enable_extensions = {
     "fieldlist",
     "replacements",
     "smartquotes",
+    "substitution",
+}
+
+myst_substitutions = {
+    "release": release,
+    "versions": {
+        "current": release,
+        "stable": os.environ.get("EPNIX_VERSION_STABLE", "dev"),
+    },
 }
 
 myst_heading_anchors = 2
