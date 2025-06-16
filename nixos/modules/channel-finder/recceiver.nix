@@ -83,11 +83,7 @@ in {
               default = ["255.255.255.255:5049"];
               apply = lib.concatStringsSep ",";
               description = ''
-                Listen for TCP connections on this interface and port.
-
-                Port also used as source for UDP broadcasts
-
-                Default uses wildcard address and a random port.
+                List of broadcast addresses.
               '';
             };
 
