@@ -17,7 +17,7 @@ sys.path.append(os.path.abspath("./_ext"))
 
 project = "EPNix"
 author = "The EPNix Contributors"
-release = "dev"
+release = os.environ.get("EPNIX_VERSION_CURRENT", "dev")
 
 source_repository = "https://github.com/epics-extensions/EPNix"
 branch = "master" if release == "dev" else release
