@@ -14,6 +14,10 @@ let
       then "master"
       else version)
     self.all;
+    supported-branches = [
+      "master"
+      self.stable
+    ];
   };
 in
   self
