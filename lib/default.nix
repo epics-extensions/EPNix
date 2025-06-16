@@ -8,6 +8,7 @@ with lib; let
   self = {
     inherit inputs;
 
+    ci = import ./ci.nix args;
     documentation = import ./documentation.nix args;
     evaluation = import ./evaluation.nix args;
     formats = import ./formats.nix args;
