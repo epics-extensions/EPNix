@@ -98,6 +98,10 @@ in
 
       # EPNix specific packages
       book = callPackage ./book {};
+      docs = final.runCommand "docs-23.05" {meta.hidden = true;} ''
+        mkdir -p $out/share/doc/epnix
+        ln -sfn ${self.book} $out/share/doc/epnix/html
+      '';
       manpages = callPackage ./manpages {};
 
       # Documentation support packages
