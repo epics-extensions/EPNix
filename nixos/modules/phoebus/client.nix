@@ -1,12 +1,15 @@
 {
   config,
   lib,
+  options,
   pkgs,
   ...
 }: let
   cfg = config.programs.phoebus-client;
 
   settingsFormat = pkgs.formats.javaProperties {};
+  generatedSettings = settingsFormat.generate "phoebus-settings.ini" cfg.settings;
+
   defFilesFormat = pkgs.formats.keyValue {};
   toMacrosXML = macros:
     lib.concatStrings (
@@ -17,6 +20,17 @@
       in "<${name'}>${value'}</${name'}>")
       macros
     );
+
+  # Check if some options are set by the user
+  colorDefIsUnset = cfg.colorDef == null;
+  fontDefIsUnset = cfg.fontDef == null;
+  settingsIsUnset = lib.length options.programs.phoebus-client.settings.definitions == 1;
+  settingsFileIsSet = cfg.settingsFile != generatedSettings;
+
+  # If the user sets the settingsFile,
+  # then these options must be unset,
+  # because they'll end up being unused.
+  warningCheck = settingsFileIsSet -> colorDefIsUnset && fontDefIsUnset && settingsIsUnset;
 
   pkg = pkgs.epnix.phoebus.override {
     inherit (cfg) settingsFile java_opts;
@@ -252,7 +266,7 @@ in {
         May also point to a remote URL.
       '';
       type = with lib.types; either path str;
-      default = settingsFormat.generate "phoebus-settings.ini" cfg.settings;
+      default = generatedSettings;
       defaultText = "<file generated from the 'settings' options>";
       example = lib.literalExpression "./settings.ini";
     };
@@ -271,6 +285,10 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
+    warnings = lib.mkIf (!warningCheck) [
+      "`programs.phoebus-client.settingsFile` was set, and at least one of the `settings`, `colorDef`, or `fontDef` options are set, but they will be ignored."
+    ];
+
     programs.phoebus-client.settings = {
       "org.phoebus.pv.ca/addr_list" =
         if config.environment.epics.enable
