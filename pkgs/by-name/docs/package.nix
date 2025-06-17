@@ -54,6 +54,15 @@
     IOC options reference
     =====================
 
+    :::{deprecated} 25.05
+    Developing IOC using NixOS-like options.
+
+    These options are staged for removal in EPNix 26.05.
+
+    See {doc}`../user-guides/deprecations/migrating-from-modules-development`
+    for how to migrate to the new packaging approach.
+    :::
+
     Options
     -------
 
