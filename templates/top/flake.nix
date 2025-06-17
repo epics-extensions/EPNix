@@ -111,5 +111,7 @@
     // {
       overlays.default = final: prev:
         self.epnixDistribution.x86_64-linux.generatedOverlay final prev;
+
+      inherit (epnix) formatter;
     };
 }

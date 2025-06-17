@@ -2,7 +2,7 @@
   description = "A Nix flake containing EPICS-related modules and packages";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     bash-lib = {
       url = "github:minijackson/bash-lib";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -112,8 +112,8 @@
 
           Useful links:
 
-          - EPNix IOC documentation: <https://epics-extensions.github.io/EPNix/nixos-24.11/ioc/>
-          - EPNix IOC tutorials: <https://epics-extensions.github.io/EPNix/nixos-24.11/ioc/tutorials/>
+          - EPNix IOC documentation: <https://epics-extensions.github.io/EPNix/${self.lib.versions.stable}/ioc/>
+          - EPNix IOC tutorials: <https://epics-extensions.github.io/EPNix/${self.lib.versions.stable}/ioc/tutorials/>
         '';
       };
 
@@ -127,14 +127,14 @@
 
           Useful links:
 
-          - EPNix IOC documentation: <https://epics-extensions.github.io/EPNix/nixos-24.11/ioc/>
-          - EPNix IOC tutorials: <https://epics-extensions.github.io/EPNix/nixos-24.11/ioc/tutorials/>
+          - EPNix IOC documentation: <https://epics-extensions.github.io/EPNix/${self.lib.versions.stable}/ioc/>
+          - EPNix IOC tutorials: <https://epics-extensions.github.io/EPNix/${self.lib.versions.stable}/ioc/tutorials/>
         '';
       };
 
       templates.default = self.templates.top;
 
-      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
+      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.callPackage ./formatter.nix {};
 
       githubActions = nix-github-actions.lib.mkGithubMatrix {inherit (self) checks;};
     };

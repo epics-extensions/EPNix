@@ -60,5 +60,7 @@
           workingDirectory = "iocBoot/iocMyIoc";
         };
       };
+
+      inherit (epnix) formatter;
     };
 }
