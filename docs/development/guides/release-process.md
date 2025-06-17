@@ -37,7 +37,6 @@ You should find at least:
 
 - the `nixpkgs` flake input in <source:flake.nix>
 - the `epnix` flake input in <source:templates/top/flake.nix>
-- workflows in <source:.github/workflows/>
 - documentation code examples
 
 Once done,
