@@ -50,12 +50,12 @@ read the {doc}`NixOS services tutorials <nixos-services/tutorials/index>`
 
 ## Release branches
 
-EPNix has a `master` branch,
+EPNix has a *master* branch,
 which is considered unstable,
 meaning breaking changes might happen without notice.
 
 EPNix also has release branches,
-such as `nixos-24.11`,
+such as *{{versions.stable}}*,
 tied to the nixpkgs release branches,
 where breaking changes are forbidden.
 

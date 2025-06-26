@@ -28,26 +28,16 @@ running the tests will most likely show whether an incompatible change was intro
 
 ## Upgrade Nixpkgs
 
-Search for the old release version,
-for example `nixos-23.11`,
-and make sure to replace with the newer version,
-when appropriate.
+### Update the flake input
 
-You should find at least:
+Replace the version of the `nixpkgs` input it <source:flake.nix>,
+and run `nix flake lock`.
 
-- the `nixpkgs` flake input in <source:flake.nix>
-- the `epnix` flake input in <source:templates/top/flake.nix>
-- workflows in <source:.github/workflows/>
-- documentation code examples
-
-Once done,
-run `nix flake lock`,
-and create a commit with these changes.
-
+Create a commit with these changes.
 The commit message should be:
 {samp}`flake: upgrade NixOS {old.version} -> {new.version}`.
 
-## Update Maven hashes
+### Update Maven hashes
 
 Maven hashes might depend on the Java or Maven version used,
 so a major Nixpkgs upgrade might cause those hashes to change.
@@ -75,7 +65,7 @@ if needed.
 
 Create a separate commit for each hash update.
 
-## Apply breaking changes
+### Apply breaking changes
 
 If there are breaking changes in the Nixpkgs release notes,
 apply them when appropriate,
@@ -95,7 +85,7 @@ in the Phoebus services guides.
 
 Create a commit for each breaking change.
 
-## Document breaking changes
+### Document breaking changes
 
 If some breaking changes in Nixpkgs or EPNix affect users,
 document them in the release notes,
@@ -107,7 +97,7 @@ add instructions on how to migrate to the new configuration format
 in the release notes.
 :::
 
-## Fix comments
+### Fix comments
 
 If there are "TODOs" in the code base that mention the new release,
 see if they can be solved.
@@ -119,7 +109,7 @@ and related code block.
 
 Create a commit for each resolved TODO.
 
-## Run the tests
+### Run the tests
 
 Run the EPNix checks.
 This can be done by pushing your branch to DRF's GitLab,
@@ -136,6 +126,82 @@ If there are issues with some tests,
 fix them,
 and add a commit for each fix.
 
+## Upgrade EPNix versions
+
+Search for the old EPNix release version,
+for example `nixos-24.05`,
+and make sure to replace with the newer version,
+when appropriate.
+
+You should find at least:
+
+- the `epnix` flake input in <source:templates/top/flake.nix>
+- the `stable` and `all` variables in <source:lib/versions.nix>
+- documentation code examples
+
+:::{admonition} Example
+```{code-block} nix
+:caption: Updating {file}`templates/top/flake.nix`
+:emphasize-lines: 3
+
+{
+  # ...
+  inputs.epnix.url = "github:epics-extensions/epnix/nixos-24.11";
+
+  # ...
+}
+```
+
+```{code-block} nix
+:caption: Updating {file}`lib/versions.nix`
+:emphasize-lines: 4,7
+
+let
+  self = {
+    current = "dev";
+    stable = "nixos-24.11";
+    all = [
+      "dev"
+      "nixos-24.11"
+      "nixos-24.05"
+      "nixos-23.11"
+      "nixos-23.05"
+    ];
+    # ...
+  };
+in
+  self
+```
+
+``````{code-block} markdown
+:caption: Updating the Archiver Appliance tutorial
+:emphasize-lines: 8,9
+
+```{code-block} nix
+:caption: {file}`flake.nix`
+:linenos:
+
+{
+  description = "Configuration for running Archiver Appliance in a VM";
+
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+  inputs.epnix.url = "github:epics-extensions/EPNix/nixos-24.11";
+
+  outputs = { self, nixpkgs, epnix }: {
+    nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
+      modules = [
+        epnix.nixosModules.nixos
+
+        ./configuration.nix
+      ];
+    };
+  };
+}
+```
+``````
+
+:::
+
 ## Open a pull request
 
 Once you've verified that the new version is working,
@@ -146,25 +212,34 @@ open one or more Pull Requests with your changes on GitHub.
 Once your Pull Request is merged,
 and you've integrated all changes you want for the new release,
 go into GitHub's [branches view],
-and create a new {samp}`nixos-{new.version}` branch on master.
+and create a new {samp}`nixos-{new.version}` branch on `master`.
 
-## Update the documentation release name
+## Update EPNix versions for that release
 
 Create a new commit
 on the new {samp}`nixos-{new.version}` branch,
-and update the `release` variable in <source:docs/conf.py>,
-so that it is {samp}`nixos-{new.version}`.
+and update the `current` variable in <source:lib/versions.nix>:
 
 :::{admonition} Example
-```{code-block} python
-:caption: {file}`docs/conf.py`
-:emphasize-lines: 5
+```{code-block} nix
+:caption: Updating {file}`lib/versions.nix` on the new release branch
+:emphasize-lines: 3
 
-project = "EPNix"
-copyright = "The EPNix Contributors"
-author = "The EPNix Contributors"
-release = "dev"
-release = "nixos-24.05"
+let
+  self = {
+    current = "nixos-24.11";
+    stable = "nixos-24.11";
+    all = [
+      "dev"
+      "nixos-24.11"
+      "nixos-24.05"
+      "nixos-23.11"
+      "nixos-23.05"
+    ];
+    # ...
+  };
+in
+  self
 ```
 :::
 
@@ -174,55 +249,15 @@ since the book must be built from the default branch.
 Open a Pull Request with that commit,
 targeting the {samp}`nixos-{new.version}` branch.
 
-## Build the new version of the manual
+## Build the new version of the documentation
 
-Create a new commit
-on the `master` branch,
-and update the <source:.github/workflows/book-gh-pages.yml> workflow to clone the newest release:
+The documentation job might have failed,
+since we added {sap}`nixos-{new.version}` in <source:lib/versions.nix>
+before creating the branch.
 
-:::{admonition} Example
-```{code-block} yaml
-:caption: {file}`.github/workflows/book-gh-pages.yml`
-:emphasize-lines: 6-10
-
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-        with:
-          ref: master
-          path: dev
-          persist-credentials: false
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-        with:
-          ref: nixos-24.05
-          path: nixos-24.05
-          persist-credentials: false
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-        with:
-          ref: nixos-23.11
-          path: nixos-23.11
-          persist-credentials: false
-```
-:::
-
-Then add this the version to the build
-by changing {file}`pkgs/ci-scripts/build-docs-multiversion.nix`:
-
-:::{admonition} Example
-```{code-block} nix
-:caption: {file}`pkgs/ci-scripts/build-docs-multiversion.nix`:
-:emphasize-lines: 1,4
-
-  stable = "nixos-24.05";
-  versions = [
-    "dev"
-    "nixos-24.05"
-    "nixos-23.11"
-    # ...
-  ];
-```
-:::
-
-Open a Pull Request with that commit,
-targeting the {samp}`master` branch.
+To build the manual,
+on GitHub,
+click the {menuselection}`Actions tab --> Book GitHub Pages --> Run workflow --> Run workflow`.
 
 [branches view]: https://github.com/epics-extensions/EPNix/branches
 [nixos release notes]: https://nixos.org/manual/nixos/stable/release-notes

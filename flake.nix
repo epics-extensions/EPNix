@@ -112,8 +112,8 @@
 
           Useful links:
 
-          - EPNix IOC documentation: <https://epics-extensions.github.io/EPNix/nixos-24.11/ioc/>
-          - EPNix IOC tutorials: <https://epics-extensions.github.io/EPNix/nixos-24.11/ioc/tutorials/>
+          - EPNix IOC documentation: <https://epics-extensions.github.io/EPNix/${self.lib.versions.stable}/ioc/>
+          - EPNix IOC tutorials: <https://epics-extensions.github.io/EPNix/${self.lib.versions.stable}/ioc/tutorials/>
         '';
       };
 
@@ -127,8 +127,8 @@
 
           Useful links:
 
-          - EPNix IOC documentation: <https://epics-extensions.github.io/EPNix/nixos-24.11/ioc/>
-          - EPNix IOC tutorials: <https://epics-extensions.github.io/EPNix/nixos-24.11/ioc/tutorials/>
+          - EPNix IOC documentation: <https://epics-extensions.github.io/EPNix/${self.lib.versions.stable}/ioc/>
+          - EPNix IOC tutorials: <https://epics-extensions.github.io/EPNix/${self.lib.versions.stable}/ioc/tutorials/>
         '';
       };
 

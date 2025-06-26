@@ -17,7 +17,7 @@ sys.path.append(os.path.abspath("./_ext"))
 
 project = "EPNix"
 author = "The EPNix Contributors"
-release = "dev"
+release = os.environ.get("EPNIX_VERSION_CURRENT", "dev")
 
 source_repository = "https://github.com/epics-extensions/EPNix"
 branch = "master" if release == "dev" else release
@@ -70,6 +70,15 @@ myst_enable_extensions = {
     "fieldlist",
     "replacements",
     "smartquotes",
+    "substitution",
+}
+
+myst_substitutions = {
+    "release": release,
+    "versions": {
+        "current": release,
+        "stable": os.environ.get("EPNIX_VERSION_STABLE", "dev"),
+    },
 }
 
 myst_heading_anchors = 2

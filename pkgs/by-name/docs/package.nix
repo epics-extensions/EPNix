@@ -193,6 +193,8 @@ in
       TYPST_PACKAGE_PATH = "${typst-packages-vendor}";
       TYPST_PACKAGE_CACHE_PATH = "${typst-packages-vendor}";
       SOURCE_DATE_EPOCH = epnixLib.inputs.self.sourceInfo.lastModified;
+      EPNIX_VERSION_CURRENT = epnixLib.versions.current;
+      EPNIX_VERSION_STABLE = epnixLib.versions.stable;
     };
 
     meta = {

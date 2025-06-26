@@ -32,22 +32,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
-      # Checkout all documentation versions
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
-          ref: master
-          path: dev
-          persist-credentials: false
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-        with:
-          ref: nixos-24.11
-          path: nixos-24.11
-          persist-credentials: false
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-        with:
-          ref: nixos-24.05
-          path: nixos-24.05
           persist-credentials: false
 
       - uses: nixbuild/nix-quick-install-action@889f3180bb5f064ee9e3201428d04ae9e41d54ad # v31
@@ -61,14 +47,14 @@ jobs:
 
       - name: "Build documentation books"
         run: |
-          nix run --print-build-logs './dev#ci-scripts/build-docs-multiversion'
+          nix run --print-build-logs '.#ci-scripts/build-docs-multiversion'
 
       - name: Setup Pages
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0
       - name: Upload artifact
         uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
         with:
-          path: './book'
+          path: './outputs/out/book'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4.0.5
