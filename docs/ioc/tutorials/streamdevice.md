@@ -77,7 +77,7 @@ For adding StreamDevice,
 change yours like so:
 
 ```{code-block} diff
-:caption: {file}`flake.nix`
+:caption: {file}`ioc.nix`
 
    # EPICS support modules can be only in propagatedBuildInputs
    # --
