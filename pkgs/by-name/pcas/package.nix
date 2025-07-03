@@ -19,6 +19,6 @@ mkEpicsPackage rec {
     description = "Portable Channel Access Server";
     homepage = "https://github.com/epics-modules/pcas";
     license = epnixLib.licenses.epics;
-    maintainers = with epnixLib.maintainers; [minijackson];
+    maintainers = with epnixLib.maintainers; [ minijackson ];
   };
 }

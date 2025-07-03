@@ -9,5 +9,5 @@ mkEpicsPackage {
 
   src = ./ioc;
 
-  propagatedBuildInputs = [reccaster];
+  propagatedBuildInputs = [ reccaster ];
 }

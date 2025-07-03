@@ -3,18 +3,23 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.services.ca-gateway;
   pkg = pkgs.epnix.ca-gateway;
 
   # the CA gateway doesn't use the long/short options conventions
   mkOptionName = k: "-${k}";
   # List are for IP address lists
-  mkList = k: v: [(mkOptionName k) (lib.concatStringsSep " " v)];
-  toCommandLine = lib.cli.toGNUCommandLine {inherit mkOptionName mkList;};
+  mkList = k: v: [
+    (mkOptionName k)
+    (lib.concatStringsSep " " v)
+  ];
+  toCommandLine = lib.cli.toGNUCommandLine { inherit mkOptionName mkList; };
 
   commandLine = lib.escapeShellArgs (toCommandLine cfg.settings);
-in {
+in
+{
   options.services.ca-gateway = {
     enable = lib.mkEnableOption "the Channel Access PV gateway";
 
@@ -39,9 +44,10 @@ in {
         Available options can be seen here:
         <https://epics.anl.gov/EpicsDocumentation/ExtensionsManuals/Gateway/Gateway.html#Starting>
       '';
-      default = {};
+      default = { };
       type = lib.types.submodule {
-        freeformType = with lib.types;
+        freeformType =
+          with lib.types;
           nullOr (oneOf [
             bool
             int
@@ -107,7 +113,7 @@ in {
             '';
             type = with lib.types; nullOr (listOf str);
             default = null;
-            example = ["192.168.1.1"];
+            example = [ "192.168.1.1" ];
           };
 
           signore = lib.mkOption {
@@ -118,7 +124,10 @@ in {
             '';
             type = with lib.types; nullOr (listOf str);
             default = null;
-            example = ["192.168.1.5" "192.168.1.42"];
+            example = [
+              "192.168.1.5"
+              "192.168.1.42"
+            ];
           };
 
           sport = lib.mkOption {
@@ -147,7 +156,10 @@ in {
             '';
             type = with lib.types; nullOr (listOf str);
             default = null;
-            example = ["192.168.1.4" "192.168.1.3"];
+            example = [
+              "192.168.1.4"
+              "192.168.1.3"
+            ];
           };
 
           cport = lib.mkOption {
@@ -178,13 +190,13 @@ in {
     systemd.services.ca-gateway = {
       description = "Channel Access PV gateway";
 
-      wantedBy = ["multi-user.target"];
+      wantedBy = [ "multi-user.target" ];
 
       # When initializing the IOC, PV Access looks for network interfaces that
       # have IP addresses. "network.target" may be too early, especially for
       # systems with DHCP.
-      wants = ["network-online.target"];
-      after = ["network-online.target"];
+      wants = [ "network-online.target" ];
+      after = [ "network-online.target" ];
 
       serviceConfig = {
         ExecStart = "${lib.getExe pkg} ${commandLine}";
@@ -197,7 +209,11 @@ in {
         # ---
 
         # NETLINK needed to enumerate available interfaces
-        RestrictAddressFamilies = ["AF_INET" "AF_INET6" "AF_NETLINK"];
+        RestrictAddressFamilies = [
+          "AF_INET"
+          "AF_INET6"
+          "AF_NETLINK"
+        ];
         # Service may not create new namespaces
         RestrictNamespaces = true;
 
@@ -238,14 +254,14 @@ in {
 
         # Service can only use a reasonable set of system calls,
         # used by common system services
-        SystemCallFilter = ["@system-service"];
+        SystemCallFilter = [ "@system-service" ];
         # Disallowed system calls return EPERM instead of terminating the service
         SystemCallErrorNumber = "EPERM";
       };
     };
 
     networking.firewall = lib.mkIf cfg.openFirewall {
-      allowedTCPPorts = [cfg.settings.sport];
+      allowedTCPPorts = [ cfg.settings.sport ];
       allowedUDPPorts = [
         cfg.settings.sport
 

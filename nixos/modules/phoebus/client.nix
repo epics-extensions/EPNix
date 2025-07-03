@@ -4,21 +4,25 @@
   options,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.programs.phoebus-client;
 
-  settingsFormat = pkgs.formats.javaProperties {};
+  settingsFormat = pkgs.formats.javaProperties { };
   generatedSettings = settingsFormat.generate "phoebus-settings.ini" cfg.settings;
 
-  defFilesFormat = pkgs.formats.keyValue {};
-  toMacrosXML = macros:
+  defFilesFormat = pkgs.formats.keyValue { };
+  toMacrosXML =
+    macros:
     lib.concatStrings (
-      lib.mapAttrsToList
-      (name: value: let
-        name' = lib.escapeXML name;
-        value' = lib.escapeXML value;
-      in "<${name'}>${value'}</${name'}>")
-      macros
+      lib.mapAttrsToList (
+        name: value:
+        let
+          name' = lib.escapeXML name;
+          value' = lib.escapeXML value;
+        in
+        "<${name'}>${value'}</${name'}>"
+      ) macros
     );
 
   # Check if some options are set by the user
@@ -35,7 +39,8 @@
   pkg = pkgs.epnix.phoebus.override {
     inherit (cfg) settingsFile java_opts;
   };
-in {
+in
+{
   options.programs.phoebus-client = {
     enable = lib.mkEnableOption "installing and configuring the Phoebus client";
 
@@ -130,7 +135,7 @@ in {
 
           [Preferences Listing]: https://control-system-studio.readthedocs.io/en/latest/preference_properties.html
       '';
-      default = {};
+      default = { };
       example = {
         "org.phoebus.applications.alarm/server" = "localhost:9092";
         "org.phoebus.applications.alarm/config_names" = "Accelerator, Demo";
@@ -189,9 +194,10 @@ in {
             '';
             type = with lib.types; either path str;
             default =
-              if cfg.colorDef != null
-              then defFilesFormat.generate "phoebus-color.def" cfg.colorDef
-              else "examples:color.def";
+              if cfg.colorDef != null then
+                defFilesFormat.generate "phoebus-color.def" cfg.colorDef
+              else
+                "examples:color.def";
             defaultText = "<file generated from 'colorDef' if defined, else the default colors>";
             example = lib.literalExpression "./color.def";
           };
@@ -216,9 +222,10 @@ in {
             '';
             type = with lib.types; either path str;
             default =
-              if cfg.fontDef != null
-              then defFilesFormat.generate "phoebus-font.def" cfg.fontDef
-              else "examples:font.def";
+              if cfg.fontDef != null then
+                defFilesFormat.generate "phoebus-font.def" cfg.fontDef
+              else
+                "examples:font.def";
             defaultText = "<file generated from 'fontDef' if defined, else the default fonts>";
             example = lib.literalExpression "./font.def";
           };
@@ -240,7 +247,7 @@ in {
             '';
             type = with lib.types; attrsOf str;
             apply = toMacrosXML;
-            default = {};
+            default = { };
             example = {
               EXAMPLE_MACRO = "Value from Preferences";
               TEST = "true";
@@ -291,14 +298,10 @@ in {
 
     programs.phoebus-client.settings = {
       "org.phoebus.pv.ca/addr_list" =
-        if config.environment.epics.enable
-        then config.environment.epics.ca_addr_list
-        else [];
+        if config.environment.epics.enable then config.environment.epics.ca_addr_list else [ ];
       "org.phoebus.pv.ca/auto_addr_list" =
-        if config.environment.epics.enable
-        then config.environment.epics.ca_auto_addr_list
-        else true;
+        if config.environment.epics.enable then config.environment.epics.ca_auto_addr_list else true;
     };
-    environment.systemPackages = [pkg];
+    environment.systemPackages = [ pkg ];
   };
 }

@@ -17,17 +17,17 @@ mkEpicsPackage rec {
     hash = "sha256-PUe/MPvmBUFOKsrgIZvz65K1/HhD/ugmldKGY6SnMck=";
   };
 
-  buildInputs = [pcas];
+  buildInputs = [ pcas ];
 
   # Needs pyepics
   doCheck = false;
-  checkInputs = [python3Packages.nose];
+  checkInputs = [ python3Packages.nose ];
 
   meta = {
     description = "Channel Access PV gateway";
     homepage = "https://epics.anl.gov/extensions/gateway/";
     mainProgram = "gateway";
     license = epnixLib.licenses.epics;
-    maintainers = with epnixLib.maintainers; [minijackson];
+    maintainers = with epnixLib.maintainers; [ minijackson ];
   };
 }

@@ -17,7 +17,10 @@ stdenv.mkDerivation {
     hash = "sha256-Ig5l3WlO6cqJ9Xpo1DwpKLbAeZlCOFYCID4S1fsaCmA=";
   };
 
-  nativeBuildInputs = [jdk21 maven];
+  nativeBuildInputs = [
+    jdk21
+    maven
+  ];
 
   MAVEN_OPTS = "-Xmx1G";
 
@@ -66,7 +69,7 @@ stdenv.mkDerivation {
     description = "Maven repo of all Phoebus dependencies";
     homepage = "https://github.com/ControlSystemStudio/phoebus/";
     license = lib.licenses.epl10;
-    maintainers = with epnixLib.maintainers; [minijackson];
+    maintainers = with epnixLib.maintainers; [ minijackson ];
     inherit (jdk21.meta) platforms;
     hidden = true;
   };

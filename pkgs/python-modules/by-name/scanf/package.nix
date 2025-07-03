@@ -20,12 +20,12 @@ buildPythonPackage rec {
     wheel
   ];
 
-  pythonImportsCheck = ["scanf"];
+  pythonImportsCheck = [ "scanf" ];
 
   meta = with lib; {
     description = "A small scanf implementation";
     homepage = "https://pypi.org/project/scanf/";
     license = licenses.mit;
-    maintainers = with maintainers; [minijackson];
+    maintainers = with maintainers; [ minijackson ];
   };
 }

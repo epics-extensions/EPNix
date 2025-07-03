@@ -22,7 +22,7 @@ buildPythonPackage rec {
   };
 
   # TODO: when a new version is released, switch to flit-core
-  build-system = [setuptools];
+  build-system = [ setuptools ];
 
   dependencies = [
     requests
@@ -32,13 +32,13 @@ buildPythonPackage rec {
 
   # Tests not run as they need a running ChannelFinder instance
 
-  pythonImportsCheck = ["channelfinder"];
+  pythonImportsCheck = [ "channelfinder" ];
 
   meta = {
     description = "Python ChannelFinder Client Lib";
     homepage = "https://github.com/ChannelFinder/pyCFClient";
     license = lib.licenses.mit;
-    maintainers = with epnixLib.maintainers; [minijackson];
+    maintainers = with epnixLib.maintainers; [ minijackson ];
     inherit (python.meta) platforms;
   };
 }

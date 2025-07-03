@@ -4,11 +4,13 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.services.phoebus-alarm-logger;
-  settingsFormat = pkgs.formats.javaProperties {};
+  settingsFormat = pkgs.formats.javaProperties { };
   configFile = settingsFormat.generate "phoebus-alarm-logger.properties" cfg.settings;
-in {
+in
+{
   options.services.phoebus-alarm-logger = {
     enable = lib.mkEnableOption ''
       the Phoebus Alarm logger.
@@ -39,7 +41,7 @@ in {
         Available options can be seen here:
         <https://github.com/ControlSystemStudio/phoebus/blob/v${pkgs.epnix.phoebus-alarm-logger.version}/services/alarm-logger/src/main/resources/application.properties>
       '';
-      default = {};
+      default = { };
       type = lib.types.submodule {
         freeformType = settingsFormat.type;
         options = {
@@ -53,7 +55,7 @@ in {
           alarm_topics = lib.mkOption {
             description = "Alarm topics to be logged";
             type = with lib.types; listOf str;
-            default = ["Accelerator"];
+            default = [ "Accelerator" ];
             apply = lib.concatStringsSep ",";
           };
 
@@ -64,7 +66,7 @@ in {
               All nodes must belong to the same cluster.
             '';
             type = with lib.types; listOf str;
-            default = ["http://localhost:${toString config.services.elasticsearch.port}"];
+            default = [ "http://localhost:${toString config.services.elasticsearch.port}" ];
             defaultText = lib.literalExpression ''[ "http://localhost:''${toString config.services.elasticsearch.port}" ]'';
             apply = lib.concatStringsSep ",";
           };
@@ -94,7 +96,12 @@ in {
 
               Can be Days (D), Weeks (W), Months (M), Years (Y).
             '';
-            type = lib.types.enum ["D" "W" "M" "Y"];
+            type = lib.types.enum [
+              "D"
+              "W"
+              "M"
+              "Y"
+            ];
             default = "M";
           };
 
@@ -117,24 +124,23 @@ in {
   config = lib.mkIf cfg.enable {
     assertions = [
       {
-        assertion = let
-          topics = lib.splitString "," cfg.settings.alarm_topics;
-          thread_pool_size = lib.toInt cfg.settings.thread_pool_size;
-        in
+        assertion =
+          let
+            topics = lib.splitString "," cfg.settings.alarm_topics;
+            thread_pool_size = lib.toInt cfg.settings.thread_pool_size;
+          in
           thread_pool_size >= (lib.length topics) * 2;
         message = "At least 2 threads per topic is required";
       }
     ];
 
-    services
-      .phoebus-alarm-logger
-      .settings
-      ."logging.level.org.springframework.web.filter.CommonsRequestLoggingFilter" = "INFO";
+    services.phoebus-alarm-logger.settings."logging.level.org.springframework.web.filter.CommonsRequestLoggingFilter" =
+      "INFO";
 
     systemd.services.phoebus-alarm-logger = {
       description = "Phoebus Alarm Logger";
 
-      wantedBy = ["multi-user.target"];
+      wantedBy = [ "multi-user.target" ];
 
       environment = {
         # Weirdly not "phoebus.user"
@@ -148,12 +154,14 @@ in {
       };
 
       serviceConfig = {
-        ExecStart = let
-          args = [
-            "-noshell"
-            "-properties ${configFile}"
-          ];
-        in "${lib.getExe pkgs.epnix.phoebus-alarm-logger} ${lib.concatStringsSep " " args}";
+        ExecStart =
+          let
+            args = [
+              "-noshell"
+              "-properties ${configFile}"
+            ];
+          in
+          "${lib.getExe pkgs.epnix.phoebus-alarm-logger} ${lib.concatStringsSep " " args}";
         DynamicUser = true;
         StateDirectory = "phoebus-alarm-logger";
         # TODO: systemd hardening
@@ -165,5 +173,5 @@ in {
     ];
   };
 
-  meta.maintainers = with epnixLib.maintainers; [minijackson];
+  meta.maintainers = with epnixLib.maintainers; [ minijackson ];
 }

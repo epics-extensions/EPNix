@@ -2,9 +2,11 @@
   config,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.environment.epics;
-in {
+in
+{
   options.environment.epics = {
     enable = lib.mkOption {
       description = ''
@@ -47,16 +49,13 @@ in {
         :::
       '';
       type = with lib.types; listOf str;
-      default = [];
+      default = [ ];
     };
   };
 
   config = lib.mkIf cfg.enable {
     environment.sessionVariables = {
-      EPICS_CA_AUTO_ADDR_LIST =
-        if cfg.ca_auto_addr_list
-        then "YES"
-        else "NO";
+      EPICS_CA_AUTO_ADDR_LIST = if cfg.ca_auto_addr_list then "YES" else "NO";
       EPICS_CA_ADDR_LIST = lib.concatStringsSep " " cfg.ca_addr_list;
     };
   };

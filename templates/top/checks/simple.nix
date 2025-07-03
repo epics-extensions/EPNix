@@ -8,15 +8,17 @@
 pkgs.nixosTest {
   name = "simple";
 
-  nodes.machine = {config, ...}: {
-    imports = [
-      epnix.nixosModules.ioc
-      epnixConfig
-    ];
-    environment.systemPackages = [pkgs.epnix.epics-base];
+  nodes.machine =
+    { config, ... }:
+    {
+      imports = [
+        epnix.nixosModules.ioc
+        epnixConfig
+      ];
+      environment.systemPackages = [ pkgs.epnix.epics-base ];
 
-    systemd.services.ioc = config.epnix.nixos.services.ioc.config;
-  };
+      systemd.services.ioc = config.epnix.nixos.services.ioc.config;
+    };
 
   testScript = ''
     machine.wait_for_unit("default.target")

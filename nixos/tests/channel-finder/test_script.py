@@ -97,12 +97,12 @@ with subtest("RecCeiver sent all channels"):
         ), "wrong description for RECORD3"
 
         # Aliases
-        assert (
-            channels["ALIAS_RECORD1"]["properties"]["alias"] == "RECORD1"
-        ), "wrong alias for RECORD1"
-        assert (
-            channels["ALIAS_RECORD2"]["properties"]["alias"] == "RECORD2"
-        ), "wrong alias for RECORD2"
+        assert channels["ALIAS_RECORD1"]["properties"]["alias"] == "RECORD1", (
+            "wrong alias for RECORD1"
+        )
+        assert channels["ALIAS_RECORD2"]["properties"]["alias"] == "RECORD2", (
+            "wrong alias for RECORD2"
+        )
 
         return True
 

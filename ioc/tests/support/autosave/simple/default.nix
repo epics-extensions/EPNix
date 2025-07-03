@@ -1,13 +1,18 @@
-{pkgs, ...}: let
+{ pkgs, ... }:
+let
   inherit (pkgs) epnixLib;
 
-  ioc = pkgs.epnix.support.callPackage ./ioc.nix {};
-in {
+  ioc = pkgs.epnix.support.callPackage ./ioc.nix { };
+in
+{
   name = "support-autosave-simple";
-  meta.maintainers = with epnixLib.maintainers; [stephane];
+  meta.maintainers = with epnixLib.maintainers; [ stephane ];
 
   nodes.machine = {
-    environment.systemPackages = [pkgs.epnix.epics-base pkgs.inetutils];
+    environment.systemPackages = [
+      pkgs.epnix.epics-base
+      pkgs.inetutils
+    ];
 
     services.iocs.ioc = {
       package = ioc;

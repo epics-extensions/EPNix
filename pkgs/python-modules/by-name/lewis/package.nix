@@ -48,13 +48,13 @@ buildPythonPackage rec {
     pytest
   ];
 
-  pythonImportsCheck = ["lewis"];
+  pythonImportsCheck = [ "lewis" ];
 
   meta = with lib; {
     description = "Let's write intricate simulators";
     homepage = "https://github.com/ISISComputingGroup/lewis";
     mainProgram = "lewis";
     license = licenses.gpl3Only;
-    maintainers = with maintainers; [minijackson];
+    maintainers = with maintainers; [ minijackson ];
   };
 }

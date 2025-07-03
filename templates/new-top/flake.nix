@@ -20,46 +20,53 @@
   #  flake = false;
   #};
 
-  outputs = {
-    self,
-    flake-utils,
-    epnix,
-    ...
-  } @ inputs:
-  # Add your supported systems here.
-  # ---
-  # "x86_64-linux" should still be specified so that the development
-  # environment can be built on your machine.
-    flake-utils.lib.eachSystem ["x86_64-linux"] (system: let
-      pkgs = import epnix.inputs.nixpkgs {
-        inherit system;
-        overlays = [
-          epnix.overlays.default
-          self.overlays.default
-        ];
-      };
-    in {
-      packages.default = pkgs.myIoc;
-
-      checks = {
-        simple = pkgs.callPackage ./checks/simple.nix {
-          inherit (self.nixosModules) iocService;
+  outputs =
+    {
+      self,
+      flake-utils,
+      epnix,
+      ...
+    }@inputs:
+    # Add your supported systems here.
+    # ---
+    # "x86_64-linux" should still be specified so that the development
+    # environment can be built on your machine.
+    flake-utils.lib.eachSystem [ "x86_64-linux" ] (
+      system:
+      let
+        pkgs = import epnix.inputs.nixpkgs {
+          inherit system;
+          overlays = [
+            epnix.overlays.default
+            self.overlays.default
+          ];
         };
-      };
-    })
+      in
+      {
+        packages.default = pkgs.myIoc;
+
+        checks = {
+          simple = pkgs.callPackage ./checks/simple.nix {
+            inherit (self.nixosModules) iocService;
+          };
+        };
+      }
+    )
     // {
       overlays.default = final: _prev: {
-        myIoc = final.callPackage ./ioc.nix {};
+        myIoc = final.callPackage ./ioc.nix { };
       };
 
-      nixosModules.iocService = {config, ...}: {
-        services.iocs.myIoc = {
-          description = "An optional description of your IOC";
-          package = self.packages.x86_64-linux.default;
-          # Directory where to find the 'st.cmd' file
-          workingDirectory = "iocBoot/iocMyIoc";
+      nixosModules.iocService =
+        { config, ... }:
+        {
+          services.iocs.myIoc = {
+            description = "An optional description of your IOC";
+            package = self.packages.x86_64-linux.default;
+            # Directory where to find the 'st.cmd' file
+            workingDirectory = "iocBoot/iocMyIoc";
+          };
         };
-      };
 
       inherit (epnix) formatter;
     };

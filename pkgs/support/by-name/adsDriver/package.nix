@@ -21,8 +21,8 @@ mkEpicsPackage rec {
     hash = "sha256-Ruzi+H8MmIgv23pzFXZlvkk3HtbDzQ9LTTVzmeGWrSI==";
   };
 
-  nativeBuildInputs = [boost];
-  buildInputs = [boost];
+  nativeBuildInputs = [ boost ];
+  buildInputs = [ boost ];
   propagatedBuildInputs = [
     asyn
     autoparamDriver
@@ -32,6 +32,6 @@ mkEpicsPackage rec {
     description = "EPICS support module for integrating Beckhoff PLC using the ADS protocol";
     homepage = "https://epics.cosylab.com/documentation/adsDriver/";
     license = lib.licenses.mit;
-    maintainers = with epnixLib.maintainers; [synthetica];
+    maintainers = with epnixLib.maintainers; [ synthetica ];
   };
 }

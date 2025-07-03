@@ -3,8 +3,8 @@
   mkEpicsPackage,
   fetchFromGitHub,
   sscan,
-  local_config_site ? {},
-  local_release ? {},
+  local_config_site ? { },
+  local_release ? { },
 }:
 mkEpicsPackage rec {
   pname = "calc";
@@ -18,7 +18,7 @@ mkEpicsPackage rec {
     sha256 = "sha256-S40HtO7HXDS27u7wmlxuo7oV1abtj1EaXfIz0Kj1IM0=";
   };
 
-  buildInputs = [sscan];
+  buildInputs = [ sscan ];
 
   inherit local_config_site local_release;
 
@@ -26,6 +26,6 @@ mkEpicsPackage rec {
     description = "Support for run-time expression evaluation";
     homepage = "https://epics.anl.gov/bcda/synApps/calc/calc.html";
     license = epnixLib.licenses.epics;
-    maintainers = with epnixLib.maintainers; [minijackson];
+    maintainers = with epnixLib.maintainers; [ minijackson ];
   };
 }

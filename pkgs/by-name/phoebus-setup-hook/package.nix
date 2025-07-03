@@ -11,9 +11,8 @@ makeSetupHook {
 
   meta = {
     description = "Common Bash functions for building components of the Phoebus project";
-    maintainers = with epnixLib.maintainers; [minijackson];
+    maintainers = with epnixLib.maintainers; [ minijackson ];
     hidden = true;
     inherit (jdk21_headless.meta) platforms;
   };
-}
-./setup-hook.sh
+} ./setup-hook.sh

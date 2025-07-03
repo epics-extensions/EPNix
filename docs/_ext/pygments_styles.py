@@ -107,7 +107,7 @@ class EpnixNordLight(Style):
         String.Interpol: _string,
         String.Escape: _yellow,
         String.Regex: _yellow,
-        String.Symbol: _yellow, # modified, looks better with Nix
+        String.Symbol: _yellow,  # modified, looks better with Nix
         String.Other: _string,
         Number: _purple,
         Generic.Heading: f"bold {_function}",
@@ -179,7 +179,7 @@ class EpnixNordDarker(Style):
         String.Interpol: _string,
         String.Escape: _yellow,
         String.Regex: _yellow,
-        String.Symbol: _yellow, # modified, looks better with Nix
+        String.Symbol: _yellow,  # modified, looks better with Nix
         String.Other: _string,
         Number: _purple,
         Generic.Heading: f"bold {_function}",

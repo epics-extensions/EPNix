@@ -2,37 +2,41 @@
   lib,
   epnixLib,
   ...
-}: {
+}:
+{
   name = "phoebus-olog-simple-check";
-  meta.maintainers = with epnixLib.maintainers; [minijackson];
+  meta.maintainers = with epnixLib.maintainers; [ minijackson ];
 
   nodes = {
-    server = {pkgs, ...}: {
-      services.phoebus-olog = {
-        enable = true;
-        settings."demo_auth.enabled" = true;
+    server =
+      { pkgs, ... }:
+      {
+        services.phoebus-olog = {
+          enable = true;
+          settings."demo_auth.enabled" = true;
+        };
+
+        services.elasticsearch = {
+          enable = true;
+          package = pkgs.elasticsearch7;
+        };
+
+        nixpkgs.config.allowUnfreePredicate =
+          pkg:
+          builtins.elem (lib.getName pkg) [
+            # Elasticsearch can be used as an SSPL-licensed software, which is
+            # not open-source. But as we're using it run tests, not exposing
+            # any service, this should be fine.
+            "elasticsearch"
+          ];
+
+        networking.firewall.allowedTCPPorts = [ 8181 ];
+
+        # Else phoebus-olog gets killed by the OOM killer
+        virtualisation.memorySize = 2047;
       };
 
-      services.elasticsearch = {
-        enable = true;
-        package = pkgs.elasticsearch7;
-      };
-
-      nixpkgs.config.allowUnfreePredicate = pkg:
-        builtins.elem (lib.getName pkg) [
-          # Elasticsearch can be used as an SSPL-licensed software, which is
-          # not open-source. But as we're using it run tests, not exposing
-          # any service, this should be fine.
-          "elasticsearch"
-        ];
-
-      networking.firewall.allowedTCPPorts = [8181];
-
-      # Else phoebus-olog gets killed by the OOM killer
-      virtualisation.memorySize = 2047;
-    };
-
-    client = {};
+    client = { };
   };
 
   testScript = ''

@@ -9,15 +9,11 @@ let
       "nixos-23.11"
       "nixos-23.05"
     ];
-    all-branches = map (version:
-      if version == "dev"
-      then "master"
-      else version)
-    self.all;
+    all-branches = map (version: if version == "dev" then "master" else version) self.all;
     supported-branches = [
       "master"
       self.stable
     ];
   };
 in
-  self
+self

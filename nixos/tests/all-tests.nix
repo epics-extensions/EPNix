@@ -3,7 +3,8 @@
   pkgs,
   self,
   system,
-}: let
+}:
+let
   inherit (pkgs) lib;
 
   nixosTesting = import (nixpkgs + "/nixos/lib/testing-python.nix") {
@@ -14,12 +15,13 @@
   };
 
   handleTest = path: args: nixosTesting.simpleTest (import path (pkgs // args));
-in {
-  archiver-appliance = handleTest ./archiver-appliance {};
-  ca-gateway = handleTest ./ca-gateway.nix {};
-  channel-finder = handleTest ./channel-finder {};
-  p4p = handleTest ./p4p.nix {};
-  phoebus-alarm = handleTest ./phoebus/alarm.nix {};
-  phoebus-olog = handleTest ./phoebus/olog.nix {};
-  phoebus-save-and-restore = handleTest ./phoebus/save-and-restore.nix {};
+in
+{
+  archiver-appliance = handleTest ./archiver-appliance { };
+  ca-gateway = handleTest ./ca-gateway.nix { };
+  channel-finder = handleTest ./channel-finder { };
+  p4p = handleTest ./p4p.nix { };
+  phoebus-alarm = handleTest ./phoebus/alarm.nix { };
+  phoebus-olog = handleTest ./phoebus/olog.nix { };
+  phoebus-save-and-restore = handleTest ./phoebus/save-and-restore.nix { };
 }

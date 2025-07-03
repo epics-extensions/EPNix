@@ -40,7 +40,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     python3Packages.myst-parser
     python3Packages.sphinx-rtd-theme
   ];
-  buildInputs = [python3];
+  buildInputs = [ python3 ];
 
   gradleFlags = [
     "-PprojVersion=${finalAttrs.version}"
@@ -82,18 +82,20 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   meta = {
     description = "Implementation of an archiver for EPICS control systems that aims to archive millions of PVs";
     homepage = "https://epicsarchiver.readthedocs.io/en/stable/";
-    license = with lib.licenses;
-    with epnixLib.licenses; [
-      epics
-      # Embedded components
-      asl20
-      bsd2
-      bsd3
-      gpl2Only
-      mit
-      psfl
-    ];
-    maintainers = with epnixLib.maintainers; [minijackson];
+    license =
+      with lib.licenses;
+      with epnixLib.licenses;
+      [
+        epics
+        # Embedded components
+        asl20
+        bsd2
+        bsd3
+        gpl2Only
+        mit
+        psfl
+      ];
+    maintainers = with epnixLib.maintainers; [ minijackson ];
     inherit (jdk17.meta) platforms;
     sourceProvenance = with lib.sourceTypes; [
       fromSource

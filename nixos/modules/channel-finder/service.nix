@@ -4,11 +4,13 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.services.channel-finder;
-  settingsFormat = pkgs.formats.javaProperties {};
+  settingsFormat = pkgs.formats.javaProperties { };
   configFile = settingsFormat.generate "channel-finder.properties" cfg.settings;
-in {
+in
+{
   options.services.channel-finder = {
     enable = lib.mkEnableOption "the ChannelFinder service";
 
@@ -39,7 +41,7 @@ in {
         <https://channelfinder.readthedocs.io/en/latest/config.html#application-properties>
 
       '';
-      default = {};
+      default = { };
       type = lib.types.submodule {
         freeformType = settingsFormat.type;
         options = {
@@ -69,7 +71,7 @@ in {
 
           "elasticsearch.host_urls" = lib.mkOption {
             type = with lib.types; listOf str;
-            default = ["http://localhost:9200"];
+            default = [ "http://localhost:9200" ];
             description = ''
               List of URLs for the Elasticsearch hosts.
 
@@ -128,9 +130,9 @@ in {
   config = lib.mkIf cfg.enable {
     assertions = [
       {
-        assertion = with cfg;
-          settings."ldap.enabled"
-          == "true"
+        assertion =
+          with cfg;
+          settings."ldap.enabled" == "true"
           || settings."embedded_ldap.enabled" == "true"
           || settings."demo_auth.enabled" == "true";
         message = "One type of authentication for ChannelFinder must be provided";
@@ -147,14 +149,14 @@ in {
         # pvAccess
         5075
       ];
-      allowedUDPPorts = [5076];
+      allowedUDPPorts = [ 5076 ];
     };
 
     systemd.services.channel-finder = {
       inherit (pkgs.epnix.channel-finder-service.meta) description;
 
-      wantedBy = ["multi-user.target"];
-      after = ["elasticsearch.service"];
+      wantedBy = [ "multi-user.target" ];
+      after = [ "elasticsearch.service" ];
 
       serviceConfig = {
         ExecStart = "${lib.getExe pkgs.epnix.channel-finder-service} --spring.config.location=file://${configFile}";
@@ -164,7 +166,10 @@ in {
         # Security options:
         # ---
 
-        RestrictAddressFamilies = ["AF_INET" "AF_INET6"];
+        RestrictAddressFamilies = [
+          "AF_INET"
+          "AF_INET6"
+        ];
         # Service may not create new namespaces
         RestrictNamespaces = true;
 
@@ -206,12 +211,12 @@ in {
 
         # Service can only use a reasonable set of system calls,
         # used by common system services
-        SystemCallFilter = ["@system-service"];
+        SystemCallFilter = [ "@system-service" ];
         # Disallowed system calls return EPERM instead of terminating the service
         SystemCallErrorNumber = "EPERM";
       };
     };
   };
 
-  meta.maintainers = with epnixLib.maintainers; [minijackson];
+  meta.maintainers = with epnixLib.maintainers; [ minijackson ];
 }

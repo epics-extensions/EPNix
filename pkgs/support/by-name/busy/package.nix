@@ -5,8 +5,8 @@
   asyn,
   autosave,
   calc,
-  local_config_site ? {},
-  local_release ? {},
+  local_config_site ? { },
+  local_release ? { },
 }:
 mkEpicsPackage rec {
   pname = "busy";
@@ -22,14 +22,18 @@ mkEpicsPackage rec {
     sha256 = "sha256-mSzFLj42iXkyWGWaxplfLehoQcULLpf745trYMd1XT4=";
   };
 
-  patches = [./fix-release.patch];
+  patches = [ ./fix-release.patch ];
 
-  buildInputs = [calc asyn autosave];
+  buildInputs = [
+    calc
+    asyn
+    autosave
+  ];
 
   meta = {
     description = "APS BCDA synApps module: busy";
     homepage = "https://epics.anl.gov/bcda/synApps/busy/busy.html";
     license = epnixLib.licenses.epics;
-    maintainers = with epnixLib.maintainers; [agaget];
+    maintainers = with epnixLib.maintainers; [ agaget ];
   };
 }

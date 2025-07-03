@@ -34,7 +34,7 @@ buildPythonPackage rec {
     ./fix-reactor-import.patch
   ];
 
-  build-system = [setuptools-scm];
+  build-system = [ setuptools-scm ];
 
   dependencies = [
     channelfinder
@@ -51,7 +51,7 @@ buildPythonPackage rec {
     description = "Collects reccaster reports on the state of IOCs within the corresponding subnet and updates ChannelFinder";
     homepage = "https://channelfinder.readthedocs.io/en/latest/";
     license = epnixLib.licenses.epics;
-    maintainers = with epnixLib.maintainers; [minijackson];
+    maintainers = with epnixLib.maintainers; [ minijackson ];
     inherit (python.meta) platforms;
   };
 }

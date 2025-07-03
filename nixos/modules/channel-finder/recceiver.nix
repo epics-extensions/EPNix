@@ -4,21 +4,21 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.services.recceiver;
 
   pkg = pkgs.python311Packages.recceiver;
-  python = pkgs.python311.withPackages (
-    ps: [
-      ps.recceiver
-      ps.twisted
-    ]
-  );
+  python = pkgs.python311.withPackages (ps: [
+    ps.recceiver
+    ps.twisted
+  ]);
 
-  settingsFormat = pkgs.formats.ini {};
+  settingsFormat = pkgs.formats.ini { };
   configFile = settingsFormat.generate "recceiver.conf" cfg.settings;
   channelfinderapiConfFile = settingsFormat.generate "channelfinderapi.conf" cfg.channelfinderapi;
-in {
+in
+{
   options.services.recceiver = {
     enable = lib.mkEnableOption "the RecCeiver service";
 
@@ -29,7 +29,7 @@ in {
         See upstream documentation for all supported options:
         <https://github.com/ChannelFinder/pyCFClient?tab=readme-ov-file#configuration>
       '';
-      default = {};
+      default = { };
       type = lib.types.submodule {
         freeformType = settingsFormat.type;
         options.DEFAULT = {
@@ -61,7 +61,7 @@ in {
         See upstream documentation for all supported options:
         <https://github.com/ChannelFinder/recsync/blob/${pkg.version}/server/demo.conf>
       '';
-      default = {};
+      default = { };
       type = lib.types.submodule {
         freeformType = settingsFormat.type;
         options = {
@@ -80,7 +80,7 @@ in {
 
             addrlist = lib.mkOption {
               type = with lib.types; listOf str;
-              default = ["255.255.255.255:5049"];
+              default = [ "255.255.255.255:5049" ];
               apply = lib.concatStringsSep ",";
               description = ''
                 List of broadcast addresses.
@@ -89,8 +89,11 @@ in {
 
             procs = lib.mkOption {
               type = with lib.types; listOf str;
-              default = ["show"];
-              example = ["show" "cf"];
+              default = [ "show" ];
+              example = [
+                "show"
+                "cf"
+              ];
               apply = lib.concatStringsSep ",";
               description = ''
                 Processing chain, sequence of plugin names.
@@ -116,7 +119,7 @@ in {
           cf = {
             environment_vars = lib.mkOption {
               type = with lib.types; attrsOf str;
-              default = {};
+              default = { };
               example = {
                 ENGINEER = "Engineer";
                 EPICS_BASE = "EpicsVersion";
@@ -140,8 +143,8 @@ in {
     systemd.services.recceiver = {
       inherit (pkg.meta) description;
 
-      wantedBy = ["multi-user.target"];
-      after = ["channel-finder.service"];
+      wantedBy = [ "multi-user.target" ];
+      after = [ "channel-finder.service" ];
 
       preStart = ''
         ln -sfn "${channelfinderapiConfFile}" "$STATE_DIRECTORY/channelfinderapi.conf"
@@ -159,7 +162,10 @@ in {
         # Security options:
         # ---
 
-        RestrictAddressFamilies = ["AF_INET" "AF_INET6"];
+        RestrictAddressFamilies = [
+          "AF_INET"
+          "AF_INET6"
+        ];
         # Service may not create new namespaces
         RestrictNamespaces = true;
 
@@ -200,12 +206,12 @@ in {
 
         # Service can only use a reasonable set of system calls,
         # used by common system services
-        SystemCallFilter = ["@system-service"];
+        SystemCallFilter = [ "@system-service" ];
         # Disallowed system calls return EPERM instead of terminating the service
         SystemCallErrorNumber = "EPERM";
       };
     };
   };
 
-  meta.maintainers = with epnixLib.maintainers; [minijackson];
+  meta.maintainers = with epnixLib.maintainers; [ minijackson ];
 }

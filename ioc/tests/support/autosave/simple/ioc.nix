@@ -9,5 +9,5 @@ mkEpicsPackage {
 
   src = ./autosaveSimpleTestTop;
 
-  propagatedBuildInputs = [autosave];
+  propagatedBuildInputs = [ autosave ];
 }

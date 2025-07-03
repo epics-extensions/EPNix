@@ -24,7 +24,10 @@ buildPythonPackage rec {
   # Configure exists as a directory, which nix assumes it has to execute...
   dontConfigure = true;
 
-  nativeBuildInputs = [setuptools_dso cython];
+  nativeBuildInputs = [
+    setuptools_dso
+    cython
+  ];
   dependencies = [
     numpy
     epicscorelibs
@@ -36,6 +39,6 @@ buildPythonPackage rec {
     description = "Python bindings for the PVAccess network client and server";
     inherit (src) homepage;
     license = lib.licenses.bsd3;
-    maintainers = with epnixLib.maintainers; [synthetica];
+    maintainers = with epnixLib.maintainers; [ synthetica ];
   };
 }

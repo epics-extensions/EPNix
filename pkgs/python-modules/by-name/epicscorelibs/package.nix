@@ -18,13 +18,17 @@ buildPythonPackage rec {
 
   dontConfigure = true;
 
-  build-system = [setuptools];
-  dependencies = [setuptools-dso pip numpy];
+  build-system = [ setuptools ];
+  dependencies = [
+    setuptools-dso
+    pip
+    numpy
+  ];
 
   meta = {
     description = "EPICS core libraries packaged as a Python module";
     homepage = "https://github.com/epics-base/epicscorelibs";
     license = epnixLib.licenses.epics;
-    maintainers = with epnixLib.maintainers; [synthetica];
+    maintainers = with epnixLib.maintainers; [ synthetica ];
   };
 }

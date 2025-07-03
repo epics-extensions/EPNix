@@ -2,8 +2,8 @@
   epnixLib,
   mkEpicsPackage,
   fetchFromGitHub,
-  local_config_site ? {},
-  local_release ? {},
+  local_config_site ? { },
+  local_release ? { },
 }:
 mkEpicsPackage rec {
   pname = "autosave";
@@ -23,6 +23,6 @@ mkEpicsPackage rec {
     description = "Module that automatically saves values of EPICS PVs to files, and restores those values when the IOC is restarted.";
     homepage = "https://github.com/epics-modules/autosave";
     license = epnixLib.licenses.epics;
-    maintainers = with epnixLib.maintainers; [stephane];
+    maintainers = with epnixLib.maintainers; [ stephane ];
   };
 }

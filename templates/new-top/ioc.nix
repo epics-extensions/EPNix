@@ -13,8 +13,8 @@ mkEpicsPackage {
   # For EPICS, native libraries needs to be both in
   # nativeBuildInputs and buildInputs
   # --
-  nativeBuildInputs = [];
-  buildInputs = [];
+  nativeBuildInputs = [ ];
+  buildInputs = [ ];
 
   # EPICS support modules can be only in propagatedBuildInputs
   # --

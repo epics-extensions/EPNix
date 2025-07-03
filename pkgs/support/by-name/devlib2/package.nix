@@ -4,8 +4,8 @@
   mkEpicsPackage,
   fetchFromGitHub,
   fetchpatch,
-  local_config_site ? {},
-  local_release ? {},
+  local_config_site ? { },
+  local_release ? { },
 }:
 mkEpicsPackage rec {
   pname = "devlib2";
@@ -27,6 +27,6 @@ mkEpicsPackage rec {
     description = "devLib2 - Library for direct MMIO access to PCI and VME64x";
     homepage = "https://github.com/epics-modules/devlib2";
     license = epnixLib.licenses.epics;
-    maintainers = with epnixLib.maintainers; [agaget];
+    maintainers = with epnixLib.maintainers; [ agaget ];
   };
 }

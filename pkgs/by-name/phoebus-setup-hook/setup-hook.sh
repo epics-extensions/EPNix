@@ -9,7 +9,7 @@ installPhoebusJar() {
 	mkdir -p "$out/share/java"
 
 	local jarDeps=("$path"/target/lib/*.jar)
-	if (( ${#jarDeps[*]} )); then
+	if ((${#jarDeps[*]})); then
 		local depsPath="$out/share/java/$name/deps"
 		mkdir -p "$depsPath"
 		cp "${jarDeps[@]}" "$depsPath"

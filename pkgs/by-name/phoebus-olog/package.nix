@@ -20,7 +20,7 @@ maven.buildMavenPackage rec {
   mvnHash = "sha256-puUnYIbBVVXfoIcK9lkmBOH3TBfFAK+MeN8vsoxB8w0=";
   mvnParameters = "-Dmaven.javadoc.skip=true -Dmaven.source.skip=true -Pdeployable-jar -Dproject.build.outputTimestamp=1980-01-01T00:00:02Z";
 
-  nativeBuildInputs = [makeWrapper];
+  nativeBuildInputs = [ makeWrapper ];
 
   installPhase = ''
     runHook preInstall
@@ -43,7 +43,7 @@ maven.buildMavenPackage rec {
     homepage = "https://olog.readthedocs.io/en/latest/";
     mainProgram = "phoebus-olog";
     license = lib.licenses.epl10;
-    maintainers = with epnixLib.maintainers; [minijackson];
+    maintainers = with epnixLib.maintainers; [ minijackson ];
     inherit (jdk21.meta) platforms;
   };
 }

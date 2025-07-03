@@ -1,13 +1,15 @@
-{pkgs, ...}: let
+{ pkgs, ... }:
+let
   inherit (pkgs) epnixLib;
 
-  ioc = pkgs.epnix.support.callPackage ./ioc.nix {};
-in {
+  ioc = pkgs.epnix.support.callPackage ./ioc.nix { };
+in
+{
   name = "example-ioc";
-  meta.maintainers = with epnixLib.maintainers; [minijackson];
+  meta.maintainers = with epnixLib.maintainers; [ minijackson ];
 
   nodes.machine = {
-    environment.systemPackages = [pkgs.epnix.epics-base];
+    environment.systemPackages = [ pkgs.epnix.epics-base ];
 
     services.iocs.ioc = {
       package = ioc;

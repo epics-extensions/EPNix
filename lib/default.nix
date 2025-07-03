@@ -3,8 +3,9 @@
   inputs,
   lib,
   ...
-} @ args:
-with lib; let
+}@args:
+with lib;
+let
   self = {
     inherit inputs;
 
@@ -25,85 +26,72 @@ with lib; let
     nixosModule = self.inputs.self.nixosModules.nixos;
 
     # Like lib.getName, but also supports paths
-    getName = thing:
-      if builtins.isPath thing
-      then baseNameOf thing
-      else lib.getName thing;
+    getName = thing: if builtins.isPath thing then baseNameOf thing else lib.getName thing;
 
-    toEpicsArch = system: let
-      inherit (system) parsed;
+    toEpicsArch =
+      system:
+      let
+        inherit (system) parsed;
 
-      kernel =
-        {
-          darwin = "darwin";
-          macos = "darwin";
+        kernel =
+          {
+            darwin = "darwin";
+            macos = "darwin";
 
-          freebsd = "freebsd";
-          # TODO: is this correct?
-          netbsd = "freebsd";
-          openbsd = "freebsd";
+            freebsd = "freebsd";
+            # TODO: is this correct?
+            netbsd = "freebsd";
+            openbsd = "freebsd";
 
-          ios = "ios";
+            ios = "ios";
 
-          linux = "linux";
+            linux = "linux";
 
-          solaris = "solaris";
+            solaris = "solaris";
 
-          win32 =
-            if parsed.abi.name == "cygnus"
-            then "cygwin"
-            else "win32";
-          windows =
-            if parsed.abi.name == "cygnus"
-            then "cygwin"
-            else if arch == "x86"
-            then "win32"
-            else if arch == "x64"
-            then "windows"
-            else (throw "Unsupported architecture for windows: ${arch}");
-        }
-        .${
-          parsed.kernel.name
-        }
-        or (throw "Unsupported kernel type: ${parsed.kernel.name}");
+            win32 = if parsed.abi.name == "cygnus" then "cygwin" else "win32";
+            windows =
+              if parsed.abi.name == "cygnus" then
+                "cygwin"
+              else if arch == "x86" then
+                "win32"
+              else if arch == "x64" then
+                "windows"
+              else
+                (throw "Unsupported architecture for windows: ${arch}");
+          }
+          .${parsed.kernel.name} or (throw "Unsupported kernel type: ${parsed.kernel.name}");
 
-      arch =
-        {
-          x86 =
-            if parsed.cpu.bits == 64
-            then
-              if parsed.kernel.name == "windows"
-              then "x64"
-              else "x86_64"
-            else "x86";
+        arch =
+          {
+            x86 =
+              if parsed.cpu.bits == 64 then
+                if parsed.kernel.name == "windows" then "x64" else "x86_64"
+              else
+                "x86";
 
-          arm =
-            if parsed.cpu.bits == 64
-            then "aarch64"
-            else "arm";
+            arm = if parsed.cpu.bits == 64 then "aarch64" else "arm";
 
-          power =
-            if parsed.cpu.bits == 64
-            then "ppc64"
-            else "ppc";
+            power = if parsed.cpu.bits == 64 then "ppc64" else "ppc";
 
-          sparc = "sparc";
-        }
-        .${
-          parsed.cpu.family
-        }
-        or (throw "Unsupported architecture: ${parsed.cpu.name}");
-    in "${kernel}-${arch}";
-
-    resolveInput = {inputs} @ available: input:
-      if isDerivation input
-      then input
-      else if hasPrefix "/" input
-      then input
-      else let
-        path = splitString "." input;
+            sparc = "sparc";
+          }
+          .${parsed.cpu.family} or (throw "Unsupported architecture: ${parsed.cpu.name}");
       in
-        {pname = last path;} // getAttrFromPath path available;
+      "${kernel}-${arch}";
+
+    resolveInput =
+      { inputs }@available:
+      input:
+      if isDerivation input then
+        input
+      else if hasPrefix "/" input then
+        input
+      else
+        let
+          path = splitString "." input;
+        in
+        { pname = last path; } // getAttrFromPath path available;
   };
 in
-  self
+self
