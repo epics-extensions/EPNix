@@ -31,7 +31,7 @@ buildPythonPackage rec {
 
   meta = {
     description = "Embed an EPICS IOC in a Python process";
-    homepage = "https://DiamondLightSource.github.io/pythonSoftIOC";
+    homepage = "https://diamondlightsource.github.io/pythonSoftIOC/";
     license = lib.licenses.asl20;
     maintainers = with epnixLib.maintainers; [synthetica];
   };
