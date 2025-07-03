@@ -17,7 +17,7 @@ lib.recursiveUpdate
 
   meta = {
     description = "A power supply simulator for the StreamDevice tutorial";
-    homepage = "https://epics-extensions.github.io/EPNix/ioc/tutorials/streamdevice.html";
+    homepage = "https://epics-extensions.github.io/EPNix/nixos-24.11/ioc/tutorials/streamdevice.html";
     license = lib.licenses.asl20;
     maintainers = with epnixLib.maintainers; [minijackson];
   };
