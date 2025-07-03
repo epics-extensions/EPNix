@@ -1,4 +1,8 @@
-{lib, ...} @ args: let
+{
+  inputs,
+  lib,
+  ...
+} @ args: let
   self = {
     markdown = import ./documentation/markdown.nix args;
     options = import ./documentation/options.nix args;
@@ -96,11 +100,13 @@
 
       ${lib.optionalString (pkg.meta ? position) (let
         filePath = lib.head (lib.splitString ":" pkg.meta.position);
+        isEpnix = lib.hasPrefix "${inputs.self}" filePath;
         declarationLink = self.markdown.sourceLink filePath;
-      in ''
-        Declared in
-        : ${self.markdown.inDefList declarationLink}
-      '')}
+      in
+        lib.optionalString isEpnix ''
+          Declared in
+          : ${self.markdown.inDefList declarationLink}
+        '')}
 
       License(s)
       : ${self.markdown.inDefList (self.licenseList pkg)}

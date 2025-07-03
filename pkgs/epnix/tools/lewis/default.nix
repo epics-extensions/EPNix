@@ -23,7 +23,7 @@ buildPythonPackage rec {
   disabled = pythonAtLeast "3.12";
 
   src = fetchFromGitHub {
-    owner = "ess-dmsc";
+    owner = "ISISComputingGroup";
     repo = "lewis";
     rev = "v${version}";
     hash = "sha256-7iMREHt6W26IzCFsRmojHqGuqIUHaCuvsKMMHuYflz0=";
@@ -52,7 +52,7 @@ buildPythonPackage rec {
 
   meta = with lib; {
     description = "Let's write intricate simulators";
-    homepage = "https://github.com/ess-dmsc/lewis";
+    homepage = "https://github.com/ISISComputingGroup/lewis";
     mainProgram = "lewis";
     license = licenses.gpl3Only;
     maintainers = with maintainers; [minijackson];

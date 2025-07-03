@@ -44,7 +44,7 @@ and particularly look at these sections:
 -  Verify that you can connect
 
 .. _GitHub SSH documentation: https://docs.github.com/en/authentication/connecting-to-github-with-ssh
-.. _GitLab SSH documentation: https://docs.gitlab.com/ee/user/ssh.html
+.. _GitLab SSH documentation: https://docs.gitlab.com/user/ssh/
 
 Configuring the ssh-agent
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -112,7 +112,7 @@ you can create a token for given group or project
 so that it offers access to that specific group or project.
 These kinds of tokens should be preferred.
 
-.. _glab: https://docs.gitlab.com/ee/editor_extensions/gitlab_cli/index.html
+.. _glab: https://docs.gitlab.com/editor_extensions/gitlab_cli/
 
 GitHub
 ~~~~~~

@@ -30,7 +30,7 @@ mkEpicsPackage rec {
 
   meta = {
     description = "Module providing EPICS support for SNMP (Simple Network Management Protocol)";
-    homepage = "https://groups.nscl.msu.edu/controls/files/devSnmp.html";
+    homepage = "https://groups.frib.msu.edu/controls/files/devSnmp.html";
     license = lib.licenses.mit;
     maintainers = with epnixLib.maintainers; [stephane];
   };
