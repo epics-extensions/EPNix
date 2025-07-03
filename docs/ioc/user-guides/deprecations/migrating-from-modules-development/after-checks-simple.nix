@@ -9,8 +9,8 @@ nixosTest {
   name = "simple";
 
   nodes.machine = {
-    imports = [epnixLib.inputs.self.nixosModules.nixos];
-    environment.systemPackages = [epnix.epics-base];
+    imports = [ epnixLib.inputs.self.nixosModules.nixos ];
+    environment.systemPackages = [ epnix.epics-base ];
 
     services.iocs.myExampleIoc = {
       package = myIoc;

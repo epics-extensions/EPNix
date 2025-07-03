@@ -5,13 +5,21 @@
   epnix,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.epnix.boot;
-in {
+in
+{
   options.epnix.boot = {
     iocBoots = mkOption {
-      default = [];
-      type = with types; listOf (oneOf [str path package]);
+      default = [ ];
+      type =
+        with types;
+        listOf (oneOf [
+          str
+          path
+          package
+        ]);
       description = ''
         Additional iocBoot directories to include in this EPICS distribution.
 
@@ -33,8 +41,11 @@ in {
     };
   };
 
-  config.epnix.boot.resolvedIocBoots = let
-    available = {inputs = config.epnix.inputs;};
-  in
+  config.epnix.boot.resolvedIocBoots =
+    let
+      available = {
+        inputs = config.epnix.inputs;
+      };
+    in
     map (epnix.lib.resolveInput available) cfg.iocBoots;
 }

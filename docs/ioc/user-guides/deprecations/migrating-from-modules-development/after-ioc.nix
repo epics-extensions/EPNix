@@ -11,8 +11,8 @@ mkEpicsPackage {
 
   src = ./.;
 
-  buildInputs = [openssl];
-  nativeBuildInputs = [openssl];
+  buildInputs = [ openssl ];
+  nativeBuildInputs = [ openssl ];
 
   propagatedBuildInputs = [
     epnix.support.StreamDevice

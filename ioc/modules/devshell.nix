@@ -4,10 +4,13 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.epnix.devShell;
 
-  available = {inputs = config.epnix.inputs;};
+  available = {
+    inputs = config.epnix.inputs;
+  };
 
   lockFile = importJSON "${available.inputs.self}/flake.lock";
   lockedInputs = mapAttrs (name: node: lockFile.nodes.${node}) lockFile.nodes.${lockFile.root}.inputs;
@@ -17,12 +20,16 @@ with lib; let
     (filter (app: isString app && hasPrefix "inputs." app))
 
     # Fetch the metadata from the lock file
-    (map (inputName: let
-      name = last (splitString "." inputName);
-    in
-      if hasAttr name lockedInputs
-      then nameValuePair name lockedInputs.${name}
-      else throw "input '${name}' specified in 'epnix.applications.apps' does not exist"))
+    (map (
+      inputName:
+      let
+        name = last (splitString "." inputName);
+      in
+      if hasAttr name lockedInputs then
+        nameValuePair name lockedInputs.${name}
+      else
+        throw "input '${name}' specified in 'epnix.applications.apps' does not exist"
+    ))
   ];
 
   category = mkOption {
@@ -45,113 +52,110 @@ with lib; let
     default = "";
   };
 
-  packageModule = {config, ...}: {
-    options = {
-      package = mkOption {
-        type = types.package;
-        description = ''
-          The package providing the specified commands.
-        '';
-      };
+  packageModule =
+    { config, ... }:
+    {
+      options = {
+        package = mkOption {
+          type = types.package;
+          description = ''
+            The package providing the specified commands.
+          '';
+        };
 
-      inherit category;
+        inherit category;
 
-      commands = mkOption {
-        type = with types;
-          attrsOf (submodule {
-            options = {
-              inherit description;
-              category = mkOption {
-                type = types.str;
-                description = ''
-                  Set a free text category under which this command is grouped
-                  and shown in the help menu.
+        commands = mkOption {
+          type =
+            with types;
+            attrsOf (submodule {
+              options = {
+                inherit description;
+                category = mkOption {
+                  type = types.str;
+                  description = ''
+                    Set a free text category under which this command is grouped
+                    and shown in the help menu.
 
-                  If unspecified, defaults to the category of the package.
-                '';
-                example = "development tools";
+                    If unspecified, defaults to the category of the package.
+                  '';
+                  example = "development tools";
+                };
               };
-            };
 
-            config.category = mkDefault config.category;
-          });
+              config.category = mkDefault config.category;
+            });
 
-        description = ''
-          The various commands to document in the menu.
-        '';
+          description = ''
+            The various commands to document in the menu.
+          '';
 
-        default = {};
+          default = { };
+        };
       };
+
+      config.commands =
+        let
+          name = config.package.pname or (builtins.parseDrvName config.package.name).name;
+          description = config.package.meta.description or "";
+        in
+        mkDefault {
+          ${name}.description = description;
+        };
     };
 
-    config.commands = let
-      name = config.package.pname or (builtins.parseDrvName config.package.name).name;
-      description = config.package.meta.description or "";
-    in
-      mkDefault {
-        ${name}.description = description;
-      };
-  };
+  scriptPackages = mapAttrsToList (
+    name: scriptCfg:
+    pkgs.writeShellApplication {
+      inherit name;
+      runtimeInputs = [ pkgs.buildPackages.ncurses ];
+      text = ''
+        # shellcheck disable=SC1091
+        source "${pkgs.bash-lib}"
 
-  scriptPackages =
-    mapAttrsToList
-    (name: scriptCfg:
-      pkgs.writeShellApplication {
-        inherit name;
-        runtimeInputs = [pkgs.buildPackages.ncurses];
-        text = ''
-          # shellcheck disable=SC1091
-          source "${pkgs.bash-lib}"
+        ${scriptCfg.text}
+      '';
+    }
+  ) cfg.scripts;
 
-          ${scriptCfg.text}
-        '';
-      })
-    cfg.scripts;
-
-  commandsByCategory = let
-    scriptCategories =
-      mapAttrsToList
-      (name: script: {
+  commandsByCategory =
+    let
+      scriptCategories = mapAttrsToList (name: script: {
         ${script.category} = {
           inherit name;
           inherit (script) description;
         };
-      })
-      cfg.scripts;
+      }) cfg.scripts;
 
-    pkgCommandCategories =
-      map
-      (pkg:
-        mapAttrsToList
-        (name: cmd: {
+      pkgCommandCategories = map (
+        pkg:
+        mapAttrsToList (name: cmd: {
           ${cmd.category} = {
             inherit name;
             inherit (cmd) description;
           };
-        })
-        pkg.commands)
-      cfg.packages;
-  in
+        }) pkg.commands
+      ) cfg.packages;
+    in
     zipAttrs (scriptCategories ++ (flatten pkgCommandCategories));
 
   categoryText = category: commands: ''
     ''${YELLOW}[${category}]''${NORMAL}
-    ${concatMapStringsSep
-      "\n"
-      ({
+    ${concatMapStringsSep "\n" (
+      {
         name,
         description,
-      }: "  \${GREEN}${name}\${NORMAL}\n      ${description}")
-      commands}
+      }:
+      "  \${GREEN}${name}\${NORMAL}\n      ${description}"
+    ) commands}
   '';
 
   menuText = ''
     ''${BOLD}''${CYAN}EPNix's ${config.epnix.meta.name} devShell''${NORMAL}
 
-    ${concatStringsSep
-      "\n"
-      (mapAttrsToList categoryText commandsByCategory)}'';
-in {
+    ${concatStringsSep "\n" (mapAttrsToList categoryText commandsByCategory)}'';
+in
+{
   options.epnix.devShell = {
     packages = mkOption {
       type = with types; listOf (submodule packageModule);
@@ -177,7 +181,8 @@ in {
     };
 
     scripts = mkOption {
-      type = with types;
+      type =
+        with types;
         attrsOf (submodule {
           options = {
             text = mkOption {
@@ -216,14 +221,11 @@ in {
         preventing said environment variable to "leak" from the host
         environment to the development shell.
       '';
-      apply = mapAttrs (n: v:
-        if isList v
-        then concatStringsSep ":" v
-        else v);
+      apply = mapAttrs (n: v: if isList v then concatStringsSep ":" v else v);
       example = {
         EPICS_CA_ADDR_LIST = "localhost";
       };
-      default = {};
+      default = { };
     };
 
     attrs = mkOption {
@@ -254,7 +256,7 @@ in {
 
         [documentation]: <https://nixos.org/manual/nixpkgs/stable/#sec-pkgs-mkShell>
       '';
-      default = {};
+      default = { };
     };
   };
 
@@ -277,7 +279,7 @@ in {
         category = "development tools";
         commands."clang-format".description = "Format C/C++ code";
       }
-      {package = grc;}
+      { package = grc; }
     ];
 
     scripts = {
@@ -431,129 +433,136 @@ in {
       };
 
       eregen-git = {
-        text = let
-          cloneCommands =
-            forEach inputApps
-            ({
-              name,
-              value,
-            }: let
-              inherit (value.locked) type;
-            in
-              if type == "git"
-              then
-                if value.locked.dir or "" != ""
-                then ''warn "for input '${name}', git repositories with the 'dir' option are not supported"''
-                else ''
+        text =
+          let
+            cloneCommands = forEach inputApps (
+              {
+                name,
+                value,
+              }:
+              let
+                inherit (value.locked) type;
+              in
+              if type == "git" then
+                if value.locked.dir or "" != "" then
+                  ''warn "for input '${name}', git repositories with the 'dir' option are not supported"''
+                else
+                  ''
+                    if checkMissing "${name}"; then
+                      cloneGit "${name}" "${value.locked.url}" "${value.locked.ref or ""}" "${value.locked.rev}"
+                    fi
+                  ''
+              else if type == "github" then
+                ''
                   if checkMissing "${name}"; then
-                    cloneGit "${name}" "${value.locked.url}" "${value.locked.ref or ""}" "${value.locked.rev}"
+                    cloneGitHub "${name}" "${value.locked.owner}" "${value.locked.repo}" "${value.original.ref or ""}" "${value.locked.rev}"
                   fi
                 ''
-              else if type == "github"
-              then ''
-                if checkMissing "${name}"; then
-                  cloneGitHub "${name}" "${value.locked.owner}" "${value.locked.repo}" "${value.original.ref or ""}" "${value.locked.rev}"
-                fi
-              ''
-              else ''warn "not cloning input '${name}', unsupported type '${type}'"'');
-        in ''
-          function checkMissing() {
-            local name="$1"
+              else
+                ''warn "not cloning input '${name}', unsupported type '${type}'"''
+            );
+          in
+          ''
+            function checkMissing() {
+              local name="$1"
 
-            if [ -e "$name" ]; then
-              info "input '$name' already exists, skipping cloning"
-              info "" "  if you want to force clone this input,"
-              info "" "  simply remove the directory '$name' and re-run 'eregen-git'"
-              return 1
-            else
-              return 0
-            fi
-          }
+              if [ -e "$name" ]; then
+                info "input '$name' already exists, skipping cloning"
+                info "" "  if you want to force clone this input,"
+                info "" "  simply remove the directory '$name' and re-run 'eregen-git'"
+                return 1
+              else
+                return 0
+              fi
+            }
 
-          function cloneGit() {
-            local name="$1"
-            local url="$2"
-            # may be empty
-            local wantedRef="$3"
-            local resolvedRev="$4"
+            function cloneGit() {
+              local name="$1"
+              local url="$2"
+              # may be empty
+              local wantedRef="$3"
+              local resolvedRev="$4"
 
-            local -a options=(--recurse-submodules)
+              local -a options=(--recurse-submodules)
 
-            if [ -n "$wantedRef" ]; then
-              options+=(--branch "''${wantedRef#refs/heads/}")
-            fi
+              if [ -n "$wantedRef" ]; then
+                options+=(--branch "''${wantedRef#refs/heads/}")
+              fi
 
-            info "cloning '$name'"
+              info "cloning '$name'"
 
-            if ! git clone "''${options[@]}" -- "$url" "$name"; then
-              error "clone of input '$name' failed"
-              return 1
-            fi
+              if ! git clone "''${options[@]}" -- "$url" "$name"; then
+                error "clone of input '$name' failed"
+                return 1
+              fi
 
-            local actualRev
-            actualRev="$(git -C "$name" rev-parse HEAD)"
+              local actualRev
+              actualRev="$(git -C "$name" rev-parse HEAD)"
 
-            if [[ "$resolvedRev" == "$actualRev" ]]; then
-              return 0
-            fi
+              if [[ "$resolvedRev" == "$actualRev" ]]; then
+                return 0
+              fi
 
-            if [ -z "$wantedRef" ]; then
-              wantedRef="$(git -C "$name" symbolic-ref --short HEAD)"
-            fi
+              if [ -z "$wantedRef" ]; then
+                wantedRef="$(git -C "$name" symbolic-ref --short HEAD)"
+              fi
 
-            warn "'flake.lock' is out-of-date for input '$name'"
-            warn "" "the 'flake.lock' file specifies that input '$name' is at commit:"
-            warn "" "   - ''${resolvedRev:1:7}"
-            warn "" "  but branch '$wantedRef' from upstream has moved to commit:"
-            warn "" "   - ''${actualRev:1:7}"
-            info "it is likely that your 'flake.lock' is several commits behind."
-            info "if you want to update your inputs, you can use one of the following commands:"
-            info "" "  # to updates all inputs"
-            info "" "  - nix flake update [--commit-lock-file]" "# updates all inputs"
-            info ""
-            info "" "  # to updates only this input"
-            info "" "  - nix flake lock --update-input '$name' [--commit-lock-file]"
-          }
+              warn "'flake.lock' is out-of-date for input '$name'"
+              warn "" "the 'flake.lock' file specifies that input '$name' is at commit:"
+              warn "" "   - ''${resolvedRev:1:7}"
+              warn "" "  but branch '$wantedRef' from upstream has moved to commit:"
+              warn "" "   - ''${actualRev:1:7}"
+              info "it is likely that your 'flake.lock' is several commits behind."
+              info "if you want to update your inputs, you can use one of the following commands:"
+              info "" "  # to updates all inputs"
+              info "" "  - nix flake update [--commit-lock-file]" "# updates all inputs"
+              info ""
+              info "" "  # to updates only this input"
+              info "" "  - nix flake lock --update-input '$name' [--commit-lock-file]"
+            }
 
-          function cloneGitHub() {
-            local name="$1"
-            local owner="$2"
-            local repo="$3"
-            # may be empty
-            local wantedRef="$3"
-            local resolvedRev="$4"
+            function cloneGitHub() {
+              local name="$1"
+              local owner="$2"
+              local repo="$3"
+              # may be empty
+              local wantedRef="$3"
+              local resolvedRev="$4"
 
-            cloneGit "$name" "https://github.com/''${owner}/''${repo}.git" "$wantedRef" "$resolvedRev"
-          }
+              cloneGit "$name" "https://github.com/''${owner}/''${repo}.git" "$wantedRef" "$resolvedRev"
+            }
 
-          ${concatStringsSep "\n" cloneCommands}
-        '';
+            ${concatStringsSep "\n" cloneCommands}
+          '';
         category = "epnix commands";
         description = "Check and clone subprojects";
       };
 
       enix-local = {
-        text = let
-          findLocals =
-            forEach inputApps
-            ({
-              name,
-              value,
-            }: ''
-              if [ -e "${name}" ]; then
-                info "using local app:" "'${name}'"
-                overrides+=(--override-input "${name}" "./${name}")
-              else
-                info "app '${name}' is not present locally" "using the one specified in flake inputs"
-              fi
-            '');
-        in ''
-          typeset -a overrides=()
+        text =
+          let
+            findLocals = forEach inputApps (
+              {
+                name,
+                value,
+              }:
+              ''
+                if [ -e "${name}" ]; then
+                  info "using local app:" "'${name}'"
+                  overrides+=(--override-input "${name}" "./${name}")
+                else
+                  info "app '${name}' is not present locally" "using the one specified in flake inputs"
+                fi
+              ''
+            );
+          in
+          ''
+            typeset -a overrides=()
 
-          ${concatStringsSep "\n" findLocals}
+            ${concatStringsSep "\n" findLocals}
 
-          nix "$@" "''${overrides[@]}"
-        '';
+            nix "$@" "''${overrides[@]}"
+          '';
         category = "epnix commands";
         description = "Like 'nix' but uses the locally cloned subprojects";
       };
@@ -564,45 +573,42 @@ in {
       "LOCALE_ARCHIVE" = "${pkgs.buildPackages.glibcLocales}/lib/locale/locale-archive";
     };
 
-    attrs =
-      {
-        inputsFrom = [config.epnix.outputs.build];
+    attrs = {
+      inputsFrom = [ config.epnix.outputs.build ];
 
-        nativeBuildInputs =
-          (map (cmd: cmd.package) cfg.packages)
-          ++ scriptPackages
-          ++ config.epnix.outputs.build.depsBuildBuild
-          ++ [pkgs.epnix.docs];
+      nativeBuildInputs =
+        (map (cmd: cmd.package) cfg.packages)
+        ++ scriptPackages
+        ++ config.epnix.outputs.build.depsBuildBuild
+        ++ [ pkgs.epnix.docs ];
 
-        inherit (config.epnix.outputs.build) local_config_site local_release;
+      inherit (config.epnix.outputs.build) local_config_site local_release;
 
-        shellHook = ''
-          function load_profiles() {
-            # Don't return the glob itself, if no matches
-            shopt -s nullglob
+      shellHook = ''
+        function load_profiles() {
+          # Don't return the glob itself, if no matches
+          shopt -s nullglob
 
-            for input in $nativeBuildInputs; do
-              for file in "$input/etc/profile.d/"*sh; do
-                source "$file"
-              done
+          for input in $nativeBuildInputs; do
+            for file in "$input/etc/profile.d/"*sh; do
+              source "$file"
             done
-          }
+          done
+        }
 
-          load_profiles
+        load_profiles
 
-          ${concatMapStringsSep "\n"
-            (var: "unset ${var}")
-            (attrNames
-              (filterAttrs (_: isNull) cfg.environment.variables))}
+        ${concatMapStringsSep "\n" (var: "unset ${var}") (
+          attrNames (filterAttrs (_: isNull) cfg.environment.variables)
+        )}
 
-          if [[ "$-" == *i* ]]; then
-            menu
-          fi
+        if [[ "$-" == *i* ]]; then
+          menu
+        fi
 
-          check-config
-        '';
-      }
-      // cfg.environment.variables;
+        check-config
+      '';
+    } // cfg.environment.variables;
   };
 
   config.epnix.outputs.devShell = pkgs.mkShell cfg.attrs;

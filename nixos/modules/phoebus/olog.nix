@@ -4,11 +4,13 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.services.phoebus-olog;
-  settingsFormat = pkgs.formats.javaProperties {};
+  settingsFormat = pkgs.formats.javaProperties { };
   configFile = settingsFormat.generate "phoebus-olog.properties" cfg.settings;
-in {
+in
+{
   options.services.phoebus-olog = {
     enable = lib.mkEnableOption "the Phoebus Olog service";
 
@@ -23,7 +25,7 @@ in {
         See here for supported options:
         <https://github.com/Olog/phoebus-olog/blob/v${pkgs.epnix.phoebus-olog.version}/src/main/resources/application.properties>
       '';
-      default = {};
+      default = { };
       type = lib.types.submodule {
         freeformType = settingsFormat.type;
         options = {
@@ -92,7 +94,8 @@ in {
   config = lib.mkIf cfg.enable {
     assertions = [
       {
-        assertion = with cfg;
+        assertion =
+          with cfg;
           (settings."ad.enabled" == "true")
           || settings."ldap.enabled" == "true"
           || settings."embedded_ldap.enabled" == "true"
@@ -104,8 +107,11 @@ in {
     systemd.services.phoebus-olog = {
       description = "Phoebus Alarm Server";
 
-      wantedBy = ["multi-user.target"];
-      after = ["elasticsearch.service" "ferretdb.service"];
+      wantedBy = [ "multi-user.target" ];
+      after = [
+        "elasticsearch.service"
+        "ferretdb.service"
+      ];
 
       serviceConfig = {
         ExecStart = "${lib.getExe pkgs.epnix.phoebus-olog} --spring.config.location=file://${configFile}";
@@ -119,5 +125,5 @@ in {
     };
   };
 
-  meta.maintainers = with epnixLib.maintainers; [minijackson];
+  meta.maintainers = with epnixLib.maintainers; [ minijackson ];
 }

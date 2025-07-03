@@ -3,8 +3,8 @@
   epnixLib,
   mkEpicsPackage,
   fetchzip,
-  local_config_site ? {},
-  local_release ? {},
+  local_config_site ? { },
+  local_release ? { },
   net-snmp,
   openssl,
 }:
@@ -15,8 +15,14 @@ mkEpicsPackage rec {
 
   inherit local_config_site local_release;
 
-  buildInputs = [net-snmp openssl];
-  nativeBuildInputs = [net-snmp openssl];
+  buildInputs = [
+    net-snmp
+    openssl
+  ];
+  nativeBuildInputs = [
+    net-snmp
+    openssl
+  ];
 
   preBuild = ''
     echo 'include $(TOP)/configure/RELEASE.local' >> configure/RELEASE
@@ -32,6 +38,6 @@ mkEpicsPackage rec {
     description = "Module providing EPICS support for SNMP (Simple Network Management Protocol)";
     homepage = "https://groups.frib.msu.edu/controls/files/devSnmp.html";
     license = lib.licenses.mit;
-    maintainers = with epnixLib.maintainers; [stephane];
+    maintainers = with epnixLib.maintainers; [ stephane ];
   };
 }

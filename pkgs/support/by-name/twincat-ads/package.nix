@@ -5,8 +5,8 @@
   fetchFromGitHub,
   asyn,
   calc,
-  local_config_site ? {},
-  local_release ? {},
+  local_config_site ? { },
+  local_release ? { },
 }:
 mkEpicsPackage {
   pname = "twincat-ads";
@@ -24,9 +24,12 @@ mkEpicsPackage {
   };
 
   # See: https://gitlab.esss.lu.se/epics-modules/epics-twincat-ads/-/issues/2
-  patches = [./fix-missing-header.patch];
+  patches = [ ./fix-missing-header.patch ];
 
-  propagatedBuildInputs = [asyn calc];
+  propagatedBuildInputs = [
+    asyn
+    calc
+  ];
 
   preBuild = ''
     touch configure/RELEASE_PATHS.local
@@ -37,6 +40,9 @@ mkEpicsPackage {
     description = "Module providing EPICS support for ADS Protocol (Automation Device Specification)";
     homepage = "https://github.com/epics-modules/twincat-ads/";
     license = lib.licenses.lgpl3Plus;
-    maintainers = with epnixLib.maintainers; [agaget minijackson];
+    maintainers = with epnixLib.maintainers; [
+      agaget
+      minijackson
+    ];
   };
 }

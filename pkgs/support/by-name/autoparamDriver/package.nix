@@ -18,12 +18,12 @@ mkEpicsPackage rec {
     hash = "sha256-J2fy/pMwrbwVFULfANuJBl6iE3wju5bQkhkxxk8zRYs=";
   };
 
-  propagatedBuildInputs = [asyn];
+  propagatedBuildInputs = [ asyn ];
 
   meta = {
     description = "An asyn driver that creates parameters dynamically based on content of record links";
     homepage = "https://epics.cosylab.com/documentation/autoparamDriver/";
     license = lib.licenses.mit;
-    maintainers = with epnixLib.maintainers; [synthetica];
+    maintainers = with epnixLib.maintainers; [ synthetica ];
   };
 }

@@ -13,9 +13,7 @@ base_url = "http://server:8080/save-restore"
 
 def get(uri: str):
     return json.loads(
-        client.succeed(
-            "curl -sSf " "-H 'Accept: application/json' " f"'{base_url}{uri}'"
-        )
+        client.succeed(f"curl -sSf -H 'Accept: application/json' '{base_url}{uri}'")
     )
 
 

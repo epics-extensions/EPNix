@@ -88,7 +88,7 @@ epicsInstallProgramsHook() {
 	echo "Installing programs in 'bin/@host_arch@' to 'bin'..."
 	if [[ -d "$out/bin/@host_arch@" ]]; then
 		for file in "$out/bin/@host_arch@/"*; do
-			[[ -x "$file" ]] || continue
+			[[ -x $file ]] || continue
 
 			echo "Installing program '$(basename "$file")' to 'bin'"
 			makeWrapper "$file" "$out/bin/$(basename "$file")"

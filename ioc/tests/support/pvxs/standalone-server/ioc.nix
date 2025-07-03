@@ -9,5 +9,5 @@ mkEpicsPackage {
 
   src = ./pvxsStandaloneServerTestTop;
 
-  propagatedBuildInputs = [pvxs];
+  propagatedBuildInputs = [ pvxs ];
 }

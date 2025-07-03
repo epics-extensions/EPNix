@@ -4,12 +4,14 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.services.phoebus-alarm-server;
-  settingsFormat = pkgs.formats.javaProperties {};
+  settingsFormat = pkgs.formats.javaProperties { };
   configFile = settingsFormat.generate "phoebus-alarm-server.properties" cfg.settings;
   configLocation = "phoebus/alarm-server.properties";
-in {
+in
+{
   options.services.phoebus-alarm-server = {
     enable = lib.mkEnableOption ''
       the Phoebus Alarm server
@@ -50,7 +52,7 @@ in {
 
         Note that options containing a "." must be quoted.
       '';
-      default = {};
+      default = { };
       type = lib.types.submodule {
         freeformType = settingsFormat.type;
         options = {
@@ -111,7 +113,7 @@ in {
             type = with lib.types; listOf str;
             # TODO: bug? From the code it seems that specifying multiple topics
             # here with create_topics will have issues (AlarmServerMain.java:654)
-            default = ["Accelerator"];
+            default = [ "Accelerator" ];
             apply = lib.concatStringsSep ",";
           };
 
@@ -182,37 +184,33 @@ in {
 
     services.phoebus-alarm-server.settings = {
       "org.phoebus.pv.ca/addr_list" =
-        if config.environment.epics.enable
-        then config.environment.epics.ca_addr_list
-        else [];
+        if config.environment.epics.enable then config.environment.epics.ca_addr_list else [ ];
       "org.phoebus.pv.ca/auto_addr_list" =
-        if config.environment.epics.enable
-        then config.environment.epics.ca_auto_addr_list
-        else true;
+        if config.environment.epics.enable then config.environment.epics.ca_auto_addr_list else true;
     };
 
     environment = {
       etc."${configLocation}".source = configFile;
       # Useful for importing alarm sets
-      systemPackages = [pkgs.epnix.phoebus-alarm-server];
+      systemPackages = [ pkgs.epnix.phoebus-alarm-server ];
     };
 
     systemd.services.phoebus-alarm-server = {
       description = "Phoebus Alarm Server";
 
-      wantedBy = ["multi-user.target"];
+      wantedBy = [ "multi-user.target" ];
 
       environment.JAVA_OPTS = "-Dphoebus.user=/var/lib/phoebus-alarm-server";
 
       serviceConfig = {
-        ExecStart = let
-          args =
-            [
+        ExecStart =
+          let
+            args = [
               "-noshell"
               "-settings /etc/${configLocation}"
-            ]
-            ++ (lib.optional cfg.createTopics "-create_topics");
-        in "${lib.getExe pkgs.epnix.phoebus-alarm-server} ${lib.concatStringsSep " " args}";
+            ] ++ (lib.optional cfg.createTopics "-create_topics");
+          in
+          "${lib.getExe pkgs.epnix.phoebus-alarm-server} ${lib.concatStringsSep " " args}";
         DynamicUser = true;
         StateDirectory = "phoebus-alarm-server";
         # TODO: systemd hardening
@@ -225,5 +223,5 @@ in {
     };
   };
 
-  meta.maintainers = with epnixLib.maintainers; [minijackson];
+  meta.maintainers = with epnixLib.maintainers; [ minijackson ];
 }

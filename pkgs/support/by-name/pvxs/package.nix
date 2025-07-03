@@ -4,8 +4,8 @@
   mkEpicsPackage,
   fetchFromGitHub,
   libevent,
-  local_config_site ? {},
-  local_release ? {},
+  local_config_site ? { },
+  local_release ? { },
 }:
 mkEpicsPackage rec {
   pname = "pvxs";
@@ -23,8 +23,8 @@ mkEpicsPackage rec {
 
   # TODO: check pvxs cross-compilation,
   # since it has a somewhat complex logic for finding libevent
-  propagatedNativeBuildInputs = [libevent];
-  propagatedBuildInputs = [libevent];
+  propagatedNativeBuildInputs = [ libevent ];
+  propagatedBuildInputs = [ libevent ];
 
   # Only loopback interface is present
   doCheck = false;
@@ -33,6 +33,6 @@ mkEpicsPackage rec {
     description = "PVA protocol client/server library and utilities";
     homepage = "https://mdavidsaver.github.io/pvxs/";
     license = lib.licenses.bsd3;
-    maintainers = with epnixLib.maintainers; [minijackson];
+    maintainers = with epnixLib.maintainers; [ minijackson ];
   };
 }

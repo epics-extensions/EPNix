@@ -21,7 +21,10 @@ buildPythonPackage rec {
     hash = "sha256-szM/sVqeWWUj84lq/wsxNCf/aZwoCySeTnuLD+hYLyc=";
   };
 
-  build-system = [setuptools setuptools-scm];
+  build-system = [
+    setuptools
+    setuptools-scm
+  ];
   dependencies = [
     setuptools
     numpy
@@ -32,6 +35,6 @@ buildPythonPackage rec {
     description = "Asynchronous Channel Access client for asyncio and Python using libca via ctypes";
     homepage = "https://DiamondLightSource.github.io/aioca";
     license = lib.licenses.asl20;
-    maintainers = with epnixLib.maintainers; [synthetica];
+    maintainers = with epnixLib.maintainers; [ synthetica ];
   };
 }

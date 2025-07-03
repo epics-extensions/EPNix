@@ -5,13 +5,18 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.epnix.epics-base;
-in {
+in
+{
   options.epnix.epics-base = {
     releaseBranch = mkOption {
       default = "7";
-      type = types.enum ["7" "3"];
+      type = types.enum [
+        "7"
+        "3"
+      ];
       description = "The release branch of epics-base to install";
     };
 
@@ -117,11 +122,9 @@ in {
 
   config.nixpkgs.overlays = [
     (_final: prev: {
-      epnix =
-        prev.epnix
-        // {
-          epics-base = cfg.package;
-        };
+      epnix = prev.epnix // {
+        epics-base = cfg.package;
+      };
     })
   ];
 }

@@ -17,7 +17,7 @@ nixosTest {
       iocService
     ];
 
-    environment.systemPackages = [epnix.epics-base];
+    environment.systemPackages = [ epnix.epics-base ];
   };
 
   testScript = ''

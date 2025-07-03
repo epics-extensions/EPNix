@@ -9,5 +9,5 @@ mkEpicsPackage {
 
   src = ./pvxsIocTestTop;
 
-  propagatedBuildInputs = [pvxs];
+  propagatedBuildInputs = [ pvxs ];
 }

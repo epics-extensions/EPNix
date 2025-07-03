@@ -21,8 +21,7 @@ makeSetupHook {
 
   meta = {
     description = "Instructions for building EPICS tops";
-    maintainers = with epnixLib.maintainers; [minijackson];
+    maintainers = with epnixLib.maintainers; [ minijackson ];
     hidden = true;
   };
-}
-./epics-setup-hook.sh
+} ./epics-setup-hook.sh

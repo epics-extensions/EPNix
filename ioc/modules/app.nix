@@ -5,13 +5,21 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.epnix.applications;
-in {
+in
+{
   options.epnix.applications = {
     apps = mkOption {
-      default = [];
-      type = with types; listOf (oneOf [str path package]);
+      default = [ ];
+      type =
+        with types;
+        listOf (oneOf [
+          str
+          path
+          package
+        ]);
       description = ''
         Applications to include in this EPICS distribution
 
@@ -41,8 +49,11 @@ in {
     };
   };
 
-  config.epnix.applications.resolvedApps = let
-    available = {inputs = config.epnix.inputs;};
-  in
+  config.epnix.applications.resolvedApps =
+    let
+      available = {
+        inputs = config.epnix.inputs;
+      };
+    in
     map (epnix.lib.resolveInput available) cfg.apps;
 }

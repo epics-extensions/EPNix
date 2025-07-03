@@ -1,4 +1,4 @@
-{mkEpicsPackage}:
+{ mkEpicsPackage }:
 mkEpicsPackage {
   pname = "cross-check";
   version = "0.0.1";

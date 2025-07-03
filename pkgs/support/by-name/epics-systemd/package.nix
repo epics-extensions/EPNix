@@ -11,8 +11,8 @@ mkEpicsPackage {
   version = "2022-02-09";
   varname = "EPICS_SYSTEMD";
 
-  nativeBuildInputs = [pkg-config];
-  buildInputs = [systemdMinimal];
+  nativeBuildInputs = [ pkg-config ];
+  buildInputs = [ systemdMinimal ];
 
   src = fetchFromGitHub {
     owner = "minijackson";
@@ -25,6 +25,6 @@ mkEpicsPackage {
     description = "Systemd-related facilities for EPICS IOCs";
     homepage = "https://github.com/minijackson/epics-systemd";
     license = lib.licenses.mit;
-    maintainers = with epnixLib.maintainers; [minijackson];
+    maintainers = with epnixLib.maintainers; [ minijackson ];
   };
 }

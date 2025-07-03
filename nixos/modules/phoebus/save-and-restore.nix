@@ -4,11 +4,13 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.services.phoebus-save-and-restore;
-  settingsFormat = pkgs.formats.javaProperties {};
+  settingsFormat = pkgs.formats.javaProperties { };
   configFile = settingsFormat.generate "phoebus-save-and-restore.properties" cfg.settings;
-in {
+in
+{
   options.services.phoebus-save-and-restore = {
     enable = lib.mkEnableOption ''
       the Phoebus Save-and-restore service.
@@ -41,7 +43,7 @@ in {
         Available options can be seen here:
         <https://github.com/ControlSystemStudio/phoebus/blob/v${pkgs.epnix.phoebus-save-and-restore.version}/services/save-and-restore/src/main/resources/application.properties>
       '';
-      default = {};
+      default = { };
       type = lib.types.submodule {
         freeformType = settingsFormat.type;
         options = {
@@ -84,7 +86,12 @@ in {
                   -   {nix:option}`"demo.user"`
                   -   {nix:option}`"demo.user.password"`
             '';
-            type = lib.types.enum ["ad" "ldap" "ldap_embedded" "demo"];
+            type = lib.types.enum [
+              "ad"
+              "ldap"
+              "ldap_embedded"
+              "demo"
+            ];
           };
 
           "demo.user" = lib.mkOption {
@@ -187,8 +194,8 @@ in {
     systemd.services.phoebus-save-and-restore = {
       description = "Phoebus Save-and-restore";
 
-      wantedBy = ["multi-user.target"];
-      after = ["elasticsearch.service"];
+      wantedBy = [ "multi-user.target" ];
+      after = [ "elasticsearch.service" ];
 
       serviceConfig = {
         ExecStart = "${lib.getExe pkgs.epnix.phoebus-save-and-restore} --spring.config.location=file://${configFile}";
@@ -199,7 +206,10 @@ in {
         # ---
 
         # NETLINK needed to enumerate available interfaces
-        RestrictAddressFamilies = ["AF_INET" "AF_INET6"];
+        RestrictAddressFamilies = [
+          "AF_INET"
+          "AF_INET6"
+        ];
         # Service may not create new namespaces
         RestrictNamespaces = true;
 
@@ -241,7 +251,7 @@ in {
 
         # Service can only use a reasonable set of system calls,
         # used by common system services
-        SystemCallFilter = ["@system-service"];
+        SystemCallFilter = [ "@system-service" ];
         # Disallowed system calls return EPERM instead of terminating the service
         SystemCallErrorNumber = "EPERM";
       };
@@ -252,5 +262,5 @@ in {
     ];
   };
 
-  meta.maintainers = with epnixLib.maintainers; [minijackson];
+  meta.maintainers = with epnixLib.maintainers; [ minijackson ];
 }

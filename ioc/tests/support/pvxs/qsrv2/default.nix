@@ -1,10 +1,12 @@
-{pkgs, ...}: let
+{ pkgs, ... }:
+let
   inherit (pkgs) epnixLib;
 
-  ioc = pkgs.epnix.support.callPackage ./ioc.nix {};
-in {
+  ioc = pkgs.epnix.support.callPackage ./ioc.nix { };
+in
+{
   name = "support-pvxs-qsrv2";
-  meta.maintainers = with epnixLib.maintainers; [minijackson];
+  meta.maintainers = with epnixLib.maintainers; [ minijackson ];
 
   nodes = {
     client = {
@@ -12,20 +14,20 @@ in {
         pkgs.epnix.epics-base
         pkgs.epnix.support.pvxs
       ];
-      networking.firewall.allowedTCPPorts = [5075];
-      networking.firewall.allowedUDPPorts = [5076];
+      networking.firewall.allowedTCPPorts = [ 5075 ];
+      networking.firewall.allowedUDPPorts = [ 5076 ];
     };
     ioc = {
       services.iocs.ioc = {
         package = ioc;
         workingDirectory = "iocBoot/iocSimple";
       };
-      networking.firewall.allowedTCPPorts = [5075];
-      networking.firewall.allowedUDPPorts = [5076];
+      networking.firewall.allowedTCPPorts = [ 5075 ];
+      networking.firewall.allowedUDPPorts = [ 5076 ];
     };
   };
 
-  extraPythonPackages = p: [p.json5];
+  extraPythonPackages = p: [ p.json5 ];
   # Type checking on extra packages doesn't work yet
   skipTypeCheck = true;
 

@@ -3,8 +3,8 @@
   mkEpicsPackage,
   fetchdarcs,
   re2c,
-  local_config_site ? {},
-  local_release ? {},
+  local_config_site ? { },
+  local_release ? { },
 }:
 mkEpicsPackage {
   pname = "seq";
@@ -13,7 +13,7 @@ mkEpicsPackage {
 
   inherit local_config_site local_release;
 
-  nativeBuildInputs = [re2c];
+  nativeBuildInputs = [ re2c ];
 
   patches = [
     ./remove-date.patch
@@ -38,6 +38,6 @@ mkEpicsPackage {
     description = "Provides the State Notation Language (SNL), a domain specific programming language";
     homepage = "https://epics-modules.github.io/sequencer/index.html";
     license = epnixLib.licenses.epics;
-    maintainers = with epnixLib.maintainers; [minijackson];
+    maintainers = with epnixLib.maintainers; [ minijackson ];
   };
 }

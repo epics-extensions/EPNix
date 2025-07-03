@@ -1,30 +1,34 @@
-{pkgs, ...}: let
+{ pkgs, ... }:
+let
   inherit (pkgs) epnixLib;
 
-  ioc = pkgs.epnix.support.callPackage ./ioc.nix {};
-in {
+  ioc = pkgs.epnix.support.callPackage ./ioc.nix { };
+in
+{
   name = "support-StreamDevice-simple";
-  meta.maintainers = with epnixLib.maintainers; [minijackson];
+  meta.maintainers = with epnixLib.maintainers; [ minijackson ];
 
-  nodes.machine = {lib, ...}: {
-    environment.systemPackages = [pkgs.epnix.epics-base];
+  nodes.machine =
+    { lib, ... }:
+    {
+      environment.systemPackages = [ pkgs.epnix.epics-base ];
 
-    services.iocs.ioc = {
-      package = ioc;
-      workingDirectory = "iocBoot/iocSimple";
-    };
-
-    systemd.services = {
-      "psu-simulator" = {
-        wantedBy = ["multi-user.target"];
-        serviceConfig = {
-          ExecStart = lib.getExe pkgs.epnix.psu-simulator;
-        };
+      services.iocs.ioc = {
+        package = ioc;
+        workingDirectory = "iocBoot/iocSimple";
       };
 
-      ioc.environment.STREAM_PS1 = "localhost:9999";
+      systemd.services = {
+        "psu-simulator" = {
+          wantedBy = [ "multi-user.target" ];
+          serviceConfig = {
+            ExecStart = lib.getExe pkgs.epnix.psu-simulator;
+          };
+        };
+
+        ioc.environment.STREAM_PS1 = "localhost:9999";
+      };
     };
-  };
 
   testScript = ''
     machine.wait_for_unit("default.target")

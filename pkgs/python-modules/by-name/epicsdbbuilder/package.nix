@@ -19,6 +19,6 @@ buildPythonPackage rec {
     description = "Tool for building EPICS databases";
     homepage = "https://DiamondLightSource.github.io/epicsdbbuilder";
     license = lib.licenses.asl20;
-    maintainers = with epnixLib.maintainers; [synthetica];
+    maintainers = with epnixLib.maintainers; [ synthetica ];
   };
 }

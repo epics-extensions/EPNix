@@ -17,12 +17,12 @@ mkEpicsPackage rec {
     hash = "sha256-0v6eLWdjgYKbFOHWaW1NSfN/gG5XHVRD9jan55dXWW0=";
   };
 
-  propagatedBuildInputs = [asyn];
+  propagatedBuildInputs = [ asyn ];
 
   meta = {
     description = "EPICS support for communication with PLCs and other devices via the Modbus protocol";
     homepage = "https://epics-modbus.readthedocs.io/en/latest/";
     license = lib.licenses.mit;
-    maintainers = with epnixLib.maintainers; [minijackson];
+    maintainers = with epnixLib.maintainers; [ minijackson ];
   };
 }

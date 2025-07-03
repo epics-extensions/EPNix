@@ -9,8 +9,9 @@
   typst,
   installShellFiles,
   documentedEpnixPkgs ? epnix,
-  iocConfig ? {},
-}: let
+  iocConfig ? { },
+}:
+let
   inherit (epnixLib) documentation;
   nixdomainLib = epnixLib.inputs.sphinxcontrib-nixdomain.lib;
 
@@ -22,13 +23,13 @@
       modules = [
         epnixLib.inputs.self.nixosModules.nixos
       ];
-    })
-    .options;
+    }).options;
 
   isOurs = option: lib.any (lib.hasPrefix "${epnixLib.inputs.self}") option.declarations;
   isVisible = option: !option.internal;
 
-  relativePath = path:
+  relativePath =
+    path:
     lib.pipe path [
       (lib.splitString "/")
       (lib.sublist 4 255)
@@ -41,7 +42,7 @@
     nixdomainLib.optionAttrSetToDocList
     (lib.filter isOurs)
     (lib.filter isVisible)
-    (map (x: x // {declarations = map relativePath x.declarations;}))
+    (map (x: x // { declarations = map relativePath x.declarations; }))
     (map (x: lib.nameValuePair x.name x))
     lib.listToAttrs
     builtins.toJSON
@@ -105,7 +106,10 @@
 
     src = ../../../docs/_templates/typst;
 
-    nativeBuildInputs = [cacert typst];
+    nativeBuildInputs = [
+      cacert
+      typst
+    ];
 
     dontConfigure = true;
 
@@ -125,83 +129,83 @@
     outputHashMode = "recursive";
   };
 in
-  stdenvNoCC.mkDerivation {
-    pname = "epnix-docs";
-    version = "24.11";
+stdenvNoCC.mkDerivation {
+  pname = "epnix-docs";
+  version = "24.11";
 
-    src = ../../../docs;
+  src = ../../../docs;
 
-    nativeBuildInputs =
-      (with python3.pkgs; [
-        furo
-        myst-parser
-        sphinx
-        sphinx-copybutton
-        sphinxcontrib-nixdomain
-        sphinxcontrib-typstbuilder
-        sphinxext-opengraph
-      ])
-      ++ [
-        typst
+  nativeBuildInputs =
+    (with python3.pkgs; [
+      furo
+      myst-parser
+      sphinx
+      sphinx-copybutton
+      sphinxcontrib-nixdomain
+      sphinxcontrib-typstbuilder
+      sphinxext-opengraph
+    ])
+    ++ [
+      typst
 
-        installShellFiles
-      ];
+      installShellFiles
+    ];
 
-    dontConfigure = true;
+  dontConfigure = true;
 
-    postPatch = ''
-      mkdir ioc/references
-      mkdir pkgs
+  postPatch = ''
+    mkdir ioc/references
+    mkdir pkgs
 
-      cp -v "${nixosOptionsSpec}" nixos-options.json
-      cp -v "${writeText "ioc-options.md" iocOptionsPandoc}" ioc/references/options.md
-      cp -v "${writeText "ioc-packages.md" iocPkgsListPandoc}" ioc/references/packages.md
-      cp -v "${writeText "packages.md" pkgsListPandoc}" pkgs/packages.md
-    '';
+    cp -v "${nixosOptionsSpec}" nixos-options.json
+    cp -v "${writeText "ioc-options.md" iocOptionsPandoc}" ioc/references/options.md
+    cp -v "${writeText "ioc-packages.md" iocPkgsListPandoc}" ioc/references/packages.md
+    cp -v "${writeText "packages.md" pkgsListPandoc}" pkgs/packages.md
+  '';
 
-    shellHook = ''
-      if [[ -f docs/conf.py ]]; then
-        install -v "${nixosOptionsSpec}" docs/nixos-options.json
-      elif [[ -f conf.py ]]; then
-        install -v "${nixosOptionsSpec}" nixos-options.json
-      else
-        echo "Couldn't find root of docs directory, not copying options.json files"
-      fi
-    '';
+  shellHook = ''
+    if [[ -f docs/conf.py ]]; then
+      install -v "${nixosOptionsSpec}" docs/nixos-options.json
+    elif [[ -f conf.py ]]; then
+      install -v "${nixosOptionsSpec}" nixos-options.json
+    else
+      echo "Couldn't find root of docs directory, not copying options.json files"
+    fi
+  '';
 
-    buildPhase = ''
-      runHook preBuild
+  buildPhase = ''
+    runHook preBuild
 
-      make html man
+    make html man
 
-      runHook postBuild
-    '';
+    runHook postBuild
+  '';
 
-    installPhase = ''
-      runHook preInstall
+  installPhase = ''
+    runHook preInstall
 
-      mkdir -p $out/bin
-      mkdir -p $out/share/doc/epnix/
+    mkdir -p $out/bin
+    mkdir -p $out/share/doc/epnix/
 
-      cp -r _build/html $out/share/doc/epnix/
-      installManPage _build/man/*.?
+    cp -r _build/html $out/share/doc/epnix/
+    installManPage _build/man/*.?
 
-      runHook postInstall
-    '';
+    runHook postInstall
+  '';
 
-    env = {
-      TYPST_PACKAGE_PATH = "${typst-packages-vendor}";
-      TYPST_PACKAGE_CACHE_PATH = "${typst-packages-vendor}";
-      SOURCE_DATE_EPOCH = epnixLib.inputs.self.sourceInfo.lastModified;
-      EPNIX_VERSION_CURRENT = epnixLib.versions.current;
-      EPNIX_VERSION_STABLE = epnixLib.versions.stable;
-    };
+  env = {
+    TYPST_PACKAGE_PATH = "${typst-packages-vendor}";
+    TYPST_PACKAGE_CACHE_PATH = "${typst-packages-vendor}";
+    SOURCE_DATE_EPOCH = epnixLib.inputs.self.sourceInfo.lastModified;
+    EPNIX_VERSION_CURRENT = epnixLib.versions.current;
+    EPNIX_VERSION_STABLE = epnixLib.versions.stable;
+  };
 
-    meta = {
-      description = "The EPNix documentation";
-      homepage = "https://epics-extensions.github.io/EPNix/";
-      license = lib.licenses.asl20;
-      maintainers = with epnixLib.maintainers; [minijackson];
-      # hidden = true;
-    };
-  }
+  meta = {
+    description = "The EPNix documentation";
+    homepage = "https://epics-extensions.github.io/EPNix/";
+    license = lib.licenses.asl20;
+    maintainers = with epnixLib.maintainers; [ minijackson ];
+    # hidden = true;
+  };
+}

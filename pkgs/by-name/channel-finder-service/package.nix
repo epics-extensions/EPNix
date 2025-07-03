@@ -17,14 +17,14 @@ maven.buildMavenPackage rec {
     hash = "sha256-mRZ9lnkSMSW07GjihDJUDsQFE/f0Sn4T1WbwpUTY16Y=";
   };
 
-  patches = [./fix-reproducibility.patch];
+  patches = [ ./fix-reproducibility.patch ];
 
   mvnHash = "sha256-R5lsFM+yn9xc3Wbpy9Js5r9d7IEOJR301mEoz5SGI/0=";
   # TODO: remove if this PR is merged:
   # https://github.com/ChannelFinder/ChannelFinderService/pull/153
   mvnParameters = "-Dproject.build.outputTimestamp=1980-01-01T00:00:02Z";
 
-  nativeBuildInputs = [makeWrapper];
+  nativeBuildInputs = [ makeWrapper ];
 
   installPhase = ''
     runHook preInstall
@@ -47,7 +47,7 @@ maven.buildMavenPackage rec {
     homepage = "https://channelfinder.readthedocs.io/en/latest/";
     mainProgram = "channel-finder-service";
     license = lib.licenses.mit;
-    maintainers = with epnixLib.maintainers; [minijackson];
+    maintainers = with epnixLib.maintainers; [ minijackson ];
     inherit (jre.meta) platforms;
   };
 }

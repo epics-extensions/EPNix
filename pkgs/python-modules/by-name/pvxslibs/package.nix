@@ -16,7 +16,10 @@ buildPythonPackage rec {
 
   dontConfigure = true;
 
-  nativeBuildInputs = [setuptools_dso epicscorelibs];
+  nativeBuildInputs = [
+    setuptools_dso
+    epicscorelibs
+  ];
 
   inherit (epnix.support.pvxs) meta;
 }

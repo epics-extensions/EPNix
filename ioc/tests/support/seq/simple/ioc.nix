@@ -9,5 +9,5 @@ mkEpicsPackage {
 
   src = ./top;
 
-  propagatedBuildInputs = [seq];
+  propagatedBuildInputs = [ seq ];
 }

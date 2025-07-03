@@ -14,7 +14,11 @@
 stdenv.mkDerivation {
   pname = "phoebus";
   inherit (phoebus-unwrapped) version;
-  nativeBuildInputs = [makeWrapper wrapGAppsHook3 copyDesktopItems];
+  nativeBuildInputs = [
+    makeWrapper
+    wrapGAppsHook3
+    copyDesktopItems
+  ];
 
   dontUnpack = true;
   dontBuild = true;
@@ -42,7 +46,10 @@ stdenv.mkDerivation {
       name = "phoebus";
       exec = "phoebus -server 4918 -resource %f";
       desktopName = "Phoebus";
-      keywords = ["epics" "css"];
+      keywords = [
+        "epics"
+        "css"
+      ];
       # https://specifications.freedesktop.org/menu-spec/menu-spec-1.0.html#category-registry
       categories = [
         # Main

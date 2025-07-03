@@ -3,7 +3,8 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.services.archiver-appliance;
 
   hostname = "localhost";
@@ -86,7 +87,8 @@
         </Loggers>
     </Configuration>
   '';
-in {
+in
+{
   options.services.archiver-appliance = {
     enable = lib.mkEnableOption ''
       Archiver Appliance.
@@ -131,9 +133,14 @@ in {
 
         These options will be put into the Archiver Appliance's environment.
       '';
-      default = {};
+      default = { };
       type = lib.types.submodule {
-        freeformType = with lib.types; attrsOf (oneOf [str path]);
+        freeformType =
+          with lib.types;
+          attrsOf (oneOf [
+            str
+            path
+          ]);
         options = {
           ARCHAPPL_MYIDENTITY = lib.mkOption {
             description = ''
@@ -237,10 +244,7 @@ in {
               then config.environment.epics.ca_auto_addr_list
               else [];
             '';
-            apply = b:
-              if b
-              then "YES"
-              else "NO";
+            apply = b: if b then "YES" else "NO";
           };
         };
       };
@@ -295,13 +299,9 @@ in {
     services.archiver-appliance.settings = {
       CATALINA_OUT_CMD = "cat";
       EPICS_CA_ADDR_LIST =
-        if config.environment.epics.enable
-        then config.environment.epics.ca_addr_list
-        else [];
+        if config.environment.epics.enable then config.environment.epics.ca_addr_list else [ ];
       EPICS_CA_AUTO_ADDR_LIST =
-        if config.environment.epics.enable
-        then config.environment.epics.ca_auto_addr_list
-        else true;
+        if config.environment.epics.enable then config.environment.epics.ca_auto_addr_list else true;
     };
 
     services.tomcat = {
@@ -313,7 +313,7 @@ in {
       # but wouldn't change when updated.
       purifyOnStart = true;
 
-      webapps = [cfg.package];
+      webapps = [ cfg.package ];
 
       extraConfigFiles = [
         "${loggingProperties}/logging.properties"
@@ -337,15 +337,15 @@ in {
     };
 
     systemd.services.tomcat = {
-      after = ["mysql.service"];
-      wants = ["mysql.service"];
+      after = [ "mysql.service" ];
+      wants = [ "mysql.service" ];
 
       environment = cfg.settings;
     };
 
-    networking.firewall.allowedTCPPorts = lib.mkIf cfg.openFirewall [8080];
+    networking.firewall.allowedTCPPorts = lib.mkIf cfg.openFirewall [ 8080 ];
 
-    users.groups."archappl" = {};
+    users.groups."archappl" = { };
     users.users."archappl" = {
       group = "archappl";
       isSystemUser = true;
@@ -369,42 +369,42 @@ in {
       ];
     };
 
-    systemd.mounts = let
-      defaultOptions = [
-        "rw"
-        # Security: only normal files allowed
-        "nosuid"
-        "noexec"
-        "nodev"
-      ];
-    in
+    systemd.mounts =
+      let
+        defaultOptions = [
+          "rw"
+          # Security: only normal files allowed
+          "nosuid"
+          "noexec"
+          "nodev"
+        ];
+      in
       lib.mkIf cfg.stores.configure [
         # STS
         {
           what = "tmpfs";
           where = "${cfg.settings.ARCHAPPL_SHORT_TERM_FOLDER}";
           type = "tmpfs";
-          mountConfig.Options =
-            lib.concatStringsSep ","
-            (defaultOptions
-              ++ lib.optional (cfg.stores.sts.size != null) "size=${cfg.stores.sts.size}");
-          wantedBy = ["local-fs.target"];
+          mountConfig.Options = lib.concatStringsSep "," (
+            defaultOptions ++ lib.optional (cfg.stores.sts.size != null) "size=${cfg.stores.sts.size}"
+          );
+          wantedBy = [ "local-fs.target" ];
         }
 
         # MTS
         {
           what = "${cfg.stores.mts.location}";
           where = "${cfg.settings.ARCHAPPL_MEDIUM_TERM_FOLDER}";
-          mountConfig.Options = lib.concatStringsSep "," (defaultOptions ++ ["bind"]);
-          wantedBy = ["local-fs.target"];
+          mountConfig.Options = lib.concatStringsSep "," (defaultOptions ++ [ "bind" ]);
+          wantedBy = [ "local-fs.target" ];
         }
 
         # LTS
         {
           what = "${cfg.stores.lts.location}";
           where = "${cfg.settings.ARCHAPPL_LONG_TERM_FOLDER}";
-          mountConfig.Options = lib.concatStringsSep "," (defaultOptions ++ ["bind"]);
-          wantedBy = ["local-fs.target"];
+          mountConfig.Options = lib.concatStringsSep "," (defaultOptions ++ [ "bind" ]);
+          wantedBy = [ "local-fs.target" ];
         }
       ];
 

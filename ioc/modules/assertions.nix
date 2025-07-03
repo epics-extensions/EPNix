@@ -1,13 +1,15 @@
 # From robotnix/modules/assertions.nix
 # From nixpkgs/nixos/modules/misc/assertions.nix
-{lib, ...}: let
+{ lib, ... }:
+let
   inherit (lib) mkOption types;
-in {
+in
+{
   options = {
     assertions = mkOption {
       type = types.listOf types.unspecified;
       internal = true;
-      default = [];
+      default = [ ];
       example = [
         {
           assertion = false;
@@ -23,9 +25,9 @@ in {
 
     warnings = mkOption {
       internal = true;
-      default = [];
+      default = [ ];
       type = types.listOf types.str;
-      example = ["The `foo' service is deprecated and will go away soon!"];
+      example = [ "The `foo' service is deprecated and will go away soon!" ];
       description = ''
         This option allows modules to show warnings to users during
         the evaluation of the system configuration.

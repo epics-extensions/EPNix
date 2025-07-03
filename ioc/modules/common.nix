@@ -5,7 +5,8 @@
   epnix,
   ...
 }:
-with lib; {
+with lib;
+{
   options = {
     epnix.inputs = mkOption {
       description = ''
@@ -26,7 +27,7 @@ with lib; {
         `build`
           ~ The actual build of this distribution.
       '';
-      default = {};
+      default = { };
       type = with types; attrsOf package;
     };
 
