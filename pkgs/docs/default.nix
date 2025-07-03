@@ -151,6 +151,10 @@ in
       runHook postInstall
     '';
 
+    env = {
+      SOURCE_DATE_EPOCH = epnixLib.inputs.self.sourceInfo.lastModified;
+    };
+
     meta = {
       description = "The EPNix documentation";
       homepage = "https://epics-extensions.github.io/EPNix/";

@@ -6,6 +6,7 @@
 import json
 import os
 import sys
+from datetime import date
 from pathlib import Path
 
 # Enables importing our custom "pygments_styles" module
@@ -15,13 +16,20 @@ sys.path.append(os.path.abspath("./_ext"))
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = "EPNix"
-copyright = "The EPNix Contributors"
 author = "The EPNix Contributors"
 release = "nixos-24.11"
 
 source_repository = "https://github.com/epics-extensions/EPNix"
+branch = "master" if release == "dev" else release
 
 language = "en"
+
+source_date = date.today()
+if date_ts := os.environ.get("SOURCE_DATE_EPOCH"):
+    source_date = date.fromtimestamp(float(date_ts))
+
+today = source_date.isoformat()
+copyright = f"2021-{source_date.year}, The EPNix Contributors"
 
 nitpicky = True
 
@@ -62,9 +70,13 @@ myst_url_schemes = {
     "http": None,
     "https": None,
     "mailto": None,
-    "source": "https://github.com/epics-extensions/EPNix/blob/{{netloc}}{{path}}",
+    "source": {
+        "url": f"{source_repository}/blob/{branch}/{{{{path}}}}",
+        "title": "{{path}}",
+        "classes": ["github"],
+    },
     "gh-issue": {
-        "url": "https://github.com/executablebooks/MyST-Parser/issue/{{path}}#{{fragment}}",
+        "url": f"{source_repository}/issues/{{{{path}}}}#{{{{fragment}}}}",
         "title": "Issue #{{path}}",
         "classes": ["github"],
     },
@@ -86,7 +98,7 @@ nix_toc_display_full_path = True
 
 
 def nix_linkcode_resolve(path: str) -> str:
-    return f"{source_repository}/blob/master/{path}"
+    return f"{source_repository}/blob/{branch}/{path}"
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -98,7 +110,7 @@ html_baseurl = f"https://epics-extensions.github.io/EPNix/{release}/"
 html_theme = "furo"
 html_theme_options = {
     "source_repository": source_repository,
-    "source_branch": "master",
+    "source_branch": branch,
     "source_directory": "docs/",
     "dark_css_variables": {
         "color-brand-primary": "#7ebae4",
