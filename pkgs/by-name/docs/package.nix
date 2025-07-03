@@ -154,13 +154,13 @@ stdenvNoCC.mkDerivation {
   dontConfigure = true;
 
   postPatch = ''
-    mkdir ioc/references
-    mkdir pkgs
+    mkdir -p ioc/references
+    mkdir -p pkgs
 
-    cp -v "${nixosOptionsSpec}" nixos-options.json
-    cp -v "${writeText "ioc-options.md" iocOptionsPandoc}" ioc/references/options.md
-    cp -v "${writeText "ioc-packages.md" iocPkgsListPandoc}" ioc/references/packages.md
-    cp -v "${writeText "packages.md" pkgsListPandoc}" pkgs/packages.md
+    cp -fv "${nixosOptionsSpec}" nixos-options.json
+    cp -fv "${writeText "ioc-options.md" iocOptionsPandoc}" ioc/references/options.md
+    cp -fv "${writeText "ioc-packages.md" iocPkgsListPandoc}" ioc/references/packages.md
+    cp -fv "${writeText "packages.md" pkgsListPandoc}" pkgs/packages.md
   '';
 
   shellHook = ''
