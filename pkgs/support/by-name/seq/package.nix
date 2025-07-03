@@ -36,7 +36,7 @@ mkEpicsPackage {
 
   meta = {
     description = "Provides the State Notation Language (SNL), a domain specific programming language";
-    homepage = "https://epics-sequencer.sourceforge.io/sequencer-2-2/";
+    homepage = "https://epics-modules.github.io/sequencer/index.html";
     license = epnixLib.licenses.epics;
     maintainers = with epnixLib.maintainers; [minijackson];
   };

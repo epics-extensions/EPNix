@@ -152,5 +152,5 @@ git clone 'ssh://git@your.gitlab.com/your/epicsApp.git'
 
 [github ssh documentation]: https://docs.github.com/en/authentication/connecting-to-github-with-ssh
 [github token documentation]: https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens
-[gitlab ssh documentation]: https://docs.gitlab.com/ee/user/ssh.html
-[glab]: https://docs.gitlab.com/ee/editor_extensions/gitlab_cli/index.html
+[gitlab ssh documentation]: https://docs.gitlab.com/user/ssh/
+[glab]: https://docs.gitlab.com/editor_extensions/gitlab_cli/
