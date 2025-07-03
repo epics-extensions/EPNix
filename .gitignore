@@ -2,7 +2,7 @@
 result
 result-*
 
-# Generated when developping with `nix develop`
+# Generated when developing with `nix develop`
 source
 outputs
 
