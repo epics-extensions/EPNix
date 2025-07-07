@@ -45,7 +45,7 @@ jobs:
           ref: ${{ matrix.branch }}
           persist-credentials: false
       - uses: nixbuild/nix-quick-install-action@63ca48f939ee3b8d835f4126562537df0fee5b91 # v32
-      - uses: DeterminateSystems/update-flake-lock@428c2b58a4b7414dabd372acb6a03dba1084d3ab # v25
+      - uses: DeterminateSystems/update-flake-lock@9070c8924674eb79cc49246b8b6f2e14f4378eb0 # v26
         with:
           branch: "update-flake-lock/${{ matrix.branch }}"
           pr-title: "[${{ matrix.branch }}] Update flake.lock"
