@@ -4,6 +4,11 @@
 Developing IOC using NixOS-like modules
 :::
 
+:::{note}
+You need to upgrade your top to EPNix 25.05
+before migrating away from "modules development."
+:::
+
 ## Explanation
 
 NixOS-like modules were used to define your IOC,
