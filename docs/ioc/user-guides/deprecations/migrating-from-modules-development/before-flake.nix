@@ -2,7 +2,7 @@
   description = "EPICS IOC for migration demonstration purposes";
 
   inputs.flake-utils.url = "github:numtide/flake-utils";
-  inputs.epnix.url = "github:epics-extensions/epnix/nixos-24.11";
+  inputs.epnix.url = "github:epics-extensions/epnix/nixos-25.05";
 
   inputs.mySupportModule = {
     url = "git+ssh://git@my-server.org/me/exampleApp.git";

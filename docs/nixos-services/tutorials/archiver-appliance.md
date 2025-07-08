@@ -56,8 +56,8 @@ Fill the file with these lines:
 {
   description = "Configuration for running Archiver Appliance in a VM";
 
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
-  inputs.epnix.url = "github:epics-extensions/EPNix/nixos-24.11";
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+  inputs.epnix.url = "github:epics-extensions/EPNix/nixos-25.05";
 
   outputs = { self, nixpkgs, epnix }: {
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
