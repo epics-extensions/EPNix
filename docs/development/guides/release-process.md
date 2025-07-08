@@ -137,6 +137,7 @@ You should find at least:
 
 - the `epnix` flake input in <source:templates/top/flake.nix>
 - the `stable` and `all` variables in <source:lib/versions.nix>
+- the links in the {file}`README.md`
 - documentation code examples
 
 :::{admonition} Example
@@ -171,6 +172,30 @@ let
   };
 in
   self
+```
+
+```{code-block} markdown
+:caption: Updating the {file}`README.md`
+:emphasize-lines: 2,8,14,15,17,18
+
+EPNix also has release branches,
+such as `nixos-24.11`,
+tied to the nixpkgs release branches,
+where breaking changes are forbidden.
+
+...
+
+[Advantages / disadvantages]: https://epics-extensions.github.io/EPNix/nixos-24.11/advantages-disadvantages.html
+[Documentation]: https://epics-extensions.github.io/EPNix/
+[EPICS Tech-Talk mailing list]: https://epics.anl.gov/tech-talk/
+[EPNix Matrix room]: https://matrix.to/#/#epnix:epics-controls.org
+[EPNix repository's discussions]: https://github.com/epics-extensions/EPNix/discussions
+[EPNix repository's issue tracker]: https://github.com/epics-extensions/EPNix/issues
+[IOC tutorials]: https://epics-extensions.github.io/EPNix/nixos-24.11/ioc/tutorials/index.html
+[NixOS services tutorials]: https://epics-extensions.github.io/EPNix/nixos-24.11/nixos-services/tutorials/index.html
+[Nix]: https://nixos.org/guides/how-nix-works/
+[Packages list]: https://epics-extensions.github.io/EPNix/nixos-24.11/pkgs/packages.html
+[Pre-requisites]: https://epics-extensions.github.io/EPNix/nixos-24.11/pre-requisites.html
 ```
 
 ``````{code-block} markdown
