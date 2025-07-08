@@ -12,12 +12,12 @@
 }:
 buildPythonPackage rec {
   pname = "pyepics";
-  version = "3.5.7";
+  version = "3.5.8";
   format = "pyproject";
 
   src = fetchPypi {
     inherit pname version;
-    hash = "sha256-vj/YeBcaZvukK/QFFASxKzbe2KRIrBiU8PgcnyszDX8=";
+    hash = "sha256-1E5qyUBLWoJ6UiTN43Q4e0f28/iRyEN929L5+5E7ulE=";
   };
 
   nativeBuildInputs = [
