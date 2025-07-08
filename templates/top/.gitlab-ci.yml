@@ -6,8 +6,7 @@ variables:
   NIX_BUILD_FLAGS: "--no-update-lock-file --print-build-logs --show-trace"
 
 before_script:
-  - git config --global --add url."https://gitlab-ci-token:${CI_JOB_TOKEN}@drf-gitlab.cea.fr/".insteadOf "ssh://git@drf-gitlab.cea.fr/"
-  - git config --global --add url."https://gitlab-ci-token:${CI_JOB_TOKEN}@drf-gitlab.cea.fr/".insteadOf "git@drf-gitlab.cea.fr:"
+  - git config --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@drf-gitlab.cea.fr".insteadOf "ssh://git@drf-gitlab.cea.fr"
 
 build:
   stage: build

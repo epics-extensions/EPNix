@@ -1,28 +1,28 @@
 {
-  nixosTest,
   epnix,
-  epnixLib,
-  iocService,
+  # Your EPNix configuration, as defined in flake.nix
+  epnixConfig,
+  pkgs,
   ...
 }:
-nixosTest {
+pkgs.nixosTest {
   name = "simple";
 
-  nodes.machine = {
-    imports = [
-      epnixLib.nixosModule
+  nodes.machine =
+    { config, ... }:
+    {
+      imports = [
+        epnix.nixosModules.ioc
+        epnixConfig
+      ];
+      environment.systemPackages = [ pkgs.epnix.epics-base ];
 
-      # Import the IOC service,
-      # as defined in flake.nix' nixosModules.iocService
-      iocService
-    ];
-
-    environment.systemPackages = [ epnix.epics-base ];
-  };
+      systemd.services.ioc = config.epnix.nixos.services.ioc.config;
+    };
 
   testScript = ''
     machine.wait_for_unit("default.target")
-    machine.wait_for_unit("myIoc.service")
+    machine.wait_for_unit("ioc.service")
 
     machine.wait_until_succeeds("caget stringin", timeout=10)
     machine.wait_until_succeeds("caget stringout", timeout=10)
