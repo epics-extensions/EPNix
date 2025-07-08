@@ -1,6 +1,6 @@
 let
   self = {
-    current = "dev";
+    current = "nixos-25.05";
     stable = "nixos-25.05";
     all = [
       "dev"
