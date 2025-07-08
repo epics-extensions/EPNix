@@ -124,11 +124,14 @@
           _module.args.epnixLib = self.lib;
         };
 
-      templates.top = {
-        path = ./templates/top;
-        description = "An EPNix TOP project";
+      templates.old-top = {
+        path = ./templates/old-top;
+        description = "An EPNix TOP project (deprecated)";
         welcomeText = ''
-          You have created an EPNix top.
+          You have created a *deprecated* EPNix top,
+          using "modules development".
+
+          **Warning:** this style of development will be removed in EPNix 26.05.
 
           Don't forget to run `makeBaseApp.pl` and `eregen` inside the development shell before compiling it.
 
@@ -154,7 +157,7 @@
         '';
       };
 
-      templates.default = self.templates.top;
+      templates.default = self.templates.new-top;
 
       formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.callPackage ./formatter.nix { };
 
