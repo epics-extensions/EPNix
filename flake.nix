@@ -142,8 +142,8 @@
         '';
       };
 
-      templates.new-top = {
-        path = ./templates/new-top;
+      templates.top = {
+        path = ./templates/top;
         description = "An EPNix TOP project (next-generation)";
         welcomeText = ''
           You have created a next-generation EPNix top.
@@ -157,7 +157,7 @@
         '';
       };
 
-      templates.default = self.templates.new-top;
+      templates.default = self.templates.top;
 
       formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.callPackage ./formatter.nix { };
 
