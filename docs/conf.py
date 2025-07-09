@@ -127,7 +127,7 @@ html_baseurl = f"https://epics-extensions.github.io/EPNix/{release}/"
 html_theme = "furo"
 html_theme_options = {
     "source_repository": source_repository,
-    "source_branch": "master",
+    "source_branch": branch,
     "source_directory": "docs/",
     "dark_css_variables": {
         "color-brand-primary": "#7ebae4",
