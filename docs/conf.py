@@ -168,6 +168,7 @@ html_sidebars = {
 }
 
 html_css_files = [
+    "external-links.css",
     "logo-size.css",
     "multi-version.css",
 ]
