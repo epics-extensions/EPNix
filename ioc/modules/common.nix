@@ -55,14 +55,16 @@ with lib;
     warnings = [
       # Unconditional warning
       ''
-        For IOC ${config.epnix.meta.name}:
-
         Developing IOCs using modules is deprecated,
         and will be removed in version `nixos-26.05`.
 
         See the User Guide "Migrating from modules development"
         in the IOC documentation
         to see how to migrate your IOC.
+
+        If you're not packaging any IOC using modules in this configuration,
+        make sure you're importing `epnix.nixosModules.nixos`,
+        and *not* `epnix.nixosModules.default` or `epnix.nixosModules.ioc`.
       ''
     ];
 
