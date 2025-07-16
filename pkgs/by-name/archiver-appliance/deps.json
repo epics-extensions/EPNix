@@ -8,8 +8,8 @@
   }
  },
  "https://github.com": {
-  "archiver-appliance/svg_viewer/archive/v1.1.0": {
-   "zip": "sha256-XOStndY/Ck+1t5Y/pQkmAdbH/3crJ9dy17pniBIBiec="
+  "archiver-appliance/svg_viewer/archive/v1.2.1": {
+   "zip": "sha256-8f9fRGSVaBUv6ec5P7fmFxgg8Ev7hfi4jGEeIpis2JE="
   }
  },
  "https://plugins.gradle.org/m2": {
@@ -986,15 +986,15 @@
    "jar": "sha256-WIEt5giY2Xb7ge87YtoFxmBMGP1KJJ9QRCgkefwoavI=",
    "pom": "sha256-qW5nGBbB/4gDvex0ySQfAlvfsnfaXStO4CJmQFk2+ZQ="
   },
-  "org/phoebus#core-pva/4.7.2": {
-   "jar": "sha256-MaWIbu3LxnCJAvnsWHsK9Q1XDZ1w9UQudNkpmzZg9lA=",
-   "pom": "sha256-XlHW5tG9okxSunpcsy9+lzSBl82yRBonD3/t5HFOzfY="
+  "org/phoebus#core-pva/5.0.0": {
+   "jar": "sha256-7BI0N2qfEnysfM0++Xr6rN6JqIm8LIS4D4jWqK3K7CA=",
+   "pom": "sha256-WfDsM44ABsgz4bisNtJsV/3Xx/Yr/+9LJU0tBTjZ2ZY="
   },
-  "org/phoebus#core/4.7.2": {
-   "pom": "sha256-iwWt1xjTMMce8GpWQo4tv9T1e7CJ+MghyMxU4mM6qKk="
+  "org/phoebus#core/5.0.0": {
+   "pom": "sha256-JKKDcHoliptXoveJ0a1/IjLn3KM/H3PxB9DtNrE30dE="
   },
-  "org/phoebus#parent/4.7.2": {
-   "pom": "sha256-VJGDLy4i8zXukcp9vhc/aSG7aCmtaavMCDiWET0OGzI="
+  "org/phoebus#parent/5.0.0": {
+   "pom": "sha256-KBgv8xSLTMGZUyocIXMFLE02HkHn1rHDnNbWWvi4Fs0="
   },
   "org/python#jython-standalone/2.7.3": {
    "jar": "sha256-2n89gpsUi8+oawWdyWTjqFVv7bAhCWyNsH4wxm+qubQ=",
