@@ -1,0 +1,13 @@
+a.external:not(:has(.viewcode-link))::after {
+	content: "";
+	background: url("external-link.svg") no-repeat;
+	background-size: cover;
+	display: inline-block;
+	height: .8em;
+	width: .8em;
+	margin: 0 .15em;
+}
+
+a.external.github:not(:has(.viewcode-link))::after {
+	background-image: url("github.svg");
+}
