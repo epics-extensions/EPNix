@@ -1,4 +1,5 @@
-a.external:not(:has(.viewcode-link))::after {
+a.external:not(:has(.viewcode-link))::after,
+a:has(.std-term)::after {
 	content: "";
 	display: inline-block;
 	height: .8em;
@@ -21,4 +22,8 @@ a.external:not(:has(.viewcode-link))[href^="https://en.wikipedia.org/"]::after {
 
 a.external.github:not(:has(.viewcode-link))::after {
 	mask-image: url("github.svg");
+}
+
+a:has(.std-term)::after {
+	mask-image: url("term.svg");
 }
