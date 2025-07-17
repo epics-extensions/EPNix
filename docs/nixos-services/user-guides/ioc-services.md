@@ -282,6 +282,37 @@ and the man pages {manpage}`systemd.unit(5)`,
 {manpage}`systemd.service(5)`,
 and other related systemd documentation.
 
+### Writable location
+
+If your IOC needs to write some files,
+for example autosave {file}`.sav` files,
+we recommend storing them in {file}`/var/lib/epics/{myIoc}/{autosave}`.
+
+You can ask systemd to automatically create these directories,
+by using the `StateDirectory=` directive:
+
+```{code-block} nix
+:caption: Creating state directories
+
+  services.iocs.myIoc = {
+    package = pkgs.myTop;
+    workingDirectory = "iocBoot/iocMyIoc";
+  };
+
+  # These options will modify the generated systemd service
+  systemd.services.myIoc = {
+    serviceConfig = {
+      # Create these and assign permission to these directories:
+      # - /var/lib/epics/myIoc/autosave
+      # - /var/lib/epics/myIoc/postmortem
+      StateDirectory = [
+        "myIoc/autosave"
+        "myIoc/postmortem"
+      ];
+    };
+  };
+```
+
 ### Systemd hardening
 
 By default,
