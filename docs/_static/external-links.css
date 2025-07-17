@@ -2,12 +2,13 @@ a.external:not(:has(.viewcode-link))::after {
 	content: "";
 	display: inline-block;
 	height: .8em;
-	width: .8em;
 	margin: 0 .15em;
 
 	background: currentColor;
-	mask: url("external-link.svg") center no-repeat;
-	mask-size: contain;
+	mask: url("external-link.svg") bottom no-repeat;
+	mask-size: .8em;
+	padding-left: .8em;
+	vertical-align: baseline;
 }
 
 a.external.github:not(:has(.viewcode-link))::after {
