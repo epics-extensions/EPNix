@@ -10,25 +10,24 @@ The NixOS integration tests described here are documented in the [NixOS Tests] s
 of the NixOS manual.
 :::
 
-## Pre-requisites
+## Prerequisites
 
 :::{warning}
 When running tests,
-Nix assumes you can run hardware-accelerated VMs,
-through KVM.
+Nix assumes you can run hardware-accelerated VMs using KVM.
 :::
 
-Make sure that you have KVM on your Linux machine
-by checking if the file {file}`/dev/kvm` is present.
+Ensure that KVM is available on your Linux machine
+by checking whether the file {file}`/dev/kvm` exists.
 
 If the file is present,
 you can proceed to the next section.
 
-If you don't have KVM,
-and you're running Nix on a physical machine,
-examine your firmware settings
+If you don't have KVM
+and are running Nix on a physical machine,
+inspect your firmware settings
 to see if you can enable hardware-accelerated virtualization.
-The setting can show up as:
+The setting might appear as:
 
 - Virtualization
 - Intel Virtualization Technology
@@ -37,16 +36,16 @@ The setting can show up as:
 - SVM Mode
 - AMD-v
 
-If you don't have KVM,
-and you're running Nix on a virtual machine,
-check your firmware settings
-as said before,
-and look up your hypervisor documentation
+If you don't have KVM
+and are running Nix on a virtual machine,
+review your firmware settings
+as described earlier,
+and consult your hypervisor documentation
 to enable nested virtualization.
 
-If this doesn't work,
+If this isn't possible,
 you can still proceed without hardware acceleration
-by adding this line to your {file}`nix.conf`:
+by adding the following line to your {file}`nix.conf`:
 
 ```{code-block} dosini
 :caption: {file}`/etc/nix/nix.conf`
@@ -54,7 +53,8 @@ by adding this line to your {file}`nix.conf`:
 extra-system-features = kvm
 ```
 
-Note that this means much slower integration tests.
+Note that integration tests run much more slowly
+without hardware acceleration.
 
 ## Integration tests location
 
@@ -65,25 +65,25 @@ This check is imported in your {file}`flake.nix`,
 
 :::{seealso}
 See the {doc}`../../explanations/template-files` explanation
-for more information about files found in the default EPNix template.
+for more information about files included in the default EPNix template.
 :::
 
-## List available tests
+## Listing available tests
 
-To list what your top exposes,
+To view what your flake exposes,
 including available tests,
 run:
 
 ```{code-block} bash
-:caption: Show exposed flake outputs
+:caption: Showing exposed flake outputs
 
 nix flake show
 ```
 
-The tests are shown in the `checks` branch:
+Tests are displayed in the `checks` branch:
 
 ```{code-block} console
-:caption: `nix flake show` --- example output
+:caption: `nix flake show` --- Example output
 :emphasize-lines: 2-4
 
 git+file:///home/...
@@ -107,7 +107,7 @@ To run all tests,
 run:
 
 ```{code-block} bash
-:caption: Run all integration tests
+:caption: Running all integration tests
 
 nix flake check -L
 ```
@@ -132,16 +132,16 @@ run:
 nix run -L '.#checks.x86_64-linux.simple.driverInteractive'
 ```
 
-You can then run `start_all()` to start all VMs declared in the test.
+You can then run `start_all()` to start all VMs defined in the test.
 
 :::{seealso}
-For how to interact with the Python shell,
+For information about interacting with the Python shell,
 see {ref}`run-driverinteractive` in the integration test tutorial.
 :::
 
 ## Adding a test
 
-To add a test,
+To add a new test,
 copy an existing test into another file in the {file}`checks/` folder:
 
 ```{code-block} bash
@@ -150,7 +150,7 @@ copy an existing test into another file in the {file}`checks/` folder:
 cp checks/simple.nix checks/my-new-check.nix
 ```
 
-Then import it in your {file}`flake.nix`
+Then import it in your {file}`flake.nix`:
 
 ```{code-block} nix
 :caption: {file}`flake.nix` --- Importing a new check
@@ -170,47 +170,51 @@ Then import it in your {file}`flake.nix`
   # ...
 ```
 
-## Changing the test
+## Changing the test script
 
-The test is a Python script,
-declared in the `testScript` attribute.
+The test script is declared in the `testScript` attribute,
+in Python.
 
-For a step-by-step example on how to write a test,
+:::{seealso}
+For a step-by-step example on how to write a test script,
 follow the {doc}`../../tutorials/integration-tests` tutorial.
+:::
 
-For a complete list of Python functions available,
+:::{seealso}
+For a complete list of available Python functions,
 see the [NixOS Tests] documentation in the NixOS manual.
+:::
 
-### Extracting the test in a separate file
+### Extracting the test into a separate file
 
 To extract the test into a separate Python file,
 create your {file}`checks/{simple}.py`,
-with the Python content.
+with the Python code.
 
-Then in your {file}`checks/{simple}.nix`,
+Then, in your {file}`checks/{simple}.nix`,
 set `testScript` as follows:
 
 ```{code-block} nix
-:caption: {file}`checks/{simple}.nix` --- Extract the test script into a separate file
+:caption: {file}`checks/{simple}.nix` --- Extracting the test script into a separate file
 
     testScript = builtins.readFile ./simple.py;
 ```
 
 ## Changing the VM configuration
 
-The configuration inside each node inside `nodes` is a NixOS configuration.
-You can change this configuration as any NixOS configuration.
+Each node listed under `nodes` is a NixOS configuration.
+You can edit these configurations as you would any NixOS configuration.
 
 :::{seealso}
 - [Configuration Syntax] in the NixOS manual
 - [NixOS options search]
 :::
 
-The following are a few pointers.
+The following are a some pointers.
 
-### Add a package
+### Adding a package
 
-To add a package that can be used in the test script,
+To add a package for use in the test script,
 use the `environment.systemPackages` option.
 
 For example:
@@ -226,7 +230,7 @@ For example:
       epnixLib.nixosModule
 
       # Import the IOC service,
-      # as defined in flake.nix' nixosModules.iocService
+      # as defined in flake.nix's nixosModules.iocService
       iocService
     ];
 
@@ -238,16 +242,16 @@ For example:
 
 ### Changing the IOC integration
 
-Changing how your IOC is integrated in the test VM
-is the same as configuring your IOC in a NixOS system.
+To change how your IOC is integrated into the test VM,
+configure it as you would for any NixOS system.
 
 See the {doc}`../../../nixos-services/user-guides/ioc-services` NixOS guide
-for how to integrate your IOC in NixOS.
+for instructions on integrating your IOC in NixOS.
 
 ### Adding another machine
 
 To add another machine,
-add another entry in `nodes`:
+add another entry under `nodes`:
 
 ```{code-block} nix
 :caption: {file}`checks/{simple}.nix` --- Adding another machine
