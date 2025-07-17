@@ -72,7 +72,7 @@ You can get help by:
 ## How to contribute
 
 To contribute to the EPNix repository,
-see the "EPNix development" documentation section.
+see the "Contributing to EPNix" documentation section.
 
 ## License
 
