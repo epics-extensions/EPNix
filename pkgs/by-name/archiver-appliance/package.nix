@@ -3,7 +3,7 @@
   lib,
   epnixLib,
   fetchFromGitHub,
-  jdk17,
+  jdk21,
   gradle,
   sphinx,
   tomcat9,
@@ -14,13 +14,13 @@
 }:
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "archiver-appliance";
-  version = "2.0.7";
+  version = "2.0.10";
 
   src = fetchFromGitHub {
     owner = "archiver-appliance";
     repo = "epicsarchiverap";
     rev = finalAttrs.version;
-    hash = "sha256-USOeIHryVi7JqU1rHnR2JHMyLMXR7FP1YdImfhoPiao=";
+    hash = "sha256-urdG9bV2+zrDwWw+H1XdZIU3S3+On+fyjtY1QPbLQSg=";
   };
 
   patches = [
@@ -34,7 +34,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   ];
 
   nativeBuildInputs = [
-    jdk17
+    jdk21
     gradle
     sphinx
     python3Packages.myst-parser
@@ -44,7 +44,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
   gradleFlags = [
     "-PprojVersion=${finalAttrs.version}"
-    "-Dorg.gradle.java.home=${jdk17}"
+    "-Dorg.gradle.java.home=${jdk21}"
   ];
 
   # Update by running `nix build .#archiver-appliance.mitmCache.updateScript && ./result`
@@ -96,7 +96,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
         psfl
       ];
     maintainers = with epnixLib.maintainers; [ minijackson ];
-    inherit (jdk17.meta) platforms;
+    inherit (jdk21.meta) platforms;
     sourceProvenance = with lib.sourceTypes; [
       fromSource
       # gradle dependencies
