@@ -15,50 +15,10 @@ and checking that it behaves as expected.
 This method of testing can then be automated
 by running it inside a Continuous Integration (CI) system.
 
-## Pre-requisites
+## Prerequisites
 
-:::{warning}
-Nix assumes you can run hardware-accelerated VMs,
-through KVM.
-:::
-
-Make sure that you have KVM on your Linux machine
-by checking if the file {file}`/dev/kvm` is present.
-
-If the file is present,
-you can proceed to the next section.
-
-If you don't have KVM,
-and you're running Nix on a physical machine,
-examine your firmware settings
-to see if you can enable hardware-accelerated virtualization.
-The setting can show up as:
-
-- Virtualization
-- Intel Virtualization Technology
-- Intel VT
-- VT-d
-- SVM Mode
-- AMD-v
-
-If you don't have KVM,
-and you're running Nix on a virtual machine,
-check your firmware settings
-as said before,
-and look up your hypervisor documentation
-to enable nested virtualization.
-
-If this doesn't work,
-you can still proceed without hardware acceleration
-by adding this line to your {file}`nix.conf`:
-
-```{code-block}
-:caption: {file}`/etc/nix/nix.conf`
-
-extra-system-features = kvm
-```
-
-Note that this means much slower integration tests.
+Before running and writing tests,
+check that you follow the [NixOS tests-specific prerequisites].
 
 ## Writing the test
 
@@ -469,7 +429,7 @@ in the [NixOS tests documentation].
 
 ### Example test script
 
-Here an example test script
+Here is an example test script
 that should work with your StreamDevice IOC:
 
 ```{code-block} python
@@ -514,7 +474,10 @@ run your test as explained in {ref}`run-test`.
 
 ## Next steps
 
-You can examine other NixOS test examples:
+For a more complex usage of EPNix NixOS integration tests,
+see the {doc}`../user-guides/testing/integration-tests` guide.
+
+You can also examine other NixOS test examples:
 
 - In the [EPNix' ioc/tests] folder, for IOC tests,
 - In the [EPNix' nixos/tests] folder, for EPICS-related NixOS services tests,
@@ -535,5 +498,6 @@ see {doc}`../user-guides/testing/index`.
 [nixos documentation]: https://nixos.org/manual/nixos/stable/index.html#sec-configuration-syntax
 [nixos testing framework]: https://nixos.org/manual/nixos/stable/index.html#sec-nixos-tests
 [nixos tests documentation]: https://nixos.org/manual/nixos/stable/index.html#sec-nixos-tests
+[nixos tests-specific prerequisites]: ../user-guides/testing/integration-tests.md#prerequisites
 [nixpkgs' nixos/tests]: https://github.com/NixOS/nixpkgs/tree/master/nixos/tests
 [systemd.services]: https://nixos.org/manual/nixos/stable/options#opt-systemd.services
