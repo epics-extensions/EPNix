@@ -18,8 +18,17 @@ mkEpicsPackage {
   inherit version;
   varname = "ASYN";
 
-  inherit local_config_site;
-  local_release = local_release // {
+  src = fetchFromGitHub {
+    owner = "epics-modules";
+    repo = "asyn";
+    tag = "R${version}";
+    hash = "sha256-VOHgDuRSj3dUmCWX+nyCf/i+VNGpC0ZsyIP0qBUG0vw=";
+  };
+
+  patches = [ ./use-pkg-config.patch ];
+
+  inherit local_release;
+  local_config_site = local_config_site // {
     TIRPC = "YES";
   };
 
@@ -31,18 +40,12 @@ mkEpicsPackage {
   ];
   buildInputs = [
     libtirpc
+  ];
+
+  propagatedBuildInputs = [
     ipac
     seq
   ];
-
-  patches = [ ./use-pkg-config.patch ];
-
-  src = fetchFromGitHub {
-    owner = "epics-modules";
-    repo = "asyn";
-    rev = "R${version}";
-    hash = "sha256-VOHgDuRSj3dUmCWX+nyCf/i+VNGpC0ZsyIP0qBUG0vw=";
-  };
 
   meta = {
     description = "EPICS module for driver and device support";
