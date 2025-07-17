@@ -85,7 +85,7 @@ myst_substitutions = {
     },
 }
 
-myst_heading_anchors = 2
+myst_heading_anchors = 3
 
 myst_url_schemes = {
     "http": None,

@@ -126,6 +126,7 @@ nixos-services/options-reference/index
 :hidden:
 :titlesonly:
 
+contributing/tutorials/index
 contributing/guides/index
 contributing/explanations/index
 ```
