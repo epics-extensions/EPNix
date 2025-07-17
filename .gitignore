@@ -19,3 +19,6 @@ outputs
 
 #VScode extra files
 *.code-workspace
+
+#Python cache
+**/__pycache__/
