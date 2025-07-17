@@ -11,5 +11,5 @@ a.external:not(:has(.viewcode-link))::after {
 }
 
 a.external.github:not(:has(.viewcode-link))::after {
-	background-image: url("github.svg");
+	mask-image: url("github.svg");
 }
