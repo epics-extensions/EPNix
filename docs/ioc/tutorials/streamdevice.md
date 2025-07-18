@@ -1,19 +1,19 @@
 # Creating a StreamDevice IOC
 
 In this tutorial,
-we're going to create an EPICS IOC with EPNix
-that communicates with a power supply,
+we'll create an EPICS IOC with EPNix
+that communicates with a power supply
 using the [StreamDevice] support module.
 
 ## Prerequisites
 
-Verify that you have all prerequisites installed,
+Make sure that you have all prerequisites installed
 by following the {doc}`../../prerequisites` section.
 
 ## Running the power supply simulator
 
-EPNix has a power supply simulator
-for you to test your IOC.
+EPNix provides a power supply simulator
+for testing your IOC.
 
 To run it:
 
@@ -33,14 +33,15 @@ Use these commands to create an EPNix top:
 nix flake new -t 'github:epics-extensions/epnix' my-top
 cd my-top
 
-# Enter the EPNix development shell, that has EPICS base installed in it.
+# Enter the EPNix development shell,
+# which has EPICS base installed.
 nix develop
 
-# Create your app and ioc boot folder
+# Create your app and IOC boot folder
 makeBaseApp.pl -t ioc example
 makeBaseApp.pl -i -t ioc -p example -a linux-x86_64 Example
 
-# Create a git repository, and make sure all files are tracked
+# Create a Git repository, and make sure all files are tracked
 git init
 git add .
 ```
@@ -52,16 +53,16 @@ you can already check that your top builds with:
 nix build -L
 ```
 
-This `nix build` command compiles your IOC,
+This `nix build` command compiles your IOC
 and all its dependencies.
-This makes the usual EPICS environment setup unneeded.
+This eliminates the need for the usual EPICS environment.
 
-If found in the official Nix cache server,
-Nix downloads packages from there
+If packages are found in the official Nix cache server,
+Nix downloads them from there
 instead of compiling them.
 
-This command puts a `./result` symbolic link in your current directory,
-containing the compilation result.
+This command creates a `./result` symbolic link in your current directory
+containing the build output.
 
 :::{tip}
 If you want an explanation
@@ -71,15 +72,15 @@ read {doc}`../explanations/template-files`.
 
 ## Adding StreamDevice to the EPNix environment
 
-Adding dependencies to the EPNix environment happens inside the {file}`ioc.nix` file.
+You can add dependencies to the EPNix environment in the {file}`ioc.nix` file.
 
-For adding StreamDevice,
-change yours like so:
+To add StreamDevice,
+update yours as follows:
 
 ```{code-block} diff
 :caption: {file}`ioc.nix`
 
-   # EPICS support modules can be only in propagatedBuildInputs
+   # EPICS support modules can only be in propagatedBuildInputs
    # --
    propagatedBuildInputs = [
 -    #epnix.support.StreamDevice
@@ -88,48 +89,46 @@ change yours like so:
 ```
 
 Then,
-leave your EPNix development shell by running `exit`,
-and re-enter it with `nix develop`.
-Then,
-run `epicsConfigurePhase`.
+exit your EPNix development shell by running `exit`,
+re-enter it with `nix develop`
+and run `epicsConfigurePhase`.
 
-By modifying the dependencies of your package,
-your build environment changed:
+By changing your package's dependencies,
+you have changed build environment:
 before the change,
 the build environment didn't have StreamDevice installed.
 With this change,
-StreamDevice must be available to build your EPICS top.
+StreamDevice is available to build your EPICS top.
 
-Separate from having StreamDevice in the build environment,
-the EPICS build system must know where to find it.
+Besides being available in the build environment,
+the EPICS build system must know where to find StreamDevice.
 EPICS uses the {file}`configure/RELEASE` and {file}`configure/RELEASE.local` files
-to find EPICS-specific dependencies,
+to locate EPICS-specific dependencies,
 often called "EPICS support modules".
 
 During the "configure" phase,
 EPNix automatically generates the {file}`configure/RELEASE.local` file,
-which is why you have to run `epicsConfigurePhase`.
+which is why you need to run `epicsConfigurePhase`.
 
-With this,
-your development shell has StreamDevice available,
-the EPICS build system can find StreamDevice
+Now your development shell has StreamDevice available,
+and the EPICS build system can find StreamDevice
 by reading the {file}`configure/RELEASE.local` file.
 
 :::{tip}
 As a rule,
 each time you edit the {file}`ioc.nix` file,
-leave and re-enter your development shell (`exit` then `nix develop`),
+exit and re-enter your development shell (`exit` then `nix develop`),
 and run `epicsConfigurePhase`.
 :::
 
 ## Adding StreamDevice to your EPICS app
 
 To add StreamDevice to your app,
-make the following modifications:
+make the following changes:
 
-Change the `exampleApp/src/Makefile`
-so that your App knows the record types of StreamDevice and its dependencies.
-Also change that file so that it links to the StreamDevice library and its dependencies,
+Edit the `exampleApp/src/Makefile`
+so your App knows the record types of StreamDevice and its dependencies.
+Also update it so that it links to the StreamDevice library and its dependencies
 during compilation.
 
 ```{code-block} makefile
@@ -152,8 +151,8 @@ example_LIBS += stream
 ```
 
 Create the `exampleApp/Db/example.proto` file
-that has the definition of the protocol.
-This file tells StreamDevice what to send the power supply,
+which defines the protocol.
+This file tells StreamDevice what to send to the power supply
 and what to expect in return.
 
 ```{code-block} perl
@@ -172,9 +171,9 @@ setVoltage {
 ```
 
 Create the `exampleApp/Db/example.db` file.
-That file specifies the name, type, and properties of the Process Variables (PV)
+This file specifies the name, type, and properties of the Process Variables (PVs)
 that EPICS exposes over the network.
-It also specifies how they relate to the functions written in the protocol file.
+It also defines how they relate to the functions in the protocol file.
 
 ```{code-block} bash
 :caption: {file}`exampleApp/Db/example.db`
@@ -191,7 +190,7 @@ record(ao, "${PREFIX}VOLT") {
 }
 ```
 
-Change `exampleApp/Db/Makefile`
+Edit `exampleApp/Db/Makefile`
 so that the EPICS build system installs `example.proto` and `example.db`:
 
 ```{code-block} makefile
@@ -208,8 +207,8 @@ DB += example.proto
 # ...
 ```
 
-Change your `st.cmd` file
-so that it knows where to load the protocol file,
+Edit your `st.cmd` file
+so it knows where to load the protocol file
 and how to connect to the remote power supply.
 
 ```{code-block} csh
@@ -235,7 +234,7 @@ iocInit()
 ```
 
 Run `chmod +x iocBoot/iocExample/st.cmd`
-so that you can run your command file as-is.
+so you can run your command file as-is.
 
 You can test that your top builds by running:
 
@@ -244,18 +243,18 @@ nix build -L
 ```
 
 You will see that your IOC does not build.
-This is because we haven’t told Git to track those newly added files,
-and so Nix ignores them too.
+This is because Git isn't tracking the newly added files,
+so Nix ignores them too.
 
-Run `git add .` for Git and Nix to track all files,
-and try a `nix build -L` again.
+Run `git add .` so Git and Nix track all files,
+then try `nix build -L` again.
 
-If everything goes right,
-you can examine your compiled top under `./result`.
+If everything goes well,
+you can inspect your compiled top under `./result`.
 
 You can observe that the EPICS build system:
 
-- installs the `example` app {file}`bin/linux-x86_64`,
+- installs the `example` app in {file}`bin/linux-x86_64`
   and links to the correct libraries
 - installs {file}`example.proto` and {file}`example.db` under {file}`db/`
 - generates {file}`example.dbd` and installs it under {file}`dbd/`
@@ -264,8 +263,8 @@ You can observe that the EPICS build system:
 
 To run your IOC,
 build it first with `nix build -L`,
-and change directory into the `./result/iocBoot/iocExample` folder.
-Then, run:
+then change directory into the `./result/iocBoot/iocExample` folder.
+Run:
 
 ```bash
 ./st.cmd
@@ -275,14 +274,14 @@ You should see the IOC starting and connecting to `localhost:9999`.
 
 :::{tip}
 {file}`./result` is a symbolic link,
-so if you made any changes to your IOC and re-ran `nix build`,
-a terminal window already in {file}`./result/iocBoot/iocExample` would still point to the old version.
+so if you make any changes to your IOC and re-run `nix build`,
+a terminal already in {file}`./result/iocBoot/iocExample` would still point to the old version.
 
 To run the new version,
-either re-open a new window
+either open a new window
 and `cd` into the new {file}`./result/`,
 or in the old location,
-you can run:
+run:
 
 ```console
 user@machine .../result/iocBoot/iocExample $ cd .
@@ -298,22 +297,22 @@ user@machine .../result/iocBoot/iocExample $ cd . ; ./st.cmd
 
 ## Recompiling with make
 
-Using `nix build` to compile your IOC each time might feel slow.
-This is because Nix re-compiles your IOC from scratch each time.
+Using `nix build` to compile your IOC each time might feel slow
+because Nix recompiles your IOC from scratch each time.
 
-If you want a more "traditional" edit / compile / run workflow,
-you can place yourself in the development shell with `nix develop`,
+If you prefer a more traditional edit/compile/run workflow,
+enter the development shell with `nix develop`
 and use `make` from here.
 
-Make sure to exit and re-enter the development shell
+Be sure to exit and re-enter the development shell
 each time you edit Nix files,
 and re-run `epicsConfigurePhase`.
 
 ## Next steps
 
-More commands are available in the power supply simulator.
+The power supply simulator supports more commands.
 To view them,
-close your IOC,
+stop your IOC
 and open a direct connection to the simulator:
 
 ```bash
@@ -322,26 +321,26 @@ nc localhost 9999
 telnet localhost 9999
 ```
 
-You can install the `nc` command through the `netcat` package,
-or you can install the `telnet` command through the `telnet` package,
+You can install the `nc` command from the `netcat` package,
+or you can install the `telnet` command from the `telnet` package,
 
 Either command opens a prompt
-where you can type `help` then press enter
+where you can type `help` and press {kbd}`Enter`
 to view the available commands.
 
-Try to edit the protocol file and the database file
+Try editing the protocol file and the database file
 to add those features to your IOC.
 
-For more information about how to write the StreamDevice protocol,
-examine the [Protocol Files] documentation.
+For more information about writing the StreamDevice protocol,
+see the [Protocol Files] documentation.
 
 You might also want to read {doc}`../user-guides/flake-registry`.
 
 ## Pitfalls
 
-Although EPNix tries to be close to a standard EPICS development,
-some differences might lead to confusion.
-You can find more information about this in the {doc}`../faq`.
+Although EPNix tries to closely follow standard EPICS development,
+some differences might cause confusion.
+You can find more information in the {doc}`../faq`.
 
 [protocol files]: https://paulscherrerinstitute.github.io/StreamDevice/protocol.html
 [streamdevice]: https://paulscherrerinstitute.github.io/StreamDevice/
