@@ -142,6 +142,7 @@ stdenvNoCC.mkDerivation {
       sphinx
       sphinx-copybutton
       sphinxcontrib-nixdomain
+      sphinxcontrib-plantuml
       sphinxcontrib-typstbuilder
       sphinxext-opengraph
     ])
