@@ -14,10 +14,7 @@ let
     isIocSpecific = base: pkg: (self.isVisible pkg) && base == "support.";
 
     filteredPkgsList =
-      filt: headingLevel: pkgs:
-      lib.concatStringsSep "\n" (
-        self.mapRecursiveDrvsToList (self.package2pandoc headingLevel) filt pkgs
-      );
+      filt: pkgs: lib.concatStringsSep "\n" (self.mapRecursiveDrvsToList self.package2markdown filt pkgs);
 
     pkgsList = self.filteredPkgsList self.isNotIocSpecific;
     iocPkgsList = self.filteredPkgsList self.isIocSpecific;
@@ -57,10 +54,13 @@ let
 
     licenseList =
       pkg:
-      if lib.isList pkg.meta.license then
-        lib.concatMapStringsSep "\n" (license: "  - ${self.licenseLink license}") pkg.meta.license
-      else
-        "  - ${self.licenseLink pkg.meta.license}";
+      lib.pipe pkg.meta.license [
+        lib.toList
+        (map self.licenseLink)
+        self.markdown.optionalBulletList
+        self.markdown.indented
+        (lib.concatStringsSep "\n")
+      ];
 
     maintainerInfo =
       maintainer:
@@ -71,57 +71,56 @@ let
 
     maintainerList =
       pkg:
-      lib.concatMapStringsSep "\n" (
-        maintainer: "  - ${self.maintainerInfo maintainer}"
-      ) pkg.meta.maintainers;
+      let
+        mailToAll =
+          lib.optional ((lib.length pkg.meta.maintainers) > 1)
+            "[Mail to all maintainers](mailto:${
+              lib.concatStringsSep "," (map (m: m.email) pkg.meta.maintainers)
+            })";
+      in
+      lib.pipe pkg.meta.maintainers [
+        lib.toList
+        (map self.maintainerInfo)
+        (l: l ++ mailToAll)
+        self.markdown.optionalBulletList
+        self.markdown.indented
+        (lib.concatStringsSep "\n")
+      ];
+
+    declarationParam =
+      pkg:
+      lib.optionalString (pkg.meta ? position) (
+        let
+          fullPath = lib.head (lib.splitString ":" pkg.meta.position);
+          isEpnix = lib.hasPrefix "${inputs.self}" fullPath;
+          relativePath = lib.removePrefix "${inputs.self}/" fullPath;
+        in
+        lib.optionalString isEpnix ''
+          :declaration: ${relativePath}
+        ''
+      );
 
     # TODO: support a category for splitting packages
     # TODO: specify available platforms, and fill out the meta.platforms field in
     # all packages
-    package2pandoc =
-      headingLevel: path: pkg:
-      let
-        header = lib.fixedWidthString headingLevel "#" "";
-      in
-      ''
-        (pkg-${path})=
-        ${header} ${pkg.pname or pkg.name}
+    package2markdown = path: pkg: ''
+      :::{nix:package} epnix.${path}
+      :short-toc-name:
+      ${self.declarationParam pkg}
 
-        Path
-        : `epnix.${path}`
+      ${pkg.meta.description}
 
-        Version
-        : `${pkg.version}`
+      ${pkg.meta.longDescription or ""}
 
-        Description
-        : _${pkg.meta.description}_
-
-        Homepage
-        : <${pkg.meta.homepage}>
-
-        ${lib.optionalString (pkg.meta ? position) (
-          let
-            filePath = lib.head (lib.splitString ":" pkg.meta.position);
-            isEpnix = lib.hasPrefix "${inputs.self}" filePath;
-            declarationLink = self.markdown.sourceLink filePath;
-          in
-          lib.optionalString isEpnix ''
-            Declared in
-            : ${self.markdown.inDefList declarationLink}
-          ''
-        )}
-
-        License(s)
-        : ${self.markdown.inDefList (self.licenseList pkg)}
-
-        Package maintainer(s)
-        : ${self.markdown.inDefList (self.maintainerList pkg)}
-        ${lib.optionalString ((lib.length pkg.meta.maintainers) > 1)
-          "    - [Mail to all maintainers](mailto:${
-                lib.concatStringsSep "," (map (m: m.email) pkg.meta.maintainers)
-              })"
-        }
-      '';
+      :name: `${pkg.pname or pkg.name}`
+      :version: `${pkg.version}`
+      :homepage: <${pkg.meta.homepage}>
+      :licenses:
+      ${self.licenseList pkg}
+      :maintainers:
+      ${self.maintainerList pkg}
+      :::
+    '';
   };
 in
 self

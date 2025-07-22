@@ -5,7 +5,7 @@ to your C and C++ functions.
 
 ## Using the gtest EPICS module
 
-{ref}`pkg-support.gtest` is an EPICS module
+{nix:pkg}`epnix.support.gtest` is an EPICS module
 that enables you to use [GoogleTest] as a framework for unit testing and mocking.
 
 The GoogleTest framework is a well-known framework for writing unit tests in C++.
@@ -72,7 +72,7 @@ myIoc_LIBS += myLibrary_LIBS
 
 ### Adding gtest to the top
 
-Add {ref}`pkg-support.gtest` to the build environment:
+Add {nix:pkg}`epnix.support.gtest` to the build environment:
 
 ```{code-block} nix
 :caption: {file}`ioc.nix` --- adding the ``gtest`` support module to the build environment

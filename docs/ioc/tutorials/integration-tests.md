@@ -181,7 +181,7 @@ Make sure your definitions are correct in your {file}`flake.nix`:
 ```
 
 Back in {file}`checks/simple.nix`,
-also take note of the package {ref}`pkg-epics-base` being installed
+also take note of the package {nix:pkg}`epnix.epics-base` being installed
 with the `environment.systemPackages` option.
 This enables you to use the {command}`caget`, {command}`caput` commands
 inside the VM.

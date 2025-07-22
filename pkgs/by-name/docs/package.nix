@@ -82,7 +82,7 @@ let
     Packages
     --------
 
-    ${epnixLib.documentation.iocPkgsList 3 documentedEpnixPkgs}
+    ${epnixLib.documentation.iocPkgsList documentedEpnixPkgs}
   '';
 
   pkgsListPandoc = ''
@@ -97,7 +97,7 @@ let
     Packages
     --------
 
-    ${epnixLib.documentation.pkgsList 3 documentedEpnixPkgs}
+    ${epnixLib.documentation.pkgsList documentedEpnixPkgs}
   '';
 
   # Reproducibly download Typst dependencies for PDFs

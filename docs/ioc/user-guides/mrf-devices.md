@@ -1,12 +1,12 @@
 # Micro Research Finland timing devices
 
 To control Micro Research Finland (MRF) devices,
-we recommend using the {ref}`pkg-support.mrfioc2` EPICS module.
+we recommend using the {nix:pkg}`epnix.support.mrfioc2` EPICS module.
 
 ## Installing the `mrfioc2` EPICS support module
 
 To use the `mrfioc2` module in your EPNix IOC,
-make sure to add the {ref}`pkg-support.mrfioc2` package in your support modules:
+make sure to add the {nix:pkg}`epnix.support.mrfioc2` package in your support modules:
 
 ```{code-block} nix
 :caption: {file}`ioc.nix` --- Add the mrfioc2 support module to the build environment
