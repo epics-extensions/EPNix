@@ -6,8 +6,6 @@
 lib.fix (
   self:
   let
-    rev = inputs.self.sourceInfo.rev or "master";
-
     # Quote an option if it contains a "." in it
     maybeQuote = el: if lib.hasInfix "." el then ''"${el}"'' else el;
 
@@ -73,7 +71,7 @@ lib.fix (
           (lib.concatStringsSep "/")
         ];
       in
-      "[${relativePath}](source://${rev}/${relativePath})";
+      "<source:${relativePath}>";
 
     fromOption =
       headingLevel: option:
