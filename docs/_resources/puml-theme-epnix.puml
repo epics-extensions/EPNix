@@ -1,0 +1,41 @@
+!$FONT_NAME = "sans"
+!$FONT_NAME_MONOSPACED = "mono"
+!$BGCOLOR = "transparent"
+!theme plain
+
+!$DARKER_NORD0 = "#242933"
+!$NORD0 = "#2e3440"
+!$NORD1 = "#3b4252"
+!$NORD2 = "#434c5e"
+!$NORD3 = "#4c566a"
+!$NORD4 = "#d8dee9"
+!$NORD5 = "#e5e9f0"
+!$NORD6 = "#eceff4"
+
+!$BLUE_GREEN = "#8fbcbb"
+!$LIGHT_BLUE = "#88c0d0"
+!$BLUE = "#81a1c1"
+!$DEEP_BLUE = "#5e81ac"
+!$RED = "#bf616a"
+!$ORANGE = "#d08770"
+!$YELLOW = "#ebcb8b"
+!$GREEN = "#a3be8c"
+!$PURPLE = "#b48ead"
+
+!$EPNIX_BLUE0 = "#0b1924"
+!$EPNIX_BLUE1 = "#18334b"
+!$EPNIX_BLUE2 = "#5277c3"
+!$EPNIX_BLUE3 = "#415e9a"
+!$EPNIX_BLUE4 = "#7ebae4"
+
+skinparam componentStyle rectangle
+
+<style>
+Component {
+	BackgroundColor $NORD5
+}
+
+Interface {
+	BackgroundColor $NORD4
+}
+</style>
