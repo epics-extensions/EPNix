@@ -11,6 +11,14 @@ a.external:not(:has(.viewcode-link))::after {
 	vertical-align: baseline;
 }
 
+a.external:not(:has(.viewcode-link))[href^="mailto:"]::after {
+	mask-image: url("mail.svg");
+}
+
+a.external:not(:has(.viewcode-link))[href^="https://en.wikipedia.org/"]::after {
+	mask-image: url("wiki.svg");
+}
+
 a.external.github:not(:has(.viewcode-link))::after {
 	mask-image: url("github.svg");
 }
