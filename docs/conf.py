@@ -168,6 +168,7 @@ html_sidebars = {
 }
 
 html_css_files = [
+    "dark-mode.css",
     "external-links.css",
     "logo-size.css",
     "multi-version.css",
