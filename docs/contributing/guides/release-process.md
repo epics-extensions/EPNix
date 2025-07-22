@@ -8,12 +8,12 @@ so one should be made for each Nixpkgs release.
 
 ## Read the release notes
 
-Check the [NixOS release notes],
+Check the [NixOS release notes]
 and take note of each change that might affect EPNix.
 
-Breaking changes that might affect EPNix can be:
+Breaking changes that might affect EPNix include:
 
-- Libraries that are used as dependencies of EPNix packages, for example:
+- Libraries used as dependencies of EPNix packages, for example:
 
   - `open62541` used by the opcua EPICS module
   - Python libraries
@@ -23,14 +23,14 @@ Breaking changes that might affect EPNix can be:
 
   - Elasticsearch, Kafka, FerretDB used by the Phoebus ecosystem
 
-Don't worry about missing breaking changes in the release notes,
+Don't worry about missing breaking changes in the release notes;
 running the tests will most likely show whether an incompatible change was introduced.
 
 ## Upgrade Nixpkgs
 
 ### Update the flake input
 
-Replace the version of the `nixpkgs` input it <source:flake.nix>,
+Replace the version of the `nixpkgs` input in <source:flake.nix>
 and run `nix flake lock`.
 
 Create a commit with these changes.
@@ -51,7 +51,7 @@ nix build -L \
   '.#phoebus-deps'
 ```
 
-And update the hashes accordingly,
+Update the hashes accordingly
 if needed.
 
 :::{admonition} Example
@@ -79,7 +79,7 @@ reflect those changes in the Archiver Appliance module implementation.
 
 :::{admonition} Example
 If the way Elasticsearch is configured has changed,
-reflect those changes in the documentation,
+reflect those changes in the documentation
 in the Phoebus services guides.
 :::
 
@@ -88,7 +88,7 @@ Create a commit for each breaking change.
 ### Document breaking changes
 
 If some breaking changes in Nixpkgs or EPNix affect users,
-document them in the release notes,
+document them in the release notes
 in {file}`docs/release-notes/{newversion}.rst`.
 
 :::{admonition} Example
@@ -100,7 +100,7 @@ in the release notes.
 ### Fix comments
 
 If there are "TODOs" in the code base that mention the new release,
-see if they can be solved.
+see if they can be resolved.
 
 For example,
 if there's a comment {samp}`TODO: remove for NixOS {new.version}`,
@@ -112,7 +112,7 @@ Create a commit for each resolved TODO.
 ### Run the tests
 
 Run the EPNix checks.
-This can be done by pushing your branch to DRF's GitLab,
+This can be done by pushing your branch to DRF's GitLab
 and waiting for the CI to complete.
 
 If you don't have access to DRF's GitLab,
@@ -123,14 +123,14 @@ Running all EPNix checks can take a lot of resources.
 :::
 
 If there are issues with some tests,
-fix them,
+fix them
 and add a commit for each fix.
 
 ## Upgrade EPNix versions
 
 Search for the old EPNix release version,
 for example `nixos-24.05`,
-and make sure to replace with the newer version,
+and make sure to replace it with the newer version
 when appropriate.
 
 You should find at least:
@@ -239,9 +239,9 @@ open one or more Pull Requests with your changes on GitHub.
 
 ## Create the new release branch and label
 
-Once your Pull Request is merged,
+Once your Pull Request is merged
 and you've integrated all changes you want for the new release,
-go into GitHub's [branches view],
+go into GitHub's [branches view]
 and create a new {samp}`nixos-{new.version}` branch on `master`.
 
 Go into GitHub's [labels view],
@@ -254,7 +254,7 @@ and the description:
 ## Update EPNix versions for that release
 
 Create a new commit
-on the new {samp}`nixos-{new.version}` branch,
+on the new {samp}`nixos-{new.version}` branch
 and update the `current` variable in <source:lib/versions.nix>:
 
 :::{admonition} Example
@@ -288,7 +288,7 @@ targeting the {samp}`nixos-{new.version}` branch.
 
 ## Build the new version of the documentation
 
-The documentation job might have failed,
+The documentation job might have failed
 since we added {samp}`nixos-{new.version}` in <source:lib/versions.nix>
 before creating the branch.
 
