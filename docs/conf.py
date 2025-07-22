@@ -41,6 +41,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.githubpages",
     "sphinx_copybutton",
+    "sphinxcontrib.plantuml",
     "sphinxcontrib_nixdomain",
     "sphinx_tippy",
     "sphinxcontrib_typstbuilder",
@@ -261,3 +262,8 @@ linkcheck_ignore = [
 linkcheck_anchors_ignore_for_url = [
     r"^https://github.com/",
 ]
+
+# -- Options for PlanUML -----------------------------------------------------
+# https://github.com/sphinx-contrib/plantuml/?tab=readme-ov-file#configuration
+
+plantuml_output_format = "svg"
