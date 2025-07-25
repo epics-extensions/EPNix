@@ -3,15 +3,15 @@ a:has(.std-term)::after,
 a:has(.nix-option)::after,
 a:has(.nix-pkg)::after {
 	content: "";
-	display: inline-block;
-	height: .8em;
-	margin: 0 .15em;
+	position: relative;
+	top: -.6em;
+	padding-left: .7em;
+
+	margin: 0 .2em;
 
 	background: currentColor;
 	mask: url("external-link.svg") bottom no-repeat;
-	mask-size: .8em;
-	padding-left: .8em;
-	vertical-align: baseline;
+	mask-size: contain;
 }
 
 a:has(> code:last-child)::after {
