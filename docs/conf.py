@@ -40,6 +40,7 @@ extensions = [
     "myst_parser",
     "sphinx.ext.githubpages",
     "sphinx_copybutton",
+    "sphinxcontrib.plantuml",
     "sphinxcontrib_nixdomain",
     "sphinxcontrib_typstbuilder",
     "sphinxext.opengraph",
@@ -81,7 +82,7 @@ myst_substitutions = {
     },
 }
 
-myst_heading_anchors = 2
+myst_heading_anchors = 3
 
 myst_url_schemes = {
     "http": None,
@@ -168,6 +169,7 @@ html_sidebars = {
 }
 
 html_css_files = [
+    "dark-mode.css",
     "external-links.css",
     "logo-size.css",
     "multi-version.css",
@@ -223,3 +225,8 @@ man_show_urls = True
 ogp_site_url = html_baseurl
 ogp_image = "_static/logo.svg"
 ogp_image_alt = "EPNix logo"
+
+# -- Options for PlanUML -----------------------------------------------------
+# https://github.com/sphinx-contrib/plantuml/?tab=readme-ov-file#configuration
+
+plantuml_output_format = "svg"
