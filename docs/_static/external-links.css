@@ -1,15 +1,29 @@
-a.external:not(:has(.viewcode-link))::after {
+a.external:not(:has(.viewcode-link))::after,
+a:has(.std-term)::after {
 	content: "";
 	display: inline-block;
 	height: .8em;
-	width: .8em;
 	margin: 0 .15em;
 
 	background: currentColor;
-	mask: url("external-link.svg") center no-repeat;
-	mask-size: contain;
+	mask: url("external-link.svg") bottom no-repeat;
+	mask-size: .8em;
+	padding-left: .8em;
+	vertical-align: baseline;
+}
+
+a.external:not(:has(.viewcode-link))[href^="mailto:"]::after {
+	mask-image: url("mail.svg");
+}
+
+a.external:not(:has(.viewcode-link))[href^="https://en.wikipedia.org/"]::after {
+	mask-image: url("wiki.svg");
 }
 
 a.external.github:not(:has(.viewcode-link))::after {
 	mask-image: url("github.svg");
+}
+
+a:has(.std-term)::after {
+	mask-image: url("term.svg");
 }
