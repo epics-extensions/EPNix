@@ -155,20 +155,17 @@ stdenvNoCC.mkDerivation {
   dontConfigure = true;
 
   postPatch = ''
-    mkdir -p ioc/references
-    mkdir -p pkgs
-
-    cp -fv "${nixosOptionsSpec}" nixos-options.json
-    cp -fv "${writeText "ioc-options.md" iocOptionsPandoc}" ioc/references/options.md
-    cp -fv "${writeText "ioc-packages.md" iocPkgsListPandoc}" ioc/references/packages.md
-    cp -fv "${writeText "packages.md" pkgsListPandoc}" pkgs/packages.md
+    install -Dv "${nixosOptionsSpec}" nixos-options.json
+    install -Dv "${writeText "ioc-options.md" iocOptionsPandoc}" ioc/references/options.md
+    install -Dv "${writeText "ioc-packages.md" iocPkgsListPandoc}" ioc/references/packages.md
+    install -Dv "${writeText "packages.md" pkgsListPandoc}" pkgs/packages.md
   '';
 
   shellHook = ''
     if [[ -f docs/conf.py ]]; then
-      install -v "${nixosOptionsSpec}" docs/nixos-options.json
+      (cd docs; runHook postPatch)
     elif [[ -f conf.py ]]; then
-      install -v "${nixosOptionsSpec}" nixos-options.json
+      runHook postPatch
     else
       echo "Couldn't find root of docs directory, not copying options.json files"
     fi
