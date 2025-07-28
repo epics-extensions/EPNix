@@ -3,6 +3,9 @@ name: "Nix flake checks"
 on:
   pull_request:
   push:
+    branches:
+      - "master"
+      - "nixos-*"
 
 permissions:
   contents: read
