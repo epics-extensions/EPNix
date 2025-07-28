@@ -223,3 +223,17 @@ man_show_urls = True
 ogp_site_url = html_baseurl
 ogp_image = "_static/logo.png"
 ogp_image_alt = "EPNix logo"
+
+# -- Options for the Link checker --------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-the-linkcheck-builder
+
+user_agent = "curl/8.13.0"
+
+linkcheck_ignore = [
+    r"^\w+://localhost(:\d+)?/?",
+    r"^https://matrix.to/",
+]
+
+linkcheck_anchors_ignore_for_url = [
+    r"^https://github.com/",
+]
