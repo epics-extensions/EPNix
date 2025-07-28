@@ -38,6 +38,7 @@ nitpicky = True
 
 extensions = [
     "myst_parser",
+    "sphinx.ext.intersphinx",
     "sphinx.ext.githubpages",
     "sphinx_copybutton",
     "sphinxcontrib_nixdomain",
@@ -97,6 +98,18 @@ myst_url_schemes = {
         "title": "Issue #{{path}}",
         "classes": ["github"],
     },
+}
+
+# -- Options for intersphinx -------------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/extensions/intersphinx.html
+
+intersphinx_mapping = {
+    "epics": ("https://docs.epics-controls.org/en/latest/", None),
+    "epics-base": ("https://docs.epics-controls.org/projects/base/en/latest/", None),
+    "myst": ("https://myst-parser.readthedocs.io/en/latest", None),
+    "python": ("https://docs.python.org/3", None),
+    "sphinx": ("https://www.sphinx-doc.org/en/master", None),
+    "nixdomain": ("https://minijackson.github.io/sphinxcontrib-nixdomain/", None),
 }
 
 # -- Options for Sphinx Copybutton -------------------------------------------
