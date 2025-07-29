@@ -608,7 +608,8 @@ in
 
         check-config
       '';
-    } // cfg.environment.variables;
+    }
+    // cfg.environment.variables;
   };
 
   config.epnix.outputs.devShell = pkgs.mkShell cfg.attrs;

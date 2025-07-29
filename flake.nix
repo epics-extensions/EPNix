@@ -49,31 +49,30 @@
         {
           packages = flake-utils.lib.flattenTree pkgs.epnix;
 
-          checks =
-            {
-              # Everything should always build
-              allPackages = pkgs.releaseTools.aggregate {
-                name = "allPackages";
-                constituents = builtins.attrValues self.packages.${system};
-              };
-            }
-            // (import ./pkgs/tests { inherit pkgs self; })
-            // (import ./ioc/tests {
-              inherit
-                nixpkgs
-                pkgs
-                self
-                system
-                ;
-            })
-            // (import ./nixos/tests/all-tests.nix {
-              inherit
-                nixpkgs
-                pkgs
-                self
-                system
-                ;
-            });
+          checks = {
+            # Everything should always build
+            allPackages = pkgs.releaseTools.aggregate {
+              name = "allPackages";
+              constituents = builtins.attrValues self.packages.${system};
+            };
+          }
+          // (import ./pkgs/tests { inherit pkgs self; })
+          // (import ./ioc/tests {
+            inherit
+              nixpkgs
+              pkgs
+              self
+              system
+              ;
+          })
+          // (import ./nixos/tests/all-tests.nix {
+            inherit
+              nixpkgs
+              pkgs
+              self
+              system
+              ;
+          });
 
           devShells.default = pkgs.mkShell {
             packages = [

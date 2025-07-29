@@ -208,7 +208,8 @@ in
             args = [
               "-noshell"
               "-settings /etc/${configLocation}"
-            ] ++ (lib.optional cfg.createTopics "-create_topics");
+            ]
+            ++ (lib.optional cfg.createTopics "-create_topics");
           in
           "${lib.getExe pkgs.epnix.phoebus-alarm-server} ${lib.concatStringsSep " " args}";
         DynamicUser = true;
