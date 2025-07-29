@@ -72,34 +72,32 @@ in
 
       src = cfg.src;
 
-      postUnpack =
-        ''
-          echo "Copying apps..."
-          ${concatMapStringsSep "\n" (app: ''
-            cp -rTfv "${app}" "$sourceRoot/${epnix.lib.getName app}"
-          '') config.epnix.applications.resolvedApps}
+      postUnpack = ''
+        echo "Copying apps..."
+        ${concatMapStringsSep "\n" (app: ''
+          cp -rTfv "${app}" "$sourceRoot/${epnix.lib.getName app}"
+        '') config.epnix.applications.resolvedApps}
 
-          mkdir -p "$out/iocBoot"
+        mkdir -p "$out/iocBoot"
 
-          echo "Copying additional iocBoot directories..."
-          ${concatMapStringsSep "\n" (boot: ''
-            cp -rTfv "${boot}" "$sourceRoot/iocBoot/${epnix.lib.getName boot}"
-          '') config.epnix.boot.resolvedIocBoots}
+        echo "Copying additional iocBoot directories..."
+        ${concatMapStringsSep "\n" (boot: ''
+          cp -rTfv "${boot}" "$sourceRoot/iocBoot/${epnix.lib.getName boot}"
+        '') config.epnix.boot.resolvedIocBoots}
 
-          # Needed because EPICS tries to create O.* directories in App and
-          # iocBoot directories
-          chmod -R u+w -- "$sourceRoot"
-        ''
-        + (cfg.attrs.postUnpack or "");
+        # Needed because EPICS tries to create O.* directories in App and
+        # iocBoot directories
+        chmod -R u+w -- "$sourceRoot"
+      ''
+      + (cfg.attrs.postUnpack or "");
 
-      postInstall =
-        ''
-          if [[ -d iocBoot ]]; then
-            cp -rafv iocBoot -t "$out"
-          fi
+      postInstall = ''
+        if [[ -d iocBoot ]]; then
+          cp -rafv iocBoot -t "$out"
+        fi
 
-        ''
-        + (cfg.attrs.postInstall or "");
+      ''
+      + (cfg.attrs.postInstall or "");
     }
     // (removeAttrs cfg.attrs [
       "buildInputs"
