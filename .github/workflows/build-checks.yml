@@ -10,6 +10,13 @@ on:
 permissions:
   contents: read
 
+# One workflow per PR,
+# and cancel in-progress workflows for PRs,
+# but not for other jobs
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
 jobs:
   nix-matrix:
     runs-on: ubuntu-latest
