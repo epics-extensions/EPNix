@@ -4,6 +4,7 @@
   writeText,
   writers,
   epnixLib,
+  nix,
   curl,
   gnutar,
   gzip,
@@ -57,6 +58,23 @@ let
     url = "${baseurl}/${ver}/";
   };
   versions_json = writers.writeJSON "versions.json" (map versionInfo versions);
+
+  buildDocs = writeShellApplication {
+    name = "build-docs";
+
+    runtimeInputs = [ nix ];
+
+    text = ''
+      set +u
+
+      eval "$(nix print-dev-env .#docs)"
+
+      export dontUnpack=true
+      cd docs
+
+      genericBuild
+    '';
+  };
 in
 writeShellApplication {
   name = "build-docs-multiversion";
@@ -85,8 +103,10 @@ writeShellApplication {
     for version in ${toString versions}; do
       mkdir -p "./book/$version"
       [[ -d "$version/docs" ]] && cp ${versions_json} "./$version/docs/versions.json"
-      nix build "./$version#docs" --print-build-logs
-      cp -LrT --no-preserve=mode,ownership ./result/share/doc/epnix/html "./book/$version"
+      (cd "./$version" && env -i TERM="$TERM" "${lib.getExe buildDocs}")
+      cp -LrT --no-preserve=mode,ownership \
+        "./$version/outputs/out/share/doc/epnix/html" \
+        "./book/$version"
     done
 
     cp ${redirect} ./book/index.html
