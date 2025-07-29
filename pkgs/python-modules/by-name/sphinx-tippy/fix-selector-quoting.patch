@@ -1,0 +1,73 @@
+diff --git i/src/sphinx_tippy.py w/src/sphinx_tippy.py
+index 3531c1a..8ab4e64 100644
+--- i/src/sphinx_tippy.py
++++ w/src/sphinx_tippy.py
+@@ -643,6 +643,14 @@ def write_tippy_js(app: Sphinx, exception: Any):
+         write_tippy_props_page(app, pagename, wiki_cache, doi_cache, rtd_cache)
+ 
+ 
++def escape_attr_val(val: str) -> str:
++    return repr(val)
++
++
++def link_selector(href: str) -> str:
++    return f'a[href={escape_attr_val(href)}]'
++
++
+ def write_tippy_props_page(
+     app: Sphinx,
+     pagename: str,
+@@ -660,18 +668,18 @@ def write_tippy_props_page(
+     selector_to_html: dict[str, str] = {}
+     for wiki_title in data["wiki_titles"]:
+         if wiki_title in wiki_cache:
+-            selector_to_html[f'a[href="{WIKI_PATH}{wiki_title}"]'] = wiki_cache[
++            selector_to_html[link_selector(f"{WIKI_PATH}{wiki_title}")] = wiki_cache[
+                 wiki_title
+             ]
+-            selector_to_html[f'a[href^="{WIKI_PATH}{wiki_title}#"]'] = wiki_cache[
++            selector_to_html[f'a[href^={escape_attr_val(f"{WIKI_PATH}{wiki_title}#")}]'] = wiki_cache[
+                 wiki_title
+             ]
+     for doi in data["dois"]:
+         if doi in doi_cache:
+-            selector_to_html[f'a[href="{DOI_PATH}{doi}"]'] = doi_cache[doi]
++            selector_to_html[link_selector(f"{DOI_PATH}{doi}")] = doi_cache[doi]
+     for rtd in data["rtd_urls"]:
+         if rtd in rtd_cache:
+-            selector_to_html[f'a[href="{rtd}"]'] = rtd_cache[rtd]
++            selector_to_html[link_selector(rtd)] = rtd_cache[rtd]
+     for refpage, target in data["refs_in_page"]:
+         if refpage is not None:
+             relpage = posixpath.normpath(
+@@ -681,7 +689,7 @@ def write_tippy_props_page(
+             if refpage not in tippy_page_data:
+                 pass
+             elif target is None:
+-                selector_to_html[f'a[href="{relpage}.html"]'] = rewrite_local_attrs(
++                selector_to_html[link_selector(f"{relpage}.html")] = rewrite_local_attrs(
+                     tippy_page_data[refpage]["id_to_html"][None], relfolder
+                 )
+             elif (
+@@ -694,18 +702,18 @@ def write_tippy_props_page(
+                     tippy_page_data[refpage]["element_id_map"][target]
+                 ]
+                 html_str = rewrite_local_attrs(html_str, relfolder)
+-                selector_to_html[f'a[href="{relpage}.html#{target}"]'] = html_str
++                selector_to_html[link_selector(f"{relpage}.html#{target}")] = html_str
+         elif target is None:
+             selector_to_html['a[href="#"]'] = local_id_to_html[None]
+         elif target in local_id_map and local_id_map[target] in local_id_to_html:
+-            selector_to_html[f'a[href="#{target}"]'] = local_id_to_html[
++            selector_to_html[link_selector(f"#{target}")] = local_id_to_html[
+                 local_id_map[target]
+             ]
+ 
+     # custom tips take priority over other tips
+     selector_to_html.update(
+         {
+-            f'a[href="{ref}"]': tippy_config.custom_tips[ref]
++            link_selector(ref): tippy_config.custom_tips[ref]
+             for ref in data["custom_in_page"]
+         }
+     )
