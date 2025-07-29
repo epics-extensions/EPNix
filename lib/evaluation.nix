@@ -64,7 +64,8 @@ let
         nixpkgsConfigWithDefaults = {
           crossSystem = null;
           config = { };
-        } // nixpkgsConfig;
+        }
+        // nixpkgsConfig;
 
         pkgs =
           config:
