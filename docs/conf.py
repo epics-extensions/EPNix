@@ -169,7 +169,8 @@ html_sidebars = {
 }
 
 html_css_files = [
-    "external-links.css",
+    "field-lists.css",
+    "link-icons.css",
     "logo-size.css",
     "multi-version.css",
     "tippy.css",

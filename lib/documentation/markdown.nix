@@ -6,8 +6,6 @@
 lib.fix (
   self:
   let
-    rev = inputs.self.sourceInfo.rev or "master";
-
     # Quote an option if it contains a "." in it
     maybeQuote = el: if lib.hasInfix "." el then ''"${el}"'' else el;
 
@@ -30,6 +28,21 @@ lib.fix (
     # Get the text of a description, whether it was wrapped with `lib.mdDoc` or
     # not.
     toText = value: if value ? _type then value.text else value;
+
+    indented =
+      lines:
+      let
+        indentLine = line: "  ${line}";
+        # lines = lib.splitString "\n" str;
+      in
+      map indentLine lines;
+
+    optionalBulletList =
+      elems:
+      let
+        elems' = lib.toList elems;
+      in
+      if (lib.length elems') > 1 then map (elem: "- ${elem}") elems' else elems;
 
     # For text inside Pandoc's Markdown definition lists.
     #
@@ -58,7 +71,7 @@ lib.fix (
           (lib.concatStringsSep "/")
         ];
       in
-      "[${relativePath}](source://${rev}/${relativePath})";
+      "<source:${relativePath}>";
 
     fromOption =
       headingLevel: option:

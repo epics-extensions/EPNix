@@ -1,15 +1,21 @@
 a.external:not(:has(.viewcode-link))::after,
-a:has(.std-term)::after {
+a:has(.std-term)::after,
+a:has(.nix-option)::after,
+a:has(.nix-pkg)::after {
 	content: "";
-	display: inline-block;
-	height: .8em;
-	margin: 0 .15em;
+	position: relative;
+	top: -.6em;
+	padding-left: .7em;
+
+	margin: 0 .2em;
 
 	background: currentColor;
 	mask: url("external-link.svg") bottom no-repeat;
-	mask-size: .8em;
-	padding-left: .8em;
-	vertical-align: baseline;
+	mask-size: contain;
+}
+
+a:has(> code:last-child)::after {
+	margin-left: 0;
 }
 
 a.external:not(:has(.viewcode-link))[href^="mailto:"]::after {
@@ -26,4 +32,12 @@ a.external.github:not(:has(.viewcode-link))::after {
 
 a:has(.std-term)::after {
 	mask-image: url("term.svg");
+}
+
+a:has(.nix-option)::after {
+	mask-image: url("option.svg");
+}
+
+a:has(.nix-pkg)::after {
+	mask-image: url("package.svg");
 }
