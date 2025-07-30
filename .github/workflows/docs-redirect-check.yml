@@ -1,0 +1,21 @@
+name: "Docs redirect check"
+
+on:
+  pull_request:
+    paths: [docs/**]
+
+permissions:
+  contents: read
+
+jobs:
+  redirect-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          # Needed to fetch the target branch
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: nixbuild/nix-quick-install-action@889f3180bb5f064ee9e3201428d04ae9e41d54ad # v31
+      - name: "Check docs redirects"
+        run: nix run --print-build-logs '.#ci-scripts/docs-redirect-check'

@@ -45,6 +45,7 @@ extensions = [
     "sphinx_tippy",
     "sphinxcontrib_typstbuilder",
     "sphinxext.opengraph",
+    "sphinxext.rediraffe",
 ]
 
 templates_path = ["_templates"]
@@ -112,6 +113,12 @@ intersphinx_mapping = {
     "sphinx": ("https://www.sphinx-doc.org/en/master", None),
     "nixdomain": ("https://minijackson.github.io/sphinxcontrib-nixdomain/", None),
 }
+
+# -- Options for Sphinx Rediraffe --------------------------------------------
+# https://github.com/sphinx-doc/sphinxext-rediraffe
+
+rediraffe_redirects = "redirects.txt"
+rediraffe_branch = f"origin/{branch}"
 
 # -- Options for Sphinx Copybutton -------------------------------------------
 # https://sphinx-copybutton.readthedocs.io/en/latest/use.html

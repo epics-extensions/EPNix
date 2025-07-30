@@ -145,6 +145,7 @@ stdenvNoCC.mkDerivation {
       sphinxcontrib-nixdomain
       sphinxcontrib-typstbuilder
       sphinxext-opengraph
+      sphinxext-rediraffe
     ])
     ++ [
       typst
