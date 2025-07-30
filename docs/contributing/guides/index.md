@@ -1,6 +1,6 @@
 # Guides
 
-[How-to guides] for EPNix developers.
+[How-to guides] for contributing to EPNix.
 
 ----
 
