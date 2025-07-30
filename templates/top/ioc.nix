@@ -10,7 +10,7 @@ mkEpicsPackage {
 
   src = ./.;
 
-  # For EPICS, native libraries needs to be both in
+  # For EPICS, native libraries need to be in both
   # nativeBuildInputs and buildInputs
   # --
   nativeBuildInputs = [ ];
