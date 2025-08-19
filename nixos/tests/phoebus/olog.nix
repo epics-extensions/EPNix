@@ -66,12 +66,10 @@
 
     def put(uri: str, data: Any) -> Any:
         result = client.succeed(
-            f"""
-                curl -sSfL -k -X PUT -u admin:adminPass \
-                  'https://server:8181/Olog{uri}' \
-                  -H 'Content-Type: application/json' \
-                  -d {repr(json.dumps(data))}
-        """
+            "curl -sSfL -k -X PUT -u admin:adminPass "
+            f"'https://server:8181/Olog{uri}' "
+            "-H 'Content-Type: application/json' "
+            f"-d {repr(json.dumps(data))}"
         )
         return json.loads(result)
 
@@ -80,7 +78,12 @@
         assert len(logbooks) > 0, "No default logbook found"
 
     with subtest("can login"):
-        client.succeed("curl -sSfL -k -X POST 'https://server:8181/Olog/login?username=admin&password=adminPass' --cookie-jar cjar")
+        credentials = {"username": "admin", "password": "adminPass"}
+        client.succeed(
+            "curl -sSfL -k -X POST 'https://server:8181/Olog/login' "
+            f"-H 'Content-Type: application/json' -d {repr(json.dumps(credentials))} "
+            "--cookie-jar cjar"
+        )
         user_str = client.succeed("curl -sSfL -k 'https://server:8181/Olog/user' --cookie cjar")
         user = json.loads(user_str)
         assert user["userName"] == "admin"
