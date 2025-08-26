@@ -1,0 +1,12 @@
+diff --git i/pom.xml w/pom.xml
+index 59a6ed9..7cd978d 100644
+--- i/pom.xml
++++ w/pom.xml
+@@ -541,6 +541,7 @@
+                     <plugin>
+                         <groupId>org.springframework.boot</groupId>
+                         <artifactId>spring-boot-maven-plugin</artifactId>
++                        <version>${spring.boot-version}</version>
+                         <configuration>
+                             <executable>true</executable>
+                         </configuration>
