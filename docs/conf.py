@@ -41,6 +41,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.githubpages",
     "sphinx_copybutton",
+    "sphinxcontrib.plantuml",
     "sphinxcontrib_nixdomain",
     "sphinx_tippy",
     "sphinxcontrib_typstbuilder",
@@ -84,7 +85,7 @@ myst_substitutions = {
     },
 }
 
-myst_heading_anchors = 2
+myst_heading_anchors = 3
 
 myst_url_schemes = {
     "http": None,
@@ -189,6 +190,7 @@ html_sidebars = {
 }
 
 html_css_files = [
+    "dark-mode.css",
     "field-lists.css",
     "link-icons.css",
     "logo-size.css",
@@ -260,3 +262,8 @@ linkcheck_ignore = [
 linkcheck_anchors_ignore_for_url = [
     r"^https://github.com/",
 ]
+
+# -- Options for PlanUML -----------------------------------------------------
+# https://github.com/sphinx-contrib/plantuml/?tab=readme-ov-file#configuration
+
+plantuml_output_format = "svg"

@@ -1,0 +1,23 @@
+@media not print {
+	body {
+		--img-light-filter: none;
+		--img-dark-filter: invert(1) hue-rotate(180deg) contrast(70%);
+		--img-filter: var(--img-light-filter);
+	}
+
+	body[data-theme="dark"] {
+		--img-filter: var(--img-dark-filter);
+	}
+
+	@media (prefers-color-scheme: dark) {
+		body[data-theme="auto"] {
+			--img-filter: var(--img-dark-filter);
+		}
+	}
+}
+
+img,
+svg,
+object[type^="image/"] {
+	filter: var(--img-filter);
+}
