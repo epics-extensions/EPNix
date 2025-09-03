@@ -45,3 +45,12 @@ For example:
    };
  }
 ```
+
+## Hostname consistency
+
+In your {file}`flake.nix`,
+you should see the line {samp}`nixosConfigurations.{hostname} = ...`.
+
+Make sure the specified _hostname_ is consistent
+with the machine's hostname,
+which is defined by the option `networking.hostName`.
