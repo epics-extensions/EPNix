@@ -1,4 +1,4 @@
-# Pre-requisites
+# Prerequisites
 
 The requirements for using EPNix are having curl, Nix, and Git installed,
 either in a Linux system,

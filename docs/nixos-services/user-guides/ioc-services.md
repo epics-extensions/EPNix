@@ -4,7 +4,7 @@ This guide covers how to install EPICS IOCs as a systemd service
 on a NixOS machine.
 
 :::{important}
-Make sure to follow the NixOS {doc}`pre-requisites`.
+Make sure to follow the NixOS {doc}`prerequisites`.
 :::
 
 

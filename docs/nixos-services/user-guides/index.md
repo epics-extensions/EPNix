@@ -8,7 +8,7 @@
 :glob:
 :maxdepth: 2
 
-pre-requisites
+prerequisites
 *
 ```
 

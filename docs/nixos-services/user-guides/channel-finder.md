@@ -13,7 +13,7 @@ For more information on the ChannelFinder architecture,
 see the official [ChannelFinder introduction].
 
 :::{important}
-Make sure to follow the NixOS {doc}`pre-requisites`.
+Make sure to follow the NixOS {doc}`prerequisites`.
 :::
 
 ## ChannelFinder service

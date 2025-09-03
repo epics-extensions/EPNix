@@ -17,7 +17,7 @@ such as ChannelFinder, and Phoebus services.
 :::
 
 :::{important}
-Make sure to follow the NixOS {doc}`pre-requisites`.
+Make sure to follow the NixOS {doc}`prerequisites`.
 :::
 
 ## Default behavior

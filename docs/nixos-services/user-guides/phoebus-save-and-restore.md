@@ -10,7 +10,7 @@ For more details and documentation about Phoebus save-and-restore,
 you can examine the [save-and-restore official documentation].
 
 :::{important}
-Make sure to follow the NixOS {doc}`pre-requisites`.
+Make sure to follow the NixOS {doc}`prerequisites`.
 :::
 
 ## Enabling the Phoebus save-and-restore service

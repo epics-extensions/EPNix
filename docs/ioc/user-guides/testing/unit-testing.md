@@ -166,7 +166,7 @@ which can be useful if you don't want to import an external EPICS module.
 [epicsUnitTest.h] is made in C,
 but tests can be written in either C or C++.
 
-### Pre-requisites
+### Prerequisites
 
 Examine gtest's {ref}`is-library`.
 

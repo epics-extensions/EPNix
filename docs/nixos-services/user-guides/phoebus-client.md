@@ -8,7 +8,7 @@ You can install the Phoebus client by using {nix:option}`programs.phoebus-client
 and configure it by using the other options in {nix:option}`programs.phoebus-client`.
 
 :::{important}
-Make sure to follow the NixOS {doc}`pre-requisites`.
+Make sure to follow the NixOS {doc}`prerequisites`.
 :::
 
 ## Configure the preference settings
