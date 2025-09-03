@@ -195,7 +195,7 @@ where breaking changes are forbidden.
 [NixOS services tutorials]: https://epics-extensions.github.io/EPNix/nixos-24.11/nixos-services/tutorials/index.html
 [Nix]: https://nixos.org/guides/how-nix-works/
 [Packages list]: https://epics-extensions.github.io/EPNix/nixos-24.11/pkgs/packages.html
-[Pre-requisites]: https://epics-extensions.github.io/EPNix/nixos-24.11/pre-requisites.html
+[Prerequisites]: https://epics-extensions.github.io/EPNix/nixos-24.11/prerequisites.html
 ```
 
 ``````{code-block} markdown

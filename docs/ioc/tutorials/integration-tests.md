@@ -15,7 +15,7 @@ and checking that it behaves as expected.
 This method of testing can then be automated
 by running it inside a Continuous Integration (CI) system.
 
-## Pre-requisites
+## Prerequisites
 
 :::{warning}
 Nix assumes you can run hardware-accelerated VMs,

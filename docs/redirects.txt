@@ -2,3 +2,5 @@
 "development/explanations/packaging-policy.md" "contributing/explanations/packaging-policy.md"
 "development/guides/index.md" "contributing/guides/index.md"
 "development/guides/release-process.md" "contributing/guides/release-process.md"
+"pre-requisites.md" "prerequisites.md"
+"nixos-services/user-guides/pre-requisites.md" "nixos-services/user-guides/prerequisites.md"

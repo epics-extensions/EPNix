@@ -5,7 +5,7 @@ You can download the cheatsheet in PDF format here:
 {download}`cheatsheet.pdf`
 :::
 
-See the {doc}`../pre-requisites`
+See the {doc}`../prerequisites`
 and the {doc}`../ioc/user-guides/flake-registry` guide
 before getting started.
 
