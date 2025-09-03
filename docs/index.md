@@ -126,8 +126,8 @@ nixos-services/options-reference/index
 :hidden:
 :titlesonly:
 
-development/guides/index
-development/explanations/index
+contributing/guides/index
+contributing/explanations/index
 ```
 
 [Nix]: https://nixos.org/guides/how-nix-works/
