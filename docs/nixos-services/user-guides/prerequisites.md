@@ -1,5 +1,9 @@
 # Prerequisites
 
+## Global prerequisites
+
+Make sure to follow EPNix' global {doc}`../../prerequisites`.
+
 ## NixOS flake
 
 One prerequisite is having a NixOS machine with a flake configuration.
