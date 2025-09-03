@@ -1,6 +1,8 @@
-## Pre-requisites
+# Pre-requisites
 
-- Having a NixOS machine with a flake configuration.
+## NixOS flake
+
+One prerequisite is having a NixOS machine with a flake configuration.
 
 If you’re not sure how to do this,
 you can follow the {doc}`../tutorials/archiver-appliance` tutorial,

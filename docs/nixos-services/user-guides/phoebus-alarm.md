@@ -17,8 +17,9 @@ examine the official documentation:
 
 The Phoebus Alarm Logging Service can also be called the Phoebus Alarm Logger.
 
-```{include} ./pre-requisites.md
-```
+:::{important}
+Make sure to follow the NixOS {doc}`pre-requisites`.
+:::
 
 ## Single server Phoebus Alarm setup
 

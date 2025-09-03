@@ -9,8 +9,9 @@ This guide focuses on installing and configuring the save-and-restore service on
 For more details and documentation about Phoebus save-and-restore,
 you can examine the [save-and-restore official documentation].
 
-```{include} ./pre-requisites.md
-```
+:::{important}
+Make sure to follow the NixOS {doc}`pre-requisites`.
+:::
 
 ## Enabling the Phoebus save-and-restore service
 

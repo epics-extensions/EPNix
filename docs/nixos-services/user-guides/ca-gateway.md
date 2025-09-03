@@ -10,8 +10,9 @@ to add extra access security rules on top of IOCs.
 For more details and documentation about the CA PV gateway,
 you can examine the [gateway main page].
 
-```{include} ./pre-requisites.md
-```
+:::{important}
+Make sure to follow the NixOS {doc}`pre-requisites`.
+:::
 
 ## Enabling the gateway
 

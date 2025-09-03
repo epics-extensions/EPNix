@@ -7,6 +7,10 @@ such as the ones in the particle accelerator community.
 You can install the Phoebus client by using {nix:option}`programs.phoebus-client.enable`,
 and configure it by using the other options in {nix:option}`programs.phoebus-client`.
 
+:::{important}
+Make sure to follow the NixOS {doc}`pre-requisites`.
+:::
+
 ## Configure the preference settings
 
 ### By specifying settings
