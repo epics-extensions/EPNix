@@ -277,7 +277,7 @@ targeting the {samp}`nixos-{new.version}` branch.
 ## Build the new version of the documentation
 
 The documentation job might have failed,
-since we added {sap}`nixos-{new.version}` in <source:lib/versions.nix>
+since we added {samp}`nixos-{new.version}` in <source:lib/versions.nix>
 before creating the branch.
 
 To build the manual,
