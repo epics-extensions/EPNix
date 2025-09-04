@@ -14,13 +14,13 @@
 }:
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "archiver-appliance";
-  version = "2.0.10";
+  version = "2.1.0";
 
   src = fetchFromGitHub {
     owner = "archiver-appliance";
     repo = "epicsarchiverap";
     rev = finalAttrs.version;
-    hash = "sha256-urdG9bV2+zrDwWw+H1XdZIU3S3+On+fyjtY1QPbLQSg=";
+    hash = "sha256-aphLKYbLNK474wR03oUHntIqIaBYyiRLXRJ65JOgrNI=";
   };
 
   patches = [
