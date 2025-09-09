@@ -2,7 +2,7 @@
   lib,
   epnixLib,
   stdenv,
-  substituteAll,
+  replaceVars,
   maven,
   makeWrapper,
   jdk21,
@@ -19,8 +19,7 @@ stdenv.mkDerivation {
   inherit (phoebus-deps) version src;
 
   patches = [
-    (substituteAll {
-      src = ./fix-python-path.patch;
+    (replaceVars ./fix-python-path.patch {
       python = lib.getExe python3;
     })
   ];
