@@ -242,10 +242,15 @@ with subtest("non existing record"):
     assert pv_status("nonExisting")[0]["status"] != "Being archived", (
         "nonExisting record shouldn't be archived"
     )
+    never_connected_pvs = []
 
-    never_connected_pvs = get("/mgmt/bpl/getNeverConnectedPVs")
+    def correct_never_connected_pvs(_):
+        global never_connected_pvs
+        never_connected_pvs = get("/mgmt/bpl/getNeverConnectedPVs")
 
-    assert len(never_connected_pvs) == 1, "only 1 PVs should never have been connected"
+        return len(never_connected_pvs) == 1
+
+    retry(correct_never_connected_pvs)
     assert never_connected_pvs[0]["pvName"] == "nonExisting", "wrong PV never connected"
 
 with subtest("manual sampling period"):
