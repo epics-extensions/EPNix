@@ -1,0 +1,13 @@
+diff --git i/pom.xml w/pom.xml
+index f50468d..0d76aa4 100644
+--- i/pom.xml
++++ w/pom.xml
+@@ -363,6 +363,8 @@
+                     </execution>
+                 </executions>
+                 <configuration>
++                    <!-- Support GitHub archive downloads, which don't have a .git directory -->
++                    <failOnNoGitDirectory>false</failOnNoGitDirectory>
+                     <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+                     <prefix>git</prefix>
+                     <verbose>false</verbose>
