@@ -199,8 +199,6 @@ in
         CapabilityBoundingSet = "";
         # Service cannot change ABI personality
         LockPersonality = true;
-        # Service has no access to non-process /proc files (/proc subset=)
-        ProcSubset = "pid";
         # Service may execute system calls only with native ABI
         SystemCallArchitectures = "native";
         # Access write directories
