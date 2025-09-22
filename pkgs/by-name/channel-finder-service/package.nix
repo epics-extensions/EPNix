@@ -2,7 +2,7 @@
   lib,
   epnixLib,
   fetchFromGitHub,
-  jre,
+  jdk21,
   maven,
   makeWrapper,
 }:
@@ -19,6 +19,7 @@ maven.buildMavenPackage rec {
 
   patches = [ ./fix-reproducibility.patch ];
 
+  mvnJdk = jdk21;
   mvnHash = "sha256-R5lsFM+yn9xc3Wbpy9Js5r9d7IEOJR301mEoz5SGI/0=";
   # TODO: remove if this PR is merged:
   # https://github.com/ChannelFinder/ChannelFinderService/pull/153
@@ -36,7 +37,7 @@ maven.buildMavenPackage rec {
 
     install -Dm644 "target/$jarName" "$out/share/java"
 
-    makeWrapper ${lib.getExe jre} $out/bin/${meta.mainProgram} \
+    makeWrapper ${lib.getExe jdk21} $out/bin/${meta.mainProgram} \
       --add-flags "-jar $out/share/java/$jarName"
 
     runHook postInstall
@@ -48,6 +49,6 @@ maven.buildMavenPackage rec {
     mainProgram = "channel-finder-service";
     license = lib.licenses.mit;
     maintainers = with epnixLib.maintainers; [ minijackson ];
-    inherit (jre.meta) platforms;
+    inherit (jdk21.meta) platforms;
   };
 }
