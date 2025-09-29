@@ -2,27 +2,35 @@
   lib,
   epnixLib,
   fetchFromGitHub,
-  jre,
+  jdk21,
   maven,
   makeWrapper,
 }:
 maven.buildMavenPackage rec {
   pname = "ChannelFinderService";
-  version = "4.7.2";
+  version = "4.7.3";
 
   src = fetchFromGitHub {
     owner = "ChannelFinder";
     repo = pname;
     rev = "refs/tags/ChannelFinder-${version}";
-    hash = "sha256-mRZ9lnkSMSW07GjihDJUDsQFE/f0Sn4T1WbwpUTY16Y=";
+    hash = "sha256-RZbdUFdDt0Q2ZgbgtnhUQIObl6Ug5Lzbphh4aHdUAwQ=";
   };
 
-  patches = [ ./fix-reproducibility.patch ];
+  patches = [ ./support-github-archive.patch ];
 
-  mvnHash = "sha256-R5lsFM+yn9xc3Wbpy9Js5r9d7IEOJR301mEoz5SGI/0=";
-  # TODO: remove if this PR is merged:
-  # https://github.com/ChannelFinder/ChannelFinderService/pull/153
+  buildOffline = true;
+  mvnJdk = jdk21;
+  mvnHash = "sha256-WoB97KFBJuTBIBH7gPfBYiQl3g7jA5OwVj01WstQr34=";
   mvnParameters = "-Dproject.build.outputTimestamp=1980-01-01T00:00:02Z";
+
+  # Dynamic test dependencies
+  # which aren't picked up by go-offline-maven-plugin
+  manualMvnArtifacts = [
+    "org.apache.maven.surefire:surefire-junit-platform:3.1.2"
+    "org.junit.platform:junit-platform-launcher:1.8.2"
+    "org.jacoco:org.jacoco.agent:0.8.11:jar:runtime"
+  ];
 
   nativeBuildInputs = [ makeWrapper ];
 
@@ -36,7 +44,7 @@ maven.buildMavenPackage rec {
 
     install -Dm644 "target/$jarName" "$out/share/java"
 
-    makeWrapper ${lib.getExe jre} $out/bin/${meta.mainProgram} \
+    makeWrapper ${lib.getExe jdk21} $out/bin/${meta.mainProgram} \
       --add-flags "-jar $out/share/java/$jarName"
 
     runHook postInstall
@@ -48,6 +56,6 @@ maven.buildMavenPackage rec {
     mainProgram = "channel-finder-service";
     license = lib.licenses.mit;
     maintainers = with epnixLib.maintainers; [ minijackson ];
-    inherit (jre.meta) platforms;
+    inherit (jdk21.meta) platforms;
   };
 }
