@@ -17,7 +17,7 @@ For more information about this approach,
 examine {doc}`advantages-disadvantages`.
 
 Before getting started,
-make sure to follow the {doc}`pre-requisites`.
+make sure to follow the {doc}`prerequisites`.
 
 ## Features
 
@@ -85,7 +85,7 @@ EPNix is under the MIT license.
 :titlesonly:
 
 advantages-disadvantages
-pre-requisites
+prerequisites
 cheatsheet
 release-notes/index
 ```

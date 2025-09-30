@@ -5,10 +5,10 @@ we're going to create an EPICS IOC with EPNix
 that communicates with a power supply,
 using the [StreamDevice] support module.
 
-## Pre-requisites
+## Prerequisites
 
-Verify that you have all pre-requisites installed,
-by following the {doc}`../../pre-requisites` section.
+Verify that you have all prerequisites installed,
+by following the {doc}`../../prerequisites` section.
 
 ## Running the power supply simulator
 

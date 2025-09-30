@@ -1,6 +1,12 @@
-## Pre-requisites
+# Prerequisites
 
-- Having a NixOS machine with a flake configuration.
+## Global prerequisites
+
+Make sure to follow EPNix' global {doc}`../../prerequisites`.
+
+## NixOS flake
+
+One prerequisite is having a NixOS machine with a flake configuration.
 
 If you’re not sure how to do this,
 you can follow the {doc}`../tutorials/archiver-appliance` tutorial,
@@ -39,3 +45,12 @@ For example:
    };
  }
 ```
+
+## Hostname consistency
+
+In your {file}`flake.nix`,
+you should see the line {samp}`nixosConfigurations.{hostname} = ...`.
+
+Make sure the specified _hostname_ is consistent
+with the machine's hostname,
+which is defined by the option `networking.hostName`.

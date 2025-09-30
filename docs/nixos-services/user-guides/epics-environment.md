@@ -16,6 +16,10 @@ such as ChannelFinder, and Phoebus services.
 [EPICS environment variables] in the Channel Access Reference Manual.
 :::
 
+:::{important}
+Make sure to follow the NixOS {doc}`prerequisites`.
+:::
+
 ## Default behavior
 
 By default,

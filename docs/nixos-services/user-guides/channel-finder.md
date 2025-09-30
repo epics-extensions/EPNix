@@ -12,8 +12,9 @@ that scans and retrieves the metadata from "RecCaster."
 For more information on the ChannelFinder architecture,
 see the official [ChannelFinder introduction].
 
-```{include} ./pre-requisites.md
-```
+:::{important}
+Make sure to follow the NixOS {doc}`prerequisites`.
+:::
 
 ## ChannelFinder service
 
