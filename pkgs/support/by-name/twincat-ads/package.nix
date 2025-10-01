@@ -8,9 +8,9 @@
   local_config_site ? { },
   local_release ? { },
 }:
-mkEpicsPackage {
+mkEpicsPackage rec {
   pname = "twincat-ads";
-  version = "2024.09.04";
+  version = "2.1.2";
   varname = "TWINCATADS";
 
   inherit local_config_site local_release;
@@ -18,13 +18,10 @@ mkEpicsPackage {
   src = fetchFromGitHub {
     owner = "epics-modules";
     repo = "twincat-ads";
-    rev = "be1ea2fbef1713b95f75f545eed202e10a980366";
+    tag = "v${version}";
     fetchSubmodules = true;
-    sha256 = "sha256-rp2o0V+Jr4FRIG9mZKcwYDbitwSYhNVHaxm4MWBElQQ=";
+    hash = "sha256-IGcThxFcJqpbVMfzdQRvlHUtOOUkKRcDGEBY9J7mFao=";
   };
-
-  # See: https://gitlab.esss.lu.se/epics-modules/epics-twincat-ads/-/issues/2
-  patches = [ ./fix-missing-header.patch ];
 
   propagatedBuildInputs = [
     asyn
