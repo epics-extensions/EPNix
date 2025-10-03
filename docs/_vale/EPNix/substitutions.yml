@@ -1,0 +1,6 @@
+extends: substitution
+message: Consider using '%s' instead of '%s'
+level: warning
+swap:
+  # To be consistent with the Nix terminology
+  development environment: development shell
