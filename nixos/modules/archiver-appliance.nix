@@ -61,10 +61,6 @@ let
   xsltproc = "${lib.getBin pkgs.libxslt}/bin/xsltproc";
   xmllint = "${lib.getBin pkgs.libxml2}/bin/xmllint";
 
-  loggingProperties = pkgs.writeTextDir "/logging.properties" ''
-    .handlers = java.util.logging.ConsoleHandler
-  '';
-
   log4j2Xml = pkgs.writeTextDir "/log4j2.xml" ''
     <Configuration>
       <Appenders>
@@ -307,8 +303,6 @@ in
       purifyOnStart = true;
 
       webapps = [ cfg.package ];
-
-      extraConfigFiles = [ "${loggingProperties}/logging.properties" ];
 
       commonLibs = [
         "${log4j2Xml}/log4j2.xml"
