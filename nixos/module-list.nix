@@ -3,6 +3,7 @@
   ./modules/ca-gateway.nix
   ./modules/channel-finder/recceiver.nix
   ./modules/channel-finder/service.nix
+  ./modules/dbwr.nix
   ./modules/epics-environment.nix
   ./modules/iocs.nix
   ./modules/phoebus/alarm-logger.nix
