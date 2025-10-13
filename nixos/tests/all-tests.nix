@@ -20,6 +20,7 @@ in
   archiver-appliance = handleTest ./archiver-appliance { };
   ca-gateway = handleTest ./ca-gateway.nix { };
   channel-finder = handleTest ./channel-finder { };
+  dbwr = handleTest ./dbwr { };
   p4p = handleTest ./p4p.nix { };
   phoebus-alarm = handleTest ./phoebus/alarm.nix { };
   phoebus-olog = handleTest ./phoebus/olog.nix { };
