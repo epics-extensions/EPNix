@@ -196,7 +196,7 @@ For example:
 ## Configuring the address list
 The address list is configured by default
 using the {nix:option}`environment.epics` module.
-See the {doc}`epics-environment` guide for mode information.
+See the {doc}`epics-environment` guide for more information.
 
 ## Passing environment variables
 
