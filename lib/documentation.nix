@@ -105,7 +105,6 @@ let
     # all packages
     package2markdown = path: pkg: ''
       :::{nix:package} epnix.${path}
-      :short-toc-name:
       ${self.declarationParam pkg}
 
       ${pkg.meta.description}

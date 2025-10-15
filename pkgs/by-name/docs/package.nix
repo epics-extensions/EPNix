@@ -17,37 +17,13 @@ let
 
   iocOptions = documentation.options.iocOptions iocConfig;
 
-  nixosOptionsAttrSet =
+  nixosOptions =
     (epnixLib.inputs.nixpkgs.lib.nixosSystem {
       inherit (stdenvNoCC) system;
       modules = [
         epnixLib.inputs.self.nixosModules.nixos
       ];
     }).options;
-
-  isOurs = option: lib.any (lib.hasPrefix "${epnixLib.inputs.self}") option.declarations;
-  isVisible = option: !option.internal;
-
-  relativePath =
-    path:
-    lib.pipe path [
-      (lib.splitString "/")
-      (lib.sublist 4 255)
-      (lib.concatStringsSep "/")
-    ];
-
-  # rev = epnixLib.inputs.self.sourceInfo.rev or "master";
-
-  nixosOptionsSpec = lib.pipe nixosOptionsAttrSet [
-    nixdomainLib.optionAttrSetToDocList
-    (lib.filter isOurs)
-    (lib.filter isVisible)
-    (map (x: x // { declarations = map relativePath x.declarations; }))
-    (map (x: lib.nameValuePair x.name x))
-    lib.listToAttrs
-    builtins.toJSON
-    (writeText "nixos-options.json")
-  ];
 
   iocOptionsContent = documentation.options.optionsContent iocOptions 3;
   # Have a separate "Options" header for the Sphinx manpage output
@@ -68,36 +44,6 @@ let
     -------
 
     ${iocOptionsContent}
-  '';
-
-  iocPkgsListPandoc = ''
-    IOC packages list
-    =================
-
-    ::: note
-    This page references all EPNix packages that should be used when packaging an IOC.
-    For all other packages, see the [Packages list](../../pkgs/packages.md).
-    :::
-
-    Packages
-    --------
-
-    ${epnixLib.documentation.iocPkgsList documentedEpnixPkgs}
-  '';
-
-  pkgsListPandoc = ''
-    Packages list
-    =============
-
-    ::: note
-    This page references all EPNix packages that may be used outside of an IOC.
-    For all IOC-specific packages, see the [IOC packages list](../ioc/references/packages.md).
-    :::
-
-    Packages
-    --------
-
-    ${epnixLib.documentation.pkgsList documentedEpnixPkgs}
   '';
 
   # Reproducibly download Typst dependencies for PDFs
@@ -131,7 +77,7 @@ let
 in
 stdenvNoCC.mkDerivation {
   pname = "epnix-docs";
-  version = "24.11";
+  version = epnixLib.versions.current;
 
   src = ../../../docs;
 
@@ -157,10 +103,7 @@ stdenvNoCC.mkDerivation {
   dontConfigure = true;
 
   postPatch = ''
-    install -Dv "${nixosOptionsSpec}" nixos-options.json
     install -Dv "${writeText "ioc-options.md" iocOptionsPandoc}" ioc/references/options.md
-    install -Dv "${writeText "ioc-packages.md" iocPkgsListPandoc}" ioc/references/packages.md
-    install -Dv "${writeText "packages.md" pkgsListPandoc}" pkgs/packages.md
   '';
 
   shellHook = ''
@@ -194,6 +137,19 @@ stdenvNoCC.mkDerivation {
   '';
 
   env = {
+    NIXDOMAIN_OBJECTS = nixdomainLib.documentObjects {
+      sources = {
+        self = epnixLib.inputs.self.outPath;
+        nixpkgs = epnixLib.inputs.nixpkgs.outPath;
+      };
+      options.options = nixosOptions;
+      packages = {
+        packages.epnix = documentedEpnixPkgs;
+        extraFilters = [
+          (p: !(p.meta.hidden or false))
+        ];
+      };
+    };
     TYPST_PACKAGE_PATH = "${typst-packages-vendor}";
     TYPST_PACKAGE_CACHE_PATH = "${typst-packages-vendor}";
     SOURCE_DATE_EPOCH = epnixLib.inputs.self.sourceInfo.lastModified;
@@ -206,6 +162,5 @@ stdenvNoCC.mkDerivation {
     homepage = "https://epics-extensions.github.io/EPNix/";
     license = lib.licenses.asl20;
     maintainers = with epnixLib.maintainers; [ minijackson ];
-    # hidden = true;
   };
 }
