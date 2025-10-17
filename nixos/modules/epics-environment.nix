@@ -51,6 +51,35 @@ in
       type = with lib.types; listOf str;
       default = [ ];
     };
+    openCAFirewall = lib.mkOption {
+      description = ''
+        This option enable the default ports of the Channel Access protocol.
+        If in your IOC you manually change the ports.
+        You will need to open them manually.
+        With the NixOS option `networking.firewall.allowedTCPPorts` & `networking.firewall.allowedUDPPorts`
+      '';
+      type = lib.types.bool;
+      default = false;
+
+    };
+    openPVAFirewall = lib.mkOption {
+      description = ''
+        This option enable the default ports of the pvAccess protocol.
+        If in your IOC you manually change the ports.
+        You will need to open them manually.
+        With the NixOS option `networking.firewall.allowedTCPPorts` & `networking.firewall.allowedUDPPorts`
+      '';
+      type = lib.types.bool;
+      default = false;
+    };
+    allowBroadcastDiscovery = lib.mkOption {
+      description = ''
+        This option allow the network discovery of the IOC proccess on the default port.
+        But this option is an security issue about the a possibility
+        to attack the host by crafting an malicious packet with the source port of the IOC.'';
+      type = lib.types.bool;
+      default = false;
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -58,5 +87,27 @@ in
       EPICS_CA_AUTO_ADDR_LIST = if cfg.ca_auto_addr_list then "YES" else "NO";
       EPICS_CA_ADDR_LIST = lib.concatStringsSep " " cfg.ca_addr_list;
     };
+
+    networking.firewall = lib.mkMerge [
+      (lib.mkIf cfg.openCAFirewall {
+        allowedTCPPorts = [
+          5064
+          5065
+        ];
+        allowedUDPPorts = [
+          5064
+          5065
+        ];
+      })
+      (lib.mkIf cfg.openPVAFirewall {
+        allowedTCPPorts = [ 5076 ];
+        allowedUDPPorts = [ 5076 ];
+      })
+      (lib.mkIf cfg.allowBroadcastDiscovery {
+        extraCommands = ''
+          ip46tables -A nixos-fw -p udp --sport 5064 -j nixos-fw-accept
+        '';
+      })
+    ];
   };
 }
