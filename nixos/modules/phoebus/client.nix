@@ -35,14 +35,40 @@ let
   # then these options must be unset,
   # because they'll end up being unused.
   warningCheck = settingsFileIsSet -> colorDefIsUnset && fontDefIsUnset && settingsIsUnset;
-
-  pkg = pkgs.epnix.phoebus.override {
-    inherit (cfg) settingsFile java_opts;
-  };
 in
 {
   options.programs.phoebus-client = {
     enable = lib.mkEnableOption "installing and configuring the Phoebus client";
+
+    package = lib.mkPackageOption pkgs "Phoebus" {
+      default = [
+        "epnix"
+        "phoebus"
+      ];
+      extraDescription = ''
+        This package is "wrapped" into {nix:option}`finalPackage`
+        to use the given preference settings,
+        Java options,
+        etc.
+      '';
+    };
+
+    finalPackage = lib.mkOption {
+      type = lib.types.package;
+      readOnly = true;
+      default = cfg.package.override {
+        inherit (cfg) settingsFile java_opts;
+      };
+      defaultText = lib.literalMD "The wrapped Phoebus package";
+      description = ''
+        The final package that will be used in the system,
+        a Phoebus package that will use the provided preference settings,
+        Java options,
+        etc.
+
+        The original package is taken from {nix:option}`package`.
+      '';
+    };
 
     colorDef = lib.mkOption {
       description = ''
@@ -302,6 +328,6 @@ in
       "org.phoebus.pv.ca/auto_addr_list" =
         if config.environment.epics.enable then config.environment.epics.ca_auto_addr_list else true;
     };
-    environment.systemPackages = [ pkg ];
+    environment.systemPackages = [ cfg.finalPackage ];
   };
 }
