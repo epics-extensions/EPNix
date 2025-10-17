@@ -21,6 +21,7 @@ in
   ca-gateway = handleTest ./ca-gateway.nix { };
   channel-finder = handleTest ./channel-finder { };
   dbwr = handleTest ./dbwr { };
+  firewall = handleTest ./firewall.nix { };
   p4p = handleTest ./p4p.nix { };
   phoebus-alarm = handleTest ./phoebus/alarm.nix { };
   phoebus-olog = handleTest ./phoebus/olog.nix { };
