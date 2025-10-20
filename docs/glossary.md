@@ -47,6 +47,7 @@ Nix
   The repository is hosted on GitHub and maintained by the community,
   with official backing from the NixOS Foundation.
 
+  Those packages are usable by any Linux distribution.
   :::{seealso}
 
   - <https://nixos.wiki/wiki/Nixpkgs>
