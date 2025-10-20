@@ -271,9 +271,9 @@ This folder is created by the `makeBaseApp.pl` EPICS command.
   :::{seealso}
 
   - <https://docs.epics-controls.org/en/latest/appdevguide/databaseDefinition.html?highlight=database%20file#dbloadrecords>
-  - <https://docs.epics-controls.org/en/latest/guides/EPICS_Process_Database_Concepts.html>
-  - <https://docs.epics-controls.org/projects/how-tos/en/latest/applications/common-database-patterns.html>
-  - <https://docs.epics-controls.org/projects/how-tos/en/latest/getting-started/creating-ioc.html?highlight=db#creation-of-an-input-output-controller-ioc>
+  - <https://docs.epics-controls.org/en/latest/process-database/EPICS_Process_Database_Concepts.html>
+  - <https://docs.epics-controls.org/en/latest/process-database/common-database-patterns.html>
+  - <https://docs.epics-controls.org/en/latest/getting-started/creating-ioc.html?highlight=db>
 
   :::
 
