@@ -210,7 +210,7 @@ This folder is created by the `makeBaseApp.pl` EPICS command.
 
   :::{seealso}
 
-  - <https://docs.epics-controls.org/en/latest/guides/EPICS_Process_Database_Concepts.html?highlight=PV#the-epics-process-database>
+  - <https://docs.epics-controls.org/en/latest/process-database/EPICS_Process_Database_Concepts.html?highlight=PV#the-epics-process-database>
   - <https://docs.epics-controls.org/en/latest/appdevguide/databaseDefinition.html?highlight=record#record-record-instance>
 
   :::
