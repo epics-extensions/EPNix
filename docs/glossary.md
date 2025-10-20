@@ -279,7 +279,8 @@ This folder is created by the `makeBaseApp.pl` EPICS command.
 
 **`.template` file**
   A Template file (`.template`) is just like a `.db` file,
-  but also including macro(s).
+  but have macros that needs to be replaced,
+  usually with a `.substitutions` file.
 
   :::{seealso}
 
