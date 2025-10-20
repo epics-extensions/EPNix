@@ -16,6 +16,8 @@ Nix
     It allows you to roll back to previous versions,
     and ensures that no package is in an inconsistent state during an upgrade.
 
+  For more information about the pros and cons of using Nix,
+  see the {doc}`advantages-disadvantages` page.
   Nix is is also the name of the programming language used by the package manager.
 
   :::{seealso}
