@@ -360,7 +360,6 @@ This folder is created by the `makeBaseApp.pl` EPICS command.
 
   :::{seealso}
 
-  - <https://docs.epics-controls.org/en/latest/appdevguide/gettingStarted.html?highlight=iocsh#chap:IOCShell>
   - <https://docs.epics-controls.org/en/latest/appdevguide/gettingStarted.html?highlight=cmd#run-the-ioc-example>
 
   :::
