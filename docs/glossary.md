@@ -87,6 +87,51 @@ Nix
 
   :::
 
+**IOC**
+  Input/Output Controller. This is the I/O server component of EPICS.
+  Almost any computing platform that can support EPICS basic components,
+  like databases and network communication,
+  can be used as an IOC.
+  One example is a regular desktop computer,
+  other examples are systems based on real-time operating systems
+  (like vxWorks or RTEMS)
+  and running on dedicated modular computing platforms
+  (like MicroTCA, VME or CompactPCI).
+  EPICS IOC can also run on low-cost hardware
+  (like RaspberryPi or similar).
+
+  Note that the IOC term is ambiguous,
+  it can both design the hardware on which the EPICS I/O server is running,
+  and the EPICS I/O server software itself
+  (i.e. the EPICS-specific development result).
+
+  In order to clarify the IOC,
+  it is possible to specifically refer to hardware IOC / IOC machine
+  or to software IOC / IOC program.
+
+  :::{warning}
+
+  In the EPNix documentation,
+  if not specified/clarified,
+  the term "IOC" will always refer to software IOC / IOC program.
+
+  :::
+
+  :::{warning}
+
+  *Not to confused with SoftIOC*,
+  which is undefined/unclear and may have a different meaning.
+
+  See <https://epics.anl.gov/tech-talk/2012/msg02138.php>.
+
+  :::
+
+  :::{seealso}
+
+  - <https://docs.epics-controls.org/en/latest/guides/EPICS_Intro.html>.
+
+  :::
+
 **Top**
   An EPICS Top refers to the root of a directory (the "top" of the directory)
   — *and its associated structure (i.e. sub-directories architecture)* —
@@ -114,7 +159,14 @@ Nix
   This is where you can effectively implement the logic of your EPICS application.
   For example: the `asApp` directory
   inside the [autosave Top](https://github.com/epics-modules/autosave).
-This folder is created by the `makeBaseApp.pl` EPICS command.
+  This folder is created by the `makeBaseApp.pl` EPICS command
+  and contains by default two sub-directories:
+  - The `Db` sub-directory,
+  containing --- among other things --- the "database" declaration of your application
+  (see `.db` file bellow);
+  - The `src` sub-directory,
+  containing the source code of your application.
+
   :::{seealso}
 
   - <https://docs.epics-controls.org/en/latest/appdevguide/gettingStarted.html?highlight=app#usage>.
@@ -137,46 +189,9 @@ This folder is created by the `makeBaseApp.pl` EPICS command.
 
   :::
 
-**IOC**
-  Input/Output Controller. This is the I/O server component of EPICS.
-  Almost any computing platform that can support EPICS basic components,
-  like databases and network communication,
-  can be used as an IOC.
-  One example is a regular desktop computer,
-  other examples are systems based on real-time operating systems
-  (like vxWorks or RTEMS)
-  and running on dedicated modular computing platforms
-  (like MicroTCA, VME or CompactPCI).
-  EPICS IOC can also run on low-cost hardware
-  (like RaspberryPi or similar).
-
-  Note that the IOC term is ambiguous,
-  it can both design the hardware on which the EPICS I/O server is running,
-  and the EPICS I/O server software itself
-  (i.e. the development result of your EPICS Top).
-
-  In order to clarify the IOC,
-  it is possible to specifically refer to hardware IOC / IOC machine
-  or to software IOC / IOC program.
-
-  :::{warning}
-
-  *Not to confused with SoftIOC*,
-  which is undefined/unclear and may have a different meaning.
-
-  See <https://epics.anl.gov/tech-talk/2012/msg02138.php>.
-
-  :::
-
-  :::{seealso}
-
-  - <https://docs.epics-controls.org/en/latest/guides/EPICS_Intro.html>.
-
-  :::
-
 **Record**
-  EPICS-based control system contains one or more IOC programs.
-  Each IOC program loads one or more databases.
+  EPICS-based control system contains one or more IOC.
+  Each IOC loads one or more databases.
   A database is a collection of records of various types.
 
   A Record is an object with:
@@ -216,9 +231,12 @@ This folder is created by the `makeBaseApp.pl` EPICS command.
 
 **PV**
   A Process Variable is an "instantiated"/"implemented" record.
-  I.e. once the IOC program is started,
+  I.e. once the IOC is started,
   each previously defined record will have an associated PV running.
   A Record is just a blueprint for a PV.
+
+  This variable is the addressable unit of data accessible through the EPICS communication protocols
+  (Channel Access and PV Access).
 
   :::{seealso}
 
@@ -297,7 +315,7 @@ This folder is created by the `makeBaseApp.pl` EPICS command.
 
   :::{seealso}
 
-  <https://docs.epics-controls.org/en/latest/appdevguide/databaseDefinition.html>
+  - <https://docs.epics-controls.org/en/latest/appdevguide/databaseDefinition.html>
 
   :::
 
@@ -318,10 +336,10 @@ This folder is created by the `makeBaseApp.pl` EPICS command.
 **`.cmd` file**
   A `.cmd` file is an EPICS executable file
   that starts with a [Shebang](https://en.wikipedia.org/wiki/Shebang_(Unix))
-  instructing the program loader to run the associated IOC program,
+  instructing the program loader to run the associated IOC,
   passing the content of the `.cmd` file as the first argument.
 
-  This `.cmd` file is mostly used to run the IOC program
+  This `.cmd` file is mostly used to run the IOC
   after loading all the associated EPICS "configuration" files
   (e.g. `.dbd`, `.db`, `.template`, `.substitutions`, etc).
 
@@ -331,36 +349,96 @@ This folder is created by the `makeBaseApp.pl` EPICS command.
 
   :::
 
-**`iocBoot` directory**
-  TODO
-
-**`bin` directory**
-  TODO
-
-**`lib` directory**
-  TODO
-
-**`db` directory**
-  TODO
-
-**`dbd` directory**
-  TODO
-
-**`configure` directory**
-  TODO
-
 **IOC Shell**
 
   Also called `iocsh`.
 
   The IOC Shell describes both the EPICS terminal shell which is launched
-  after running an IOC programm,
+  after running an IOC,
   and the EPICS script language used to interact with that terminal shell
   (which is also used in the `.cmd` file).
 
   :::{seealso}
 
   - <https://docs.epics-controls.org/en/latest/appdevguide/gettingStarted.html?highlight=cmd#run-the-ioc-example>
+
+  :::
+
+**`iocBoot` directory**
+  This directory is created into your Top after running the `makeBaseApp.pl` EPICS command.
+
+  You'll find this directory at the root of your Top (and in the `result` directory if using EPNix).
+
+  It contains sub-directories,
+  usually one per App,
+  with a name starting with `ioc` (e.g. `iocMyIOC`).
+  Each sub-dir is associated to a specific App through the `makeBaseApp.pl` EPICS command.
+
+  Inside the sub-directories, you'll find the `.cmd` file allowing to start the IOC.
+  You'll also find the `envPaths` file,
+  created after building the Top,
+  which contains some environment variables to be loaded at the start of the `.cmd`.
+
+**`bin` directory**
+  This directory is created into your Top after building it,
+  either with `make` or with `nix build` if using EPNix.
+
+  You'll find this directory at the root of your Top or in the `result` directory if using EPNix.
+
+  The binary executable file(s) will end up there.
+  This binary is call from the [Shebang](https://en.wikipedia.org/wiki/Shebang_(Unix))
+  at the very start of the `.cmd` file,
+  allowing to "run" your IOC.
+
+**`lib` directory**
+  This directory is created into your Top after building it,
+  either with `make` or with `nix build` if using EPNix.
+
+  You'll find this directory at the root of your Top or in the `result` directory if using EPNix.
+
+  The library file(s) will end up there.
+
+**`db` directory**
+  This directory is created into your Top after building it,
+  either with `make` or with `nix build` if using EPNix.
+
+  You'll find this directory at the root of your Top or in the `result` directory if using EPNix.
+
+  All the `.db` files will end up beeing copied there,
+  allowing to find them with more ease
+  (e.g. at runtime from the `.cmd` file, or from the IOC Shell).
+
+**`dbd` directory**
+
+  This directory is created into your Top after building it,
+  either with `make` or with `nix build` if using EPNix.
+
+  You'll find this directory at the root of your Top or in the `result` directory if using EPNix.
+
+  All the `.dbd` files will end up beeing copied there,
+  allowing to find them with more ease
+  (e.g. at runtime from the `.cmd` file, or from the IOC Shell).
+
+**`configure` directory**
+  This directory is created into your Top after running the `makeBaseApp.pl` EPICS command.
+
+  You'll find this directory at the root of your Top (and in the `result` directory if using EPNix).
+
+  It might contains some of the bellow configuration files:
+
+  - `CONFIG`: EPICS configuration file for builds;
+  - `CONFIG_SITE`: EPICS configuration file for application-specific builds;
+  - `CONFIG_SITE.local`: EPICS configuration file allowing to override CONFIG_SITE without having to modify it;
+  - `RELEASE`: EPICS configuration file for base and external support modules location;
+  - `RELEASE.local`: EPICS configuration file allowing to override RELEASE without having to modify it;
+  - `RULES`: EPICS configuration file including the appropriate rules configuration file;
+  - `RULES.ioc`: EPICS build configuration file of the iocBoot/ sub-directorie(s);
+  - `RULES_DIRS`: EPICS build configuration file of each subdirectory;
+  - `RULES_TOP`: EPICS configuration file specific to a Top.
+
+  :::{seealso}
+
+  - https://docs.epics-controls.org/en/latest/build-system/specifications.html#configuration-files
 
   :::
 
@@ -381,7 +459,21 @@ This folder is created by the `makeBaseApp.pl` EPICS command.
   :::
 
 **PVA**
-  TODO
+  PV Access (PVA) is the "new" communication protocol
+  used between EPICS servers (i.e. IOCs)
+  and EPICS clients
+  (i.e. HMI monitoring tools, archiving softwares, alarms systems, etc).
+  It is mostly used to share PVs information across a network (like CA).
+  But it also encompasses a structured data encoding referred to as PV Data.
+
+  :::{seealso}
+
+  - <https://epics-controls.org/resources-and-support/documents/pvaccess/>
+  - <https://github.com/epics-base/pvAccessCPP/wiki/protocol>
+  - <docs-epics-controls:pv-access/overview.html>
+
+  :::
+
 
 ::::
 
