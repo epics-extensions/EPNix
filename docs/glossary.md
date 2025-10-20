@@ -316,14 +316,14 @@ This folder is created by the `makeBaseApp.pl` EPICS command.
   :::
 
 **`.cmd` file**
+  This `.cmd` file is mostly used to run the IOC program
+  and loading all the associated EPICS "configuration" files
+  (e.g. `.dbd`, `.db`, `.template`, `.substitutions`, etc).
+
   A `.cmd` file is an EPICS executable file
   that starts with a [Shebang](https://en.wikipedia.org/wiki/Shebang_(Unix))
   instructing the program loader to run the associated IOC program,
   passing the content of the `.cmd` file as the first argument.
-
-  This `.cmd` file is mostly used to run the IOC program
-  after loading all the associated EPICS "configuration" files
-  (e.g. `.dbd`, `.db`, `.template`, `.substitutions`, etc).
 
   :::{seealso}
 
