@@ -48,6 +48,7 @@ Nix
   with official backing from the NixOS Foundation.
 
   Those packages are usable by any Linux distribution.
+
   :::{seealso}
 
   - <https://nixos.wiki/wiki/Nixpkgs>
@@ -89,16 +90,6 @@ Nix
 
 **IOC**
   Input/Output Controller. This is the I/O server component of EPICS.
-  Almost any computing platform that can support EPICS basic components,
-  like databases and network communication,
-  can be used as an IOC.
-  One example is a regular desktop computer,
-  other examples are systems based on real-time operating systems
-  (like vxWorks or RTEMS)
-  and running on dedicated modular computing platforms
-  (like MicroTCA, VME or CompactPCI).
-  EPICS IOC can also run on low-cost hardware
-  (like RaspberryPi or similar).
 
   Note that the IOC term is ambiguous,
   it can both design the hardware on which the EPICS I/O server is running,
@@ -125,6 +116,18 @@ Nix
   See <https://epics.anl.gov/tech-talk/2012/msg02138.php>.
 
   :::
+
+  From the hardware perspective,
+  almost any computing platform that can support EPICS basic components
+  (like databases and network communication),
+  can be used as an IOC.
+  One example is a regular desktop computer,
+  other examples are systems based on real-time operating systems
+  (like vxWorks or RTEMS)
+  and running on dedicated modular computing platforms
+  (like MicroTCA, VME or CompactPCI).
+  EPICS IOC can also run on low-cost hardware
+  (like RaspberryPi or similar).
 
   :::{seealso}
 
@@ -161,11 +164,12 @@ Nix
   inside the [autosave Top](https://github.com/epics-modules/autosave).
   This folder is created by the `makeBaseApp.pl` EPICS command
   and contains by default two sub-directories:
+
   - The `Db` sub-directory,
-  containing --- among other things --- the "database" declaration of your application
-  (see `.db` file bellow);
+    containing --- among other things --- the "database" declaration of your application
+    (see `.db` file bellow);
   - The `src` sub-directory,
-  containing the source code of your application.
+    containing the source code of your application.
 
   :::{seealso}
 
@@ -178,7 +182,8 @@ Nix
   refers to another directory inside a Top
   (the name of that directory has to be suffixed with `Sup`).
   When compiling/building a Top,
-  Sups are meant to be built before Apps,
+  Sups are functionally the same as Apps,
+  but they are meant to be built before,
   in order to be used by Apps.
   For example: the `devOpcuaSup` directory
   inside the [opcua Top](https://github.com/epics-modules/opcua/tree/master).
@@ -224,25 +229,27 @@ Nix
 
   :::{seealso}
 
-  - <https://docs.epics-controls.org/en/latest/guides/EPICS_Process_Database_Concepts.html?highlight=PV#the-epics-process-database>
+  - <https://docs.epics-controls.org/en/latest/process-database/EPICS_Process_Database_Concepts.html?highlight=PV#the-epics-process-database>
   - <https://docs.epics-controls.org/en/latest/appdevguide/databaseDefinition.html?highlight=record#record-record-instance>
 
   :::
 
 **PV**
-  A Process Variable is an "instantiated"/"implemented" record.
-  I.e. once the IOC is started,
+  A Process Variable is a value or variable accessible through EPICS communication protocols
+  (Channel Access and PV Access).
+  You can address this value using its unique PV name.
+
+  In the technical sense,
+  a PV is an "instantiated"/"implemented" record.
+  I.e. once the IOC program is started,
   each previously defined record will have an associated PV running.
   A Record is just a blueprint for a PV.
 
-  This variable is the addressable unit of data accessible through the EPICS communication protocols
-  (Channel Access and PV Access).
-
   :::{seealso}
 
-  - <https://docs.epics-controls.org/en/latest/specs/ca_protocol.html?highlight=Process%20Variable#process-variables>
-  - <https://docs.epics-controls.org/en/latest/guides/EPICS_Process_Database_Concepts.html?highlight=Process%20Variable>
-  - <https://docs.epics-controls.org/en/latest/guides/EPICS_Process_Database_Concepts.html?highlight=Process%20Variable#process-chains>
+  - <https://docs.epics-controls.org/en/latest/internal/ca_protocol.html?highlight=Process%20Variable#process-variables>
+  - <https://docs.epics-controls.org/en/latest/process-database/EPICS_Process_Database_Concepts.html?highlight=Process%20Variable>
+  - <https://docs.epics-controls.org/en/latest/process-database/EPICS_Process_Database_Concepts.html?highlight=Process%20Variable#process-chains>
 
   :::
 
@@ -277,27 +284,28 @@ Nix
 **`.db` file**
   A DataBase file (`.db`) or record instance file,
   is an EPICS "configuration" file
-  containing only record instances/implementations definitions.
+  containing only record definitions.
   This file is like a list of records,
   which will details their associated types, names and fields.
 
   :::{seealso}
 
   - <https://docs.epics-controls.org/en/latest/appdevguide/databaseDefinition.html?highlight=database%20file#dbloadrecords>
-  - <https://docs.epics-controls.org/en/latest/guides/EPICS_Process_Database_Concepts.html>
-  - <https://docs.epics-controls.org/projects/how-tos/en/latest/applications/common-database-patterns.html>
-  - <https://docs.epics-controls.org/projects/how-tos/en/latest/getting-started/creating-ioc.html?highlight=db#creation-of-an-input-output-controller-ioc>
+  - <https://docs.epics-controls.org/en/latest/process-database/EPICS_Process_Database_Concepts.html>
+  - <https://docs.epics-controls.org/en/latest/process-database/common-database-patterns.html>
+  - <https://docs.epics-controls.org/en/latest/getting-started/creating-ioc.html?highlight=db>
 
   :::
 
 **`.template` file**
   A Template file (`.template`) is just like a `.db` file,
-  but also including macro(s).
+  but have macros that needs to be replaced,
+  usually with a `.substitutions` file.
 
   :::{seealso}
 
   - <https://docs.epics-controls.org/en/latest/appdevguide/databaseDefinition.html?highlight=template#example-7>
-  - <https://docs.epics-controls.org/en/latest/specs/EPICSBuildFacility.html?highlight=template#templates>
+  - <https://docs.epics-controls.org/en/latest/build-system/specifications.html?highlight=template#templates>
 
   :::
 
@@ -334,14 +342,14 @@ Nix
   :::
 
 **`.cmd` file**
+  The `.cmd` file is mostly used to run the IOC
+  and to load all the associated EPICS "configuration" files
+  (e.g. `.dbd`, `.db`, `.template`, `.substitutions`, etc).
+
   A `.cmd` file is an EPICS executable file
   that starts with a [Shebang](https://en.wikipedia.org/wiki/Shebang_(Unix))
   instructing the program loader to run the associated IOC,
   passing the content of the `.cmd` file as the first argument.
-
-  This `.cmd` file is mostly used to run the IOC
-  after loading all the associated EPICS "configuration" files
-  (e.g. `.dbd`, `.db`, `.template`, `.substitutions`, etc).
 
   :::{seealso}
 
@@ -404,7 +412,7 @@ Nix
 
   You'll find this directory at the root of your Top or in the `result` directory if using EPNix.
 
-  All the `.db` files will end up beeing copied there,
+  All the `.db` files will end up being copied there,
   allowing to find them with more ease
   (e.g. at runtime from the `.cmd` file, or from the IOC Shell).
 
@@ -415,7 +423,7 @@ Nix
 
   You'll find this directory at the root of your Top or in the `result` directory if using EPNix.
 
-  All the `.dbd` files will end up beeing copied there,
+  All the `.dbd` files will end up being copied there,
   allowing to find them with more ease
   (e.g. at runtime from the `.cmd` file, or from the IOC Shell).
 
@@ -438,7 +446,7 @@ Nix
 
   :::{seealso}
 
-  - https://docs.epics-controls.org/en/latest/build-system/specifications.html#configuration-files
+  - <https://docs.epics-controls.org/en/latest/build-system/specifications.html#configuration-files>
 
   :::
 
@@ -474,6 +482,4 @@ Nix
 
   :::
 
-
 ::::
-
