@@ -285,7 +285,7 @@ This folder is created by the `makeBaseApp.pl` EPICS command.
   :::{seealso}
 
   - <https://docs.epics-controls.org/en/latest/appdevguide/databaseDefinition.html?highlight=template#example-7>
-  - <https://docs.epics-controls.org/en/latest/specs/EPICSBuildFacility.html?highlight=template#templates>
+  - <https://docs.epics-controls.org/en/latest/build-system/specifications.html?highlight=template#templates>
 
   :::
 
