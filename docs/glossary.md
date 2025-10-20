@@ -285,10 +285,8 @@ This folder is created by the `makeBaseApp.pl` EPICS command.
 
 **`.dbd` file**
   A DataBase Definition file is an EPICS "configuration" file
-  containing any sort of definitions except for record instances/implementations
-  (like found in the `.db` and `.template` files),
-  because record instances/implementations are fundamentally different
-  from the other definitions.
+  containing any sort of definitions except for record definitions
+  (like found in the `.db` and `.template` files).
 
   A file containing record instances
   should never contain any of the other definitions and vice-versa.
