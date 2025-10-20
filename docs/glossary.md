@@ -1,7 +1,7 @@
 # Glossary
 
 ::::{glossary}
-**Nix**
+Nix
   Nix is a cross-platform package manager claiming to be:
 
   - Reproducible.
