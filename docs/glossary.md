@@ -216,7 +216,11 @@ This folder is created by the `makeBaseApp.pl` EPICS command.
   :::
 
 **PV**
-  A Process Variable is an "instantiated"/"implemented" record.
+  A PV is a value or variable accessible through Channel Access.
+  You can address this value using its unique PV name.
+
+  In the technical sense,
+  a Process Variable is an "instantiated"/"implemented" record.
   I.e. once the IOC program is started,
   each previously defined record will have an associated PV running.
   A Record is just a blueprint for a PV.
