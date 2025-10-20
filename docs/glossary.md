@@ -30,8 +30,8 @@ Nix
 
 **NixOS**
   NixOS is a Linux distribution based on the Nix package manager and build system.
-  All components of this distribution — including the kernel,
-  installed packages and system configuration files —
+  All components of this distribution --- including the kernel,
+  installed packages and system configuration files ---
   are built by Nix from "pure functions" called Nix expressions.
 
   :::{seealso}
