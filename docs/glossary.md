@@ -114,7 +114,7 @@ Nix
   This is where you can effectively implement the logic of your EPICS application.
   For example: the `asApp` directory
   inside the [autosave Top](https://github.com/epics-modules/autosave).
-
+This folder is created by the `makeBaseApp.pl` EPICS command.
   :::{seealso}
 
   - <https://docs.epics-controls.org/en/latest/appdevguide/gettingStarted.html?highlight=app#usage>.
