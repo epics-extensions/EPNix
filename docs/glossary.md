@@ -264,7 +264,7 @@ This folder is created by the `makeBaseApp.pl` EPICS command.
 **`.db` file**
   A DataBase file (`.db`) or record instance file,
   is an EPICS "configuration" file
-  containing only record instances/implementations definitions.
+  containing only record definitions.
   This file is like a list of records,
   which will details their associated types, names and fields.
 
