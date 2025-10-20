@@ -305,10 +305,9 @@ This folder is created by the `makeBaseApp.pl` EPICS command.
   A `.substitutions` file is an EPICS "configuration" file
   that allows to load one or more `.template` files, multiple times.
 
-  The syntax of a `.substitutions` file is covered in
-  [this documentation](https://docs.epics-controls.org/en/latest/appdevguide/databaseDefinition.html?highlight=template#template-file-syntax)
-  and the format of a `.substitutions` file is covered in
-  [this documentation](https://docs.epics-controls.org/en/latest/appdevguide/databaseDefinition.html?highlight=template#template-file-formats).
+  See the [template file syntax documentation](https://docs.epics-controls.org/en/latest/appdevguide/databaseDefinition.html?highlight=template#template-file-syntax)
+  and the [template file format documentation](https://docs.epics-controls.org/en/latest/appdevguide/databaseDefinition.html?highlight=template#template-file-formats)
+  of a `.substitutions` file.
 
   :::{seealso}
 
