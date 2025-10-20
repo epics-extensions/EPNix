@@ -126,7 +126,8 @@ This folder is created by the `makeBaseApp.pl` EPICS command.
   refers to another directory inside a Top
   (the name of that directory has to be suffixed with `Sup`).
   When compiling/building a Top,
-  Sups are meant to be built before Apps,
+  Sups are functionally the same as Apps,
+  but they are meant to be built before,
   in order to be used by Apps.
   For example: the `devOpcuaSup` directory
   inside the [opcua Top](https://github.com/epics-modules/opcua/tree/master).
