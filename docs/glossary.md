@@ -106,28 +106,11 @@ Nix
   if not specified/clarified,
   the term "IOC" will always refer to software IOC / IOC program.
 
-  :::
-
-  :::{warning}
-
   *Not to confused with SoftIOC*,
   which is undefined/unclear and may have a different meaning.
 
   See <https://epics.anl.gov/tech-talk/2012/msg02138.php>.
-
   :::
-
-  From the hardware perspective,
-  almost any computing platform that can support EPICS basic components
-  (like databases and network communication),
-  can be used as an IOC.
-  One example is a regular desktop computer,
-  other examples are systems based on real-time operating systems
-  (like vxWorks or RTEMS)
-  and running on dedicated modular computing platforms
-  (like MicroTCA, VME or CompactPCI).
-  EPICS IOC can also run on low-cost hardware
-  (like RaspberryPi or similar).
 
   :::{seealso}
 
