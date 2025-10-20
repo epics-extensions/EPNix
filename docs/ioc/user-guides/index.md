@@ -9,6 +9,7 @@
 
 private-repo-setup
 flake-registry
+specifying-flake-inputs
 dependency-updates
 developing-modules
 reccaster
