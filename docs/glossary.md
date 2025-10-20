@@ -223,9 +223,9 @@ This folder is created by the `makeBaseApp.pl` EPICS command.
 
   :::{seealso}
 
-  - <https://docs.epics-controls.org/en/latest/specs/ca_protocol.html?highlight=Process%20Variable#process-variables>
-  - <https://docs.epics-controls.org/en/latest/guides/EPICS_Process_Database_Concepts.html?highlight=Process%20Variable>
-  - <https://docs.epics-controls.org/en/latest/guides/EPICS_Process_Database_Concepts.html?highlight=Process%20Variable#process-chains>
+  - <https://docs.epics-controls.org/en/latest/internal/ca_protocol.html?highlight=Process%20Variable#process-variables>
+  - <https://docs.epics-controls.org/en/latest/process-database/EPICS_Process_Database_Concepts.html?highlight=Process%20Variable>
+  - <https://docs.epics-controls.org/en/latest/process-database/EPICS_Process_Database_Concepts.html?highlight=Process%20Variable#process-chains>
 
   :::
 
