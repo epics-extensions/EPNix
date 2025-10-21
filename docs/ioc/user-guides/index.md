@@ -12,6 +12,7 @@ flake-registry
 dependencies
 specifying-flake-inputs
 dependency-updates
+deploying
 developing-modules
 reccaster
 mrf-devices
