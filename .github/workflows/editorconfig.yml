@@ -15,4 +15,5 @@ jobs:
         persist-credentials: false
     - uses: nixbuild/nix-quick-install-action@63ca48f939ee3b8d835f4126562537df0fee5b91 # v32
     - name: "Check EditorConfig"
-      run: nix run 'nixpkgs#eclint' --inputs-from .
+      run: |
+        nix run 'nixpkgs#editorconfig-checker' --inputs-from . -- -format github-actions -no-color
