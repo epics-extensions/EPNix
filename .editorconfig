@@ -14,10 +14,6 @@ insert_final_newline = unset
 indent_style = space
 indent_size = 2
 
-# Formatting is checked with the Nix formatter,
-# no need to check it with eclint
-eclint_indent_style = unset
-
 [*.md]
 indent_style = space
 
