@@ -4,13 +4,14 @@
   fetchgit,
   setuptools,
   epicscorelibs,
+  pyyaml,
   pvxslibs,
   epicsdbbuilder,
   epnixLib,
 }:
 buildPythonPackage rec {
   pname = "softioc";
-  version = "4.5.0";
+  version = "4.6.1";
 
   pyproject = true;
 
@@ -18,7 +19,7 @@ buildPythonPackage rec {
     url = "https://github.com/DiamondLightSource/pythonSoftIOC.git";
     rev = version;
     fetchSubmodules = true;
-    hash = "sha256-JXfFkA3MzipqUw0riMTZmgCP9qe4Tfj8vZaFBwqoO+c=";
+    hash = "sha256-wvzV+5fwdqKhlZ2QmhLIuw7JdhXtKlfNWMmBiLJgCPY=";
   };
 
   # Set correct version instead of automatically detected version:
@@ -32,6 +33,7 @@ buildPythonPackage rec {
     epicscorelibs
     epicsdbbuilder
     pvxslibs
+    pyyaml
   ];
 
   meta = {
