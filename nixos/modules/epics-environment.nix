@@ -56,7 +56,7 @@ in
         This option enable the default ports of the Channel Access protocol.
         If in your IOC you manually change the ports.
         You will need to open them manually.
-        With the NixOS option `networking.firewall.allowedTCPPorts` & `networking.firewall.allowedUDPPorts`
+        With the NixOS option {nix:option}`networking.firewall.allowedTCPPorts` & {nix:option}`networking.firewall.allowedUDPPorts`
       '';
       type = lib.types.bool;
       default = false;
@@ -67,7 +67,7 @@ in
         This option enable the default ports of the pvAccess protocol.
         If in your IOC you manually change the ports.
         You will need to open them manually.
-        With the NixOS option `networking.firewall.allowedTCPPorts` & `networking.firewall.allowedUDPPorts`
+        With the NixOS option {nix:option}`networking.firewall.allowedTCPPorts` & {nix:option}`networking.firewall.allowedUDPPorts`
       '';
       type = lib.types.bool;
       default = false;

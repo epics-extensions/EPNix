@@ -245,6 +245,21 @@ Programs installed via the `environment.systemPackages` option are *not* availab
 to systemd services.
 :::
 
+## Add firewall rules
+
+You can open the firewall for your IOC with the option
+{nix:option}`environment.epics.openCAFirewall` and for PVA {nix:option}`environment.epics.openPVAFirewall`
+
+And you can enable the discovery of your IOC on the network with {nix:option}`environment.epics.allowBroadcastDiscovery`
+
+For more information about theses options you can refer you to:
+
+
+:::{tip}
+If your firewall is enable you need to use theses option.
+Otherwise your IOC will be not reachable on the network.
+:::
+
 ## Further customization
 
 For other customization of IOC services,
