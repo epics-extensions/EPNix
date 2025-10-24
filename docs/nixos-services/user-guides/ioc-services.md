@@ -87,6 +87,7 @@ and import the exposed service:
 
 Then apply your NixOS configuration.
 
+
 ## Adding an external IOC
 
 As an alternative,
@@ -159,6 +160,11 @@ Make sure to import it in your {file}`flake.nix`.
 For a list of all IOC-related options,
 see {nix:option}`services.iocs`.
 :::
+
+## Firewall
+
+For the EPICS firewall configuration,
+follow the {doc}`epics-firewall` guide.
 
 (custom-cmd)=
 ## Custom cmd file

@@ -31,19 +31,27 @@ and Kafka’s `clusterId`:
 ```{code-block} nix
 :caption: {file}`phoebus-alarm.nix`
 
-{lib, pkgs, ...}: let
+{ lib, pkgs, ... }:
+let
   # Replace this with your machine's external IP address
   # or DNS domain name
   ip = "192.168.1.42";
   kafkaListenSockAddr = "${ip}:9092";
   kafkaControllerListenSockAddr = "${ip}:9093";
-in {
+in
+{
   # The Phoebus Alarm server also automatically enables the Phoebus Alarm Logger
   services.phoebus-alarm-server = {
     enable = true;
     openFirewall = true;
     settings."org.phoebus.applications.alarm/server" = kafkaListenSockAddr;
   };
+
+  # Uncomment if you use the "auto address list", which is the default,
+  # or if you have broadcast addresses in your "address list":
+  # --
+  #environment.epics.allowCABroadcastDiscovery = true;
+  #environment.epics.allowPVABroadcastDiscovery = true;
 
   services.phoebus-alarm-logger.settings."bootstrap.servers" = kafkaListenSockAddr;
 
@@ -69,12 +77,15 @@ in {
       "controller.quorum.voters" = [
         "1@${kafkaControllerListenSockAddr}"
       ];
-      "controller.listener.names" = ["CONTROLLER"];
+      "controller.listener.names" = [ "CONTROLLER" ];
 
       "node.id" = 1;
-      "process.roles" = ["broker" "controller"];
+      "process.roles" = [
+        "broker"
+        "controller"
+      ];
 
-      "log.dirs" = ["/var/lib/apache-kafka"];
+      "log.dirs" = [ "/var/lib/apache-kafka" ];
       "offsets.topic.replication.factor" = 1;
       "transaction.state.log.replication.factor" = 1;
       "transaction.state.log.min.isr" = 1;
@@ -84,7 +95,7 @@ in {
   systemd.services.apache-kafka.unitConfig.StateDirectory = "apache-kafka";
 
   # Open kafka to the outside world
-  networking.firewall.allowedTCPPorts = [9092];
+  networking.firewall.allowedTCPPorts = [ 9092 ];
 
   # Phoebus alarm needs ElasticSearch.
   # If not already enabled elsewhere in your configuration,
@@ -96,7 +107,8 @@ in {
 
   # Elasticsearch, needed by Phoebus Alarm Logger, is not free software (SSPL | Elastic License).
   # To accept the license, add the code below:
-  nixpkgs.config.allowUnfreePredicate = pkg:
+  nixpkgs.config.allowUnfreePredicate =
+    pkg:
     builtins.elem (lib.getName pkg) [
       "elasticsearch"
     ];
@@ -117,6 +129,11 @@ org.phoebus.applications.alarm/server=192.168.1.42:9092
 # Replace the IP address again
 org.phoebus.applications.alarm.logging.ui/service_uri=http://192.168.1.42:8080
 ```
+
+:::{seealso}
+For more information about configuring the firewall for EPICS,
+see the {doc}`epics-firewall` guide.
+:::
 
 ## Configuring topics
 

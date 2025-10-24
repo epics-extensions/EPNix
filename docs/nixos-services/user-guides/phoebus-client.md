@@ -108,6 +108,20 @@ or by using flakes:
 }
 ```
 
+## Configure the firewall
+
+If you use the "auto address list," which is the default,
+or if you have broadcast addresses in your "address list,"
+make sure to set these options:
+
+- {nix:option}`environment.epics.allowCABroadcastDiscovery` for Channel Access
+- {nix:option}`environment.epics.allowPVABroadcastDiscovery` for pvAccess
+
+:::{seealso}
+For more information about configuring the firewall for EPICS,
+see the {doc}`epics-firewall` guide.
+:::
+
 ## Configure the address list
 
 The {nix:option}`programs.phoebus-client.settings` module uses the values
