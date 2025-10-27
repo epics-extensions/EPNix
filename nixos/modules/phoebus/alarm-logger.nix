@@ -112,8 +112,7 @@ in
               Two threads per topic/configuration are required.
             '';
             type = lib.types.ints.positive;
-            default = config.services.elasticsearch.port;
-            defaultText = lib.literalExpression "config.services.elasticsearch.port";
+            default = 4;
             apply = toString;
           };
         };
