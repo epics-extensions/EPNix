@@ -1,5 +1,6 @@
 {
   lib,
+  epnixLib,
   buildPythonPackage,
   pythonAtLeast,
   fetchFromGitHub,
@@ -50,11 +51,11 @@ buildPythonPackage rec {
 
   pythonImportsCheck = [ "lewis" ];
 
-  meta = with lib; {
+  meta = {
     description = "Let's write intricate simulators";
     homepage = "https://github.com/ISISComputingGroup/lewis";
     mainProgram = "lewis";
-    license = licenses.gpl3Only;
-    maintainers = with maintainers; [ minijackson ];
+    license = lib.licenses.gpl3Only;
+    maintainers = with epnixLib.maintainers; [ minijackson ];
   };
 }

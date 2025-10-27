@@ -1,5 +1,6 @@
 {
   lib,
+  epnixLib,
   buildPythonPackage,
   fetchPypi,
   setuptools,
@@ -22,10 +23,10 @@ buildPythonPackage rec {
 
   pythonImportsCheck = [ "scanf" ];
 
-  meta = with lib; {
+  meta = {
     description = "A small scanf implementation";
     homepage = "https://pypi.org/project/scanf/";
-    license = licenses.mit;
-    maintainers = with maintainers; [ minijackson ];
+    license = lib.licenses.mit;
+    maintainers = with epnixLib.maintainers; [ minijackson ];
   };
 }

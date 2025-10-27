@@ -4,7 +4,6 @@
   lib,
   ...
 }@args:
-with lib;
 let
   self = {
     inherit inputs;
@@ -83,15 +82,15 @@ let
     resolveInput =
       { inputs }@available:
       input:
-      if isDerivation input then
+      if lib.isDerivation input then
         input
-      else if hasPrefix "/" input then
+      else if lib.hasPrefix "/" input then
         input
       else
         let
-          path = splitString "." input;
+          path = lib.splitString "." input;
         in
-        { pname = last path; } // getAttrFromPath path available;
+        { pname = lib.last path; } // lib.getAttrFromPath path available;
   };
 in
 self

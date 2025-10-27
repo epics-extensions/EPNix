@@ -153,7 +153,7 @@ stdenv.mkDerivation (finalAttrs: {
       open62541Full-mbedtls = open62541Full "mbedtls";
     };
 
-  meta = with lib; {
+  meta = {
     description = "Open source implementation of OPC UA, version 1.3";
     longDescription = ''
       open62541 (http://open62541.org) is an open source and free implementation
@@ -169,8 +169,8 @@ stdenv.mkDerivation (finalAttrs: {
     '';
     homepage = "https://www.open62541.org";
     changelog = "https://github.com/open62541/open62541/releases/tag/v${finalAttrs.version}";
-    license = licenses.mpl20;
+    license = lib.licenses.mpl20;
     maintainers = with epnixLib.maintainers; [ minijackson ];
-    platforms = platforms.linux;
+    platforms = lib.platforms.linux;
   };
 })
