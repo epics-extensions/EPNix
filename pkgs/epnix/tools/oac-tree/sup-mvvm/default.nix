@@ -8,13 +8,13 @@
 }:
 stdenv.mkDerivation (self: {
   pname = "sup-mvvm";
-  version = "1.8";
+  version = "2.0";
 
   src = fetchFromGitHub {
     owner = "oac-tree";
     repo = self.pname;
     rev = "v${self.version}";
-    hash = "sha256-/eZIGuuPKOd1LNkD2I3r040GlQUMSfZwXCepfgYTd+A=";
+    hash = "sha256-p8NeTUHpHYpWBWpC2hMJ9cw4bqkd+CcirXe4gmakX6Y=";
   };
 
   nativeBuildInputs = [cmake];

@@ -9,13 +9,13 @@
 }:
 stdenv.mkDerivation (self: {
   pname = "sup-gui-extra";
-  version = "1.8";
+  version = "1.9";
 
   src = fetchFromGitHub {
     owner = "oac-tree";
     repo = self.pname;
     rev = "v${self.version}";
-    hash = "sha256-cfoY8HbTwGWIeMhz8LPZLvyXxQmzBSShJgKdlAtUFtY=";
+    hash = "sha256-6k/zVLzkn379x6Yk5qX7Fzx2y9L3dsWJwAlEcRayFA0=";
   };
 
   nativeBuildInputs = [cmake];

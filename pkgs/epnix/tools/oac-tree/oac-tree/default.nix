@@ -7,13 +7,13 @@
 }:
 stdenv.mkDerivation (self: {
   pname = "oac-tree";
-  version = "4.1";
+  version = "4.3";
 
   src = fetchFromGitHub {
     owner = "oac-tree";
     repo = self.pname;
     rev = "v${self.version}";
-    hash = "sha256-BecUdMhowwR/8X+o7afcl38WfCep2cllKV5bzw9mwgs=";
+    hash = "sha256-MWOaxNnWpYt21VNMonlJXFDn7A//ItptZU+AcaU78jQ=";
   };
 
   nativeBuildInputs = [cmake];

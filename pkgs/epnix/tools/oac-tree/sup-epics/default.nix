@@ -11,13 +11,13 @@
 }:
 stdenv.mkDerivation (self: {
   pname = "sup-epics";
-  version = "1.7";
+  version = "1.9";
 
   src = fetchFromGitHub {
     owner = "oac-tree";
     repo = self.pname;
     rev = "v${self.version}";
-    hash = "sha256-JscVogvU2xjujGht+ORdkd0OGlsFIe+2EwyAjmecQ+o=";
+    hash = "sha256-8mrRTCHBZVUOI5mSQpJgtNtajysEMSgvyAejM++cmj4=";
   };
 
   # postPatch = ''
@@ -31,6 +31,7 @@ stdenv.mkDerivation (self: {
     sup-dto
     sup-protocol
     sup-di
+    sup-utils
     epnix.epics-base7
     epnix.support.pvxs
   ];

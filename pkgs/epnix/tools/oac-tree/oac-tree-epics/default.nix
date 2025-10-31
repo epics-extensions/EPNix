@@ -7,13 +7,13 @@
 }:
 stdenv.mkDerivation (self: {
   pname = "oac-tree-epics";
-  version = "4.1";
+  version = "4.3";
 
   src = fetchFromGitHub {
     owner = "oac-tree";
     repo = self.pname;
     rev = "v${self.version}";
-    hash = "sha256-NEcAuPSeg2ZYdYOAjzXFHm3X2bwa0/B5OlFcYUjOsDs=";
+    hash = "sha256-KuM3KF9E3GlB4p7axq4c8abRAfNl2JuaaG8r7j13XS4=";
   };
 
   nativeBuildInputs = [cmake];

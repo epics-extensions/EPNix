@@ -13,13 +13,13 @@
 in
   stdenv.mkDerivation (self: {
     pname = "oac-tree-server";
-    version = "2.1";
+    version = "2.3";
 
     src = fetchFromGitHub {
       owner = "oac-tree";
       repo = self.pname;
       rev = "v${self.version}";
-      hash = "sha256-CRNGwaPsRFbjTWvaCpNoyhtpKwzOjhwzW+n+QmigN80=";
+      hash = "sha256-0fTTsegFBrXd18YbG8O7TYcJdBeMm3x8dC/BnmdoIac=";
     };
 
     nativeBuildInputs = [cmake];

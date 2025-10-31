@@ -7,13 +7,13 @@
 }:
 stdenv.mkDerivation (self: {
   pname = "sup-protocol";
-  version = "2.4";
+  version = "2.6";
 
   src = fetchFromGitHub {
     owner = "oac-tree";
     repo = self.pname;
     rev = "v${self.version}";
-    hash = "sha256-mTGWWtXRuFiH/tCm1C1TIOaOJMlOz2RGcs/w8xHVMHg=";
+    hash = "sha256-BbqJrhGBWq9y5E8KKWfch8EzyzHis8VHS9Fnqu0N5B4=";
   };
 
   nativeBuildInputs = [cmake];

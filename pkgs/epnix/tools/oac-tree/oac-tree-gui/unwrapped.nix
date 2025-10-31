@@ -16,13 +16,13 @@
 in
   stdenv.mkDerivation (self: {
     pname = "oac-tree-gui-unwrapped";
-    version = "1.8";
+    version = "2.0";
 
     src = fetchFromGitHub {
       owner = "oac-tree";
       repo = "oac-tree-gui";
       rev = "v${self.version}";
-      hash = "sha256-bwyJ1e9lpHTI60WHGJzKYrWPJaMsz5X4JC9mna254Lo=";
+      hash = "sha256-+k65dDbh/VczwjvLI3WSfjWW4NQwulwQDnHht45Ex64=";
     };
 
     nativeBuildInputs = [
