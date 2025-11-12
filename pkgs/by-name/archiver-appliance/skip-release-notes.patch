@@ -1,12 +1,13 @@
-diff --git a/build.gradle b/build.gradle
-index ab47afb6e2..f6edd72f93 100644
---- a/build.gradle
-+++ b/build.gradle
-@@ -366,7 +366,6 @@
- 	dependsOn "retreivalWar"
- 	dependsOn "etlWar"
- 	dependsOn "engineWar"
--	dependsOn "generateReleaseNotes"
+diff --git i/build.gradle.kts w/build.gradle.kts
+index a1075be4..e97a5ffc 100644
+--- i/build.gradle.kts
++++ w/build.gradle.kts
+@@ -405,7 +405,7 @@ tasks.register<War>("retrievalWar") { // Corrected typo from retreivalWar
+ tasks.register<Tar>("buildRelease") {
+ 	group = "Wars"
+ 	description = "Builds a full release and zips up in a tar file."
+-	dependsOn("mgmtWar", "retrievalWar", "etlWar", "engineWar", "generateReleaseNotes")
++	dependsOn("mgmtWar", "retrievalWar", "etlWar", "engineWar")
  
- 	archiveFileName = "archappl_v${version}.tar.gz"
+ 	archiveFileName.set("archappl_v${version}.tar.gz")
  	compression = Compression.GZIP

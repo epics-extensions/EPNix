@@ -1,0 +1,12 @@
+diff --git i/build.gradle.kts w/build.gradle.kts
+index a1075be4..c584db53 100644
+--- i/build.gradle.kts
++++ w/build.gradle.kts
+@@ -212,7 +212,6 @@ tasks.withType<Javadoc>().configureEach {
+ 		author(true)
+ 		version(true)
+ 		isUse = true
+-		links("https://docs.oracle.com/en/java/javase/12/docs/api/")
+ 		taglets(
+ 				"org.epics.archiverappliance.taglets.BPLActionTaglet",
+ 				"org.epics.archiverappliance.taglets.BPLActionParamTaglet",
