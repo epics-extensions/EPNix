@@ -14,13 +14,13 @@
 }:
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "archiver-appliance";
-  version = "2.1.0";
+  version = "2.1.2";
 
   src = fetchFromGitHub {
     owner = "archiver-appliance";
     repo = "epicsarchiverap";
     rev = finalAttrs.version;
-    hash = "sha256-aphLKYbLNK474wR03oUHntIqIaBYyiRLXRJ65JOgrNI=";
+    hash = "sha256-Pxm3454xp3Gs7zXmAvUS3c5tcKQ30QmYA3SXCkBJQXY=";
   };
 
   patches = [
@@ -31,6 +31,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     ./fix-policies-shebang.patch
 
     ./fix-docs-build-script.patch
+    ./offline-javadoc.patch
   ];
 
   nativeBuildInputs = [
@@ -39,9 +40,11 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     sphinx
     python3Packages.myst-parser
     python3Packages.sphinx-rtd-theme
+    python3Packages.sphinxcontrib-mermaid
   ];
   buildInputs = [ python3 ];
 
+  gradleBuildTask = "buildRelease";
   gradleFlags = [
     "-PprojVersion=${finalAttrs.version}"
     "-Dorg.gradle.java.home=${jdk21}"
