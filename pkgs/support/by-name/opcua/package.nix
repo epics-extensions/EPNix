@@ -58,6 +58,6 @@ mkEpicsPackage {
     description = "EPICS support for communication with OPC UA protocol";
     homepage = "https://github.com/epics-modules/opcua";
     license = epnixLib.licenses.epics;
-    maintainers = with epnixLib.maintainers; [ vivien ];
+    maintainers = with epnixLib.maintainers; [ minijackson ];
   };
 }
