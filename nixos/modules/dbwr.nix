@@ -12,7 +12,7 @@ let
   # to add our parameters.
   transformContext = pkgs.writeText "dbwr-transform-context.xslt" ''
     <xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-    	<xsl:output method="xml" />
+      <xsl:output method="xml" />
         <!-- Identity template, copies everything as is -->
         <xsl:template match="@*|node()">
           <xsl:copy>
