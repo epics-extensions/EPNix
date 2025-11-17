@@ -23,54 +23,43 @@ let
     </appliances>
   '';
 
-  contextXml = pkgs.writeTextDir "/context.xml" ''
-    <?xml version="1.0" encoding="UTF-8"?>
-    <!--
-      Licensed to the Apache Software Foundation (ASF) under one or more
-      contributor license agreements.  See the NOTICE file distributed with
-      this work for additional information regarding copyright ownership.
-      The ASF licenses this file to You under the Apache License, Version 2.0
-      (the "License"); you may not use this file except in compliance with
-      the License.  You may obtain a copy of the License at
+  # An XSLT file to transform the /var/tomcat/conf/context.xml file,
+  # to add our parameters.
+  transformContext = pkgs.writeText "archiver-appliance-transform-context.xslt" ''
+    <xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+    	<xsl:output method="xml" />
+        <!-- Identity template, copies everything as is -->
+        <xsl:template match="@*|node()">
+          <xsl:copy>
+            <xsl:apply-templates select="@*|node()"/>
+          </xsl:copy>
+        </xsl:template>
+        <!-- Override for the <Context> block -->
+        <xsl:template match="Context">
+          <!-- Copy the element -->
+          <xsl:copy>
+            <xsl:apply-templates select="@*|node()"/>
 
-          http://www.apache.org/licenses/LICENSE-2.0
+            <!-- And append our elements -->
+            <xsl:comment> Configuration added by the Archiver Appliance EPNix NixOS module </xsl:comment>
+            <Resource
+              name="jdbc/archappl"
+              type="javax.sql.DataSource"
+              removeAbandonedTimeout="60"
+              removeAbandoned="true"
+              logAbandoned="true"
+              jmxEnabled="true"
+              driverClassName="org.mariadb.jdbc.Driver"
+              url="jdbc:mariadb://localhost:3306/archappl?localSocket=/run/mysqld/mysqld.sock"
+              />
 
-      Unless required by applicable law or agreed to in writing, software
-      distributed under the License is distributed on an "AS IS" BASIS,
-      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-      See the License for the specific language governing permissions and
-      limitations under the License.
-    -->
-    <!-- The contents of this file will be loaded for each web application -->
-    <Context>
-
-        <!-- Default set of monitored resources. If one of these changes, the    -->
-        <!-- web application will be reloaded.                                   -->
-        <WatchedResource>WEB-INF/web.xml</WatchedResource>
-        <WatchedResource>WEB-INF/tomcat-web.xml</WatchedResource>
-        <WatchedResource>''${catalina.base}/conf/web.xml</WatchedResource>
-
-        <!-- Uncomment this to disable session persistence across Tomcat restarts -->
-        <!--
-        <Manager pathname="" />
-        -->
-
-        <Resource
-          name="jdbc/archappl"
-          type="javax.sql.DataSource"
-          removeAbandonedTimeout="60"
-          removeAbandoned="true"
-          logAbandoned="true"
-          jmxEnabled="true"
-          driverClassName="org.mariadb.jdbc.Driver"
-          url="jdbc:mariadb://localhost:3306/archappl?localSocket=/run/mysqld/mysqld.sock"
-          />
-    </Context>
+          </xsl:copy>
+        </xsl:template>
+    </xsl:stylesheet>
   '';
 
-  loggingProperties = pkgs.writeTextDir "/logging.properties" ''
-    .handlers = java.util.logging.ConsoleHandler
-  '';
+  xsltproc = "${lib.getBin pkgs.libxslt}/bin/xsltproc";
+  xmllint = "${lib.getBin pkgs.libxml2}/bin/xmllint";
 
   log4j2Xml = pkgs.writeTextDir "/log4j2.xml" ''
     <Configuration>
@@ -315,11 +304,6 @@ in
 
       webapps = [ cfg.package ];
 
-      extraConfigFiles = [
-        "${loggingProperties}/logging.properties"
-        "${contextXml}/context.xml"
-      ];
-
       commonLibs = [
         "${log4j2Xml}/log4j2.xml"
 
@@ -341,6 +325,13 @@ in
       wants = [ "mysql.service" ];
 
       environment = cfg.settings;
+
+      preStart = ''
+        # Apply Archiver Appliance transformations to context.xml
+        ${xsltproc} ${transformContext} /var/tomcat/conf/context.xml | \
+          ${xmllint} --format - > /var/tomcat/conf/context.xml.new
+        mv /var/tomcat/conf/context.xml.new /var/tomcat/conf/context.xml
+      '';
     };
 
     networking.firewall.allowedTCPPorts = lib.mkIf cfg.openFirewall [ 8080 ];
