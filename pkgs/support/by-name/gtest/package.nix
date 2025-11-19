@@ -24,6 +24,6 @@ mkEpicsPackage {
     description = "EPICS module to adds the Google Test and Google Mock frameworks to EPICS";
     homepage = "https://github.com/epics-modules/gtest";
     license = epnixLib.licenses.epics;
-    maintainers = with epnixLib.maintainers; [ vivien ];
+    maintainers = with epnixLib.maintainers; [ minijackson ];
   };
 }

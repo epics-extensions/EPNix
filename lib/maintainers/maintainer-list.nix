@@ -72,8 +72,4 @@
     github = "Synthetica9";
     githubId = 7075751;
   };
-  vivien = {
-    email = "vivien.loriot@cea.fr";
-    name = "Vivien Loriot";
-  };
 }
