@@ -8,6 +8,7 @@
 :maxdepth: 2
 
 unit-testing
+integration-tests
 packaging-python-scripts
 ```
 
