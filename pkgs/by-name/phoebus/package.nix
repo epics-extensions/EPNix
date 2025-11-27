@@ -34,6 +34,8 @@ stdenv.mkDerivation {
 
     # Settings file
     ${lib.optionalString (settingsFile != null) "ln -sfn ${settingsFile} $out/settings.ini"}
+    # Documentation
+    ln -sfn ${phoebus-unwrapped}/share/doc/${phoebus-unwrapped.name}/html $out/doc
   '';
 
   # Don't move `$out/doc` to the correct location,
