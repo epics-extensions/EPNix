@@ -9,16 +9,16 @@
 }:
 mkEpicsPackage rec {
   pname = "pvxs";
-  version = "1.3.1";
+  version = "1.4.0";
   varname = "PVXS";
 
   inherit local_config_site local_release;
 
   src = fetchFromGitHub {
-    owner = "mdavidsaver";
+    owner = "epics-base";
     repo = "pvxs";
     rev = version;
-    sha256 = "sha256-V/38TdjuBuhZE7bsvtLfQ3QH7bmwNdKHpvVeA81oOXY=";
+    sha256 = "sha256-8f2rsMfCdGvKLwcR4piFkQnX+axg5VDRqXjg5maGUSs=";
   };
 
   # TODO: check pvxs cross-compilation,
