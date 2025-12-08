@@ -243,7 +243,7 @@ Nix
   A macro is a string substitution mechanism,
   that will allow some EPICS "configuration" files to be loaded
   after some strings have been replaced by others.
-  E.g. `MY-MACRO-NAME=toto`, will replace every `${MY-MACRO-NAME}` by `toto`
+  E.g. `MY_MACRO_NAME=toto`, will replace every `${MY_MACRO_NAME}` by `toto`
   in any associated "configuration" file.
   This is very useful e.g. when loading the same "configuration" file multiple times
   but with some intended implementations differences.
