@@ -22,9 +22,9 @@ Nix
 
   :::{seealso}
 
-  - <https://nixos.wiki/wiki/Nix_package_manager>
-  - <https://nixos.wiki/wiki/Overview_of_the_Nix_Language>
-  - <https://nixos.wiki/wiki/Nix_Ecosystem>
+  - <https://wiki.nixos.org/wiki/Nix_(package_manager)>
+  - <https://wiki.nixos.org/wiki/Nix_(language)>
+  - <https://wiki.nixos.org/wiki/Nix_ecosystem>
 
   :::
 
