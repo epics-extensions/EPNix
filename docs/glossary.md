@@ -457,8 +457,8 @@ Nix
   used between EPICS servers (i.e. IOCs)
   and EPICS clients
   (i.e. HMI monitoring tools, archiving softwares, alarms systems, etc).
-  It is mostly used to share PVs information across a network (like CA).
-  But it also encompasses a structured data encoding referred to as PV Data.
+  It is mostly used to share PVs information across a network (like CA),
+  but it also encompasses a structured data encoding referred to as PV Data.
 
   :::{seealso}
 
