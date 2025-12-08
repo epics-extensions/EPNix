@@ -225,11 +225,11 @@ Nix
   (Channel Access and PV Access).
   You can address this value using its unique PV name.
 
-  In the technical sense,
-  a PV is an "instantiated"/"implemented" record.
-  I.e. once the IOC program is started,
-  each previously defined record will have an associated PV running.
-  A Record is just a blueprint for a PV.
+  A Process Variable is a field from a record:
+  
+  ```
+  PV = record_name + "." + field_name
+  ```
 
   :::{seealso}
 
