@@ -2,7 +2,8 @@ epnixLib: inputs: final: prev:
 let
   inherit (final) callPackage;
   # From prev, else it somehow causes an infinite recursion
-  inherit (prev) recurseIntoAttrs lib;
+  inherit (prev) lib;
+  inherit (lib) recurseIntoAttrs;
   scope = prev: f: recurseIntoAttrs (lib.makeScope prev.newScope f);
 
   importByName =
