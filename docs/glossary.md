@@ -51,8 +51,8 @@ Nix
 
   :::{seealso}
 
-  - <https://nixos.wiki/wiki/Nixpkgs>
-  - <https://nixos.wiki/wiki/Nix_Ecosystem>
+  - <https://wiki.nixos.org/wiki/Nixpkgs>
+  - <https://wiki.nixos.org/wiki/Nix_ecosystem>
 
   :::
 
