@@ -36,8 +36,8 @@ Nix
 
   :::{seealso}
 
-  - <https://nixos.wiki/wiki/Overview_of_the_NixOS_Linux_distribution>
-  - <https://nixos.wiki/wiki/Nix_Ecosystem>
+  - <https://wiki.nixos.org/wiki/NixOS>
+  - <https://wiki.nixos.org/wiki/Nix_ecosystem>
   - <https://nixos.org/>
 
   :::
