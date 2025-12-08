@@ -178,6 +178,9 @@ Nix
   :::
 
 **Record**
+  Records are the building blocks of EPICS IOCs.
+  They usually correspond to a controllable parameter of some hardware.
+
   EPICS-based control system contains one or more IOC.
   Each IOC loads one or more databases.
   A database is a collection of records of various types.
