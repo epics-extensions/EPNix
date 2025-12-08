@@ -120,7 +120,7 @@ Nix
 
 **Top**
   An EPICS Top refers to the root of a directory (the "top" of the directory)
-  — *and its associated structure (i.e. sub-directories architecture)* —
+  --- *and its associated structure (i.e. sub-directories architecture)* ---
   where you can actually perform EPICS-specific development.
   You can find a lot of Top examples in the EPICS
   [modules](https://docs.epics-controls.org/en/latest/software/modules.html),
