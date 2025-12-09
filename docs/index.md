@@ -84,6 +84,7 @@ EPNix is under the MIT license.
 :hidden:
 :titlesonly:
 
+glossary
 advantages-disadvantages
 prerequisites
 cheatsheet
