@@ -1,38 +1,46 @@
 {
   buildPythonPackage,
   fetchFromGitHub,
-  setuptools_dso,
+  setuptools,
+  setuptools-dso,
   numpy,
   epicscorelibs,
   pvxslibs,
   cython,
-  setuptools,
+  nose2,
+  ply,
   lib,
   epnixLib,
 }:
 buildPythonPackage rec {
   pname = "p4p";
-  version = "4.2.0";
+  version = "4.2.1";
+  pyproject = true;
 
   src = fetchFromGitHub {
     owner = "epics-base";
     repo = pname;
-    rev = "4.2.0";
-    hash = "sha256-3vC3r1xiyi3j8fcXWV+rL4VFvxf6z4//Z7HV3cGkUP4=";
+    tag = version;
+    hash = "sha256-g386w3nhZbhcGloRMrukq8RqLpUyj5cvnuXyub3hNCI=";
   };
 
   # Configure exists as a directory, which nix assumes it has to execute...
   dontConfigure = true;
 
+  build-system = [ setuptools ];
   nativeBuildInputs = [
-    setuptools_dso
+    setuptools-dso
     cython
   ];
   dependencies = [
+    setuptools
     numpy
     epicscorelibs
     pvxslibs
-    setuptools
+  ];
+  checkInputs = [
+    nose2
+    ply
   ];
 
   meta = {
