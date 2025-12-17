@@ -88,6 +88,7 @@ advantages-disadvantages
 prerequisites
 cheatsheet
 release-notes/index
+glossary
 ```
 
 ```{toctree}
