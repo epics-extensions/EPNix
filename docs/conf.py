@@ -264,6 +264,8 @@ linkcheck_anchors_ignore_for_url = [
     r"^https://github.com/",
 ]
 
+linkcheck_retries = 3
+
 # -- Options for PlanUML -----------------------------------------------------
 # https://github.com/sphinx-contrib/plantuml/?tab=readme-ov-file#configuration
 
