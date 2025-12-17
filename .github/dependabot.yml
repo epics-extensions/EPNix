@@ -7,3 +7,5 @@ updates:
     groups:
       non-breaking-changes:
         update-types: [minor, patch]
+    cooldown:
+      default-days: 7
