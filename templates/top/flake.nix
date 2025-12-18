@@ -66,6 +66,10 @@
             # Directory where to find the 'st.cmd' file
             workingDirectory = "iocBoot/iocMyIoc";
           };
+
+          # To open the firewall, uncomment these lines:
+          #environment.epics.openCAFirewall = true;
+          #environment.epics.openPVAFirewall = true;
         };
 
       inherit (epnix) formatter;

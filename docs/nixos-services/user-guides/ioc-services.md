@@ -21,7 +21,7 @@ make sure your {file}`flake.nix` has these lines:
 
 ```{code-block} nix
 :caption: {file}`flake.nix` --- Exposed NixOS settings from your EPICS top
-:emphasize-lines: 5-12
+:emphasize-lines: 5-16
 
       overlays.default = final: _prev: {
         myIoc = final.callPackage ./ioc.nix {};
@@ -34,6 +34,10 @@ make sure your {file}`flake.nix` has these lines:
           # Directory where to find the 'st.cmd' file
           workingDirectory = "iocBoot/iocMyIoc";
         };
+
+        # To open the firewall, uncomment these lines:
+        #environment.epics.openCAFirewall = true;
+        #environment.epics.openPVAFirewall = true;
       };
 ```
 
@@ -151,6 +155,10 @@ Then create an {file}`{myIoc}.nix` file:
     # Directory where to find the 'st.cmd' file
     workingDirectory = "iocBoot/iocMyIoc";
   };
+
+  # To open the firewall, uncomment these lines:
+  #environment.epics.openCAFirewall = true;
+  #environment.epics.openPVAFirewall = true;
 }
 ```
 
