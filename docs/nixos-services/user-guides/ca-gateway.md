@@ -14,6 +14,11 @@ you can examine the [gateway main page].
 Make sure to follow the NixOS {doc}`prerequisites`.
 :::
 
+:::{seealso}
+For a complete list of all CA gateway-related options,
+see {nix:option}`services.ca-gateway`.
+:::
+
 ## Enabling the gateway
 
 To enable the gateway,
@@ -23,10 +28,12 @@ add this to your configuration:
 :caption: {file}`ca-gateway.nix`
 
 {
-  services.ca-gateway = {
-    enable = true;
-    openFirewall = true;
-  };
+  services.ca-gateway.enable = true;
+
+  environment.epics.openCAFirewall = true;
+  # Uncomment if you use an "auto address list"
+  # or if you have broadcast addresses in your "address list":
+  #environment.epics.allowCABroadcastDiscovery = true;
 }
 ```
 
@@ -35,15 +42,13 @@ In this configuration,
 the gateway listens on all interface with a broadcast IP address,
 and forwards all Channel Access request.
 
-The `openFirewall` option opens the
-5064 TCP,
-5064 UDP,
-and 5065 UDP ports on all network interfaces.
+For more information about the firewall configuration,
+see the {doc}`epics-firewall` guide.
 
 ## Firewall on specific interfaces
 
 If you want to enable the firewall on specific interfaces,
-you can remove the `openFirewall` option
+you can remove the {nix:option}`environment.epics` firewall options
 and configure the firewall manually.
 
 You can also use the `cip` setting
@@ -55,44 +60,45 @@ For example:
 ```{code-block} nix
 :caption: {file}`ca-gateway.nix`
 
-{config, ...}: {
+{ config, ... }:
+{
   services.ca-gateway = {
     enable = true;
     # Server side listen address
     # Let's say this IP address is on enp0s2
-    settings.sip = ["10.0.2.1"];
+    settings.sip = [ "10.0.2.1" ];
 
     # Let's also say the enp0s1 interface is
     # where communication with "real" IOCs happen (client side)
-
-    # openFirewall is left as false by default
   };
 
-  networking.firewall = let
-    gwSettings = config.services.ca-gateway.settings;
-  in {
-    interfaces = {
-      # Open the firewall on the interface from the client side of the gateway,
-      # this will be the side of the gateway listening
-      # for replies to beacons and PV search requests
-      "enp0s1".allowedUDPPorts = [5065];
+  networking.firewall =
+    let
+      gwSettings = config.services.ca-gateway.settings;
+    in
+    {
+      interfaces = {
+        # Open the firewall on the interface from the client side of the gateway,
+        # this will be the side of the gateway listening
+        # for replies to beacons and PV search requests
+        "enp0s1".allowedUDPPorts = [ 5065 ];
 
-      # Open the firewall on the interface from the server side of the gateway,
-      # this will be the side of the gateway listening for Channel Access requests
-      "enp0s2" = {
-        # Use the value of the `sport` setting
-        allowedTCPPorts = [gwSettings.sport];
-        allowedUDPPorts = [gwSettings.sport];
+        # Open the firewall on the interface from the server side of the gateway,
+        # this will be the side of the gateway listening for Channel Access requests
+        "enp0s2" = {
+          # Use the value of the `sport` setting
+          allowedTCPPorts = [ gwSettings.sport ];
+          allowedUDPPorts = [ gwSettings.sport ];
+        };
       };
-    };
 
-    # Allow incoming UDP packets with *source* port 5064,
-    # from the client side of the gateway.
-    # This is needed to listen to CA broadcast responses
-    extraCommands = ''
-      ip46tables -A nixos-fw -p udp --sport 5064 -j nixos-fw-accept -i enp0s1
-    '';
-  };
+      # Allow incoming UDP packets with *source* port 5064,
+      # from the client side of the gateway.
+      # This is needed to listen to CA broadcast responses
+      extraCommands = ''
+        ip46tables -A nixos-fw -p udp --sport 5064 -j nixos-fw-accept -i enp0s1
+      '';
+    };
 }
 ```
 
@@ -143,7 +149,8 @@ For example:
 ```{code-block} nix
 :caption: {file}`ca-gateway.nix`
 
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   services.ca-gateway = {
     enable = true;
     # These PVs get exposed by the gateway

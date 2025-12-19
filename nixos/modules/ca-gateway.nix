@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  options,
   pkgs,
   ...
 }:
@@ -18,12 +19,16 @@ let
   toCommandLine = lib.cli.toGNUCommandLine { inherit mkOptionName mkList; };
 
   commandLine = lib.escapeShellArgs (toCommandLine cfg.settings);
+
+  firewallOpt = options.services.ca-gateway.openFirewall;
 in
 {
   options.services.ca-gateway = {
     enable = lib.mkEnableOption "the Channel Access PV gateway";
 
+    # TODO: remove in EPNix 26.11
     openFirewall = lib.mkOption {
+      visible = false;
       description = ''
         Open the firewall for allowing Channel Access communications.
 
@@ -187,6 +192,10 @@ in
       }
     ];
 
+    warnings = lib.optional cfg.openFirewall ''
+      The option `services.ca-gateway.openFirewall' defined in ${lib.showFiles firewallOpt.files} has been deprecated in favor of `environment.epics.openCAFirewall' and `environment.epics.allowCABroadcastDiscovery'. Please read the EPNix CA gateway documentation and update your configuration accordingly.
+    '';
+
     systemd.services.ca-gateway = {
       description = "Channel Access PV gateway";
 
@@ -260,20 +269,9 @@ in
       };
     };
 
-    networking.firewall = lib.mkIf cfg.openFirewall {
-      allowedTCPPorts = [ cfg.settings.sport ];
-      allowedUDPPorts = [
-        cfg.settings.sport
-
-        # Repeater port
-        5065
-      ];
-
-      # Allow UDP packets coming from 5064,
-      # which is needed to listen to CA broadcast responses
-      extraCommands = ''
-        ip46tables -A nixos-fw -p udp --sport ${toString cfg.settings.cport} -j nixos-fw-accept
-      '';
+    environment.epics = lib.mkIf cfg.openFirewall {
+      openCAFirewall = true;
+      allowCABroadcastDiscovery = true;
     };
   };
 }

@@ -48,7 +48,6 @@
         environment.systemPackages = [ pkgs.epnix.epics-base ];
         services.ca-gateway = {
           enable = true;
-          openFirewall = true;
           settings = {
             # One unicast, one broadcast
             cip = [
@@ -64,6 +63,9 @@
             '';
           };
         };
+
+        environment.epics.openCAFirewall = true;
+        environment.epics.allowCABroadcastDiscovery = true;
 
         # Put 3 first here so that the /etc/hosts file in VMs
         # has the gateway IP from vlan 3
