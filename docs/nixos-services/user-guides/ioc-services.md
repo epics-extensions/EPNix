@@ -21,7 +21,7 @@ make sure your {file}`flake.nix` has these lines:
 
 ```{code-block} nix
 :caption: {file}`flake.nix` --- Exposed NixOS settings from your EPICS top
-:emphasize-lines: 5-12
+:emphasize-lines: 5-16
 
       overlays.default = final: _prev: {
         myIoc = final.callPackage ./ioc.nix {};
@@ -34,6 +34,10 @@ make sure your {file}`flake.nix` has these lines:
           # Directory where to find the 'st.cmd' file
           workingDirectory = "iocBoot/iocMyIoc";
         };
+
+        # To open the firewall, uncomment these lines:
+        #environment.epics.openCAFirewall = true;
+        #environment.epics.openPVAFirewall = true;
       };
 ```
 
@@ -86,6 +90,7 @@ and import the exposed service:
 ```
 
 Then apply your NixOS configuration.
+
 
 ## Adding an external IOC
 
@@ -150,6 +155,10 @@ Then create an {file}`{myIoc}.nix` file:
     # Directory where to find the 'st.cmd' file
     workingDirectory = "iocBoot/iocMyIoc";
   };
+
+  # To open the firewall, uncomment these lines:
+  #environment.epics.openCAFirewall = true;
+  #environment.epics.openPVAFirewall = true;
 }
 ```
 
@@ -159,6 +168,11 @@ Make sure to import it in your {file}`flake.nix`.
 For a list of all IOC-related options,
 see {nix:option}`services.iocs`.
 :::
+
+## Firewall
+
+For the EPICS firewall configuration,
+follow the {doc}`epics-firewall` guide.
 
 (custom-cmd)=
 ## Custom cmd file

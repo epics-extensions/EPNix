@@ -22,6 +22,12 @@ add this to your configuration:
     enable = true;
     openFirewall = true;
   };
+
+  # Uncomment if you use the "auto address list", which is the default,
+  # or if you have broadcast addresses in your "address list":
+  # --
+  #environment.epics.allowCABroadcastDiscovery = true;
+  #environment.epics.allowPVABroadcastDiscovery = true;
 }
 ```
 
@@ -37,6 +43,11 @@ The {nix:option}`services.dbwr` NixOS module makes those applications available 
 :::{seealso}
 For a complete list of all DBWR- and PVWS-related options,
 see {nix:option}`services.dbwr`.
+:::
+
+:::{seealso}
+For more information about configuring the firewall for EPICS,
+see the {doc}`epics-firewall` guide.
 :::
 
 ## Configuring the address list
