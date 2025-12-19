@@ -3,7 +3,7 @@
   epnix,
   epnixLib,
   buildPythonPackage,
-  fetchPypi,
+  fetchFromGitHub,
   setuptools,
   setuptools-scm,
   pyparsing,
@@ -12,12 +12,14 @@
 }:
 buildPythonPackage rec {
   pname = "pyepics";
-  version = "3.5.8";
+  version = "3.5.9";
   format = "pyproject";
 
-  src = fetchPypi {
-    inherit pname version;
-    hash = "sha256-1E5qyUBLWoJ6UiTN43Q4e0f28/iRyEN929L5+5E7ulE=";
+  src = fetchFromGitHub {
+    owner = "pyepics";
+    repo = pname;
+    tag = version;
+    hash = "sha256-X09gxahL0Y/leGNgeG+T7BYCIBxgXULjsC5mM8uFgbs=";
   };
 
   nativeBuildInputs = [
