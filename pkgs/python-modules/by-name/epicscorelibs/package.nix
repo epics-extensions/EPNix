@@ -9,11 +9,13 @@
 }:
 buildPythonPackage rec {
   pname = "epicscorelibs";
-  version = "7.0.7.99.1.1";
+  version = "7.0.7.99.1.2";
+
+  pyproject = true;
 
   src = fetchPypi {
     inherit pname version;
-    hash = "sha256-+d0sAZE88TlZ6ILHwq/M1dVc1QhL1FlyAeoRn2V1IjE=";
+    hash = "sha256-KnSlO0OLu77vE8dGQKTTBg013njOiYnzFYFI84U0zUM=";
   };
 
   dontConfigure = true;
