@@ -22,14 +22,14 @@ buildPythonPackage rec {
     hash = "sha256-X09gxahL0Y/leGNgeG+T7BYCIBxgXULjsC5mM8uFgbs=";
   };
 
-  nativeBuildInputs = [
+  build-system = [
     setuptools
     setuptools-scm
   ];
 
   buildInputs = [ epnix.epics-base ];
 
-  propagatedBuildInputs = [
+  dependencies = [
     pyparsing
     numpy
     importlib-resources
