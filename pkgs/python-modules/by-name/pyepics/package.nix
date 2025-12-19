@@ -3,31 +3,43 @@
   epnix,
   epnixLib,
   buildPythonPackage,
-  fetchPypi,
+  fetchFromGitHub,
   setuptools,
   setuptools-scm,
   pyparsing,
   numpy,
   importlib-resources,
+  sphinxHook,
+  sphinx-copybutton,
+  numpydoc,
 }:
 buildPythonPackage rec {
   pname = "pyepics";
-  version = "3.5.8";
+  version = "3.5.9";
   format = "pyproject";
 
-  src = fetchPypi {
-    inherit pname version;
-    hash = "sha256-1E5qyUBLWoJ6UiTN43Q4e0f28/iRyEN929L5+5E7ulE=";
+  src = fetchFromGitHub {
+    owner = "pyepics";
+    repo = pname;
+    tag = version;
+    hash = "sha256-X09gxahL0Y/leGNgeG+T7BYCIBxgXULjsC5mM8uFgbs=";
   };
 
-  nativeBuildInputs = [
+  patches = [ ./remove-unused-sphinx-extension.patch ];
+
+  build-system = [
     setuptools
     setuptools-scm
   ];
 
+  nativeBuildInputs = [
+    sphinxHook
+    sphinx-copybutton
+    numpydoc
+  ];
   buildInputs = [ epnix.epics-base ];
 
-  propagatedBuildInputs = [
+  dependencies = [
     pyparsing
     numpy
     importlib-resources
