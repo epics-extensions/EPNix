@@ -9,6 +9,9 @@
   pyparsing,
   numpy,
   importlib-resources,
+  sphinxHook,
+  sphinx-copybutton,
+  numpydoc,
 }:
 buildPythonPackage rec {
   pname = "pyepics";
@@ -22,11 +25,18 @@ buildPythonPackage rec {
     hash = "sha256-X09gxahL0Y/leGNgeG+T7BYCIBxgXULjsC5mM8uFgbs=";
   };
 
+  patches = [ ./remove-unused-sphinx-extension.patch ];
+
   build-system = [
     setuptools
     setuptools-scm
   ];
 
+  nativeBuildInputs = [
+    sphinxHook
+    sphinx-copybutton
+    numpydoc
+  ];
   buildInputs = [ epnix.epics-base ];
 
   dependencies = [
