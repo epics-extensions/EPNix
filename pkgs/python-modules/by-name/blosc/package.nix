@@ -25,6 +25,8 @@ buildPythonPackage rec {
     hash = "sha256-EBviPf9D1NFEMwIMzd2zf3jZIQpQCaSE9cvFYdBC7tQ=";
   };
 
+  patches = [ ./dont-use-deprecated-fromstring-binary-mode.patch ];
+
   build-system = [
     py-cpuinfo
     scikit-build
