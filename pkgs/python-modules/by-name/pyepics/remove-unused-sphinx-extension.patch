@@ -1,0 +1,13 @@
+diff --git i/doc/conf.py w/doc/conf.py
+index 2b9e75e..f011e76 100644
+--- i/doc/conf.py
++++ w/doc/conf.py
+@@ -4,7 +4,7 @@
+ import epics
+ 
+ extensions = ['sphinx.ext.autodoc', 'sphinx.ext.mathjax',
+-              'sphinx.ext.napoleon', 'sphinxcontrib.video',
++              'sphinx.ext.napoleon',
+               'sphinx_copybutton', 'numpydoc']
+ templates_path = ['_templates']
+ 
