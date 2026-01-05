@@ -3,17 +3,23 @@
   fetchFromGitHub,
   lib,
   epnixLib,
+  setuptools,
 }:
 buildPythonPackage rec {
   pname = "epicsdbbuilder";
   version = "1.5";
+  pyproject = true;
 
   src = fetchFromGitHub {
     owner = "DiamondLightSource";
     repo = pname;
-    rev = version;
+    tag = version;
     hash = "sha256-H+8dJY6nY/4ogxcoZVmZzI7STI4x0urQKddlTifAqGQ=";
   };
+
+  patches = [ ./relax-deps.patch ];
+
+  build-system = [ setuptools ];
 
   meta = {
     description = "Tool for building EPICS databases";

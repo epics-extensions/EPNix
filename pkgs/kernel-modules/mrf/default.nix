@@ -1,8 +1,8 @@
 {
   stdenv,
   kernel,
+  kernelModuleMakeFlags,
   epnix,
-  fetchpatch,
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "mrf-driver";
@@ -23,12 +23,10 @@ stdenv.mkDerivation (finalAttrs: {
     export sourceRoot="$(pwd)/${finalAttrs.src.name}/mrmShared/linux";
   '';
 
-  makeFlags = kernel.makeFlags ++ [
+  makeFlags = kernelModuleMakeFlags ++ [
     "-C"
     "${kernel.dev}/lib/modules/${kernel.modDirVersion}/build"
-    "KERNELRELEASE=${kernel.modDirVersion}"
     "INSTALL_MOD_PATH=$(out)"
-    "VERSION=${finalAttrs.version}"
     "M=$(sourceRoot)"
     # Uncomment this line to enable debugging
     # "KCFLAGS=-DDBG"
