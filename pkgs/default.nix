@@ -54,10 +54,7 @@ recurseIntoAttrs {
 
       support = scope self (self: importByName ./support/by-name self);
 
-      # Lewis needs Python < 3.12
-      inherit (final.python311Packages) lewis;
-
-      inherit (final.python3Packages) pyepics;
+      inherit (final.python3Packages) lewis pyepics;
 
       pythonSoftIOC = final.python3Packages.softioc;
 
