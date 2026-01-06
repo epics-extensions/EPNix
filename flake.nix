@@ -47,7 +47,7 @@
           };
         in
         {
-          packages = flake-utils.lib.flattenTree pkgs.epnix;
+          packages = flake-utils.lib.flattenTree (pkgs.epnix // pkgs.epnixOutsideDefaultScopes);
 
           checks = {
             # Everything should always build
