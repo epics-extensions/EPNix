@@ -21,18 +21,26 @@ recurseIntoAttrs {
   # TODO: remove once every package uses the EPNix scope
   mkEpicsPackage = callPackage ./by-name/mkEpicsPackage/package.nix { };
 
+  epnixPythonPackages = self: recurseIntoAttrs (importByName ./python-modules/by-name self);
   pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
-    (final: _prev: importByName ./python-modules/by-name final)
+    (f: _prev: final.epnixPythonPackages f)
   ];
 
+  epnixLinuxPackages =
+    self:
+    recurseIntoAttrs {
+      mrf = self.callPackage ./kernel-modules/mrf { };
+    };
   linuxKernel = prev.linuxKernel // {
     packagesFor =
-      kernel:
-      (prev.linuxKernel.packagesFor kernel).extend (
-        final: _prev: {
-          mrf = final.callPackage ./kernel-modules/mrf { };
-        }
-      );
+      kernel: (prev.linuxKernel.packagesFor kernel).extend (f: _prev: final.epnixLinuxPackages f);
+  };
+
+  # All EPNix packages defined in scopes outside of `pkgs.epnix`,
+  # but only their "default" implementation (for example `python3Packages` or `linuxPackages`)
+  epnixOutsideDefaultScopes = {
+    python3Packages = final.epnixPythonPackages final.python3Packages;
+    linuxPackages = final.epnixLinuxPackages final.linuxPackages;
   };
 
   epnix = scope prev (

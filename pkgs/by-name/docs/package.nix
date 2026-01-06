@@ -8,6 +8,7 @@
   cacert,
   typst,
   installShellFiles,
+  epnixOutsideDefaultScopes,
   documentedEpnixPkgs ? epnix,
   iocConfig ? { },
 }:
@@ -144,7 +145,10 @@ stdenvNoCC.mkDerivation {
       };
       options.options = nixosOptions;
       packages = {
-        packages.epnix = documentedEpnixPkgs;
+        packages = {
+          epnix = documentedEpnixPkgs;
+        }
+        // epnixOutsideDefaultScopes;
         extraFilters = [
           (p: !(p.meta.hidden or false))
         ];
