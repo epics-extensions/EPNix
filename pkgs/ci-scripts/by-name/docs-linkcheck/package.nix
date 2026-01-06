@@ -30,8 +30,8 @@ writeShellApplication {
   '';
 
   meta = {
-    description = "Check the links in the documentation";
+    description = "Script that checks the links in the documentation";
     maintainers = with epnixLib.maintainers; [ minijackson ];
-    hidden = true;
+    license = lib.licenses.asl20;
   };
 }

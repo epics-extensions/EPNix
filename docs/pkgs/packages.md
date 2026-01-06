@@ -36,3 +36,15 @@ by using the `boot.extraModulePackages` option.
 
 ```{nix:autopackages} linuxPackages
 ```
+
+## CI scripts
+
+These packages are used by the EPNix CI.
+Make sure to read their source code
+before running them locally.
+
+These packages are internal to EPNix
+and have no stability guarantees.
+
+```{nix:autopackages} epnix.ci-scripts
+```
