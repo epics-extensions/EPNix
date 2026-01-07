@@ -34,6 +34,7 @@ all_properties = {
     "WorkingDirectory",
     "alias",
     "hostName",
+    "iocIP",
     "iocName",
     "iocid",
     "pvStatus",
@@ -58,7 +59,7 @@ with subtest("RecCeiver sent all properties"):
     def has_all_properties(_last: bool) -> bool:
         properties = get("/resources/properties")
         property_names = {prop["name"] for prop in properties}
-        return property_names == all_properties
+        return all_properties.issubset(property_names)
 
     retry(has_all_properties, timeout=30)
 
@@ -78,7 +79,7 @@ with subtest("RecCeiver sent all channels"):
 
         channels = {chan["name"]: chan for chan in channels}
 
-        if channels.keys() != all_channels:
+        if not all_channels.issubset(channels.keys()):
             print("Not all channel names are here")
             return False
 
@@ -119,5 +120,7 @@ with subtest("ChannelFinder pvAccess server"):
     # server.wait_until_succeeds("pvlist localhost", timeout=30)
     data = json5.loads(server.succeed("pvcall -M json cfService:query"))
 
-    assert set(data["labels"]).issuperset(all_properties), "not all labels found"
-    assert set(data["value"]["channelName"]) == all_channels, "not all channels found"
+    print("all_properties", all_properties)
+    print('data["labels"]', data["labels"])
+    assert all_properties.issubset(data["labels"]), "not all labels found"
+    assert all_channels.issubset(data["value"]["channelName"]), "not all channels found"

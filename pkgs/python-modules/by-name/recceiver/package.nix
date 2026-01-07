@@ -1,7 +1,6 @@
 {
   epnixLib,
   buildPythonPackage,
-  pythonAtLeast,
   fetchFromGitHub,
   python,
   setuptools-scm,
@@ -11,28 +10,17 @@
 }:
 buildPythonPackage rec {
   pname = "RecCeiver";
-  version = "1.6";
+  version = "1.7";
   pyproject = true;
-
-  # Should be fixed by https://github.com/ChannelFinder/recsync/pull/88
-  # but the patch doesn't apply cleanly
-  disabled = pythonAtLeast "3.12";
 
   src = fetchFromGitHub {
     owner = "ChannelFinder";
     repo = "recsync";
-    rev = "refs/tags/${version}";
-    hash = "sha256-9ApS4e1+oDgZfx7njOuGhezr4ekP2ekJVCc7yiTXRKo=";
+    tag = version;
+    hash = "sha256-IXwMEfHxzurqlfY73cAyk1PkLRQMZPhjzX+TIhZxrNU=";
   };
 
   sourceRoot = "${src.name}/server";
-
-  patches = [
-    # Defer Python imports of twisted's reactor, to prevent initializing it,
-    # preventing the error "reactor already installed"
-    # TODO: remove when upgrading to the next release
-    ./fix-reactor-import.patch
-  ];
 
   build-system = [ setuptools-scm ];
 

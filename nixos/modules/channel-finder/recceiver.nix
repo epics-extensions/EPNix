@@ -151,7 +151,7 @@ in
       '';
 
       serviceConfig = {
-        ExecStart = "${python}/bin/twistd --nodaemon --no_save --reactor=poll --pidfile= --logfile=- recceiver --config=${configFile}";
+        ExecStart = "${python}/bin/twistd --nodaemon --no_save --pidfile= --logfile=- recceiver --config=${configFile}";
         DynamicUser = true;
         Restart = "on-failure";
         # The recceiver fails if it can't contact channel-finder,
