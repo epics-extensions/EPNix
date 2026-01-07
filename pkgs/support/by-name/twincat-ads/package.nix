@@ -10,7 +10,7 @@
 }:
 mkEpicsPackage rec {
   pname = "twincat-ads";
-  version = "2.1.2";
+  version = "2.1.3";
   varname = "TWINCATADS";
 
   inherit local_config_site local_release;
@@ -20,7 +20,7 @@ mkEpicsPackage rec {
     repo = "twincat-ads";
     tag = "v${version}";
     fetchSubmodules = true;
-    hash = "sha256-IGcThxFcJqpbVMfzdQRvlHUtOOUkKRcDGEBY9J7mFao=";
+    hash = "sha256-VWqvIl8d0/rKTInZyWQ0YbrRoOvmQutEfIQj3NIpSYo=";
   };
 
   propagatedBuildInputs = [
