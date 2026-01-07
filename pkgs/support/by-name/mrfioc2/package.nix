@@ -1,16 +1,14 @@
 {
-  lib,
   epnixLib,
   mkEpicsPackage,
   fetchFromGitHub,
-  fetchpatch,
   devlib2,
   local_config_site ? { },
   local_release ? { },
 }:
 mkEpicsPackage rec {
   pname = "mrfioc2";
-  version = "2.7.1";
+  version = "2.7.2";
   varname = "MRFIOC2";
 
   inherit local_config_site local_release;
@@ -18,21 +16,15 @@ mkEpicsPackage rec {
   src = fetchFromGitHub {
     owner = "epics-modules";
     repo = "mrfioc2";
-    rev = version;
-    sha256 = "sha256-zK+cCWK9oOTH+NvCO0GiWKkwmtQYXvUuONSIV55pY1Y=";
+    tag = version;
+    sha256 = "sha256-AWwpv5JbnFwLMp/wku0lgI7TL0O0hqC+ycP/ypzwGbU=";
   };
 
   propagatedBuildInputs = [ devlib2 ];
 
-  postInstall = ''
-    if [[ -d iocBoot ]]; then
-      cp -rafv iocBoot -t "$out"
-    fi
-  '';
-
   meta = {
     description = "EPICS driver for Micro Research Finland event timing system devices";
-    homepage = "https://github.com/epics-modules/mrfioc2";
+    inherit (src.meta) homepage;
     license = epnixLib.licenses.epics;
     maintainers = with epnixLib.maintainers; [ agaget ];
   };
