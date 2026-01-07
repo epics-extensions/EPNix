@@ -2,30 +2,28 @@
   lib,
   epnixLib,
   buildPythonPackage,
-  fetchPypi,
-  setuptools,
-  wheel,
+  fetchFromGitHub,
+  flit-core,
 }:
 buildPythonPackage rec {
   pname = "scanf";
-  version = "1.5.2";
+  version = "1.6.0";
   pyproject = true;
 
-  src = fetchPypi {
-    inherit pname version;
-    hash = "sha256-V2M0QKAqE4zRS2k9CScK8KA7sBfo1M/SSMeYizG4y4E=";
+  src = fetchFromGitHub {
+    owner = "joshburnett";
+    repo = pname;
+    tag = "v${version}";
+    hash = "sha256-xiQh26bkGha8WCSWWdtcL+Ln+J1Rn5NyNKRbdSI1DgI=";
   };
 
-  nativeBuildInputs = [
-    setuptools
-    wheel
-  ];
+  build-system = [ flit-core ];
 
   pythonImportsCheck = [ "scanf" ];
 
   meta = {
     description = "A small scanf implementation";
-    homepage = "https://pypi.org/project/scanf/";
+    inherit (src.meta) homepage;
     license = lib.licenses.mit;
     maintainers = with epnixLib.maintainers; [ minijackson ];
   };
