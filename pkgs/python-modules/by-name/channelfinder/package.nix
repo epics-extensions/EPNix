@@ -4,25 +4,24 @@
   buildPythonPackage,
   fetchFromGitHub,
   python,
-  setuptools,
+  flit-core,
   requests,
   simplejson,
   urllib3,
 }:
 buildPythonPackage rec {
   pname = "channelfinder";
-  version = "3.0.0";
+  version = "3.0.1";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "ChannelFinder";
     repo = "pyCFClient";
-    rev = "refs/tags/v${version}";
-    hash = "sha256-83V6OgKUgkui1elroKdVr/KBNriSb9nfo8Ggd68AO/Y=";
+    tag = "v${version}";
+    hash = "sha256-VCmuezlKUDSEMSmp8Iww45WNY3pGgJG0geRIkubZemw=";
   };
 
-  # TODO: when a new version is released, switch to flit-core
-  build-system = [ setuptools ];
+  build-system = [ flit-core ];
 
   dependencies = [
     requests
