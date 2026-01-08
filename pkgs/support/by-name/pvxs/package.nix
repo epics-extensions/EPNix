@@ -9,7 +9,7 @@
 }:
 mkEpicsPackage rec {
   pname = "pvxs";
-  version = "1.4.1";
+  version = "1.5.0";
   varname = "PVXS";
 
   inherit local_config_site local_release;
@@ -18,7 +18,7 @@ mkEpicsPackage rec {
     owner = "epics-base";
     repo = "pvxs";
     tag = version;
-    sha256 = "sha256-y6aEYeBTW6T/VIqZB+uDDnavOIuAiZE5lAwFhs8Tz9o=";
+    hash = "sha256-aG/rm/ycSyViJ94vDnXMnd7WKdKQieYBb0z/QknGXc4=";
     fetchSubmodules = true;
   };
 
@@ -33,6 +33,7 @@ mkEpicsPackage rec {
   meta = {
     description = "PVA protocol client/server library and utilities";
     homepage = "https://mdavidsaver.github.io/pvxs/";
+    changelog = "https://epics-base.github.io/pvxs/releasenotes.html";
     license = lib.licenses.bsd3;
     maintainers = with epnixLib.maintainers; [ minijackson ];
   };
