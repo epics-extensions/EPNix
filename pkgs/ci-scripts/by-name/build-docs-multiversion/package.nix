@@ -118,8 +118,8 @@ writeShellApplication {
   '';
 
   meta = {
-    description = "Build ";
+    description = "Script that builds the multi-version variant of the EPNix documentation";
     maintainers = with epnixLib.maintainers; [ minijackson ];
-    hidden = true;
+    license = lib.licenses.asl20;
   };
 }
