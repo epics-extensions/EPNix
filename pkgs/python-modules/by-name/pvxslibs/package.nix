@@ -1,12 +1,11 @@
 {
   buildPythonPackage,
   epnix,
-  fetchPypi,
   setuptools,
   setuptools-dso,
   epicscorelibs,
 }:
-buildPythonPackage rec {
+buildPythonPackage {
   pname = "pvxslibs";
   inherit (epnix.support.pvxs) version src;
   pyproject = true;

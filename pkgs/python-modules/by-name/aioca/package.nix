@@ -10,15 +10,15 @@
 }:
 buildPythonPackage rec {
   pname = "aioca";
-  version = "1.8.1";
+  version = "2.0";
 
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "DiamondLightSource";
     repo = "aioca";
-    rev = "${version}";
-    hash = "sha256-szM/sVqeWWUj84lq/wsxNCf/aZwoCySeTnuLD+hYLyc=";
+    tag = version;
+    hash = "sha256-aXK+K8y9L9KeYWKs6Fs6AmpX1mDfYJGd8A/Gb11Yswo=";
   };
 
   build-system = [

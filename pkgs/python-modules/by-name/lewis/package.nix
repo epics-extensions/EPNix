@@ -6,9 +6,10 @@
   fetchFromGitHub,
   approvaltests,
   setuptools,
-  wheel,
+  setuptools-scm,
   json-rpc,
   mock,
+  pyasynchat,
   pytest,
   pyyaml,
   pyzmq,
@@ -17,31 +18,29 @@
 }:
 buildPythonPackage rec {
   pname = "lewis";
-  version = "1.3.1";
+  version = "1.3.5";
   pyproject = true;
-
-  # Due to mrjob, which is needed by approvaltests
-  disabled = pythonAtLeast "3.12";
 
   src = fetchFromGitHub {
     owner = "ISISComputingGroup";
     repo = "lewis";
-    rev = "v${version}";
-    hash = "sha256-7iMREHt6W26IzCFsRmojHqGuqIUHaCuvsKMMHuYflz0=";
+    tag = "v${version}";
+    hash = "sha256-VXZE+j/shlz1mLbDYECDNmLEeFGd2pl6+LEOGVHe0Zs=";
   };
 
-  nativeBuildInputs = [
+  build-system = [
     setuptools
-    wheel
+    setuptools-scm
   ];
 
-  propagatedBuildInputs = [
+  dependencies = [
     json-rpc
     pyyaml
     pyzmq
     scanf
     semantic-version
-  ];
+  ]
+  ++ (lib.optional (pythonAtLeast "3.12") pyasynchat);
 
   checkInputs = [
     approvaltests
@@ -53,7 +52,7 @@ buildPythonPackage rec {
 
   meta = {
     description = "Let's write intricate simulators";
-    homepage = "https://github.com/ISISComputingGroup/lewis";
+    inherit (src.meta) homepage;
     mainProgram = "lewis";
     license = lib.licenses.gpl3Only;
     maintainers = with epnixLib.maintainers; [ minijackson ];
