@@ -14,14 +14,14 @@
 }:
 buildPythonPackage rec {
   pname = "p4p";
-  version = "4.2.1";
+  version = "4.2.2";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "epics-base";
     repo = pname;
     tag = version;
-    hash = "sha256-g386w3nhZbhcGloRMrukq8RqLpUyj5cvnuXyub3hNCI=";
+    hash = "sha256-9STSSfao7RkAXJsdzx+nrvndx4tV4eE+olgTOZ0owX8=";
   };
 
   # Configure exists as a directory, which nix assumes it has to execute...
