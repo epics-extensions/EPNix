@@ -8,19 +8,17 @@
 }:
 maven.buildMavenPackage rec {
   pname = "phoebus-olog";
-  version = "5.0.4";
+  version = "5.1.2";
 
   src = fetchFromGitHub {
     owner = "Olog";
     repo = "phoebus-olog";
-    rev = "v${version}";
-    hash = "sha256-UudG3ltEZMOcMgwVNZJKdlaJZ9XsRaEsyKwqzcJ0yDs=";
+    tag = "v${version}";
+    hash = "sha256-5LcDBisr+uu43B3WwwzDNFNVfchuZb9shWDipgGIo2Q=";
   };
 
-  patches = [ ./fix-deps-reproducibility.patch ];
-
   mvnJdk = jdk21;
-  mvnHash = "sha256-xMiCU6k1cnlGUxqV35Qs20XOx9BMg7d5wPdNo6wTdHU=";
+  mvnHash = "sha256-6I+d6XEd6XYMZVaWyhk6YPBWAf3DnF8Xh2fDdxV7xk0=";
   mvnParameters = "-Dmaven.javadoc.skip=true -Dmaven.source.skip=true -Pdeployable-jar";
 
   nativeBuildInputs = [ makeWrapper ];
