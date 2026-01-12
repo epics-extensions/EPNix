@@ -11,8 +11,13 @@ let
       }
       ''
         import json
+        import sys
 
         from websockets.sync.client import connect
+
+
+        def eprint(*args, **kwargs):
+            print(*args, file=sys.stderr, **kwargs)
 
 
         def main():
@@ -34,21 +39,25 @@ let
                 subscribe = {"type": "subscribe", "pvs": ["calcExample"]}
                 websocket.send(json.dumps(subscribe))
                 message = websocket.recv(timeout=200)
+                eprint(message)
                 message = json.loads(websocket.recv(timeout=200))
                 value = message["value"]
 
                 message = json.loads(websocket.recv(timeout=200))
-                assert message["value"] == value + 1 % 10
+                eprint(message)
+                assert message["value"] == (value + 1) % 10
                 value = message["value"]
 
                 message = json.loads(websocket.recv(timeout=200))
-                assert message["value"] == value + 1 % 10
+                eprint(message)
+                assert message["value"] == (value + 1) % 10
                 value = message["value"]
 
                 # Test list
 
                 websocket.send(json.dumps({"type": "list"}))
                 message = json.loads(websocket.recv(timeout=200))
+                eprint(message)
                 assert message["pvs"] == ["calcExample"]
 
 
