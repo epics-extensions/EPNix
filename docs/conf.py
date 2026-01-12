@@ -8,6 +8,11 @@ import os
 import sys
 from datetime import date
 from pathlib import Path
+from urllib.parse import urlsplit
+
+from sphinx.util import logging
+
+logger = logging.getLogger(__name__)
 
 # Enables importing our custom "pygments_styles" module
 sys.path.append(os.path.abspath("./_ext"))
@@ -129,15 +134,20 @@ copybutton_exclude = ".linenos, .gp, .go"
 
 # -- Options for the Nix domain ----------------------------------------------
 
-nix_options_json_files = ["./nixos-options.json"]
-# Sphinx 7.4.0, the display of the hierarchy of objects in the TOC changed,
-# and sphinxcontrib-nixdomain doesn't support it,
-# so we just display the full option path in the TOC
-nix_toc_display_full_path = True
 
+def nixdomain_linkcode_resolve(path: str) -> str:
+    url = urlsplit(path)
 
-def nix_linkcode_resolve(path: str) -> str:
-    return f"{source_repository}/blob/{branch}/{path}"
+    fragment = "#" + url.fragment if url.fragment else ""
+
+    match url.netloc:
+        case "self":
+            return f"{source_repository}/blob/{branch}{url.path}{fragment}"
+        case "nixpkgs":
+            return f"https://github.com/NixOS/nixpkgs/blob/master{url.path}{fragment}"
+
+    logger.warning("no source repository for url: %s", path)
+    return ""
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -236,7 +246,6 @@ typst_documents = [
 
 man_pages = [
     ("ioc/references/options", "epnix-ioc", "IOC options reference", "", 5),
-    ("ioc/references/packages", "epnix-ioc-packages", "", "", 5),
     ("nixos-services/options-reference/index", "epnix-nixos", "", "", 5),
     ("pkgs/packages", "epnix-packages", "", "", 5),
 ]

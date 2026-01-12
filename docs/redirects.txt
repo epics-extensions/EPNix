@@ -4,3 +4,4 @@
 "development/guides/release-process.md" "contributing/guides/release-process.md"
 "pre-requisites.md" "prerequisites.md"
 "nixos-services/user-guides/pre-requisites.md" "nixos-services/user-guides/prerequisites.md"
+"ioc/references/packages" "pkgs/packages.md"

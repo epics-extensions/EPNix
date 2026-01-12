@@ -45,7 +45,7 @@ buildPythonPackage rec {
 
   meta = {
     description = "Python bindings for the PVAccess network client and server";
-    inherit (src) homepage;
+    inherit (src.meta) homepage;
     license = lib.licenses.bsd3;
     maintainers = with epnixLib.maintainers; [ synthetica ];
   };
