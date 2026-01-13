@@ -227,6 +227,11 @@ where breaking changes are forbidden.
 
 :::
 
+## Remove the "unreleased" mention in the release notes
+
+In the file {file}`docs/release-notes/{xxyy}.md`,
+remove the `(unreleased)` mention on the first line.
+
 ## Open a pull request
 
 Once you've verified that the new version is working,
@@ -283,6 +288,29 @@ before creating the branch.
 To build the manual,
 on GitHub,
 click the {menuselection}`Actions tab --> Book GitHub Pages --> Run workflow --> Run workflow`.
+
+## Create the next release notes
+
+Back on the `master` branch,
+create a commit that adds the file {file}`docs/release-notes/{xxyy}.md`
+for the *future* EPNix version,
+with the following content,
+while taking care of replacing the version in the first line:
+
+``````{code-block} markdown
+# XX.YY Release notes (unreleased)
+
+```{default-domain} nix
+```
+
+## Breaking changes
+
+No breaking change were introduced in this EPNix release.
+
+## New features and highlights
+
+## Documentation
+``````
 
 [branches view]: https://github.com/epics-extensions/EPNix/branches
 [nixos release notes]: https://nixos.org/manual/nixos/stable/release-notes
