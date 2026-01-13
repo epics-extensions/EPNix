@@ -66,8 +66,8 @@ and import the exposed service:
 
 {
   # ...
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
-  inputs.epnix.url = "github:epics-extensions/EPNix/nixos-25.05";
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+  inputs.epnix.url = "github:epics-extensions/EPNix/nixos-25.11";
   inputs.myTop.url = "git+ssh://git@my-gitlab-server.com/EPICS/myTop.git";
 
   # ...
@@ -109,8 +109,8 @@ For example:
 
 {
   # ...
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
-  inputs.epnix.url = "github:epics-extensions/EPNix/nixos-25.05";
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+  inputs.epnix.url = "github:epics-extensions/EPNix/nixos-25.11";
   inputs.myTop.url = "git+ssh://git@my-gitlab-server.com/EPICS/myTop.git";
 
   # ...
