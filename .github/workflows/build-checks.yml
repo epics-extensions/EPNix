@@ -81,7 +81,7 @@ jobs:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           persist-credentials: false
-      - uses: nixbuild/nix-quick-install-action@25aff27c252e0c8cdda3264805f7b6bcd92c8718 # v29
+      - uses: nixbuild/nix-quick-install-action@2c9db80fb984ceb1bcaa77cdda3fdf8cfba92035 # v34
       - uses: nix-community/cache-nix-action@b426b118b6dc86d6952988d396aa7c6b09776d08 # v7.0.0
         with:
           primary-key: all-checks-${{ runner.os }}-${{ hashFiles('.github/workflows/build-checks.yml') }}
