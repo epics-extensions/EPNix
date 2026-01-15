@@ -82,7 +82,7 @@ jobs:
         with:
           persist-credentials: false
       - uses: nixbuild/nix-quick-install-action@25aff27c252e0c8cdda3264805f7b6bcd92c8718 # v29
-      - uses: nix-community/cache-nix-action@8351fb9f51c580c96c509987ebb99e38aed956ce # v5.2.1
+      - uses: nix-community/cache-nix-action@b426b118b6dc86d6952988d396aa7c6b09776d08 # v7.0.0
         with:
           primary-key: all-checks-${{ runner.os }}-${{ hashFiles('.github/workflows/build-checks.yml') }}
           # Restore all caches of the nix-build job
