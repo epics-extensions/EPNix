@@ -6,15 +6,15 @@
   local_config_site ? { },
   local_release ? { },
 }:
-mkEpicsPackage rec {
+mkEpicsPackage (finalAttrs: {
   pname = "sscan";
   version = "2-11-6";
   varname = "SSCAN";
 
   src = fetchFromGitHub {
     owner = "epics-modules";
-    repo = pname;
-    rev = "R${version}";
+    repo = finalAttrs.pname;
+    tag = "R${finalAttrs.version}";
     sha256 = "sha256-hrPap4FBKMD4ddMrADOeTAmsG+rLFxALibT3qsAHNsk=";
   };
 
@@ -28,4 +28,4 @@ mkEpicsPackage rec {
     license = epnixLib.licenses.epics;
     maintainers = with epnixLib.maintainers; [ minijackson ];
   };
-}
+})

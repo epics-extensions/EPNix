@@ -6,7 +6,7 @@
   local_config_site ? { },
   local_release ? { },
 }:
-mkEpicsPackage rec {
+mkEpicsPackage (finalAttrs: {
   pname = "calc";
   version = "3-7-5";
   varname = "CALC";
@@ -14,7 +14,7 @@ mkEpicsPackage rec {
   src = fetchFromGitHub {
     owner = "epics-modules";
     repo = "calc";
-    rev = "R${version}";
+    tag = "R${finalAttrs.version}";
     sha256 = "sha256-S40HtO7HXDS27u7wmlxuo7oV1abtj1EaXfIz0Kj1IM0=";
   };
 
@@ -28,4 +28,4 @@ mkEpicsPackage rec {
     license = epnixLib.licenses.epics;
     maintainers = with epnixLib.maintainers; [ minijackson ];
   };
-}
+})

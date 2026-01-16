@@ -3,7 +3,7 @@
   mkEpicsPackage,
   fetchFromGitHub,
 }:
-mkEpicsPackage rec {
+mkEpicsPackage (finalAttrs: {
   pname = "RecCaster";
   version = "1.7";
   varname = "RECCASTER";
@@ -11,11 +11,11 @@ mkEpicsPackage rec {
   src = fetchFromGitHub {
     owner = "ChannelFinder";
     repo = "recsync";
-    tag = version;
+    tag = finalAttrs.version;
     hash = "sha256-IXwMEfHxzurqlfY73cAyk1PkLRQMZPhjzX+TIhZxrNU=";
   };
 
-  sourceRoot = "${src.name}/client";
+  sourceRoot = "${finalAttrs.src.name}/client";
 
   patches = [ ./fix-example-shebang.patch ];
 
@@ -25,4 +25,4 @@ mkEpicsPackage rec {
     license = epnixLib.licenses.epics;
     maintainers = with epnixLib.maintainers; [ minijackson ];
   };
-}
+})

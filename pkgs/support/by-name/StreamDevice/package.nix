@@ -10,18 +10,15 @@
   local_config_site ? { },
   local_release ? { },
 }:
-let
-  version = "2.8.26";
-in
-mkEpicsPackage {
+mkEpicsPackage (finalAttrs: {
   pname = "StreamDevice";
-  inherit version;
+  version = "2.8.26";
   varname = "STREAM";
 
   src = fetchFromGitHub {
     owner = "paulscherrerinstitute";
     repo = "StreamDevice";
-    rev = version;
+    tag = finalAttrs.version;
     # Tarball from GitHub is not completely reproducible due to usage of
     # export-subst in .gitattributes for .VERSION
     # See: https://epics.anl.gov/tech-talk/2022/msg01842.php
@@ -55,4 +52,4 @@ mkEpicsPackage {
     license = lib.licenses.lgpl3Plus;
     maintainers = with epnixLib.maintainers; [ minijackson ];
   };
-}
+})
