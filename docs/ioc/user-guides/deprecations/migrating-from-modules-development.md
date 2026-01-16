@@ -4,8 +4,11 @@
 Developing IOC using NixOS-like modules
 :::
 
+:::{versionremoved} 26.05
+:::
+
 :::{note}
-You need to upgrade your top to EPNix 25.05
+You need to upgrade your top to at least EPNix 25.05
 before migrating away from "modules development."
 :::
 
