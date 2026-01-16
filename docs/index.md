@@ -99,7 +99,6 @@ glossary
 ioc/tutorials/index
 ioc/user-guides/index
 ioc/explanations/index
-ioc/references/options
 ioc/faq
 ```
 

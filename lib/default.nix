@@ -9,23 +9,16 @@ let
     inherit inputs;
 
     ci = import ./ci.nix args;
-    documentation = import ./documentation.nix args;
-    evaluation = import ./evaluation.nix args;
     formats = import ./formats.nix args;
     licenses = import ./licenses.nix args;
     maintainers = import ./maintainers/maintainer-list.nix;
     testing = import ./testing.nix;
     versions = import ./versions.nix;
 
-    inherit (self.evaluation) evalEpnixModules mkEpnixBuild mkEpnixDevShell;
-
     # The epnix nixosModules.nixos flake output,
     # re-exposed in epnixLib,
     # in case you're not in flake.nix.
     nixosModule = self.inputs.self.nixosModules.nixos;
-
-    # Like lib.getName, but also supports paths
-    getName = thing: if builtins.isPath thing then baseNameOf thing else lib.getName thing;
 
     toEpicsArch =
       system:
@@ -78,19 +71,6 @@ let
           .${parsed.cpu.family} or (throw "Unsupported architecture: ${parsed.cpu.name}");
       in
       "${kernel}-${arch}";
-
-    resolveInput =
-      { inputs }@available:
-      input:
-      if lib.isDerivation input then
-        input
-      else if lib.hasPrefix "/" input then
-        input
-      else
-        let
-          path = lib.splitString "." input;
-        in
-        { pname = lib.last path; } // lib.getAttrFromPath path available;
   };
 in
 self
