@@ -5,15 +5,15 @@
   fetchFromGitHub,
   asyn,
 }:
-mkEpicsPackage rec {
+mkEpicsPackage (finalAttrs: {
   pname = "modbus";
   version = "3-4";
   varname = "MODBUS";
 
   src = fetchFromGitHub {
     owner = "epics-modules";
-    repo = pname;
-    rev = "R${version}";
+    repo = "modbus";
+    rev = "R${finalAttrs.version}";
     hash = "sha256-0v6eLWdjgYKbFOHWaW1NSfN/gG5XHVRD9jan55dXWW0=";
   };
 
@@ -25,4 +25,4 @@ mkEpicsPackage rec {
     license = lib.licenses.mit;
     maintainers = with epnixLib.maintainers; [ minijackson ];
   };
-}
+})

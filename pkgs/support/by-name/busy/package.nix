@@ -8,7 +8,7 @@
   local_config_site ? { },
   local_release ? { },
 }:
-mkEpicsPackage rec {
+mkEpicsPackage (finalAttrs: {
   pname = "busy";
   version = "1-7-4";
   varname = "BUSY";
@@ -18,8 +18,8 @@ mkEpicsPackage rec {
   src = fetchFromGitHub {
     owner = "epics-modules";
     repo = "busy";
-    rev = "R${version}";
-    sha256 = "sha256-mSzFLj42iXkyWGWaxplfLehoQcULLpf745trYMd1XT4=";
+    tag = "R${finalAttrs.version}";
+    hash = "sha256-mSzFLj42iXkyWGWaxplfLehoQcULLpf745trYMd1XT4=";
   };
 
   patches = [ ./fix-release.patch ];
@@ -36,4 +36,4 @@ mkEpicsPackage rec {
     license = epnixLib.licenses.epics;
     maintainers = with epnixLib.maintainers; [ agaget ];
   };
-}
+})
