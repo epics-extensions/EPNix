@@ -3,10 +3,6 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
-    bash-lib = {
-      url = "github:minijackson/bash-lib";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     flake-utils.url = "github:numtide/flake-utils";
     sphinxcontrib-nixdomain = {
       url = "github:minijackson/sphinxcontrib-nixdomain";
@@ -40,7 +36,6 @@
             inherit system;
             overlays = [
               overlay
-              inputs.bash-lib.overlay
               inputs.sphinxcontrib-nixdomain.overlays.default
               inputs.sphinxcontrib-typstbuilder.overlays.default
             ];
@@ -101,18 +96,7 @@
         in
         epnixLib;
 
-      nixosModules.default = {
-        imports = [
-          self.nixosModules.ioc
-          self.nixosModules.nixos
-        ];
-      };
-
-      nixosModules.ioc = {
-        imports = import ./ioc/modules/module-list.nix;
-        _module.args.epnix = self;
-      };
-
+      nixosModules.default = self.nixosModules.nixos;
       nixosModules.nixos =
         { lib, ... }:
         {
@@ -123,24 +107,7 @@
           _module.args.epnixLib = self.lib;
         };
 
-      templates.old-top = {
-        path = ./templates/old-top;
-        description = "An EPNix TOP project (deprecated)";
-        welcomeText = ''
-          You have created a *deprecated* EPNix top,
-          using "modules development".
-
-          **Warning:** this style of development will be removed in EPNix 26.05.
-
-          Don't forget to run `makeBaseApp.pl` and `eregen` inside the development shell before compiling it.
-
-          Useful links:
-
-          - EPNix IOC documentation: <https://epics-extensions.github.io/EPNix/${self.lib.versions.stable}/ioc/>
-          - EPNix IOC tutorials: <https://epics-extensions.github.io/EPNix/${self.lib.versions.stable}/ioc/tutorials/>
-        '';
-      };
-
+      templates.default = self.templates.top;
       templates.top = {
         path = ./templates/top;
         description = "An EPNix TOP project (next-generation)";
@@ -155,8 +122,6 @@
           - EPNix IOC tutorials: <https://epics-extensions.github.io/EPNix/${self.lib.versions.stable}/ioc/tutorials/>
         '';
       };
-
-      templates.default = self.templates.top;
 
       formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.callPackage ./formatter.nix { };
 
