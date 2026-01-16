@@ -30,7 +30,8 @@ With your IOC created during the {doc}`streamdevice` tutorial,
 you'll see a {file}`checks/` directory,
 which is the place to add your integration tests.
 
-These tests are imported using the {ref}`opt-epnix.checks.imports` option.
+These tests are imported in the {file}`flake.nix`,
+in the `checks` attribute.
 
 For example,
 in the EPNix template,
