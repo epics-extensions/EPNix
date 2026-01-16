@@ -78,6 +78,8 @@
               pkgs.epnix.docs
             ];
           };
+
+          formatter = pkgs.callPackage ./formatter.nix { };
         };
     in
     # Not eachDefaultSystem right now, because `nix flake check` tries to
@@ -122,8 +124,6 @@
           - EPNix IOC tutorials: <https://epics-extensions.github.io/EPNix/${self.lib.versions.stable}/ioc/tutorials/>
         '';
       };
-
-      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.callPackage ./formatter.nix { };
 
       githubActions = nix-github-actions.lib.mkGithubMatrix { inherit (self) checks; };
     };
