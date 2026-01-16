@@ -237,12 +237,19 @@ remove the `(unreleased)` mention on the first line.
 Once you've verified that the new version is working,
 open one or more Pull Requests with your changes on GitHub.
 
-## Create the new release branch
+## Create the new release branch and label
 
 Once your Pull Request is merged,
 and you've integrated all changes you want for the new release,
 go into GitHub's [branches view],
 and create a new {samp}`nixos-{new.version}` branch on `master`.
+
+Go into GitHub's [labels view],
+and create a new {samp}`backport nixos-{new.version}` label
+with a consistent color,
+and the description:
+
+{samp}`Backport pull request to the nixos-{new.version} branch`
 
 ## Update EPNix versions for that release
 
