@@ -9,7 +9,7 @@
 
 unit-testing
 integration-tests
-packaging-python-scripts
+python-scripts
 ```
 
 [how-to guides]: https://diataxis.fr/how-to-guides/
