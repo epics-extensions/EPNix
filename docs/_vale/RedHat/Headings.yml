@@ -1,7 +1,7 @@
 ---
 extends: capitalization
 level: suggestion
-link: https://redhat-documentation.github.io/vale-at-red-hat/docs/main/reference-guide/headings/
+link: https://redhat-documentation.github.io/vale-at-red-hat/reference-guide.html#headings
 match: $sentence
 message: "Use sentence-style capitalization in '%s'."
 scope: heading
@@ -44,6 +44,7 @@ exceptions:
   - Civetweb
   - ClassLoader
   - Classloader
+  - Cloud Credential Operator
   - Cloudbursting
   - Cloudwashing
   - CodeReady
@@ -58,6 +59,7 @@ exceptions:
   - DNS
   - DaemonSet
   - Datadog
+  - DeploymentConfig
   - Dev
   - DevOps
   - DevWorkspace
@@ -131,6 +133,7 @@ exceptions:
   - Jave
   - JetBrains
   - Jira
+  - JobSet
   - Jolokia
   - Joyent
   - Kibana
@@ -142,6 +145,8 @@ exceptions:
   - Kubespray
   - Kylin
   - Laravel
+  - Linux
+  - Liquibase
   - Logstash
   - Lombok
   - Makefile
@@ -158,6 +163,7 @@ exceptions:
   - MongoDB
   - MySQL
   - Nagios
+  - NVIDIA
   - Narayana
   - Neoverse
   - NetcoredebugOutput
@@ -167,14 +173,18 @@ exceptions:
   - Node.js
   - NuGet
   - OAuth
+  - OCI
   - ORM
   - OmniSharp
+  - Open Container Initiative
   - OpEx
   - OpenID Connect
   - OpenJDK
   - OpenRewrite
   - OpenShift
+  - OpenTelemetry
   - OpenTracing
+  - OTel
   - PHP
   - Podman
   - Podman Desktop
@@ -192,14 +202,23 @@ exceptions:
   - Quarkus
   - Quiltflower
   - Qute
+  - RamaLama
   - RESTEasy
   - Red Hat
+  - Red Hat Advanced Cluster Management
+  - Red Hat Advanced Cluster Management for Kubernetes
+  - Red Hat Ansible Lightspeed
+  - Red Hat Enterprise Linux Lightspeed
+  - Red Hat Marketplace
+  - Red Hat OpenShift Cluster Manager
   - RedBoot
   - Redis
   - Redistributions
+  - Ruby on Rails
   - SCM
   - SDK
   - SELinux
+  - Service Binding Operator
   - SVG
   - Sakila
   - Semeru
@@ -215,6 +234,7 @@ exceptions:
   - Technology Preview
   - Tekton
   - Telekom
+  - Temurin
   - Tensorflow
   - Texinfo
   - Toolset
@@ -245,6 +265,7 @@ exceptions:
   - Yeoman
   - Zowe
   - cgroup
+  - macOS
   - eServer
   - gRPC
   - mutual TLS
@@ -255,3 +276,14 @@ exceptions:
   - vNUMA
   - xDS
   - xterm
+  - Ansible Galaxy
+  - Ansible Tower
+  - Automation Controller
+  - Automation Hub
+  - Automation Mesh
+  - Automation Services Catalog
+  - Event-Driven Ansible
+  - Keycloak
+  - Private Automation Hub
+  - Receptor
+  - Red Hat Ansible Automation Platform

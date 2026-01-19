@@ -2,7 +2,7 @@
 extends: conditional
 ignorecase: false
 level: suggestion
-link: https://redhat-documentation.github.io/vale-at-red-hat/docs/main/reference-guide/definitions/
+link: https://redhat-documentation.github.io/vale-at-red-hat/reference-guide.html#definitions
 message: "Define acronyms and abbreviations (such as '%s') on first occurrence if they're likely to be unfamiliar."
 # source: "IBM - Abbreviations, p. 1"
 # Ensures that the existence of 'first' implies the existence of 'second'.
@@ -15,35 +15,53 @@ exceptions:
   - 'CVEs?'
   - 'DVDs?'
   - 'GIDs?'
+  - 'GPUs?'
+  - 'LLMs?'
   - 'NULL'
   - 'PIDs?'
+  - 'PVCs?'
   - 'ROMs?'
   - 'RPMs?'
+  - 'SDKs?'
+  - 'SRPMs?'
   - 'UIDs?'
   - 'URIs?'
   - 'URLs?'
+  - AAP
   - ACPI
+  - ADR
+  - AIDC
   - AIX
+  - ALPN
+  - AMQP
   - ARM
   - ASCII
   - ASP
+  - AWQ
   - AWS
   - BIND
   - BIOS
   - BMC
+  - BSL
   - CD
+  - CDI
   - CIDR
   - CLI
   - CNAME
+  - CRI
+  - CSI
   - CSS
   - CSV
+  - CUDA
   - CUPS
+  - DCGM
   - DEBUG
   - DHCP
   - DNF
   - DNS
   - DOM
   - DOS
+  - DPDK
   - DPI
   - DRL
   - DSL
@@ -59,14 +77,16 @@ exceptions:
   - GCJ
   - GDB
   - GET
+  - GGUF
   - GIF
   - GIMP
   - GNOME
   - GNU
   - GNUPro
   - GPL
-  - GPU
+  - GPTQ
   - GRUB
+  - GSAI
   - GTK+
   - GUI
   - GUID
@@ -77,41 +97,67 @@ exceptions:
   - IAM
   - IBM
   - IDE
+  - IEEE
   - IOPS
   - IOV
   - IP
   - ISO
   - IT
   - JAR
+  - JAXB
+  - JDBC
+  - JIB
+  - JMS
+  - JNLP
+  - JPA
   - JPEG
   - JSON
   - JSX
+  - JTA
   - JVM
+  - JWT
   - KB
   - KIE
   - KVM
   - LAN
   - LDAP
+  - LDIF
   - LESS
+  - LGAI
   - LLDB
   - LPAR
+  - LTS
   - LUKS
   - LVM
   - MAC
   - MB
   - MBR
   - MDS
+  - MLP
+  - MLX
+  - MQTT
   - mTLS
+  - MUST
+  - NABSL
   - NAT
   - NET
   - NFS
   - NGINX
   - NIC
+  - NLP
+  - NOT
   - NOTE
   - NTP
   - NVDA
+  - OADP
+  - OCI
   - OEM
+  - OIDC
+  - OLM
+  - ORM
   - OSS
+  - OVN
+  - OVS
   - PATH
   - PC
   - PDF
@@ -122,7 +168,10 @@ exceptions:
   - POST
   - PPP
   - PROM
+  - PTO
   - PTP
+  - PV
+  - PVC
   - PXE
   - QCOW2
   - QEMU
@@ -137,22 +186,31 @@ exceptions:
   - RFC
   - RGW
   - RHEL
+  - RHOAS
+  - RHSSO
+  - ROSA
   - RSA
   - SAML
   - SAP
+  - SCC
   - SCM
   - SCSI
   - SCSS
   - SDK
+  - SEED
   - SFTP
   - SHA
+  - SMTP
   - SOCKS
   - SPEC
   - SQL
   - SSD
   - SSH
   - SSL
+  - SSO
   - SSSD
+  - STM
+  - STS
   - SVG
   - SVN
   - SWAT
@@ -177,10 +235,12 @@ exceptions:
   - VPN
   - WAN
   - WCA
+  - WIPO
   - XFS
   - XML
   - XSS
   - YAML
   - YUM
+  - YYYY
   - ZIP
   - ZTP
