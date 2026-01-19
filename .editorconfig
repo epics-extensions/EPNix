@@ -7,7 +7,7 @@ charset = utf-8
 trim_trailing_whitespace = true
 
 # Ignore vale-downloaded files
-[/doc/vale/**]
+[/docs/_vale/**]
 insert_final_newline = unset
 
 [*.nix]
