@@ -48,6 +48,10 @@ jobs:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           persist-credentials: false
+      - uses: wimpysworld/nothing-but-nix@6af122a9403f936ef689e44cc013ae3f3e2f1c3b # v6
+        with:
+          # Needed by `nix-quick-install-action`
+          nix-permission-edict: true
       - uses: nixbuild/nix-quick-install-action@2c9db80fb984ceb1bcaa77cdda3fdf8cfba92035 # v34
       - uses: nix-community/cache-nix-action@b426b118b6dc86d6952988d396aa7c6b09776d08 # v7.0.0
         with:
