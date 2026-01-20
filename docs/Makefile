@@ -14,11 +14,11 @@ CHEATSHEETDIR = "$(BUILDDIR)/typst/cheatsheet"
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
-cheatsheet: typst
-	typst compile --root "$(SOURCEDIR)" "$(CHEATSHEETDIR)/cheatsheet.typ"
-	cp "$(CHEATSHEETDIR)/cheatsheet.pdf" "$(SOURCEDIR)/"
-
-html: cheatsheet
+# cheatsheet: typst
+# 	typst compile --root "$(SOURCEDIR)" "$(CHEATSHEETDIR)/cheatsheet.typ"
+# 	cp "$(CHEATSHEETDIR)/cheatsheet.pdf" "$(SOURCEDIR)/"
+#
+# html: cheatsheet
 
 .PHONY: help Makefile
 

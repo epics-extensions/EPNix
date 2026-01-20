@@ -5,6 +5,6 @@ sphinx
 sphinx-copybutton
 sphinxcontrib-nixdomain
 sphinxcontrib-plantuml
-sphinxcontrib-typstbuilder
+#sphinxcontrib-typstbuilder
 sphinxext-opengraph
 sphinxext-rediraffe

@@ -48,7 +48,7 @@ extensions = [
     "sphinx_copybutton",
     "sphinxcontrib.plantuml",
     "sphinxcontrib_nixdomain",
-    "sphinxcontrib_typstbuilder",
+    # "sphinxcontrib_typstbuilder",
     "sphinxext.opengraph",
     "sphinxext.rediraffe",
 ]
