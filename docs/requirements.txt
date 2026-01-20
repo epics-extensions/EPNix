@@ -1,0 +1,11 @@
+# TODO: make a single list with `pkgs/by-name/docs/package.nix`
+furo
+myst-parser
+sphinx
+sphinx-copybutton
+sphinx-tippy
+sphinxcontrib-nixdomain
+sphinxcontrib-plantuml
+sphinxcontrib-typstbuilder
+sphinxext-opengraph
+sphinxext-rediraffe
