@@ -2,32 +2,35 @@
 extends: substitution
 ignorecase: true
 level: error
-link: https://redhat-documentation.github.io/vale-at-red-hat/docs/main/reference-guide/termserrors/
+link: https://redhat-documentation.github.io/vale-at-red-hat/reference-guide.html#terms-errors
 message: "Use '%s' rather than '%s'."
 action:
   name: replace
 # swap maps tokens in form of bad: good
 swap:
-  "(?<!-)healthcheck|health-check": health check
+  "(?<!IdM |-)healthcheck|health-check": health check
   "(?<!-)pm": PM
+  "(?<!-|.|{)env": environment
   "(?<!-|I )am": AM
   "(?<!.)io": I/O
-  "(?<!as well )as per": according to|as|as in
+  '(?<!as well )\bas per\b': according to|as|as in
   "(?<!kernel )oops": kernel oops
   "(?<!mobile |cell )phone": "telephone|cell phone|mobile phone"
   "(?<!Mozilla )Firefox": Mozilla Firefox
   "(?<!Mozilla )Thunderbird": Mozilla Thunderbird
   "(?<!pseudo-)ops": operations
   "(?<!self-)hosted engine|hosted-engine": self-hosted engine
+  "bare metal( clusters?| compute| configuration| controls?| environments?| equipment| events?| hardware| hosts?| infrastructure| installations?| installers?| instances?| machines?| media| nodes?| provisioning| servers?| workers?| networks?)": bare-metal$1
+  "bare-metal(?! clusters?| compute| configuration| controls?| environments?| equipment| events?| hardware| hosts?| infrastructure| installations?| installers?| instances?| machines?| media| nodes?| provisioning| servers?| workers?)": bare metal
   "[bB]asic [aA]uth": Basic HTTP authentication|Basic authentication
   "a lot(?: of)?": many|much
-  "AI": Assisted Installer
   "best of breed|best-of-breed": best in class
   "bottle neck|bottle-neck": bottleneck
   "Christian name|forename|first name": given name
   "down(?:-)?level": earlier|previous|not at the latest level
   "IPI": installer-provisioned infrastructure
   "pop-up (?:blocker|killer)": software to block pop-up ad windows
+  "[rR]ama[lL]lama": RamaLama
   "re(?:-)?occur": recur
   "sanity test|sanity check": test|evaluate|validate|verify
   "single quote mark|single quote(?! mark)": single quotation mark
@@ -35,10 +38,10 @@ swap:
   "top(?:-)?left": upper left|upper right|upper-left|upper-right
   "top(?:-)?right": upper left|upper right|upper-left|upper-right
   "UPI": user-provisioned infrastructure
-  "w/(?!o) ": "with "
   "w/o": without
   '(?<!IBM\s)S\/390|S90|S\s390': IBM S/390
   'backwards?\scompatible': compatible with earlier versions
+  '(?<= )for instance(?=,)': for example
   10BASE-2: 10BASE2
   10BASET: 10BASE-T
   24/7: 24x7
@@ -82,12 +85,12 @@ swap:
   blink: flash
   blue screen of death: stop error
   boot diskette: boot disk
-  bootloader: boot loader
+  "(?<!GRand Unified |GRUB )bootloader": boot loader
   breadcrumbing: breadcrumb trail
   break point: breakpoint
   bring up: start|power on|open|turn on
   bufferpool: buffer pool
-  builtin|built in: built-in
+  builtin: built-in
   busmaster: bus master
   busses: buses
   byte code: bytecode
@@ -97,13 +100,12 @@ swap:
   cancelling: canceling
   canned: preplanned|preconfigured|predefined
   cardreader: card reader
-  carry out: test|run
   case insensitive: not case-sensitive
   catalogue: catalog
   catastrophic error: unrecoverable error
   CBE: Common Base Event
   CBTS: CICS BTS|BTS
-  CD burner|burner: CD writer
+  CD burner|(?<!kube-)burner: CD writer
   centre: center
   check box: checkbox
   check list: checklist
@@ -143,7 +145,7 @@ swap:
   cyber threat: cyberthreat
   cyberresilience: cyber resilience
   data base: database
-  datacenter|data-center|data centre|datacentre: data center
+  (?<!vCenter )datacenter|data-center|data centre|datacentre: data center
   datafile: data file
   dataflow: data flow
   datamart: data mart
@@ -162,7 +164,6 @@ swap:
   demilitarized zone: DMZ
   demon: daemon
   demount: dismount|unmount
-  deployment configuration: deployment
   depress: press|type
   deregister: unregister
   descendent: descendant
@@ -185,8 +186,6 @@ swap:
   emphasise: emphasize
   end user: user
   end-user interface: graphical interface|interface
-  enum: data enumeration
-  env: environment
   EUI: graphical user interface|interface
   evangelist: influencer|advocate|ambassador
   fatal: unrecoverable
@@ -194,7 +193,6 @@ swap:
   finalise: finalize
   fire up: start
   fixed disk drive: hard disk drive
-  flavor: version|method
   focussed: focused
   forward compatible: compatible with later versions
   freezes: hangs|stops responding
@@ -294,6 +292,8 @@ swap:
   on the fly: dynamically|as needed|in real time|immediately
   on the other hand: however|alternatively|conversely
   openshit: OpenShift
+  opt into: opt in
+  opting into: opting in|opting in to
   organise: organize
   organised: organized
   organising: organizing
@@ -301,6 +301,7 @@ swap:
   pain point: challenge|concern|difficulty|issue
   parent task: parent process
   parent/child: parent-child
+  peer-pod: peer pod
   passive broker: slave broker
   pathname: path name
   PCOMM: Personal Communications
@@ -334,7 +335,6 @@ swap:
   recognise: recognize
   Red Hat Java: Red Hat build of OpenJDK
   Red Hat OpenJDK|RHOJDK|Red Hat Open Java Development Kit: Red Hat build of OpenJDK
-  regex: regular expression
   requestor: requester
   right now: now
   right-hand: right
@@ -386,7 +386,6 @@ swap:
   syncpoint: sync point
   sysprep tool|sysprep process|sysprep function: sysprep
   system engineer: systems engineer
-  tablespace: table space
   TCP/IP network: Internet Protocol network|IP network
   teleprocessing line: telecommunication line|transmission line
   testcase: test case
@@ -434,10 +433,10 @@ swap:
   useable: usable
   utilize: use
   vanilla: uncustomized
-  versus: compared to
   virtual diskette drive: virtual floppy drive
   virtual diskette(?! drive): virtual floppy disk
   virtual DOS machine: DOS session
+  versus: compared to
   virtual hard disk: virtual hard drive
   virtual-equals-real: nonpageable
   virtual-equals-virtual: pageable
