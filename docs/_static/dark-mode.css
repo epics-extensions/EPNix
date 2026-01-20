@@ -21,3 +21,8 @@ svg,
 object[type^="image/"] {
 	filter: var(--img-filter);
 }
+
+/* For ReadTheDocs Link Preview addon tooltips */
+.tooltip .tooltip-content {
+	background: var(--color-background-primary);
+}
