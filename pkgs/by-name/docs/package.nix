@@ -3,20 +3,15 @@
   lib,
   epnix,
   epnixLib,
-  writeText,
   python3,
   cacert,
   typst,
   installShellFiles,
   epnixOutsideDefaultScopes,
   documentedEpnixPkgs ? epnix,
-  iocConfig ? { },
 }:
 let
-  inherit (epnixLib) documentation;
   nixdomainLib = epnixLib.inputs.sphinxcontrib-nixdomain.lib;
-
-  iocOptions = documentation.options.iocOptions iocConfig;
 
   nixosOptions =
     (epnixLib.inputs.nixpkgs.lib.nixosSystem {
@@ -25,27 +20,6 @@ let
         epnixLib.inputs.self.nixosModules.nixos
       ];
     }).options;
-
-  iocOptionsContent = documentation.options.optionsContent iocOptions 3;
-  # Have a separate "Options" header for the Sphinx manpage output
-  iocOptionsPandoc = ''
-    IOC options reference
-    =====================
-
-    :::{deprecated} 25.05
-    Developing IOC using NixOS-like options.
-
-    These options are staged for removal in EPNix 26.05.
-
-    See {doc}`../user-guides/deprecations/migrating-from-modules-development`
-    for how to migrate to the new packaging approach.
-    :::
-
-    Options
-    -------
-
-    ${iocOptionsContent}
-  '';
 
   # Reproducibly download Typst dependencies for PDFs
   typst-packages-vendor = stdenvNoCC.mkDerivation {
@@ -88,7 +62,6 @@ stdenvNoCC.mkDerivation {
       myst-parser
       sphinx
       sphinx-copybutton
-      sphinx-tippy
       sphinxcontrib-nixdomain
       sphinxcontrib-plantuml
       sphinxcontrib-typstbuilder
@@ -102,20 +75,6 @@ stdenvNoCC.mkDerivation {
     ];
 
   dontConfigure = true;
-
-  postPatch = ''
-    install -Dv "${writeText "ioc-options.md" iocOptionsPandoc}" ioc/references/options.md
-  '';
-
-  shellHook = ''
-    if [[ -f docs/conf.py ]]; then
-      (cd docs; runHook postPatch)
-    elif [[ -f conf.py ]]; then
-      runHook postPatch
-    else
-      echo "Couldn't find root of docs directory, not copying options.json files"
-    fi
-  '';
 
   buildPhase = ''
     runHook preBuild

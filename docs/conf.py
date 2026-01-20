@@ -48,8 +48,7 @@ extensions = [
     "sphinx_copybutton",
     "sphinxcontrib.plantuml",
     "sphinxcontrib_nixdomain",
-    "sphinx_tippy",
-    "sphinxcontrib_typstbuilder",
+    # "sphinxcontrib_typstbuilder",
     "sphinxext.opengraph",
     "sphinxext.rediraffe",
 ]
@@ -206,7 +205,6 @@ html_css_files = [
     "link-icons.css",
     "logo-size.css",
     "multi-version.css",
-    "tippy.css",
 ]
 
 html_context = {}
