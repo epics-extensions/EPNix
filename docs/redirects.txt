@@ -5,3 +5,4 @@
 "pre-requisites.md" "prerequisites.md"
 "nixos-services/user-guides/pre-requisites.md" "nixos-services/user-guides/prerequisites.md"
 "ioc/references/packages" "pkgs/packages.md"
+"ioc/user-guides/testing/packaging-python-scripts.md" "ioc/user-guides/testing/python-scripts.md"
