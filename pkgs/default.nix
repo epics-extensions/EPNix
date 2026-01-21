@@ -49,8 +49,8 @@ recurseIntoAttrs {
       # EPICS base
 
       epics-base7 = self.callPackage ./epics-base {
-        version = "7.0.9";
-        hash = "sha256-RPlJhh7ORobYlM7gq6uDZkrO5z579Q7hyLEQ1xiHvFY=";
+        version = "7.0.10";
+        hash = "sha256-78XAznaU4gxIc13GKrtpil96OPhQ/JTuJm8aVIfUSho=";
       };
       epics-base3 = self.callPackage ./epics-base {
         version = "3.15.9";
