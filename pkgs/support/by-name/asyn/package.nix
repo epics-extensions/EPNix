@@ -10,18 +10,15 @@
   local_config_site ? { },
   local_release ? { },
 }:
-let
-  version = "4-45";
-in
-mkEpicsPackage {
+mkEpicsPackage (finalAttrs: {
   pname = "asyn";
-  inherit version;
+  version = "4-45";
   varname = "ASYN";
 
   src = fetchFromGitHub {
     owner = "epics-modules";
     repo = "asyn";
-    tag = "R${version}";
+    tag = "R${finalAttrs.version}";
     hash = "sha256-VOHgDuRSj3dUmCWX+nyCf/i+VNGpC0ZsyIP0qBUG0vw=";
   };
 
@@ -53,4 +50,4 @@ mkEpicsPackage {
     license = epnixLib.licenses.epics;
     maintainers = with epnixLib.maintainers; [ minijackson ];
   };
-}
+})

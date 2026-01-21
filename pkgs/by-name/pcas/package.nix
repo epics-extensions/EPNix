@@ -3,15 +3,15 @@
   mkEpicsPackage,
   fetchFromGitHub,
 }:
-mkEpicsPackage rec {
+mkEpicsPackage (finalAttrs: {
   pname = "pcas";
   version = "4.13.3";
   varname = "PCAS";
 
   src = fetchFromGitHub {
     owner = "epics-modules";
-    repo = pname;
-    rev = "v${version}";
+    repo = finalAttrs.pname;
+    rev = "v${finalAttrs.version}";
     hash = "sha256-wwU2/4CHI/dExqfFL1AzK7d+cMRGU1oxSlhb/3xY7xs=";
   };
 
@@ -21,4 +21,4 @@ mkEpicsPackage rec {
     license = epnixLib.licenses.epics;
     maintainers = with epnixLib.maintainers; [ minijackson ];
   };
-}
+})
