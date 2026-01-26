@@ -7,14 +7,18 @@
 // This transforms a destination like "document:ioc:tutorials:streamdevice"
 // to "<url>/ioc/tutorials/streamdevice.html"
 #let missing_link(dest, body) = {
-  if dest.starts-with("document:") {
-    dest = dest.trim("document:", at: start).replace(":", "/")
+  if dest.starts-with("%") {
+    let (path, ..rest) = dest
+      .trim("%", at: start)
+      .replace(":", "/")
+      .split("#")
+    let path = (path + ".html", ..rest).join("#")
     context link(
-      html_baseurl.get() + dest + ".html",
+      html_baseurl.get() + path,
       body,
     )
   } else {
-    text(link, red)
+    text(red, body)
   }
 }
 
@@ -44,10 +48,10 @@
     flipped: true,
     margin: 1cm,
     footer: [
-		Version #release, #date.display()
-		#h(1fr)
-		Copyright © #copyright
-	],
+      Version #release, #date.display()
+      #h(1fr)
+      Copyright © #copyright
+    ],
   )
 
   set document(
