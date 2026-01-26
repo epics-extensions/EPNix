@@ -46,6 +46,9 @@ read {doc}`../ioc/tutorials/streamdevice`.
     ];
     ```
   - In {file}`ioc.nix`, add an EPICS support module to the build environment
+
+    See all {ref}`epics-support-module-list` available
+
 * - ```nix
     nativeBuildInputs = [myLib];
     buildInputs = [myLib];
