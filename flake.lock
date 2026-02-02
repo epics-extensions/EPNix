@@ -23,11 +23,11 @@
     },
     "flake-compat": {
       "locked": {
-        "lastModified": 1747046372,
-        "narHash": "sha256-CIVLLkVgvHYbgI2UpXvIIBJ12HWgX+fjA8Xf8PUmqCY=",
+        "lastModified": 1767039857,
+        "narHash": "sha256-vNpUSpF5Nuw8xvDLj2KCwwksIbjua2LZCqhV1LNRDns=",
         "owner": "edolstra",
         "repo": "flake-compat",
-        "rev": "9100a0f413b0c601e0533d1d94ffd501ce2e7885",
+        "rev": "5edf11c44bc78a0d334f6334cdaf7d60d732daab",
         "type": "github"
       },
       "original": {
@@ -91,11 +91,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1769318308,
-        "narHash": "sha256-Mjx6p96Pkefks3+aA+72lu1xVehb6mv2yTUUqmSet6Q=",
+        "lastModified": 1769598131,
+        "narHash": "sha256-e7VO/kGLgRMbWtpBqdWl0uFg8Y2XWFMdz0uUJvlML8o=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "1cd347bf3355fce6c64ab37d3967b4a2cb4b878c",
+        "rev": "fa83fd837f3098e3e678e6cf017b2b36102c7211",
         "type": "github"
       },
       "original": {
@@ -113,11 +113,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1764134915,
-        "narHash": "sha256-xaKvtPx6YAnA3HQVp5LwyYG1MaN4LLehpQI8xEdBvBY=",
+        "lastModified": 1769116518,
+        "narHash": "sha256-M+etHAj3oI9zr+Cpj5u2kMAddvxcJCmnWRtH/SklYlY=",
         "owner": "nix-community",
         "repo": "pyproject.nix",
-        "rev": "2c8df1383b32e5443c921f61224b198a2282a657",
+        "rev": "ab521eddafb936498f18c86d83e1774a53b1cb8a",
         "type": "github"
       },
       "original": {
@@ -166,11 +166,11 @@
         "pyproject-nix": "pyproject-nix"
       },
       "locked": {
-        "lastModified": 1768746436,
-        "narHash": "sha256-yhhhq0MHZejAsaSujKvEavC58c1ITJEBpB2a69gpVO0=",
+        "lastModified": 1769771692,
+        "narHash": "sha256-yQMzadfgPBgT1fVONCos7UuulhMZfeKTB90Mks2/z/o=",
         "owner": "minijackson",
         "repo": "sphinxcontrib-nixdomain",
-        "rev": "8c83e441660c0ec70cc810ebe7936476c86f3273",
+        "rev": "637fde58ecad4575031a7d478fdc9ed3cc862825",
         "type": "github"
       },
       "original": {
@@ -187,11 +187,11 @@
         "pyproject-nix": "pyproject-nix_2"
       },
       "locked": {
-        "lastModified": 1769187069,
-        "narHash": "sha256-Uu06CvBVvcYoduaUg+P503JLaD+SvJNc3+3thE3vqg8=",
+        "lastModified": 1769692653,
+        "narHash": "sha256-o1Cb5rhEs+2WIWx2hDzhBo0a5g7oTBnNm9uLMwv15rg=",
         "owner": "minijackson",
         "repo": "sphinxcontrib-typstbuilder",
-        "rev": "098c7bdaa6caf513448dead7ee4a1e7b4f3e7edc",
+        "rev": "28347a4a530fe803a7a39b571f778bb55400f532",
         "type": "github"
       },
       "original": {
