@@ -273,7 +273,7 @@ See {ref}`recceiver-firewall`.
 (recceiver-custom-metadata)=
 ### Custom metadata
 
-To add custom metadata variable to the ChannelFinder service,
+To add custom metadata variables to the ChannelFinder service,
 use the `settings.cf.environment_vars` option,
 for example:
 
@@ -292,7 +292,7 @@ for example:
         environment_vars = {
           # Follows the pattern:
           # IOC_VARIABLE = "ChannelFinderProperty";
-          CONTACT = "Concact";
+          CONTACT = "Contact";
           EPICS_BASE = "EpicsBase";
           EPICS_VERSION = "EpicsVersion";
           PWD = "WorkingDirectory";
