@@ -1,0 +1,36 @@
+root = true
+
+[*]
+end_of_line = lf
+insert_final_newline = true
+charset = utf-8
+trim_trailing_whitespace = true
+
+# Ignore vale-downloaded files
+[/docs/_vale/**]
+insert_final_newline = unset
+
+[*.nix]
+indent_style = space
+indent_size = 2
+
+[*.md]
+indent_style = space
+
+[*.py]
+indent_style = space
+indent_size = 4
+
+[*.sh]
+indent_style = tab
+indent_size = 4
+
+[*.{db,dbd}]
+indent_style = tab
+indent_size = 4
+
+# Ignore diffs/patches
+[*.{diff,patch}]
+end_of_line = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset
