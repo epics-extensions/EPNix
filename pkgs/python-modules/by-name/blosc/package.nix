@@ -15,17 +15,15 @@
 
 buildPythonPackage rec {
   pname = "blosc";
-  version = "1.11.3";
+  version = "1.11.4";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "Blosc";
     repo = "python-blosc";
-    rev = "v${version}";
-    hash = "sha256-EBviPf9D1NFEMwIMzd2zf3jZIQpQCaSE9cvFYdBC7tQ=";
+    tag = "v${version}";
+    hash = "sha256-n8f3XHD0MTU4uNUGkOgAwWx6rRQ2+X1EHj5e12QZB5w=";
   };
-
-  patches = [ ./dont-use-deprecated-fromstring-binary-mode.patch ];
 
   build-system = [
     py-cpuinfo
