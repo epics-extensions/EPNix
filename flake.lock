@@ -187,11 +187,11 @@
         "pyproject-nix": "pyproject-nix_2"
       },
       "locked": {
-        "lastModified": 1769692653,
-        "narHash": "sha256-o1Cb5rhEs+2WIWx2hDzhBo0a5g7oTBnNm9uLMwv15rg=",
+        "lastModified": 1772539271,
+        "narHash": "sha256-9n+/Pv8U6BT7DDe52TVenrjNOEvIBhRM3PVTSA1pWI8=",
         "owner": "minijackson",
         "repo": "sphinxcontrib-typstbuilder",
-        "rev": "28347a4a530fe803a7a39b571f778bb55400f532",
+        "rev": "e0e934f103c05a20bbab63afe62833b8b56df84b",
         "type": "github"
       },
       "original": {

@@ -1,4 +1,4 @@
-#import "@preview/gentle-clues:1.1.0"
+#import "@preview/gentle-clues:1.2.0"
 #import "@preview/linguify:0.4.2"
 
 // Utilities
@@ -7,6 +7,13 @@
 #let _t(content) = {
   linguify.linguify(content, from: _translations)
 }
+
+// Like "label()", but with a HACK to support having multiple labels
+// for a given element
+// See: https://github.com/typst/typst/discussions/2457
+#let mlabel(l) = [#metadata(none)#label(l)]
+
+#let internal-link(l, title) = link(label(l), title)
 
 // Given a dictionary of year, month, date,
 // return a datetime object
@@ -34,6 +41,8 @@
 #let inline(classes: (), body) = body
 
 #let literal = text.with(font: "DejaVu Sans Mono", size: 9pt)
+#let literal_strong = literal.with(weight: "bold")
+#let literal_emphasis = literal.with(style: "italic")
 
 // inspired by the acrostiche package
 #let abbreviation(explanation: none, abbr) = {
@@ -56,7 +65,7 @@
 )
 
 #let missing_link(_dest, link) = {
-	text(link, red)
+  text(link, red)
 }
 
 // inspired by keyle
@@ -66,9 +75,9 @@
   sequences
     .split()
     .map(sequence => {
-        let keys = sequence.split(regex("[+-]"))
-        _kbd(..keys)
-      })
+      let keys = sequence.split(regex("[+-]"))
+      _kbd(..keys)
+    })
     .join(" ")
 }
 
@@ -102,6 +111,12 @@
 )
 #let seealso = gentle-clues.clue.with(title: _t("See also"), accent-color: blue)
 
+#let versionadded = gentle-clues.clue.with(accent-color: green)
+#let versionchanged = gentle-clues.clue.with(accent-color: blue)
+#let deprecated = gentle-clues.clue.with(accent-color: orange)
+#let versionremoved = gentle-clues.clue.with(accent-color: red)
+#let versionmodified = emph
+
 // Other directives
 
 #let rubric(title) = {
@@ -114,19 +129,46 @@
   }
 }
 
+#let topic = gentle-clues.clue.with(accent-color: blue)
+#let sidebar(title: none, subtitle: none, body) = topic(title: title)[
+  #strong(subtitle)
+
+  #body
+]
+
 // Signatures
 
-#let _code_font = text.with(font: "DejaVu Sans Mono", size: 0.85em)
-#let _punct_font = _code_font.with(fill: luma(100))
+#let _blue = oklch(55%, 0.2, 267deg)
+#let _green = oklch(55%, 0.2, 140deg)
+#let _red = oklch(55%, 0.2, 30deg)
+
+#let _punct_font = text.with(fill: luma(100))
 
 #let desc = block.with(inset: 1em)
-#let desc_name = _code_font.with(fill: rgb("#4b69c6"))
-#let desc_addname = _code_font.with(fill: rgb("#4b69c6").lighten(20%))
 
-#let desc_returns = _code_font
+#let desc_signature(body) = {
+  set text(font: "DejaVu Sans Mono", size: 0.85em)
+  block(sticky: true, body)
+}
+#let desc_name = text.with(fill: _blue)
+#let desc_addname = text.with(fill: _blue.lighten(40%))
 
-#let desc_annotation = _code_font.with(fill: rgb("#40a02b"))
+#let desc_returns(body) = body
+
+#let desc_annotation = text.with(fill: luma(100))
+
 #let desc_content = block.with(inset: (x: 2em))
+
+#let desc_type_parameter_list(
+  open_paren: "[",
+  close_paren: "]",
+  child_text_separator: ", ",
+  ..elements,
+) = {
+  _punct_font(open_paren)
+  elements.pos().join(child_text_separator)
+  _punct_font(close_paren)
+}
 
 #let desc_parameterlist(
   open_paren: "(",
@@ -135,13 +177,34 @@
   ..elements,
 ) = {
   _punct_font(open_paren)
-  _code_font(elements.pos().join(child_text_separator))
-  _code_font(close_paren, fill: luma(100))
+  elements.pos().join(child_text_separator)
+  _punct_font(close_paren)
 }
 
-#let desc_parameter(body) = body
+#let desc_parameter = emph
 
 #let desc_sig_name(body) = body
+#let desc_optional(open_paren: "[", close_paren: "]", body) = {
+  _punct_font(open_paren)
+  body
+  _punct_font(close_paren)
+}
+#let desc_sig_punctuation = _punct_font
+#let desc_sig_keyword = text.with(fill: _red)
+#let desc_sig_keyword_type = desc_sig_keyword
+#let desc_sig_literal_string = text.with(fill: _green)
+
+// Options
+
+#let option_list(..options) = grid(columns: (auto, 1fr), gutter: 1em, ..options)
+#let option_group(..option_names) = option_names.pos().join(", ")
+#let option(argument: none, delimiter: " ", name) = {
+  literal_strong(name)
+  if argument != none {
+    literal(delimiter)
+    literal_emphasis(argument)
+  }
+}
 
 // Inline
 
@@ -155,3 +218,19 @@
   }
   it
 }
+
+// Field list
+
+#let field_list(..items) = context grid(
+  columns: 2,
+  gutter: par.spacing / 2,
+  ..items.pos().flatten()
+)
+
+#let field_item(term, body) = (strong(term), body)
+
+// Citations
+
+#let citation(label, body) = block[/ #label: #body]
+#let reference_label(body) = [[#body]]
+#let register_footnote(id, body) = state("footnote-" + id).update(body)
