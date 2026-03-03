@@ -4,21 +4,20 @@
 
 // Resolve missing links to the HTML documentation
 //
-// This transforms a destination like "document:ioc:tutorials:streamdevice"
-// to "<url>/ioc/tutorials/streamdevice.html"
-#let missing_link(dest, body) = {
-  if dest.starts-with("%") {
-    let (path, ..rest) = dest
-      .trim("%", at: start)
-      .replace(":", "/")
-      .split("#")
+// This transforms a destination like "%pkgs/packages#epics-support-module-list"
+// to "<url>/pkgs/packages.html#epics-support-module-list"
+#let internal-link(l, title) = {
+  context if query(label(l)) != () {
+    link(label(l), title)
+  } else if l.starts-with("%") {
+    let (path, ..rest) = l.trim("%", at: start).split("#")
     let path = (path + ".html", ..rest).join("#")
     context link(
       html_baseurl.get() + path,
-      body,
+      title,
     )
   } else {
-    text(red, body)
+    text(red, title)
   }
 }
 
