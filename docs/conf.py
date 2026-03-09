@@ -226,6 +226,7 @@ if versions.exists():
 # https://minijackson.github.io/sphinxcontrib-typstbuilder/configuration.html
 
 typst_date = source_date
+typst_ignore_outside_references = False
 
 typst_documents = [
     {
