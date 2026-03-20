@@ -142,7 +142,7 @@ Top
   You can find a lot of Top examples in the EPICS
   [modules](https://docs.epics-controls.org/en/latest/software/epics-related-software.html),
   e.g.:
-  the [autosave Top](https://epics.anl.gov/bcda/synApps/autosave/autosave.html).
+  the [autosave Top](https://epics-modules.github.io/autosave/).
   Each Top can be maintained separately,
   one Top can "import" another one,
   and different Top can depend on different releases of external software
