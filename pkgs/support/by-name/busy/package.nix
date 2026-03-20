@@ -32,7 +32,7 @@ mkEpicsPackage rec {
 
   meta = {
     description = "APS BCDA synApps module: busy";
-    homepage = "https://epics.anl.gov/bcda/synApps/busy/busy.html";
+    homepage = "https://epics-modules.github.io/busy/";
     license = epnixLib.licenses.epics;
     maintainers = with epnixLib.maintainers; [ agaget ];
   };

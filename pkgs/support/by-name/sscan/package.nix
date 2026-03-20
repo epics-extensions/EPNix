@@ -24,7 +24,7 @@ mkEpicsPackage rec {
 
   meta = {
     description = "Contains the sscan record and related software for systematically moving positioners, triggering detectors, and acquiring and storing resulting data";
-    homepage = "https://epics.anl.gov/bcda/synApps/sscan/sscan.html";
+    homepage = "https://epics-modules.github.io/sscan/";
     license = epnixLib.licenses.epics;
     maintainers = with epnixLib.maintainers; [ minijackson ];
   };
