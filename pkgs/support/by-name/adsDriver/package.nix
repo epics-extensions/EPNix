@@ -7,7 +7,7 @@
   epnixLib,
   lib,
 }:
-mkEpicsPackage rec {
+mkEpicsPackage (finalAttrs: {
   pname = "adsDriver";
   version = "3.1.0";
 
@@ -15,8 +15,8 @@ mkEpicsPackage rec {
 
   src = fetchFromGitHub {
     owner = "Cosylab";
-    repo = pname;
-    rev = "v${version}";
+    repo = "adsDriver";
+    tag = "v${finalAttrs.version}";
     fetchSubmodules = true;
     hash = "sha256-Ruzi+H8MmIgv23pzFXZlvkk3HtbDzQ9LTTVzmeGWrSI==";
   };
@@ -34,4 +34,4 @@ mkEpicsPackage rec {
     license = lib.licenses.mit;
     maintainers = with epnixLib.maintainers; [ synthetica ];
   };
-}
+})
