@@ -5,14 +5,14 @@
   autoreconfHook,
   epnixLib,
 }:
-stdenv.mkDerivation rec {
+stdenv.mkDerivation (finalAttrs: {
   pname = "procServ";
   version = "2.8.0";
 
   src = fetchFromGitHub {
     owner = "ralphlange";
-    repo = pname;
-    rev = "v${version}";
+    repo = finalAttrs.pname;
+    tag = "v${finalAttrs.version}";
     hash = "sha256-MVifC4mq8tM71YpXFu0u0fGwq6vtbK/jofCJShjfq3Q=";
   };
 
@@ -31,4 +31,4 @@ stdenv.mkDerivation rec {
     license = lib.licenses.gpl3Plus;
     maintainers = with epnixLib.maintainers; [ minijackson ];
   };
-}
+})

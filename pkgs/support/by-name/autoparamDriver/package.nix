@@ -5,7 +5,7 @@
   epnixLib,
   asyn,
 }:
-mkEpicsPackage rec {
+mkEpicsPackage (finalAttrs: {
   pname = "autoparamDriver";
   version = "2.0.0";
 
@@ -13,8 +13,8 @@ mkEpicsPackage rec {
 
   src = fetchFromGitHub {
     owner = "Cosylab";
-    repo = pname;
-    rev = "v${version}";
+    repo = "autoparamDriver";
+    rev = "v${finalAttrs.version}";
     hash = "sha256-J2fy/pMwrbwVFULfANuJBl6iE3wju5bQkhkxxk8zRYs=";
   };
 
@@ -26,4 +26,4 @@ mkEpicsPackage rec {
     license = lib.licenses.mit;
     maintainers = with epnixLib.maintainers; [ synthetica ];
   };
-}
+})

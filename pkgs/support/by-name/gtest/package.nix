@@ -1,12 +1,11 @@
 {
-  lib,
   epnixLib,
   mkEpicsPackage,
   fetchFromGitHub,
   local_config_site ? { },
   local_release ? { },
 }:
-mkEpicsPackage {
+mkEpicsPackage (finalAttrs: {
   pname = "gtest";
   version = "1.0.1";
   varname = "GTEST";
@@ -14,7 +13,7 @@ mkEpicsPackage {
   src = fetchFromGitHub {
     owner = "epics-modules";
     repo = "gtest";
-    rev = "v1.0.1";
+    rev = "v${finalAttrs.version}";
     hash = "sha256-cDZ4++AkUiOvsw4KkobyqKWLk2GzUSdDdWjLL7dr1ac=";
   };
 
@@ -22,8 +21,8 @@ mkEpicsPackage {
 
   meta = {
     description = "EPICS module to adds the Google Test and Google Mock frameworks to EPICS";
-    homepage = "https://github.com/epics-modules/gtest";
+    inherit (finalAttrs.src.meta) homepage;
     license = epnixLib.licenses.epics;
     maintainers = with epnixLib.maintainers; [ minijackson ];
   };
-}
+})
