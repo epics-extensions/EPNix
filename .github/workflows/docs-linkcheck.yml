@@ -1,6 +1,7 @@
 name: "Docs linkcheck"
 
 on:
+  pull_request:
   workflow_dispatch:
   schedule:
     - cron: '0 7 * * 1'  # At 07:00 on Monday
@@ -23,4 +24,6 @@ jobs:
           persist-credentials: false
       - uses: nixbuild/nix-quick-install-action@2c9db80fb984ceb1bcaa77cdda3fdf8cfba92035 # v34
       - name: "Check docs links"
-        run: nix run --print-build-logs '.#ci-scripts/docs-linkcheck'
+        run: nix run --print-build-logs '.#checks.x86_64-linux.docs-linkcheck.online'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
