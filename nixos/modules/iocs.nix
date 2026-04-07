@@ -224,7 +224,7 @@ let
             ProtectControlGroups = lib.mkDefault true;
             ProtectHostname = lib.mkDefault true;
             ProtectHome = lib.mkDefault true;
-            ProtectProc = lib.mkDefault true;
+            ProtectProc = lib.mkDefault "invisible";
 
             RestrictNamespaces = lib.mkDefault true;
 
