@@ -35,13 +35,13 @@ The installation process created the `/etc/nixos` directory in your VM.
 This directory describes the complete configuration of your machine.
 
 EPNix is a "Nix flake",
-which a way of managing Nix projects.
+which is a way of managing Nix projects.
 Using Nix flakes also enables you to use Nix code outside of your repository,
 in a controlled manner.
 For more information,
 see the [Nix flake command manual] and the [Flake wiki page].
 
-To be able to import EPNix into you NixOS configuration,
+To be able to import EPNix into your NixOS configuration,
 you first need to turn your NixOS configuration into a Nix flake.
 
 As root, place yourself in the `/etc/nixos` directory in your virtual machine.

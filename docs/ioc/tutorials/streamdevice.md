@@ -46,7 +46,7 @@ git add .
 ```
 
 After that,
-you can already check that your top build with:
+you can already check that your top builds with:
 
 ```bash
 nix build -L
