@@ -268,7 +268,7 @@ in `C`'s packaging,
 it's best to propagate `A`.
 
   [`asyn` record type]: https://epics-modules.github.io/asyn/asynRecord.html
-  ["config menu" feature]: https://epics-modules.github.io/autosave/autoSaveRestore.html#configmenu
+  ["config menu" feature]: https://epics-modules.github.io/autosave/configMenu.html
   [Leaky abstraction]: https://en.wikipedia.org/wiki/Leaky_abstraction
   [Nixpkgs "Dependency propagation" section]: https://nixos.org/manual/nixpkgs/stable/#ssec-stdenv-dependencies-propagated
   [Regular Expressions]: https://en.wikipedia.org/wiki/Regular_expression

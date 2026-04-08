@@ -167,7 +167,7 @@ stdenv.mkDerivation (finalAttrs: {
       while waiting for the EPICS OPCUA support module to support the
       breaking changes made in 1.4.
     '';
-    homepage = "https://www.open62541.org";
+    homepage = "https://www.open62541.org/";
     changelog = "https://github.com/open62541/open62541/releases/tag/v${finalAttrs.version}";
     license = lib.licenses.mpl20;
     maintainers = with epnixLib.maintainers; [ minijackson ];
