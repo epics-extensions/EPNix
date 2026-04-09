@@ -3,7 +3,7 @@
   lib,
   epnixLib,
   fetchFromGitHub,
-  jdk21,
+  jdk21_headless,
   gradle,
   sphinx,
   tomcat9,
@@ -35,7 +35,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   ];
 
   nativeBuildInputs = [
-    jdk21
+    jdk21_headless
     gradle
     sphinx
     python3Packages.myst-parser
@@ -47,7 +47,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   gradleBuildTask = "buildRelease";
   gradleFlags = [
     "-PprojVersion=${finalAttrs.version}"
-    "-Dorg.gradle.java.home=${jdk21}"
+    "-Dorg.gradle.java.home=${jdk21_headless}"
   ];
 
   # Update by running `nix build .#archiver-appliance.mitmCache.updateScript && ./result`
@@ -99,7 +99,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
         psfl
       ];
     maintainers = with epnixLib.maintainers; [ minijackson ];
-    inherit (jdk21.meta) platforms;
+    inherit (jdk21_headless.meta) platforms;
     sourceProvenance = with lib.sourceTypes; [
       fromSource
       # gradle dependencies
