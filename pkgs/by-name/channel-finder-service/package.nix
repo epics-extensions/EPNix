@@ -2,7 +2,7 @@
   lib,
   epnixLib,
   fetchFromGitHub,
-  jdk21,
+  jdk21_headless,
   maven,
   makeWrapper,
 }:
@@ -20,7 +20,7 @@ maven.buildMavenPackage rec {
   patches = [ ./support-github-archive.patch ];
 
   buildOffline = true;
-  mvnJdk = jdk21;
+  mvnJdk = jdk21_headless;
   mvnHash = "sha256-WoB97KFBJuTBIBH7gPfBYiQl3g7jA5OwVj01WstQr34=";
   mvnParameters = "-Dproject.build.outputTimestamp=1980-01-01T00:00:02Z";
 
@@ -44,7 +44,7 @@ maven.buildMavenPackage rec {
 
     install -Dm644 "target/$jarName" "$out/share/java"
 
-    makeWrapper ${lib.getExe jdk21} $out/bin/${meta.mainProgram} \
+    makeWrapper ${lib.getExe jdk21_headless} $out/bin/${meta.mainProgram} \
       --add-flags "-jar $out/share/java/$jarName"
 
     runHook postInstall
@@ -56,6 +56,6 @@ maven.buildMavenPackage rec {
     mainProgram = "channel-finder-service";
     license = lib.licenses.mit;
     maintainers = with epnixLib.maintainers; [ minijackson ];
-    inherit (jdk21.meta) platforms;
+    inherit (jdk21_headless.meta) platforms;
   };
 }
