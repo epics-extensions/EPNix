@@ -158,6 +158,18 @@ in
       wantedBy = [ "multi-user.target" ];
       after = [ "elasticsearch.service" ];
 
+      postStart =
+        let
+          bindAddr = "localhost:${toString cfg.settings."server.port"}";
+        in
+        ''
+          # Wait until it responds before we can consider the unit "active".
+          # This prevents the recceiver from trying to connect to it to early and failing.
+          until ${lib.getExe pkgs.curl} -sk https://${bindAddr}/ChannelFinder; do
+            sleep 2
+          done
+        '';
+
       serviceConfig = {
         ExecStart = "${lib.getExe pkgs.epnix.channel-finder-service} --spring.config.location=file://${configFile}";
         DynamicUser = true;
