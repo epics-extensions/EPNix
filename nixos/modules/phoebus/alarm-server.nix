@@ -197,6 +197,7 @@ in
       after = [ "apache-kafka.service" ];
 
       environment.JAVA_OPTS = "-Dphoebus.user=/var/lib/phoebus-alarm-server";
+      restartTriggers = [ config.environment.etc."${configLocation}".source ];
 
       serviceConfig = {
         ExecStart = "${lib.getExe pkgs.epnix.phoebus-alarm-server} -noshell -settings /etc/${configLocation}";
