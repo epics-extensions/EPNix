@@ -26,8 +26,6 @@ epicsConfigurePhase() {
 	echo 'GNU_DIR="/var/empty"' >>configure/CONFIG_SITE.local
 
 	if [[ "@build_arch@" != "@host_arch@" ]]; then
-		stripDebugList+=("bin/@build_arch@" "lib/@build_arch@")
-
 		# Tell EPICS we are compiling to the given architecture.
 		# "host" as in Nix terminology (the machine which will run the generated code)
 		echo 'CROSS_COMPILER_TARGET_ARCHS="@host_arch@"' >>configure/CONFIG_SITE.local
@@ -111,4 +109,12 @@ epicsInstallIocBootHook() {
 
 if [ -z "${dontInstallIocBoot-}" ]; then
 	postInstallHooks+=(epicsInstallIocBootHook)
+fi
+
+epicsStripBuild() {
+	stripDirs "$STRIP_FOR_BUILD" "$RANLIB_FOR_BUILD" "bin/@build_arch@ lib/@build_arch@" "${stripAllFlags[*]:--s -p}"
+}
+
+if [[ -z ${dontStripBuild-} && "@build_arch@" != "@host_arch@" ]]; then
+	postFixupHooks+=(epicsStripBuild)
 fi
