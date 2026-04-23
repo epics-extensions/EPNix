@@ -1,5 +1,4 @@
 {
-  lib,
   epnixLib,
   mkEpicsPackage,
   fetchFromGitHub,
@@ -11,7 +10,7 @@
   local_config_site ? { },
   local_release ? { },
 }:
-mkEpicsPackage {
+mkEpicsPackage (finalAttrs: {
   pname = "opcua";
   version = "0.11.2";
   varname = "OPCUA";
@@ -19,7 +18,7 @@ mkEpicsPackage {
   src = fetchFromGitHub {
     owner = "epics-modules";
     repo = "opcua";
-    rev = "v0.11.2";
+    tag = "v${finalAttrs.version}";
     hash = "sha256-64DBRiGZRGCBeg/cpNK3LRMQ3ciAtGQiUYLNhBJWC+w=";
   };
 
@@ -56,8 +55,8 @@ mkEpicsPackage {
 
   meta = {
     description = "EPICS support for communication with OPC UA protocol";
-    homepage = "https://github.com/epics-modules/opcua";
+    inherit (finalAttrs.src.meta) homepage;
     license = epnixLib.licenses.epics;
     maintainers = with epnixLib.maintainers; [ minijackson ];
   };
-}
+})

@@ -5,15 +5,15 @@
   python3Packages,
   pcas,
 }:
-mkEpicsPackage rec {
+mkEpicsPackage (finalAttrs: {
   pname = "ca-gateway";
   version = "2.1.3";
   varname = "CA_GATEWAY";
 
   src = fetchFromGitHub {
     owner = "epics-extensions";
-    repo = pname;
-    rev = "v${version}";
+    repo = finalAttrs.pname;
+    tag = "v${finalAttrs.version}";
     hash = "sha256-PUe/MPvmBUFOKsrgIZvz65K1/HhD/ugmldKGY6SnMck=";
   };
 
@@ -30,4 +30,4 @@ mkEpicsPackage rec {
     license = epnixLib.licenses.epics;
     maintainers = with epnixLib.maintainers; [ minijackson ];
   };
-}
+})
