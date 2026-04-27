@@ -122,7 +122,7 @@ in
     ];
 
     systemd.services.phoebus-olog = {
-      description = "Phoebus Alarm Server";
+      description = "Phoebus Olog Server";
 
       wantedBy = [ "multi-user.target" ];
       after = [
