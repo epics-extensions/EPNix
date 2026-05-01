@@ -122,6 +122,23 @@ in
               Enable the embedded LDAP authentication.
             '';
           };
+
+          "spring.ldap.embedded.base-dn" = lib.mkOption {
+            description = ''
+              The base DN for the embedded LDAP.
+
+              :::{note}
+              Setting this value to a non-empty string
+              will start the embedded LDAP,
+              no matter the value of {nix:option}`"embedded_ldap.enabled"`,
+              which may lead to port conflicts
+              if you deploy multiple Phoebus services.
+              :::
+            '';
+            type = lib.types.str;
+            default = if cfg.settings."embedded_ldap.enabled" == "true" then "dc=cf,dc=local" else "";
+            defaultText = lib.literalExpression ''if cfg.settings."embedded_ldap.enabled" == "true" then "dc=cf,dc=local" else ""'';
+          };
         };
       };
     };
