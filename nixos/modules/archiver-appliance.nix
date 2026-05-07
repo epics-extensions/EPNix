@@ -295,6 +295,7 @@ in
 
     services.tomcat = {
       enable = true;
+      jdk = pkgs.jdk21_headless;
 
       # Needed to purge old configurations on upgrades,
       # such as old `commonLibs`
