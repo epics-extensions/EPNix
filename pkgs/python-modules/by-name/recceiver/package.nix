@@ -10,14 +10,14 @@
 }:
 buildPythonPackage rec {
   pname = "RecCeiver";
-  version = "1.7";
+  version = "1.9.2";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "ChannelFinder";
     repo = "recsync";
     tag = version;
-    hash = "sha256-IXwMEfHxzurqlfY73cAyk1PkLRQMZPhjzX+TIhZxrNU=";
+    hash = "sha256-Iq+w0QV02tVsaVIQu+mWU4h8L0c7QXi9pB8P0nQmVmg=";
   };
 
   sourceRoot = "${src.name}/server";

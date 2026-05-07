@@ -22,7 +22,7 @@ def get(uri: str) -> Any:
 
 
 with subtest("ChannelFinder connected to ElasticSearch"):
-    status = get("/")
+    status = get("")
     assert status["elastic"]["status"] == "Connected"
 
 server.wait_for_unit("recceiver.service")

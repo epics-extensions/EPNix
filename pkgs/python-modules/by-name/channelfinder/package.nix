@@ -11,14 +11,14 @@
 }:
 buildPythonPackage rec {
   pname = "channelfinder";
-  version = "3.0.1";
+  version = "3.2.0";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "ChannelFinder";
     repo = "pyCFClient";
     tag = "v${version}";
-    hash = "sha256-VCmuezlKUDSEMSmp8Iww45WNY3pGgJG0geRIkubZemw=";
+    hash = "sha256-LTaBLjzhVa2s64CGYjfRSprRjNvwIOnfU7WdslBgMGg=";
   };
 
   build-system = [ flit-core ];
