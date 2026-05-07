@@ -154,6 +154,23 @@ in
             default = "1234";
           };
 
+          "spring.ldap.embedded.base-dn" = lib.mkOption {
+            description = ''
+              The base DN for the embedded LDAP.
+
+              :::{note}
+              Setting this value to a non-empty string
+              will start the embedded LDAP,
+              no matter the value of {nix:option}`"auth.impl"`,
+              which may lead to port conflicts
+              if you deploy multiple Phoebus services.
+              :::
+            '';
+            type = lib.types.str;
+            default = if cfg.settings."auth.impl" == "ldap_embedded" then "dc=sar,dc=local" else "";
+            defaultText = lib.literalExpression ''if cfg.settings."auth.impl" == "ldap_embedded" then "dc=sar,dc=local" else ""'';
+          };
+
           "spring.ldap.embedded.ldif" = lib.mkOption {
             description = ''
               Path to [LDIF] file describing the content of the embedded LDAP server.
