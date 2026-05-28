@@ -8,13 +8,13 @@
 }:
 stdenv.mkDerivation (final: {
   pname = "phoebus-deps";
-  version = "5.0.2";
+  version = "5.0.5";
 
   src = fetchFromGitHub {
     owner = "ControlSystemStudio";
     repo = "phoebus";
     rev = "v${final.version}";
-    hash = "sha256-k0zURg5b0NyTsMaHYLYAmzNtFYAFHafW+gRutUgCqto=";
+    hash = "sha256-X2KP3bRood8iYsZbtO1njFm/o+AXuT0aXoYFivy8LAY=";
   };
 
   nativeBuildInputs = [
@@ -61,7 +61,7 @@ stdenv.mkDerivation (final: {
 
   outputHashAlgo = "sha256";
   outputHashMode = "recursive";
-  outputHash = "sha256-FDfqTa0WucRTTEh49ZDfCaNxTPokpoAL17OTBI4Z7xY=";
+  outputHash = "sha256-ZufZ+hZ0LqAwCTX/MDJQYsLu66p0Mwiud3XBVLcqO5A=";
 
   doCheck = false;
 
