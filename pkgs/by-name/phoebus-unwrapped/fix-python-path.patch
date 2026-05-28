@@ -1,17 +1,13 @@
-diff --git a/app/console/src/main/resources/console_preferences.properties b/app/console/src/main/resources/console_preferences.properties
-index e00d6f8ec..e3bc52f3e 100644
---- a/app/console/src/main/resources/console_preferences.properties
-+++ b/app/console/src/main/resources/console_preferences.properties
-@@ -28,9 +28,9 @@ prompt_info=Enter console command
- #   /bin/bash
+diff --git i/app/console/src/main/resources/console_preferences.properties w/app/console/src/main/resources/console_preferences.properties
+index 84b891df6..4354507b9 100644
+--- i/app/console/src/main/resources/console_preferences.properties
++++ w/app/console/src/main/resources/console_preferences.properties
+@@ -37,7 +37,7 @@ prompt_info=Enter console command
+ # ```
  #
  # Value may include properties.
 -shell=/usr/bin/python -i
 +shell=@python@ -i
  
- # Folder where the shell process should be started
+ # Folder where the shell process should be started.
  #
- # Value may include properties.
--directory=$(user.home)
-\ No newline at end of file
-+directory=$(user.home)
