@@ -353,7 +353,7 @@ You can also configure nginx to require authentication.
 
 [archiver appliance details]: https://epicsarchiver.readthedocs.io/en/stable/developer/details.html#architecture
 [file systems nixos documentation]: https://nixos.org/manual/nixos/stable/#ch-file-systems
-[flake wiki page]: https://nixos.wiki/wiki/Flakes
+[flake wiki page]: https://wiki.nixos.org/wiki/Flakes
 [nix flake command manual]: https://nixos.org/manual/nix/stable/command-ref/new-cli/nix3-flake.html
 [nixos iso file]: https://nixos.org/download/#nixos-iso
 [nixpkgs]: https://github.com/NixOS/nixpkgs
