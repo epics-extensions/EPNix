@@ -122,7 +122,7 @@ more common licenses,
 it's {samp}`lib.licenses.{license}`.
 
 A list of available license names can be found
-in [Nixpkgs' lib/licenses.nix] file.
+in [Nixpkgs' licenses] file.
 
 In this tutorial,
 use `epnixLib.licenses.epics`.
@@ -848,7 +848,7 @@ to learn more about Nix packaging:
   [epnix github repository]: https://github.com/epics-extensions/EPNix/
   [Nix.dev Packaging existing software]: https://nix.dev/tutorials/packaging-existing-software
   [Nixpkgs manual]: https://nixos.org/manual/nixpkgs/stable/
-  [Nixpkgs' lib/licenses.nix]: https://github.com/NixOS/nixpkgs/blob/master/lib/licenses.nix
+  [Nixpkgs' licenses]: https://github.com/NixOS/nixpkgs/blob/master/lib/licenses/licenses.nix
   [Nixpkgs' package search]: https://search.nixos.org/packages
   [WebRTC]: https://en.wikipedia.org/wiki/WebRTC
   [working with forks]: https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks
