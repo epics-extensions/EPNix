@@ -211,7 +211,7 @@ with subtest("The data is still here after a server reboot"):
 
 with subtest("Can export alarm configuration"):
     server.succeed(
-        "phoebus-alarm-server -settings /etc/phoebus/alarm-server.properties -export export.xml"
+        "phoebus-alarm-server -settings /etc/phoebus/alarm-server/application.properties -export export.xml"
     )
     server.succeed("grep ALARM_TEST export.xml")
     server.copy_from_vm("export.xml")

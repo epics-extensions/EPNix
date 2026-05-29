@@ -9,7 +9,7 @@ let
   cfg = config.services.phoebus-alarm-server;
   settingsFormat = pkgs.formats.javaProperties { };
   configFile = settingsFormat.generate "phoebus-alarm-server.properties" cfg.settings;
-  configLocation = "phoebus/alarm-server.properties";
+  configLocation = "phoebus/alarm-server/application.properties";
 in
 {
   options.services.phoebus-alarm-server = {
@@ -201,8 +201,59 @@ in
       serviceConfig = {
         ExecStart = "${lib.getExe pkgs.epnix.phoebus-alarm-server} -noshell -settings /etc/${configLocation}";
         DynamicUser = true;
+
         StateDirectory = "phoebus-alarm-server";
-        # TODO: systemd hardening
+        ConfigurationDirectory = "phoebus/alarm-server::ro";
+
+        BindReadOnlyPaths = [
+          # /etc/phoebus/alarm-server/* are symbolic links to /etc/static/phoebus/alarm-server/*
+          # and we want them in the chroot
+          "/etc/static/phoebus/alarm-server"
+          # Phoebus needs the hostname
+          "${config.environment.etc."hosts".source}:/etc/hosts"
+          "${
+            config.environment.etc."ssl/certs/ca-certificates.crt".source
+          }:/etc/ssl/certs/ca-certificates.crt"
+        ];
+
+        # Not set because since we have a chroot,
+        # setting it to `true` would *add* `/dev`, `/proc`, etc., to the chroot.
+        # PrivateDevices = true;
+        # ProtectHome = true;
+        # ProtectHostname = true;
+        # ProtectKernelModules = true;
+        # ProtectKernelTunables = true;
+        # ProtectProc = "invisible";
+        # ProtectSystem = "strict";
+
+        # Sandboxing
+        LockPersonality = true;
+        ProtectClock = true;
+        ProtectKernelLogs = true;
+        RestrictAddressFamilies = [
+          "AF_INET"
+          "AF_INET6"
+        ];
+        RestrictNamespaces = true;
+
+        # Capabilities
+        CapabilityBoundingSet = "";
+
+        # System call filtering
+        SystemCallArchitectures = "native";
+        SystemCallFilter = [
+          "@system-service"
+          "~@privileged"
+          "~@resources"
+        ];
+        SystemCallErrorNumber = "EPERM";
+      };
+      confinement = {
+        enable = true;
+        mode = "chroot-only";
+        packages = [
+          configFile
+        ];
       };
     };
 
