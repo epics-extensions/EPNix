@@ -5,6 +5,30 @@ and report alarms in a server.
 Phoebus clients can then contact this server,
 to see a list of current alarms, earlier alarms, and so on.
 
+(phoebus-alarm-danger)=
+:::{danger}
+The current design of the Phoebus alarm server allows any user
+that has access to the Kafka server
+to specify arbitrary commands to run when alarms are triggered.
+This includes Phoebus graphical clients,
+which must have Kafka access to be able
+to configure alarms,
+read alarm states,
+and acknowledge alarms.
+
+This guide provides instructions
+on how to setup a Kafka server *without* authentication,
+meaning that anyone one the network may run arbitrary commands on your alarm server.
+
+The current EPNix implementation tries
+to hardened and isolate the Phoebus alarm service
+to mitigate the risk,
+but this still leaves a bit attack surface.
+
+Make sure the physical machine hosting the Phoebus alarm server doesn't host anything important,
+and try to isolate it as much as possible from a network perspective.
+:::
+
 This guide focuses on installing and configuring these services on a single server.
 
 For more information about these services,
