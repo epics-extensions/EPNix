@@ -75,7 +75,18 @@ with subtest("Topics are created"):
 with subtest("Can monitor a PV"):
     send_kafka(
         alarm_config,
-        {"user": "root", "host": "localhost.localdomain", "description": "The Alarm"},
+        {
+            "user": "root",
+            "host": "localhost.localdomain",
+            "description": "The Alarm",
+            "actions": [
+                {
+                    "title": "Run a custom command",
+                    "delay": 0,
+                    "details": "cmd:alarm-cmd arg1 *",
+                },
+            ],
+        },
     )
 
 with subtest("Alarm logger is aware of the config"):
@@ -101,6 +112,13 @@ with subtest("We can trigger an MINOR alarm"):
 
     assert alarm["current_severity"] == "MINOR"
     assert alarm["severity"] == "MINOR"
+
+with subtest("The alarm command was run"):
+    server.wait_for_file("/var/lib/phoebus-alarm-server/alarm-cmd-result")
+    result = server.succeed(
+        "cat /var/lib/phoebus-alarm-server/alarm-cmd-result"
+    ).strip()
+    assert result == "all good: ALARM_TEST MINOR"
 
 with subtest("We can trigger an MAJOR alarm"):
     client.succeed("caput ALARM_TEST 4")

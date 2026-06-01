@@ -37,6 +37,45 @@ in
       default = false;
     };
 
+    path = lib.mkOption {
+      description = ''
+        Extra packages to add
+        to the PATH of the `phoebus-alarm-server.service` systemd unit.
+
+        These packages may be used as commands configured in individual alarms.
+      '';
+      type =
+        with lib.types;
+        listOf (oneOf [
+          package
+          str
+        ]);
+      default = [ ];
+      example = lib.literalExpression ''
+        [
+          (pkgs.writeShellApplication {
+            # Name of the command
+            name = "phoebus-alarm-send-alert";
+            # Make your script depend on the 'curl' package
+            runtimeInputs = [ pkgs.curl ];
+            # Content of the script
+            text = '''
+              # If "*" is given as argument in the configuration,
+              # the first argument is the PV name
+              ALARM_PV="$1"
+              # and the second argument is the alarm severity
+              ALARM_SEVERITY="$2"
+
+              curl -sSfL "https://my-server.example.com/api/alarm/webhook" \
+                -X POST \
+                --header "Content-Type: application/json" \
+                -d '{"pv": "'$ALARM_PV'", "severity": "'$ALARM_SEVERITY'"}'
+            ''';
+          })
+        ]
+      '';
+    };
+
     settings = lib.mkOption {
       description = ''
         Configuration for the Phoebus Alarm Server.
@@ -203,6 +242,7 @@ in
 
     systemd.services.phoebus-alarm-server = {
       description = "Phoebus Alarm Server";
+      inherit (cfg) path;
 
       wantedBy = [ "multi-user.target" ];
       # If the user has installed a Kafka server,
@@ -265,9 +305,7 @@ in
       confinement = {
         enable = true;
         mode = "chroot-only";
-        packages = [
-          configFile
-        ];
+        packages = [ configFile ] ++ cfg.path;
       };
     };
 
