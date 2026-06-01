@@ -162,6 +162,19 @@ in
             type = lib.types.str;
             default = "";
           };
+
+          # Command options:
+          # ---
+
+          "org.phoebus.applications.alarm/command_directory" = lib.mkOption {
+            description = ''
+              Directory used for executing commands.
+
+              May use Java system properties like this: `$(prop_name)`.
+            '';
+            type = lib.types.str;
+            default = "/var/lib/phoebus-alarm-server";
+          };
         };
       };
     };
