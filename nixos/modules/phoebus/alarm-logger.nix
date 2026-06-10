@@ -140,6 +140,12 @@ in
       description = "Phoebus Alarm Logger";
 
       wantedBy = [ "multi-user.target" ];
+      # If the user has installed an Elasticsearch or Kafka server,
+      # it's probably going to be using them.
+      after = [
+        "apache-kafka.service"
+        "elasticsearch.service"
+      ];
 
       environment = {
         # Weirdly not "phoebus.user"
