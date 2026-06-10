@@ -161,13 +161,16 @@ html_theme_options = {
     "source_repository": source_repository,
     "source_branch": branch,
     "source_directory": "docs/",
-    "dark_css_variables": {
-        "color-brand-primary": "#7ebae4",
-        "color-brand-content": "#7ebae4",
-    },
     "light_css_variables": {
         "color-brand-primary": "#415e9a",
         "color-brand-content": "#415e9a",
+        "font-stack": "sans-serif",
+        "font-stack--monospace": "monospace, monospace",
+        "font-stack--headings": "Georgia, serif",
+    },
+    "dark_css_variables": {
+        "color-brand-primary": "#7ebae4",
+        "color-brand-content": "#7ebae4",
     },
     "footer_icons": [
         {
