@@ -19,13 +19,6 @@ in
       By default this option will also enable the phoebus-alarm-logger service.
       Set {nix:option}`services.phoebus-alarm-logger.enable` to `false` to disable it'';
 
-    # TODO: why undocumented? Seems useful
-    createTopics = lib.mkOption {
-      description = "Automatically create missing Kafka topics";
-      type = lib.types.bool;
-      default = true;
-    };
-
     openFirewall = lib.mkOption {
       description = ''
         Open the firewall for all Phoebus Alarm related services.
@@ -203,15 +196,7 @@ in
       environment.JAVA_OPTS = "-Dphoebus.user=/var/lib/phoebus-alarm-server";
 
       serviceConfig = {
-        ExecStart =
-          let
-            args = [
-              "-noshell"
-              "-settings /etc/${configLocation}"
-            ]
-            ++ (lib.optional cfg.createTopics "-create_topics");
-          in
-          "${lib.getExe pkgs.epnix.phoebus-alarm-server} ${lib.concatStringsSep " " args}";
+        ExecStart = "${lib.getExe pkgs.epnix.phoebus-alarm-server} -noshell -settings /etc/${configLocation}";
         DynamicUser = true;
         StateDirectory = "phoebus-alarm-server";
         # TODO: systemd hardening
