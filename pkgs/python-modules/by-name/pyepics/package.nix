@@ -13,19 +13,17 @@
   sphinx-copybutton,
   numpydoc,
 }:
-buildPythonPackage rec {
+buildPythonPackage (finalAttrs: {
   pname = "pyepics";
-  version = "3.5.9";
+  version = "3.5.10";
   format = "pyproject";
 
   src = fetchFromGitHub {
     owner = "pyepics";
-    repo = pname;
-    tag = version;
-    hash = "sha256-X09gxahL0Y/leGNgeG+T7BYCIBxgXULjsC5mM8uFgbs=";
+    repo = "pyepics";
+    tag = finalAttrs.version;
+    hash = "sha256-eTM/duEIk8l6VPdrjQvJ+c+SHpg7cLmjnLCAOrFsO/c=";
   };
-
-  patches = [ ./remove-unused-sphinx-extension.patch ];
 
   build-system = [
     setuptools
@@ -72,4 +70,4 @@ buildPythonPackage rec {
     license = epnixLib.licenses.epics;
     maintainers = with epnixLib.maintainers; [ minijackson ];
   };
-}
+})
