@@ -1,4 +1,4 @@
-# Phoebus Alarm single server setup
+# Phoebus Alarm
 
 The Phoebus Alarm collection of services enables monitoring EPICS PVs,
 and report alarms in a server.
