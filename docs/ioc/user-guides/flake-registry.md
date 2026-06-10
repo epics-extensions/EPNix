@@ -1,7 +1,7 @@
 # Setting up the flake registry
 
 While developing with EPNix,
-it’s possible you will end up typing `'github:epics-extensions/epnix'` quite often.
+it's possible you will end up typing `'github:epics-extensions/epnix'` quite often.
 
 It happens when you need to create a "top" template,
 or when you just want to have `epics-base` in your shell,

@@ -51,7 +51,7 @@ in the `environment.systemPackages` NixOS option:
 {
   nodes.machine = {
     environment.systemPackages = [
-      (pkgs.writers.writePython3 "p4p-client"
+      (pkgs.writers.writePython3Bin "p4p-client"
         {
           libraries = [ pkgs.python3Packages.p4p ];
         }

@@ -60,7 +60,7 @@ add this configuration
 :caption: {file}`phoebus-client-settings.ini`
 
 # Replace the IP address with your server's IP address or domain name
-org.phoebus.applications.saveandrestore/jmasar.service.url=http://192.168.1.42:8080/save-restore
+org.phoebus.applications.saveandrestore.client/jmasar.service.url=http://192.168.1.42:8080/save-restore
 ```
 
 ## Custom port

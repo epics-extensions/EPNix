@@ -2,11 +2,11 @@
 
 The requirements for using EPNix are having curl, Nix, and Git installed,
 either in a Linux system,
-or in Windows’ WSL2.
+or in Windows' WSL2.
 Nix must be configured with "flakes" enabled.
 
-You *don’t* need to have EPICS base installed globally,
-but having a global EPICS base installation shouldn’t pose any issue.
+You *don't* need to have EPICS base installed globally,
+but having a global EPICS base installation shouldn't pose any issue.
 
 ## Installing Nix
 
@@ -17,7 +17,7 @@ You can do this by adding the line `SELINUX=disabled` in `/etc/sysconfig/selinux
 on distributions based on RedHat Enterprise Linux (RHEL) like CentOS, Rocky Linux, and so on.
 :::
 
-If you don’t have Nix installed,
+If you don't have Nix installed,
 first follow the [official instructions].
 Make sure to have the `xz` utility installed beforehand,
 often part of the `xzip` or `xz` package.

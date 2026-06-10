@@ -27,7 +27,7 @@ See the [Phoebus Preferences Listing] page for a list of available settings.
     settings = {
       "org.phoebus.applications.alarm/server" = "my-kafka-server:9092";
       "org.phoebus.applications.alarm.logging.ui/service_uri" = "http://my-logger-server:8080";
-      "org.phoebus.applications.saveandrestore/jmasar.service.url" ="http://my-sar-server:8080/save-restore";
+      "org.phoebus.applications.saveandrestore.client/jmasar.service.url" ="http://my-sar-server:8080/save-restore";
 
       # Macros are specified as an attribute set:
       "org.csstudio.display.builder.model/macros" = {

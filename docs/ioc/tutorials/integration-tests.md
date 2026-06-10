@@ -466,7 +466,7 @@ with subtest("check voltage"):
 
 Note that the script uses the `wait_until_succeeds` method and the `retry` function.
 This is because EPICS has few guarantees about whether it propagates changes immediately.
-It’s better to encourage the use of retries,
+It's better to encourage the use of retries,
 instead of hoping the timing lines up.
 
 After changing your test script,
@@ -485,7 +485,7 @@ You can also examine other NixOS test examples:
 
 If you'd like to run a complete python script on the test VM,
 which can use Python dependencies such as `pyepics`,
-examine the guide {doc}`../user-guides/testing/packaging-python-scripts`.
+examine the guide {doc}`../user-guides/testing/python-scripts`.
 
 If you're interested in adding unit tests,
 examine the {doc}`../user-guides/testing/unit-testing` guide.

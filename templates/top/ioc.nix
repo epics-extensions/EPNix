@@ -16,7 +16,7 @@ mkEpicsPackage {
   nativeBuildInputs = [ ];
   buildInputs = [ ];
 
-  # EPICS support modules can be only in propagatedBuildInputs
+  # EPICS support modules can only be in propagatedBuildInputs
   # --
   propagatedBuildInputs = [
     #epnix.support.StreamDevice

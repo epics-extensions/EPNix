@@ -1,11 +1,11 @@
 # Creating an Archiver Appliance instance
 
 In this tutorial,
-we’re going to create a virtual machine that runs Archiver Appliance,
+we're going to create a virtual machine that runs Archiver Appliance,
 under the NixOS Linux distribution.
 
 Installing Archiver Appliance on a physical machine is definitely possible,
-but this tutorial focuses on virtual machines for simplicity’s sake.
+but this tutorial focuses on virtual machines for simplicity's sake.
 
 You will need:
 
@@ -86,7 +86,7 @@ and every package currently installed on your machine.
 For more information,
 you can read the [Nixpkgs preface].
 
-Having the `epnix` input is what’s going to enable you to use {doc}`packages from EPNix <../../pkgs/packages>`,
+Having the `epnix` input is what's going to enable you to use {doc}`packages from EPNix <../../pkgs/packages>`,
 such as Archiver Appliance.
 It also enables you to use {doc}`EPNix' extra NixOS options <../options-reference/index>`,
 such as the options configuring Tomcat, the systemd service, the `archappl` user and group, MariaDB, and so on.
@@ -134,7 +134,7 @@ error: The option `services.archiver-appliance.stores.lts.location'
 ```
 
 This tells you that setting the {nix:option}`services.archiver-appliance.stores.lts.location` option is mandatory,
-but we didn’t set any value.
+but we didn't set any value.
 
 To figure out what this option is about,
 you can examine the {doc}`../options-reference/archiver-appliance` reference.
@@ -153,11 +153,11 @@ It tells us that you need to choose where the Long Term Store (LTS) is.
 See the "Architecture" section of the [Archiver Appliance Details] page for what the various stores are.
 
 Because this is a test VM,
-let’s configure the LTS to a test location,
+let's configure the LTS to a test location,
 like `/tmp/lts`.
 You will also need to configure the location of the Medium Term Store (MTS).
 
-Here’s how to change `archiver-appliance.nix`:
+Here's how to change `archiver-appliance.nix`:
 
 ```{code-block} nix
 :caption: {file}`archiver-appliance.nix`
@@ -169,7 +169,7 @@ Here’s how to change `archiver-appliance.nix`:
 }
 ```
 
-If you don’t want to repeat yourself,
+If you don't want to repeat yourself,
 you can also change it like so:
 
 ```{code-block} nix
@@ -223,7 +223,7 @@ journalctl -xeu mysql.service
 ```
 
 :::{note}
-Here are some details on what was done by EPNix’ `services.archiver-appliance` NixOS module:
+Here are some details on what was done by EPNix' `services.archiver-appliance` NixOS module:
 
 - Creation of the Linux user and group `archappl`
 
@@ -289,7 +289,7 @@ This VM configuration has some problems:
 
 - It stores the LTS and MTS in `/tmp`,
   which by default is cleaned on reboot
-- The size of the Short Term Store (STS) isn’t configured
+- The size of the Short Term Store (STS) isn't configured
 - Both "management" and "retrieval" URLs are accessible without authentication
 
 The following sections are some pointers to fix these issues.
@@ -302,7 +302,7 @@ you can change the value of the corresponding options:
 - `services.archiver-appliance.stores.lts.location`
 - `services.archiver-appliance.stores.mts.location`
 
-But these values won’t mean much if the configured directories are not backed by the appropriate hardware.
+But these values won't mean much if the configured directories are not backed by the appropriate hardware.
 
 As an example given by the [Archiver Appliance Details] page,
 section "Architecture",

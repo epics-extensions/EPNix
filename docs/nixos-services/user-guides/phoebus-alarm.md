@@ -12,7 +12,7 @@ examine the official documentation:
 
 - [Service Architecture]
 - [Alarm Server]
-- [the README of Alarm Server] for reference only, don’t follow this guide on NixOS
+- [the README of Alarm Server] for reference only, don't follow this guide on NixOS
 - [Alarm Logging Service]
 
 The Phoebus Alarm Logging Service can also be called the Phoebus Alarm Logger.
@@ -26,7 +26,7 @@ Make sure to follow the NixOS {doc}`prerequisites`.
 To configure Phoebus Alarm, Phoebus Alarm Logger, Apache Kafka, and ElasticSearch on a single server,
 add this to your configuration,
 while taking care of replacing the IP address
-and Kafka’s `clusterId`:
+and Kafka's `clusterId`:
 
 ```{code-block} nix
 :caption: {file}`phoebus-alarm.nix`
@@ -148,7 +148,7 @@ You need to synchronize the topic names between:
 Changing the topic names in the Phoebus Alarm Server NixOS modules automatically creates them.
 
 :::{warning}
-Currently, the Phoebus Alarm Server doesn’t support several topics.
+Currently, the Phoebus Alarm Server doesn't support several topics.
 :::
 
 For example,

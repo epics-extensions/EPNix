@@ -10,7 +10,7 @@ Nix
     so if a package works on one machine, it will also work on another.
   - Declarative.
     I.e. Nix makes it trivial to share development and build environments for your projects,
-    regardless of what programming languages and tools you’re using.
+    regardless of what programming languages and tools you're using.
   - Reliable.
     I.e. Nix ensures that installing or upgrading one package cannot break other packages.
     It allows you to roll back to previous versions,
