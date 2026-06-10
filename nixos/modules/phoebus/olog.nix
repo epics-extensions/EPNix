@@ -46,62 +46,32 @@ in
             description = "Enable unsecure HTTP.";
           };
 
-          "demo_auth.enabled" = lib.mkOption {
-            type = lib.types.bool;
-            default = false;
-            apply = lib.boolToString;
+          "authenticationProviders" = lib.mkOption {
+            type =
+              with lib.types;
+              listOf (enum [
+                "inMemory"
+                "embeddedLdap"
+                "ldap"
+                "activeDirectory"
+              ]);
+            apply = lib.concatStringsSep ",";
             description = ''
-              Enable the demo authentication.
+              User authentication providers.
 
-              Phoebus will provide two users:
+              Multiple authentication providers can be provided,
+              which will be tried in the given order.
+
+              For the `inMemory` authentication provider,
+              two users are provided:
 
               - `admin:adminPass`
               - `user:userPass`
-            '';
-          };
 
-          "ad.enabled" = lib.mkOption {
-            type = lib.types.bool;
-            default = false;
-            apply = lib.boolToString;
-            description = ''
-              Enable authenticating to an external Active Directory server.
-            '';
-          };
+              For more information, see [upstream's authentication documentation].
 
-          "ldap.enabled" = lib.mkOption {
-            type = lib.types.bool;
-            default = false;
-            apply = lib.boolToString;
-            description = ''
-              Enable authenticating to an external LDAP server.
+                [upstream's authentication documentation]: https://olog.readthedocs.io/en/latest/sysadmin/guides/configuring/authentication.html
             '';
-          };
-
-          "embedded_ldap.enabled" = lib.mkOption {
-            type = lib.types.bool;
-            default = false;
-            apply = lib.boolToString;
-            description = ''
-              Enable the embedded LDAP authentication.
-            '';
-          };
-
-          "spring.ldap.embedded.base-dn" = lib.mkOption {
-            description = ''
-              The base DN for the embedded LDAP.
-
-              :::{note}
-              Setting this value to a non-empty string
-              will start the embedded LDAP,
-              no matter the value of {nix:option}`"embedded_ldap.enabled"`,
-              which may lead to port conflicts
-              if you deploy multiple Phoebus services.
-              :::
-            '';
-            type = lib.types.str;
-            default = if cfg.settings."embedded_ldap.enabled" == "true" then "dc=olog,dc=local" else "";
-            defaultText = lib.literalExpression ''if cfg.settings."embedded_ldap.enabled" == "true" then "dc=olog,dc=local" else ""'';
           };
         };
       };
@@ -112,12 +82,16 @@ in
     assertions = [
       {
         assertion =
-          with cfg;
-          (settings."ad.enabled" == "true")
-          || settings."ldap.enabled" == "true"
-          || settings."embedded_ldap.enabled" == "true"
-          || settings."demo_auth.enabled" == "true";
-        message = "One type of authentication for Phoebus Olog must be provided";
+          !(
+            cfg.settings ? "demo_auth.enabled"
+            || cfg.settings ? "ad.enabled"
+            || cfg.settings ? "ldap.enabled"
+            || cfg.settings ? "embedded_ldap.enabled"
+          );
+        message = ''
+          The Phoebus Olog settings `demo_auth.enabled`, `ad.enabled`, `ldap.enabled`, and `embedded_ldap.enabled` were removed.
+          Please use `authenticationProviders` instead, and set it to "inMemory", "activeDirectory", "ldap", or "embedded_ldap" instead.
+        '';
       }
     ];
 
@@ -131,7 +105,7 @@ in
       ];
 
       serviceConfig = {
-        ExecStart = "${lib.getExe pkgs.epnix.phoebus-olog} --spring.config.location=file://${configFile}";
+        ExecStart = "${lib.getExe pkgs.epnix.phoebus-olog} --spring.config.location=classpath:/application.properties,file://${configFile}";
         Type = "exec";
         Restart = "on-failure";
         DynamicUser = true;

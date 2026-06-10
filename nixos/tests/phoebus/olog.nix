@@ -13,7 +13,11 @@
       {
         services.phoebus-olog = {
           enable = true;
-          settings."demo_auth.enabled" = true;
+          settings = {
+            "authenticationProviders" = [
+              "inMemory"
+            ];
+          };
         };
 
         services.elasticsearch = {
