@@ -7,7 +7,7 @@ while also developing an IOC.
 This might be to develop and test the support module,
 or to patch and test the support module.
 
-This is where Nix’s reproducibility guarantees might seem to be in the way:
+This is where Nix's reproducibility guarantees might seem to be in the way:
 dependencies are taken from the `/nix/store` instead of your local repository.
 You can add it as a flake input instead,
 but that requires to run `nix flake lock --update-input mySupport` on each modification, etc.
@@ -20,7 +20,7 @@ there are several mechanisms that let you to temporarily weaken these constraint
 First, clone the EPNix repository, and package your support module.
 
 % You can look at the `Packaging modules`_ (TODO) guide,
-% this doesn’t even have to compile yet,
+% this doesn't even have to compile yet,
 % but you need to specify the dependencies of your support module.
 %
 % .. _Packaging modules: ../developer-guides/packaging-modules.md
@@ -82,7 +82,7 @@ each on their own development shell.
 
 One question one may ask:
 
-> What’s the difference between
+> What's the difference between
 > running the complex `nix develop` command
 > and just putting `/path/to/mySupport/outputs/out` into `RELEASE.local`?
 
@@ -92,7 +92,7 @@ This includes the `RELEASE.local` file,
 but this may not be the only thing:
 
 For example,
-if you’re hacking on the `seq` support module,
+if you're hacking on the `seq` support module,
 not only will it put the path to your local `seq` module into `RELEASE.local`,
 but it will also put some `seq` specific programs into your `$PATH`, like the `snc` utility.
 These programs will be those from your local build,

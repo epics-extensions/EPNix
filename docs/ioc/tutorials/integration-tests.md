@@ -466,7 +466,7 @@ with subtest("check voltage"):
 
 Note that the script uses the `wait_until_succeeds` method and the `retry` function.
 This is because EPICS has few guarantees about whether it propagates changes immediately.
-It’s better to encourage the use of retries,
+It's better to encourage the use of retries,
 instead of hoping the timing lines up.
 
 After changing your test script,

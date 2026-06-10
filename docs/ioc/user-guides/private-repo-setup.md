@@ -1,7 +1,7 @@
 # Private repository setup
 
 To avoid a great deal of confusion,
-it’s best to configure your machine
+it's best to configure your machine
 so that it can clone your private repositories unattended.
 This means that this command should succeed
 without asking for user input on the terminal:
@@ -16,7 +16,7 @@ The reason is
 that the Nix command-line tool often writes text on the terminal,
 and does so over the questions asked by programs like SSH or Git.
 If SSH or Git asks for a password on the terminal,
-you probably won’t see it,
+you probably won't see it,
 and confusion will follow when the Nix command hangs.
 
 There are two main ways to configure your machine for this:
@@ -60,14 +60,14 @@ and add your configured SSH key like so:
 ssh-add 'path/to/key/id_ed25519'
 ```
 
-Check that logging in to GitLab doesn’t ask for user input on the terminal:
+Check that logging in to GitLab doesn't ask for user input on the terminal:
 
 ```bash
 ssh -T 'git@your.gitlab.com'
 # Welcome to GitLab, @user!
 ```
 
-If it doesn’t work,
+If it doesn't work,
 but you have `gnome-keyring-daemon` installed and running,
 you can add this line to your `~/.bashrc`:
 
@@ -82,7 +82,7 @@ suitable for either quick and dirty access,
 or for setting up services or scripts
 that need access to GitHub / GitLab repositories.
 In any case,
-tokens shouldn’t be used for usual development.
+tokens shouldn't be used for usual development.
 
 In GitLab,
 you can create tokens either per-user,
@@ -122,12 +122,12 @@ select the appropriate role.
 
 If you only want your token to be able to clone repositories,
 you can just select the `read_repository` scope.
-Else refer to GitLab’s official documentation by clicking "Learn more."
+Else refer to GitLab's official documentation by clicking "Learn more."
 
 After creating the personal access token,
-you can copy the token’s value.
+you can copy the token's value.
 Be careful,
-as this value won’t be accessible after closing the page.
+as this value won't be accessible after closing the page.
 
 If you want to clone any repository,
 the URL will need to be:
