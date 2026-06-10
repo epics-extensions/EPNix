@@ -35,7 +35,14 @@ stdenv.mkDerivation {
         };
       };
     })
-  ];
+  ]
+  ++ (with python3.pkgs; [
+    sphinxHook
+    distutils
+    myst-parser
+    sphinx-rtd-theme
+    sphinxcontrib-openapi
+  ]);
 
   # Put runtime dependencies in propagated
   # because references get thrown into a jar

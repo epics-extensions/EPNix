@@ -27,6 +27,21 @@ stdenv.mkDerivation {
   # Prevent double-wrapping
   dontWrapGApps = true;
 
+  # Install things as expected by Phoebus,
+  # see the usage of `Locations.install()` in the Phoebus repository.
+  postInstall = ''
+    mkdir $out
+
+    # Settings file
+    ${lib.optionalString (settingsFile != null) "ln -sfn ${settingsFile} $out/settings.ini"}
+    # Documentation
+    ln -sfn ${phoebus-unwrapped}/share/doc/${phoebus-unwrapped.name}/html $out/doc
+  '';
+
+  # Don't move `$out/doc` to the correct location,
+  # leave it as-is.
+  forceShare = "man info";
+
   # Not install phase,
   # because it's too early for "gappsWrapperArgs" to be populated
   fixupPhase = ''
@@ -35,7 +50,7 @@ stdenv.mkDerivation {
     # This wrapper for the `phoebus-unwrapped` executable sets the `JAVA_OPTS`
     makeWrapper "${lib.getExe phoebus-unwrapped}" "$out/bin/$pname" \
       ''${gappsWrapperArgs[@]} \
-      ${lib.optionalString (settingsFile != null) ''--add-flags "-settings ${settingsFile}"''} \
+      --prefix JAVA_OPTS " " "-Dphoebus.install=$out" \
       --prefix JAVA_OPTS " " "${java_opts}"
 
     runHook postFixup
