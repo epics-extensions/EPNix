@@ -14,6 +14,18 @@ in
   options.services.phoebus-olog = {
     enable = lib.mkEnableOption "the Phoebus Olog service";
 
+    openFirewall = lib.mkOption {
+      description = ''
+        Open the firewall for the Phoebus Olog service.
+
+        :::{warning}
+        This opens the firewall on all network interfaces.
+        :::
+      '';
+      type = lib.types.bool;
+      default = false;
+    };
+
     settings = lib.mkOption {
       description = ''
         Configuration for the Phoebus Olog service.
@@ -178,6 +190,10 @@ in
       enable = true;
       settings.FERRETDB_TELEMETRY = "disable";
     };
+
+    networking.firewall.allowedTCPPorts = lib.mkIf cfg.openFirewall [
+      (lib.toInt cfg.settings."server.port")
+    ];
   };
 
   meta.maintainers = with epnixLib.maintainers; [ minijackson ];

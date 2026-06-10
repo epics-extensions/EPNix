@@ -13,6 +13,7 @@
       {
         services.phoebus-olog = {
           enable = true;
+          openFirewall = true;
           settings = {
             "authenticationProviders" = [
               "inMemory"
@@ -35,8 +36,6 @@
             # any service, this should be fine.
             "elasticsearch"
           ];
-
-        networking.firewall.allowedTCPPorts = [ 8181 ];
 
         # Else phoebus-olog gets killed by the OOM killer
         virtualisation.memorySize = 2047;
