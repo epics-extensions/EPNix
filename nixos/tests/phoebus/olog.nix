@@ -16,7 +16,9 @@
           settings = {
             "authenticationProviders" = [
               "inMemory"
+              "embeddedLdap"
             ];
+            "embedded_ldap_ldif" = "file://${./olog.ldif}";
           };
         };
 
@@ -81,7 +83,7 @@
         logbooks = get("/logbooks")
         assert len(logbooks) > 0, "No default logbook found"
 
-    with subtest("can login"):
+    with subtest("can login using inMemory auth provider"):
         credentials = {"username": "admin", "password": "adminPass"}
         client.succeed(
             "curl -sSfL -k -X POST 'https://server:8181/Olog/login' "
@@ -91,6 +93,17 @@
         user_str = client.succeed("curl -sSfL -k 'https://server:8181/Olog/user' --cookie cjar")
         user = json.loads(user_str)
         assert user["userName"] == "admin"
+
+    with subtest("can login using embeddedLdap auth provider"):
+        credentials = {"username": "ext-user", "password": "ext-user-pass"}
+        client.succeed(
+            "curl -sSfL -k -X POST 'https://server:8181/Olog/login' "
+            f"-H 'Content-Type: application/json' -d {repr(json.dumps(credentials))} "
+            "--cookie-jar cjar"
+        )
+        user_str = client.succeed("curl -sSfL -k 'https://server:8181/Olog/user' --cookie cjar")
+        user = json.loads(user_str)
+        assert user["userName"] == "ext-user"
 
     log_id = -1
 
