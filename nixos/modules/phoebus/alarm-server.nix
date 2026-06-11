@@ -192,6 +192,9 @@ in
       description = "Phoebus Alarm Server";
 
       wantedBy = [ "multi-user.target" ];
+      # If the user has installed a Kafka server,
+      # it's probably going to be using it.
+      after = [ "apache-kafka.service" ];
 
       environment.JAVA_OPTS = "-Dphoebus.user=/var/lib/phoebus-alarm-server";
 
