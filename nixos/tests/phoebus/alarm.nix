@@ -49,6 +49,25 @@
           enable = true;
           openFirewall = true;
           settings."org.phoebus.applications.alarm/server" = kafkaListenSockAddr;
+          path = [
+            (pkgs.writeShellApplication {
+              name = "alarm-cmd";
+              text = ''
+                echo "Running alarm command"
+
+                text="all good"
+                if [[ "$1" != "arg1" ]]; then
+                  text="wrong argument"
+                fi
+                shift
+
+                ALARM_PV="$1"
+                ALARM_SEVERITY="$2"
+
+                echo "$text: $ALARM_PV $ALARM_SEVERITY" > "$STATE_DIRECTORY/alarm-cmd-result"
+              '';
+            })
+          ];
         };
 
         environment.epics = {

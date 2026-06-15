@@ -9,7 +9,7 @@ let
   cfg = config.services.phoebus-alarm-server;
   settingsFormat = pkgs.formats.javaProperties { };
   configFile = settingsFormat.generate "phoebus-alarm-server.properties" cfg.settings;
-  configLocation = "phoebus/alarm-server.properties";
+  configLocation = "phoebus/alarm-server/application.properties";
 in
 {
   options.services.phoebus-alarm-server = {
@@ -35,6 +35,45 @@ in
       '';
       type = lib.types.bool;
       default = false;
+    };
+
+    path = lib.mkOption {
+      description = ''
+        Extra packages to add
+        to the PATH of the `phoebus-alarm-server.service` systemd unit.
+
+        These packages may be used as commands configured in individual alarms.
+      '';
+      type =
+        with lib.types;
+        listOf (oneOf [
+          package
+          str
+        ]);
+      default = [ ];
+      example = lib.literalExpression ''
+        [
+          (pkgs.writeShellApplication {
+            # Name of the command
+            name = "phoebus-alarm-send-alert";
+            # Make your script depend on the 'curl' package
+            runtimeInputs = [ pkgs.curl ];
+            # Content of the script
+            text = '''
+              # If "*" is given as argument in the configuration,
+              # the first argument is the PV name
+              ALARM_PV="$1"
+              # and the second argument is the alarm severity
+              ALARM_SEVERITY="$2"
+
+              curl -sSfL "https://my-server.example.com/api/alarm/webhook" \
+                -X POST \
+                --header "Content-Type: application/json" \
+                -d '{"pv": "'$ALARM_PV'", "severity": "'$ALARM_SEVERITY'"}'
+            ''';
+          })
+        ]
+      '';
     };
 
     settings = lib.mkOption {
@@ -162,6 +201,19 @@ in
             type = lib.types.str;
             default = "";
           };
+
+          # Command options:
+          # ---
+
+          "org.phoebus.applications.alarm/command_directory" = lib.mkOption {
+            description = ''
+              Directory used for executing commands.
+
+              May use Java system properties like this: `$(prop_name)`.
+            '';
+            type = lib.types.str;
+            default = "/var/lib/phoebus-alarm-server";
+          };
         };
       };
     };
@@ -190,6 +242,7 @@ in
 
     systemd.services.phoebus-alarm-server = {
       description = "Phoebus Alarm Server";
+      inherit (cfg) path;
 
       wantedBy = [ "multi-user.target" ];
       # If the user has installed a Kafka server,
@@ -197,12 +250,64 @@ in
       after = [ "apache-kafka.service" ];
 
       environment.JAVA_OPTS = "-Dphoebus.user=/var/lib/phoebus-alarm-server";
+      restartTriggers = [ config.environment.etc."${configLocation}".source ];
 
       serviceConfig = {
         ExecStart = "${lib.getExe pkgs.epnix.phoebus-alarm-server} -noshell -settings /etc/${configLocation}";
         DynamicUser = true;
+        Type = "exec";
+        Restart = "on-failure";
+
         StateDirectory = "phoebus-alarm-server";
-        # TODO: systemd hardening
+        ConfigurationDirectory = "phoebus/alarm-server::ro";
+
+        BindReadOnlyPaths = [
+          # /etc/phoebus/alarm-server/* are symbolic links to /etc/static/phoebus/alarm-server/*
+          # and we want them in the chroot
+          "/etc/static/phoebus/alarm-server"
+          # Phoebus needs the hostname
+          "${config.environment.etc."hosts".source}:/etc/hosts"
+          "${
+            config.environment.etc."ssl/certs/ca-certificates.crt".source
+          }:/etc/ssl/certs/ca-certificates.crt"
+        ];
+
+        # Not set because since we have a chroot,
+        # setting it to `true` would *add* `/dev`, `/proc`, etc., to the chroot.
+        # PrivateDevices = true;
+        # ProtectHome = true;
+        # ProtectHostname = true;
+        # ProtectKernelModules = true;
+        # ProtectKernelTunables = true;
+        # ProtectProc = "invisible";
+        # ProtectSystem = "strict";
+
+        # Sandboxing
+        LockPersonality = true;
+        ProtectClock = true;
+        ProtectKernelLogs = true;
+        RestrictAddressFamilies = [
+          "AF_INET"
+          "AF_INET6"
+        ];
+        RestrictNamespaces = true;
+
+        # Capabilities
+        CapabilityBoundingSet = "";
+
+        # System call filtering
+        SystemCallArchitectures = "native";
+        SystemCallFilter = [
+          "@system-service"
+          "~@privileged"
+          "~@resources"
+        ];
+        SystemCallErrorNumber = "EPERM";
+      };
+      confinement = {
+        enable = true;
+        mode = "chroot-only";
+        packages = [ configFile ] ++ cfg.path;
       };
     };
 
