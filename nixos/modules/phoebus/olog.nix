@@ -84,6 +84,19 @@ in
                 [upstream's authentication documentation]: https://olog.readthedocs.io/en/latest/sysadmin/guides/configuring/authentication.html
             '';
           };
+
+          "embedded_ldap_ldif" = lib.mkOption {
+            description = ''
+              Path to an [LDIF] file describing the content of the embedded LDAP server.
+
+              Only valid for if {nix:option}`authenticationProviders` contains `"embeddedLdap"`.
+
+                [LDIF]: https://en.wikipedia.org/wiki/LDAP_Data_Interchange_Format
+            '';
+            type = lib.types.str;
+            default = "classpath:olog.ldif";
+            example = lib.literalExpression ''"file://''${./olog.ldif}"'';
+          };
         };
         config = {
           # Disable SSL
