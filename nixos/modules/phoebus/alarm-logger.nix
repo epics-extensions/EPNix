@@ -168,6 +168,8 @@ in
           in
           "${lib.getExe pkgs.epnix.phoebus-alarm-logger} ${lib.concatStringsSep " " args}";
         DynamicUser = true;
+        Type = "exec";
+        Restart = "on-failure";
         StateDirectory = "phoebus-alarm-logger";
 
         # Sandboxing
