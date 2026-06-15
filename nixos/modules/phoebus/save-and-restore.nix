@@ -222,7 +222,6 @@ in
         # Security options:
         # ---
 
-        # NETLINK needed to enumerate available interfaces
         RestrictAddressFamilies = [
           "AF_INET"
           "AF_INET6"
