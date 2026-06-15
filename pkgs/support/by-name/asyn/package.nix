@@ -49,7 +49,7 @@ mkEpicsPackage {
 
   meta = {
     description = "EPICS module for driver and device support";
-    homepage = "https://epics-modules.github.io/master/asyn/";
+    homepage = "https://epics-modules.github.io/asyn/";
     license = epnixLib.licenses.epics;
     maintainers = with epnixLib.maintainers; [ minijackson ];
   };
