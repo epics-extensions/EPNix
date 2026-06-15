@@ -215,7 +215,7 @@ in
       after = [ "elasticsearch.service" ];
 
       serviceConfig = {
-        ExecStart = "${lib.getExe pkgs.epnix.phoebus-save-and-restore} --spring.config.location=file://${configFile}";
+        ExecStart = "${lib.getExe pkgs.epnix.phoebus-save-and-restore} --spring.config.location=classpath:/application.properties,file://${configFile}";
         Type = "exec";
         Restart = "always";
 
