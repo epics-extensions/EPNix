@@ -277,11 +277,12 @@ to send an alert through an HTTP API:
 ```{code-block} nix
 :caption: {file}`phoebus-alarm.nix` --- {program}`curl` example
 
-{lib, pkgs, ...}: let
-  alertCommand = ;
-in {
+{ lib, pkgs, ... }:
+
+{
   services.phoebus-alarm-server = {
     # ...
+
     path = [
       (pkgs.writeShellApplication {
         # Name of the command
@@ -303,6 +304,7 @@ in {
         '';
       })
     ];
+
   };
 }
 ```
