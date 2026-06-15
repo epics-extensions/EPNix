@@ -132,6 +132,7 @@ in
 
       serviceConfig = {
         ExecStart = "${lib.getExe pkgs.epnix.phoebus-olog} --spring.config.location=file://${configFile}";
+        Restart = "on-failure";
         DynamicUser = true;
 
         # Security options:
