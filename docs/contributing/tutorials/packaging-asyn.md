@@ -109,7 +109,7 @@ We recommend using the official description or tagline of the project.
 
 :::{describe} meta.homepage
 A URL to the project's homepage.
-Here, it's `"https://epics-modules.github.io/master/asyn/"`.
+Here, it's `"https://epics-modules.github.io/asyn/"`.
 :::
 
 :::{describe} meta.license
@@ -166,7 +166,7 @@ mkEpicsPackage {
 
   meta = {
     description = "Here is a fancy description of my asyn package";
-    homepage = "https://epics-modules.github.io/master/asyn/";
+    homepage = "https://epics-modules.github.io/asyn/";
     license = epnixLib.licenses.epics;
     maintainers = with epnixLib.maintainers; [ johndoe ];
   };
@@ -222,7 +222,7 @@ mkEpicsPackage {
 
   meta = {
     description = "Here is a fancy description of my asyn package";
-    homepage = "https://epics-modules.github.io/master/asyn/";
+    homepage = "https://epics-modules.github.io/asyn/";
     license = epnixLib.licenses.epics;
     maintainers = with epnixLib.maintainers; [ johndoe ];
   };
