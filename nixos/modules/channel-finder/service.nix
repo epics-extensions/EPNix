@@ -190,7 +190,7 @@ in
       serviceConfig = {
         ExecStart = "${lib.getExe pkgs.epnix.channel-finder-service} --spring.config.location=file://${configFile}";
         Type = "exec";
-        Restart = "on-failure";
+        Restart = "always";
 
         DynamicUser = true;
 

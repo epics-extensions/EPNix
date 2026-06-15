@@ -257,7 +257,7 @@ in
         Type = "exec";
         DynamicUser = true;
         Type = "exec";
-        Restart = "on-failure";
+        Restart = "always";
 
         StateDirectory = "phoebus-alarm-server";
         ConfigurationDirectory = "phoebus/alarm-server::ro";
