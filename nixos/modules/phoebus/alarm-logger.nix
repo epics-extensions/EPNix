@@ -167,6 +167,7 @@ in
             ];
           in
           "${lib.getExe pkgs.epnix.phoebus-alarm-logger} ${lib.concatStringsSep " " args}";
+        Type = "exec";
         DynamicUser = true;
         StateDirectory = "phoebus-alarm-logger";
         # TODO: systemd hardening

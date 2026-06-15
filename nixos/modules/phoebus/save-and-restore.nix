@@ -216,7 +216,9 @@ in
 
       serviceConfig = {
         ExecStart = "${lib.getExe pkgs.epnix.phoebus-save-and-restore} --spring.config.location=file://${configFile}";
+        Type = "exec";
         Restart = "on-failure";
+
         DynamicUser = true;
 
         # Security options:

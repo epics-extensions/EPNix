@@ -200,6 +200,7 @@ in
 
       serviceConfig = {
         ExecStart = "${lib.getExe pkgs.epnix.phoebus-alarm-server} -noshell -settings /etc/${configLocation}";
+        Type = "exec";
         DynamicUser = true;
         StateDirectory = "phoebus-alarm-server";
         # TODO: systemd hardening
