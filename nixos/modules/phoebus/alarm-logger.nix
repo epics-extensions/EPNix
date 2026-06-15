@@ -170,7 +170,7 @@ in
         Type = "exec";
         DynamicUser = true;
         Type = "exec";
-        Restart = "on-failure";
+        Restart = "always";
         StateDirectory = "phoebus-alarm-logger";
 
         # Sandboxing
