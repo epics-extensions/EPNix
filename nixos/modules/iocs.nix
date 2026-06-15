@@ -204,7 +204,7 @@ let
                   ${toString config.procServ.port} \
                   ${config.startupScript}
               '';
-
+            Type = "exec";
             Restart = lib.mkDefault "always";
             RestartSec = lib.mkDefault "1s";
             StateDirectory = [ "epics/${name}" ];

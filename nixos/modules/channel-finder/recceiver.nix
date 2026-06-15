@@ -152,12 +152,14 @@ in
 
       serviceConfig = {
         ExecStart = "${python}/bin/twistd --nodaemon --no_save --pidfile= --logfile=- recceiver --config=${configFile}";
-        DynamicUser = true;
+        Type = "exec";
         Restart = "on-failure";
         # The recceiver fails if it can't contact channel-finder,
         # so we add a delay for when the server is starting
         RestartSec = "5s";
         StateDirectory = "recceiver";
+
+        DynamicUser = true;
 
         # channelfinderapi.conf needs to be in the working directory
         WorkingDirectory = "/var/lib/recceiver";

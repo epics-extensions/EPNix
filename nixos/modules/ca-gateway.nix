@@ -209,6 +209,7 @@ in
 
       serviceConfig = {
         ExecStart = "${lib.getExe pkg} ${commandLine}";
+        Type = "exec";
         # ca-gateway doesn't always exit with a positive status code,
         # even on failure
         Restart = "always";

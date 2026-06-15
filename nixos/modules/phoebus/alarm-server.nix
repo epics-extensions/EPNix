@@ -254,6 +254,7 @@ in
 
       serviceConfig = {
         ExecStart = "${lib.getExe pkgs.epnix.phoebus-alarm-server} -noshell -settings /etc/${configLocation}";
+        Type = "exec";
         DynamicUser = true;
         Type = "exec";
         Restart = "on-failure";
