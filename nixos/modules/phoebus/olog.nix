@@ -24,6 +24,12 @@ in
 
         See here for supported options:
         <https://github.com/Olog/phoebus-olog/blob/v${pkgs.epnix.phoebus-olog.version}/src/main/resources/application.properties>
+
+        :::{note}
+        Contrary to upstream,
+        the Phoebus Olog service listens to HTTP connections,
+        not HTTPS.
+        :::
       '';
       default = { };
       type = lib.types.submodule {
@@ -36,14 +42,7 @@ in
             # It says it supports integers and booleans, but during the build
             # only accepts strings?
             apply = toString;
-            description = "The server port for the REST service.";
-          };
-
-          "server.http.enable" = lib.mkOption {
-            type = lib.types.bool;
-            default = false;
-            apply = lib.boolToString;
-            description = "Enable unsecure HTTP.";
+            description = "The HTTP server port for the REST service.";
           };
 
           "authenticationProviders" = lib.mkOption {
@@ -73,6 +72,18 @@ in
                 [upstream's authentication documentation]: https://olog.readthedocs.io/en/latest/sysadmin/guides/configuring/authentication.html
             '';
           };
+        };
+        config = {
+          # Disable SSL
+          "security.require-ssl" = lib.mkDefault false;
+          "server.ssl.enabled" = lib.mkDefault false;
+          # Unset the loading of private keys from the Git repository
+          "server.ssl.key-store-type" = lib.mkDefault "";
+          "server.ssl.key-store" = lib.mkDefault "";
+          "server.ssl.key-store-password" = lib.mkDefault "";
+          "server.ssl.key-alias" = lib.mkDefault "";
+          # We've already switched to HTTP, no need for a second one
+          "server.http.enable" = lib.mkDefault false;
         };
       };
     };
