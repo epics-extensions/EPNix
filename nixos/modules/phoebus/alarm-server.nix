@@ -255,9 +255,8 @@ in
       serviceConfig = {
         ExecStart = "${lib.getExe pkgs.epnix.phoebus-alarm-server} -noshell -settings /etc/${configLocation}";
         Type = "exec";
-        DynamicUser = true;
-        Type = "exec";
         Restart = "always";
+        DynamicUser = true;
 
         StateDirectory = "phoebus-alarm-server";
         ConfigurationDirectory = "phoebus/alarm-server::ro";
