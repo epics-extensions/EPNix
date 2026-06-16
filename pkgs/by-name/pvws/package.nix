@@ -7,18 +7,18 @@
 }:
 maven.buildMavenPackage rec {
   pname = "pvws";
-  version = "R3";
+  version = "R4";
 
   src = fetchFromGitHub {
     owner = "ornl-epics";
-    repo = pname;
+    repo = "pvws";
     tag = version;
-    hash = "sha256-XuYXiHBsbcwsOekWqgtVBzjgCChczjiW4EOPo5LJAP0=";
+    hash = "sha256-ash9HDGmybhgKVOG5+LNeEsBSNklu81yglUILp87z8A=";
   };
 
   buildOffline = true;
   mvnJdk = jdk21;
-  mvnHash = "sha256-bNlB2T0+ZxgpyGO7cusA19Fld7ZRU65utKVj88PaVMs=";
+  mvnHash = "sha256-QQQicKxjPsmWXyImOfWBL/4ySvrobdlXhGm7wBzvNog=";
   mvnParameters = "-Dproject.build.outputTimestamp=1980-01-01T00:00:02Z";
 
   installPhase = ''
