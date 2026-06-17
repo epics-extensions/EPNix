@@ -247,7 +247,6 @@ typst_documents = [
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-manual-page-output
 
 man_pages = [
-    ("ioc/references/options", "epnix-ioc", "IOC options reference", "", 5),
     ("nixos-services/options-reference/index", "epnix-nixos", "", "", 5),
     ("pkgs/packages", "epnix-packages", "", "", 5),
 ]
