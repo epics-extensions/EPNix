@@ -10,6 +10,7 @@ build:
     - curl
     - proot
     - plantuml
+    - graphviz
   jobs:
     pre_build:
       - curl -L https://github.com/DavHau/nix-portable/releases/latest/download/nix-portable-$(uname -m) > ./nix-portable

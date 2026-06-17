@@ -45,6 +45,7 @@ extensions = [
     "myst_parser",
     "sphinx.ext.intersphinx",
     "sphinx.ext.githubpages",
+    "sphinx.ext.graphviz",
     "sphinx_copybutton",
     "sphinxcontrib.plantuml",
     "sphinxcontrib_nixdomain",
@@ -118,6 +119,23 @@ intersphinx_mapping = {
     "sphinx": ("https://www.sphinx-doc.org/en/master", None),
     "nixdomain": ("https://minijackson.github.io/sphinxcontrib-nixdomain/", None),
 }
+
+# -- Options for graphviz ----------------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/extensions/graphviz.html
+
+graphviz_output_format = "svg"
+graphviz_dot_args = [
+    "-Gbgcolor=transparent",
+    "-Gfontname=sans",
+    "-Gnodesep=0.5",
+    "-Granksep=0.7",
+    "-Nfontname=sans",
+    "-Nshape=box",
+    "-Nmargin=0.2",
+    "-Nstyle=rounded,filled",
+    "-Nfillcolor=#e5e9f0",
+    "-Efontname=sans",
+]
 
 # -- Options for Sphinx Rediraffe --------------------------------------------
 # https://github.com/sphinx-doc/sphinxext-rediraffe
