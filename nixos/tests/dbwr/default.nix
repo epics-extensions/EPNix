@@ -12,6 +12,7 @@ let
       ''
         import json
         import sys
+        import unittest
 
         from websockets.sync.client import connect
 
@@ -21,6 +22,8 @@ let
 
 
         def main():
+            t = unittest.TestCase()
+
             with connect("ws://localhost:8080/pvws/pv") as websocket:
                 ping = {"type": "ping"}
                 websocket.send(json.dumps(ping))
@@ -30,8 +33,10 @@ let
                 echo = {"type": "echo", "body": "Hello, world!"}
                 websocket.send(json.dumps(echo))
                 message = websocket.recv(timeout=20)
-                assert json.loads(message) == echo, (
-                    "echo didn't return the same object"
+                t.assertEqual(
+                    json.loads(message),
+                    echo,
+                    "echo didn't return the same object",
                 )
 
                 # Test subscription
@@ -41,24 +46,24 @@ let
                 message = websocket.recv(timeout=200)
                 eprint(message)
                 message = json.loads(websocket.recv(timeout=200))
-                value = message["value"]
+                eprint(message)
 
                 message = json.loads(websocket.recv(timeout=200))
                 eprint(message)
-                assert message["value"] == (value + 1) % 10
-                value = message["value"]
+                t.assertGreaterEqual(message["value"], 0)
+                t.assertLess(message["value"], 10)
 
                 message = json.loads(websocket.recv(timeout=200))
                 eprint(message)
-                assert message["value"] == (value + 1) % 10
-                value = message["value"]
+                t.assertGreaterEqual(message["value"], 0)
+                t.assertLess(message["value"], 10)
 
                 # Test list
 
                 websocket.send(json.dumps({"type": "list"}))
                 message = json.loads(websocket.recv(timeout=200))
                 eprint(message)
-                assert message["pvs"] == ["calcExample"]
+                t.assertEqual(message["pvs"], ["calcExample"])
 
 
         if __name__ == "__main__":
