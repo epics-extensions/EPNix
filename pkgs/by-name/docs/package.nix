@@ -5,6 +5,7 @@
   epnixLib,
   python3,
   cacert,
+  graphviz-nox,
   typst,
   installShellFiles,
   epnixOutsideDefaultScopes,
@@ -62,7 +63,6 @@ stdenvNoCC.mkDerivation {
       myst-parser
       sphinx
       sphinx-copybutton
-      sphinx-tippy
       sphinxcontrib-nixdomain
       sphinxcontrib-plantuml
       sphinxcontrib-typstbuilder
@@ -70,6 +70,7 @@ stdenvNoCC.mkDerivation {
       sphinxext-rediraffe
     ])
     ++ [
+      graphviz-nox
       typst
 
       installShellFiles

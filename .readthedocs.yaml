@@ -1,0 +1,29 @@
+# See https://docs.readthedocs.com/platform/stable/config-file/v2.html
+
+version: "2"
+
+build:
+  os: "ubuntu-lts-latest"
+  tools:
+    python: "3.14"
+  apt_packages:
+    - curl
+    - proot
+    - plantuml
+    - graphviz
+  jobs:
+    pre_build:
+      - curl -L https://github.com/DavHau/nix-portable/releases/latest/download/nix-portable-$(uname -m) > ./nix-portable
+      - chmod +x ./nix-portable
+      - ./nix-portable nix build --print-build-logs .#docs.NIXDOMAIN_OBJECTS
+
+      # This line assumes the variable `NIXDOMAIN_OBJECTS="/tmp/nix-objects.json"`
+      # was configured in the ReadTheDocs project settings
+      - ./nix-portable nix store cat $(readlink result) > /tmp/nix-objects.json
+
+python:
+  install:
+    - requirements: docs/requirements.txt
+
+sphinx:
+  configuration: docs/conf.py

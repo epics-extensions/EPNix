@@ -45,10 +45,10 @@ extensions = [
     "myst_parser",
     "sphinx.ext.intersphinx",
     "sphinx.ext.githubpages",
+    "sphinx.ext.graphviz",
     "sphinx_copybutton",
     "sphinxcontrib.plantuml",
     "sphinxcontrib_nixdomain",
-    "sphinx_tippy",
     "sphinxcontrib_typstbuilder",
     "sphinxext.opengraph",
     "sphinxext.rediraffe",
@@ -119,6 +119,23 @@ intersphinx_mapping = {
     "sphinx": ("https://www.sphinx-doc.org/en/master", None),
     "nixdomain": ("https://minijackson.github.io/sphinxcontrib-nixdomain/", None),
 }
+
+# -- Options for graphviz ----------------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/extensions/graphviz.html
+
+graphviz_output_format = "svg"
+graphviz_dot_args = [
+    "-Gbgcolor=transparent",
+    "-Gfontname=sans",
+    "-Gnodesep=0.5",
+    "-Granksep=0.7",
+    "-Nfontname=sans",
+    "-Nshape=box",
+    "-Nmargin=0.2",
+    "-Nstyle=rounded,filled",
+    "-Nfillcolor=#e5e9f0",
+    "-Efontname=sans",
+]
 
 # -- Options for Sphinx Rediraffe --------------------------------------------
 # https://github.com/sphinx-doc/sphinxext-rediraffe
@@ -209,7 +226,6 @@ html_css_files = [
     "link-icons.css",
     "logo-size.css",
     "multi-version.css",
-    "tippy.css",
 ]
 
 html_context = {}
@@ -249,7 +265,6 @@ typst_documents = [
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-manual-page-output
 
 man_pages = [
-    ("ioc/references/options", "epnix-ioc", "IOC options reference", "", 5),
     ("nixos-services/options-reference/index", "epnix-nixos", "", "", 5),
     ("pkgs/packages", "epnix-packages", "", "", 5),
 ]

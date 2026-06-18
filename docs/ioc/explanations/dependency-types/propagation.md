@@ -11,19 +11,18 @@ and `D` depends on `C`.
 To declare `A` a "propagated" dependency means
 that `D` automatically depends on `A`.
 
-```{plantuml}
+```{graphviz}
 :alt: Diagram of a propagated dependency
 :caption: Dependency propagation
 
-@startuml
-!theme epnix from ../../../_resources
-left to right direction
+digraph propagation {
+    rankdir="LR"
 
-[C] --> [A] $DEEP_BLUE : propagated
-[C] --> [B] $RED : not propagated
-[D] --> [C]
-[D] ..> [A] $DEEP_BLUE : automatic
-@enduml
+    C -> A [label="propagated",color="#81a1c1"]
+    C -> B [label="not propagated",color="#bf616a"]
+    D -> C [color="#81a1c1"]
+    D -> A [style="dashed",label="automatic",color="#81a1c1"]
+}
 ```
 
 This specificity comes from Nix building dependencies in a sandbox.
@@ -77,19 +76,18 @@ with concrete examples.
 
 ### StreamDevice and asyn example
 
-```{plantuml}
+```{graphviz}
 :alt: Diagram of an IOC depending on StreamDevice
 :caption: IOC depending on StreamDevice
 
-@startuml
-!theme epnix from ../../../_resources
-left to right direction
+digraph asyn_stream {
+    rankdir="LR"
 
-[StreamDevice] --> [asyn] $DEEP_BLUE : propagated
-[StreamDevice] --> [libpcre] $RED : not propagated
-[An IOC] --> [StreamDevice]
-[An IOC] ..> [asyn] $DEEP_BLUE : automatic
-@enduml
+    "StreamDevice" -> "asyn" [label="propagated",color="#81a1c1"]
+    "StreamDevice" -> "libpcre" [label="not propagated",color="#bf616a"]
+    "An IOC" -> "StreamDevice"
+    "An IOC" -> "asyn" [style="dashed",label="automatic",color="#81a1c1"]
+}
 ```
 
 Running a Nix build of the IOC might go like this:
@@ -128,23 +126,34 @@ which will call functions defined in the {file}`libstream.so` library.
 This library will call functions defined in the {file}`libpcre.so` library,
 so your app doesn't need to know about it.
 
-```{plantuml}
+```{graphviz}
 :caption: Using a regular expression with `StreamDevice`
+:alt: Diagram of the dependency chain of using a RegExp in a StreamDevice record
 
-@startuml
-!theme epnix from ../../../_resources
-left to right direction
+digraph streamdevice_regex {
+    rankdir="LR"
 
-package "An EPICS top" {
-  [An IOC] -- "StreamDevice\nrecord"
+    subgraph cluster_top {
+        label="An EPICS top"
+
+        sd [label="StreamDevice\nrecord",style="filled"]
+        "An IOC" -> sd
+    }
+
+    subgraph cluster_streamdevice {
+        label="StreamDevice"
+        libstream [label="libstream.so"]
+    }
+
+    sd -> libstream [label="calls"]
+
+    subgraph cluster_libpcre {
+        label="libpcre"
+        libpcre [label="libpcre.so"]
+    }
+
+    libstream -> libpcre [label="calls"]
 }
-package "StreamDevice" {
-  "StreamDevice\nrecord" --> [libstream.so] : calls
-}
-package "libpcre" {
-  [libstream.so] --> [libpcre.so] : calls
-}
-@enduml
 ```
 
 The PCRE library can stay an implementation detail of `StreamDevice`.
@@ -182,26 +191,38 @@ yourApp_LIBS += calc
 yourApp_LIBS += stream
 ```
 
-```{plantuml}
+```{graphviz}
 :caption: Build-time dependencies to `StreamDevice` and asyn
 
-@startuml
-!theme epnix from ../../../_resources
+digraph asyn_streamdevice_build_deps {
+    subgraph cluster_top {
+        label="An EPICS top"
+        { rank="same"
+          app [label="An App"]
+          Makefile -> app [label="builds"]
+        }
+    }
 
-package "An EPICS top" {
-  [Makefile] -> [An App] : builds
+    subgraph cluster_streamdevice {
+        label="StreamDevice"
+        libstream [label="libstream.so"]
+        stream_dbd [label="stream.dbd"]
+    }
+
+    subgraph cluster_asyn {
+        label="asyn"
+        libasyn [label="libasyn.so"]
+        asyn_dbd [label="asyn.dbd"]
+        drv_asyn [label="drvAsynIPPort.dbd"]
+    }
+
+    Makefile -> stream_dbd [label="includes"]
+    Makefile -> asyn_dbd [label="includes"]
+    Makefile -> drv_asyn [label="includes"]
+    app -> libstream [label="links to"]
+    app -> libasyn [label="links to"]
+    libstream -> libasyn [label="links to"]
 }
-package "StreamDevice" {
-  [An App] --> [libstream.so] : links to
-  [Makefile] --> [stream.dbd] : includes
-}
-package "asyn" {
-  [Makefile] --> [asyn.dbd] : includes
-  [Makefile] --> [drvAsynIPPort.dbd] : includes
-  [libstream.so] --> [libasyn.so] : links to
-  [An App] --> [libasyn.so] : links to
-}
-@enduml
 ```
 
 ### `autosave` and `busy` example
@@ -218,26 +239,33 @@ from the `autosave` package.
 This database file has a `busy` record type,
 which means your app must now know about the `busy` module.
 
-```{plantuml}
+```{graphviz}
 :caption: Dependencies to autosave and busy
 
-@startuml
-!theme epnix from ../../../_resources
-left to right direction
+digraph autosave_busy {
+    subgraph cluster_top {
+        label="An EPICS top"
+        ioc [label="An IOC"]
+    }
 
-package "An EPICS top" {
-  [An IOC]
+    subgraph cluster_autosave {
+        label="autosave"
+        configMenu [label="configMenu.db"]
+        libautosave [label="libautosave.so"]
+    }
+
+    subgraph cluster_busy {
+        label="busy"
+        busy_record [label="busy\nrecord type",style="filled"]
+        libbusy [label="libbusy.so"]
+    }
+
+    ioc -> configMenu [label="uses"]
+    ioc -> libautosave [label="uses"]
+    ioc -> busy_record [label="needs to know"]
+    configMenu -> busy_record [label="uses"]
+    busy_record -> libbusy
 }
-package "autosave" {
-  [An IOC] --> [configMenu.db] : uses
-  [An IOC] --> [libautosave.so] : uses
-}
-package "busy" {
-  [libbusy.so] - "busy record type"
-  [configMenu.db] --> "busy record type" : uses
-  [An IOC] --> "busy record type" : needs to know
-}
-@enduml
 ```
 
 This means that apps that use the `autosave` module

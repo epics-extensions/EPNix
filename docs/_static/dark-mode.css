@@ -21,3 +21,13 @@ svg,
 object[type^="image/"] {
 	filter: var(--img-filter);
 }
+
+/* For ReadTheDocs Link Preview addon tooltips */
+.tooltip, .tooltip .arrow {
+	background: var(--color-background-primary) !important;
+}
+
+/* Set the shadow to something visible even in dark mode */
+.tooltip {
+	box-shadow: rgb(from var(--color-foreground-primary) r g b / 0.1) 0px 0px 10px 6px !important;
+}
