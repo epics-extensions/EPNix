@@ -5,6 +5,7 @@ that serves Phoebus `.bob` displays as web pages.
 
 :::{seealso}
 - the {nix:option}`services.dbwr` NixOS options
+- the {nix:option}`services.pvws` NixOS options
 - the [DBWR README]
 - the [PVWS README]
 :::
@@ -31,6 +32,9 @@ add this to your configuration:
 }
 ```
 
+The DBWR module automatically sets {nix:option}`services.pvws.enable` to `true`
+by default.
+
 This configuration starts a Tomcat server
 on port 8080 by default,
 with the DBWR and PV Web Socket (PVWS) web apps configured.
@@ -41,8 +45,12 @@ The {nix:option}`services.dbwr` NixOS module makes those applications available 
 - {samp}`http://{host-addr}:8080/pvws/`
 
 :::{seealso}
-For a complete list of all DBWR- and PVWS-related options,
+For a complete list of all DBWR-related options,
 see {nix:option}`services.dbwr`.
+
+For a complete list of all PVWS-related options,
+see {nix:option}`services.pvws`
+and the {doc}`pvws` guide.
 :::
 
 :::{seealso}
@@ -56,13 +64,13 @@ The address list is configured by default
 using the {nix:option}`environment.epics` module.
 See the {doc}`epics-environment` guide for more information.
 
-## Configuring DBWR and PVWS
+## Configuring DBWR
 
-PVWS and DBWR are configured through environment variables,
+DBWR are configured through environment variables,
 which you can pass through the {nix:option}`services.dbwr.settings` option.
 
 For more information about available environment variables,
-see the [DBWR README] and [PVWS README].
+see the [DBWR README].
 
 ### Enabling write access
 
@@ -75,20 +83,9 @@ Since the PVWS service handles PV writes,
 the user seen by access security rules will be the Tomcat user.
 :::
 
-To enable write access from the web interface,
-set the `PV_WRITE_SUPPORT` setting to `true`:
-
-```{code-block} nix
-:caption: {file}`dbwr.nix`
-:emphasize-lines: 4
-
-{
-  services.dbwr = {
-    # ...
-    settings.PV_WRITE_SUPPORT = true;
-  };
-}
-```
+You can configure PV write access in the PVWS service.
+See {ref}`pvws-write-access` in the PVWS guide
+for more information.
 
 ## Serve displays
 
