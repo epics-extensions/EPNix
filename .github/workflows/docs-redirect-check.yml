@@ -16,6 +16,6 @@ jobs:
           # Needed to fetch the target branch
           fetch-depth: 0
           persist-credentials: false
-      - uses: nixbuild/nix-quick-install-action@2c9db80fb984ceb1bcaa77cdda3fdf8cfba92035 # v34
+      - uses: nixbuild/nix-quick-install-action@9f63be77f412a248c9d9a65a4c82cf066cdf8f0c # v35
       - name: "Check docs redirects"
         run: nix run --print-build-logs '.#ci-scripts/docs-redirect-check'
