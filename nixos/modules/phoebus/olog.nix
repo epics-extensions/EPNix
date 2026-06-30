@@ -14,6 +14,18 @@ in
   options.services.phoebus-olog = {
     enable = lib.mkEnableOption "the Phoebus Olog service";
 
+    openFirewall = lib.mkOption {
+      description = ''
+        Open the firewall for the Phoebus Olog service.
+
+        :::{warning}
+        This opens the firewall on all network interfaces.
+        :::
+      '';
+      type = lib.types.bool;
+      default = false;
+    };
+
     settings = lib.mkOption {
       description = ''
         Configuration for the Phoebus Olog service.
@@ -24,6 +36,12 @@ in
 
         See here for supported options:
         <https://github.com/Olog/phoebus-olog/blob/v${pkgs.epnix.phoebus-olog.version}/src/main/resources/application.properties>
+
+        :::{note}
+        Contrary to upstream,
+        the Phoebus Olog service listens to HTTP connections,
+        not HTTPS.
+        :::
       '';
       default = { };
       type = lib.types.submodule {
@@ -36,73 +54,61 @@ in
             # It says it supports integers and booleans, but during the build
             # only accepts strings?
             apply = toString;
-            description = "The server port for the REST service.";
+            description = "The HTTP server port for the REST service.";
           };
 
-          "server.http.enable" = lib.mkOption {
-            type = lib.types.bool;
-            default = false;
-            apply = lib.boolToString;
-            description = "Enable unsecure HTTP.";
-          };
-
-          "demo_auth.enabled" = lib.mkOption {
-            type = lib.types.bool;
-            default = false;
-            apply = lib.boolToString;
+          "authenticationProviders" = lib.mkOption {
+            type =
+              with lib.types;
+              listOf (enum [
+                "inMemory"
+                "embeddedLdap"
+                "ldap"
+                "activeDirectory"
+              ]);
+            apply = lib.concatStringsSep ",";
             description = ''
-              Enable the demo authentication.
+              User authentication providers.
 
-              Phoebus will provide two users:
+              Multiple authentication providers can be provided,
+              which will be tried in the given order.
+
+              For the `inMemory` authentication provider,
+              two users are provided:
 
               - `admin:adminPass`
               - `user:userPass`
+
+              For more information, see [upstream's authentication documentation].
+
+                [upstream's authentication documentation]: https://olog.readthedocs.io/en/latest/sysadmin/guides/configuring/authentication.html
             '';
           };
 
-          "ad.enabled" = lib.mkOption {
-            type = lib.types.bool;
-            default = false;
-            apply = lib.boolToString;
+          "embedded_ldap_ldif" = lib.mkOption {
             description = ''
-              Enable authenticating to an external Active Directory server.
-            '';
-          };
+              Path to an [LDIF] file describing the content of the embedded LDAP server.
 
-          "ldap.enabled" = lib.mkOption {
-            type = lib.types.bool;
-            default = false;
-            apply = lib.boolToString;
-            description = ''
-              Enable authenticating to an external LDAP server.
-            '';
-          };
+              Only valid for if {nix:option}`authenticationProviders` contains `"embeddedLdap"`.
 
-          "embedded_ldap.enabled" = lib.mkOption {
-            type = lib.types.bool;
-            default = false;
-            apply = lib.boolToString;
-            description = ''
-              Enable the embedded LDAP authentication.
-            '';
-          };
-
-          "spring.ldap.embedded.base-dn" = lib.mkOption {
-            description = ''
-              The base DN for the embedded LDAP.
-
-              :::{note}
-              Setting this value to a non-empty string
-              will start the embedded LDAP,
-              no matter the value of {nix:option}`"embedded_ldap.enabled"`,
-              which may lead to port conflicts
-              if you deploy multiple Phoebus services.
-              :::
+                [LDIF]: https://en.wikipedia.org/wiki/LDAP_Data_Interchange_Format
             '';
             type = lib.types.str;
-            default = if cfg.settings."embedded_ldap.enabled" == "true" then "dc=olog,dc=local" else "";
-            defaultText = lib.literalExpression ''if cfg.settings."embedded_ldap.enabled" == "true" then "dc=olog,dc=local" else ""'';
+            default = "classpath:olog.ldif";
+            example = lib.literalExpression ''"file://''${./olog.ldif}"'';
           };
+        };
+        config = {
+          # Disable SSL
+          "security.require-ssl" = lib.mkDefault false;
+          "server.ssl.enabled" = lib.mkDefault false;
+          # Unset the loading of private keys from the Git repository
+          "server.ssl.key-store-type" = lib.mkDefault "";
+          "server.ssl.key-store" = lib.mkDefault "";
+          "server.ssl.key-store-password" = lib.mkDefault "";
+          "server.ssl.key-alias" = lib.mkDefault "";
+          # We've already switched to HTTP, no need for a second one
+          "server.http.enable" = lib.mkDefault false;
         };
       };
     };
@@ -112,12 +118,16 @@ in
     assertions = [
       {
         assertion =
-          with cfg;
-          (settings."ad.enabled" == "true")
-          || settings."ldap.enabled" == "true"
-          || settings."embedded_ldap.enabled" == "true"
-          || settings."demo_auth.enabled" == "true";
-        message = "One type of authentication for Phoebus Olog must be provided";
+          !(
+            cfg.settings ? "demo_auth.enabled"
+            || cfg.settings ? "ad.enabled"
+            || cfg.settings ? "ldap.enabled"
+            || cfg.settings ? "embedded_ldap.enabled"
+          );
+        message = ''
+          The Phoebus Olog settings `demo_auth.enabled`, `ad.enabled`, `ldap.enabled`, and `embedded_ldap.enabled` were removed.
+          Please use `authenticationProviders` instead, and set it to "inMemory", "activeDirectory", "ldap", or "embedded_ldap" instead.
+        '';
       }
     ];
 
@@ -131,7 +141,7 @@ in
       ];
 
       serviceConfig = {
-        ExecStart = "${lib.getExe pkgs.epnix.phoebus-olog} --spring.config.location=file://${configFile}";
+        ExecStart = "${lib.getExe pkgs.epnix.phoebus-olog} --spring.config.location=classpath:/application.properties,file://${configFile}";
         Type = "exec";
         Restart = "on-failure";
         DynamicUser = true;
@@ -193,6 +203,10 @@ in
       enable = true;
       settings.FERRETDB_TELEMETRY = "disable";
     };
+
+    networking.firewall.allowedTCPPorts = lib.mkIf cfg.openFirewall [
+      (lib.toInt cfg.settings."server.port")
+    ];
   };
 
   meta.maintainers = with epnixLib.maintainers; [ minijackson ];

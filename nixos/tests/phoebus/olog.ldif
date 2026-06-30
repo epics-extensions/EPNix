@@ -1,0 +1,28 @@
+dn: ou=Group,dc=olog,dc=local
+objectClass: organizationalunit
+ou: Group
+description: groups branch
+
+dn: ou=People,dc=olog,dc=local
+objectClass: organizationalunit
+ou: People
+description: people branch
+
+dn: uid=ext-user,ou=People,dc=olog,dc=local
+uid: ext-user
+objectClass: account
+objectClass: posixAccount
+description: User with tag role
+cn: ext-user
+# bcrypt encoded string "ext-user-pass"
+userPassword: $2b$05$BtWyHnII7L8o33PRqR9hquxb5A4X3SaOla3yZKOd.9AAE6ou/ju/i
+uidNumber: 23001
+gidNumber: 23001
+homeDirectory: /dev/null
+
+dn: cn=olog-logs,ou=Group,dc=olog,dc=local
+cn: olog-logs
+objectClass: posixGroup
+description: olog-logs group
+gidNumber: 24004
+memberUid: ext-user

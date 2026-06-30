@@ -2,24 +2,34 @@
   lib,
   epnixLib,
   fetchFromGitHub,
-  jdk21_headless,
+  jdk25_headless,
   maven,
   makeWrapper,
 }:
 maven.buildMavenPackage rec {
   pname = "phoebus-olog";
-  version = "5.1.2";
+  version = "6.0.3";
 
   src = fetchFromGitHub {
     owner = "Olog";
     repo = "phoebus-olog";
     tag = "v${version}";
-    hash = "sha256-5LcDBisr+uu43B3WwwzDNFNVfchuZb9shWDipgGIo2Q=";
+    hash = "sha256-k5bkHKe5g8EFq9L1KMPrBZL9i27CPdW0U4nWHT5YhQ8=";
   };
 
-  mvnJdk = jdk21_headless;
-  mvnHash = "sha256-6I+d6XEd6XYMZVaWyhk6YPBWAf3DnF8Xh2fDdxV7xk0=";
+  buildOffline = true;
+  mvnJdk = jdk25_headless;
+  mvnHash = "sha256-PsBGGoQRkKPdpUi6tF2/4Hh3D/R3zNd4IvCHJKTXRbg=";
   mvnParameters = "-Dmaven.javadoc.skip=true -Dmaven.source.skip=true -Pdeployable-jar";
+
+  # Dynamic test dependencies
+  # which aren't picked up by go-offline-maven-plugin
+  manualMvnArtifacts = [
+    "org.springframework.boot:spring-boot-maven-plugin:4.0.0-RC1"
+    "org.apache.maven.surefire:surefire-junit-platform:3.5.4"
+    "org.junit.platform:junit-platform-launcher:1.12.2"
+    "org.jacoco:org.jacoco.agent:0.8.10:jar:runtime"
+  ];
 
   nativeBuildInputs = [ makeWrapper ];
 
@@ -33,7 +43,7 @@ maven.buildMavenPackage rec {
 
     install -Dm644 target/service-olog-${version}.jar $out/share/java
 
-    makeWrapper ${lib.getExe jdk21_headless} $out/bin/${meta.mainProgram} \
+    makeWrapper ${lib.getExe jdk25_headless} $out/bin/${meta.mainProgram} \
       --add-flags "-jar $out/share/java/$jarName"
 
     runHook postInstall
@@ -45,6 +55,6 @@ maven.buildMavenPackage rec {
     mainProgram = "phoebus-olog";
     license = lib.licenses.epl10;
     maintainers = with epnixLib.maintainers; [ minijackson ];
-    inherit (jdk21_headless.meta) platforms;
+    inherit (jdk25_headless.meta) platforms;
   };
 }

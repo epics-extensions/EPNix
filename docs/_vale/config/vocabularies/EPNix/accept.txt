@@ -17,6 +17,7 @@ nginx
 Nix
 NixOS
 NixOps
+Olog
 OpenLDAP
 procServ
 RecCaster

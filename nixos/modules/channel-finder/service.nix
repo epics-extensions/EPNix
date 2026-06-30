@@ -188,7 +188,7 @@ in
         '';
 
       serviceConfig = {
-        ExecStart = "${lib.getExe pkgs.epnix.channel-finder-service} --spring.config.location=file://${configFile}";
+        ExecStart = "${lib.getExe pkgs.epnix.channel-finder-service} --spring.config.location=classpath:/application.properties,file://${configFile}";
         Type = "exec";
         Restart = "always";
 
