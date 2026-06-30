@@ -7,25 +7,25 @@
 }:
 maven.buildMavenPackage rec {
   pname = "dbwr";
-  version = "R0";
+  version = "R1";
 
   src = fetchFromGitHub {
     owner = "ornl-epics";
     repo = pname;
     tag = version;
-    hash = "sha256-oYqMKTuow6A9fMoGihoBVMrkoDWjKA1gijH3GoXlTmU=";
+    hash = "sha256-pyJsp3qhj1B3SEvTbFzDW3MF18d0yijdJXuM3IJJqW8=";
   };
 
   buildOffline = true;
   mvnJdk = jdk21;
-  mvnHash = "sha256-q9fcQTvy/0Mim59pUBKM569c3UJ29GPtUc5QzufGTGA=";
+  mvnHash = "sha256-JKnz/ABRQLrwYE7dTFn2dFNSmjGH1wLZ2ApuHgNr0dU=";
   mvnParameters = "-Dproject.build.outputTimestamp=1980-01-01T00:00:02Z";
 
   installPhase = ''
     runHook preInstall
 
     install -Dt $out/webapps target/dbwr.war
-    install -Dt $out/share/doc/bdwr LICENSE Readme.md
+    install -Dt $out/share/doc/dbwr LICENSE Readme.md
 
     runHook postInstall
   '';
