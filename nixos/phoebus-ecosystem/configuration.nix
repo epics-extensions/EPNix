@@ -18,6 +18,8 @@
     ./images/qemu-vm.nix
   ];
 
+  # When modifying this list,
+  # make sure to also modify `docs/pkgs/user-guides/phoebus-ecosystem-vm.md`.
   _module.args.ports = {
     archiver-appliance.port = 8080;
     alarm-logger.port = 8081;
