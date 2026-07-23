@@ -2,7 +2,7 @@
   description = "A Nix flake containing EPICS-related modules and packages";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     flake-utils.url = "github:numtide/flake-utils";
     sphinxcontrib-nixdomain = {
       url = "github:minijackson/sphinxcontrib-nixdomain";
