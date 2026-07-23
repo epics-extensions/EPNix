@@ -17,11 +17,14 @@ maven.buildMavenPackage rec {
     hash = "sha256-ID9XfHAomdVAKodUAOuMngWy/dDlFYhnDjpbDt7Uzig=";
   };
 
-  patches = [ ./support-github-archive.patch ];
+  patches = [
+    ./support-github-archive.patch
+    ./fix-maven-plugin-versions.patch
+  ];
 
   buildOffline = true;
   mvnJdk = jdk25_headless;
-  mvnHash = "sha256-tUo1mTGpLa1DTj3V9HkxalrVyjDgf49dg1TryPIv7Z0=";
+  mvnHash = "sha256-gE2Xql1gKEBMzjYndwK3A4FI3Fv4uV6xrN35O6P0BeY=";
   mvnParameters = "-Dproject.build.outputTimestamp=1980-01-01T00:00:02Z";
 
   # Dynamic test dependencies

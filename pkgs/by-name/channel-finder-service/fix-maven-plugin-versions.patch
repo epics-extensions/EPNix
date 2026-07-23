@@ -1,0 +1,20 @@
+diff --git i/pom.xml w/pom.xml
+index 2040366..85b1179 100644
+--- i/pom.xml
++++ w/pom.xml
+@@ -268,6 +268,7 @@
+             <plugin>
+                 <groupId>org.apache.maven.plugins</groupId>
+                 <artifactId>maven-dependency-plugin</artifactId>
++                <version>3.7.0</version>
+                 <executions>
+                     <execution>
+                         <id>copy</id>
+@@ -448,6 +449,7 @@
+                     <plugin>
+                         <groupId>org.apache.maven.plugins</groupId>
+                         <artifactId>maven-source-plugin</artifactId>
++                        <version>3.4.0</version>
+                         <executions>
+                             <execution>
+                                 <id>attach-sources</id>
