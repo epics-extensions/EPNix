@@ -118,9 +118,9 @@
       templates.default = self.templates.top;
       templates.top = {
         path = ./templates/top;
-        description = "An EPNix TOP project (next-generation)";
+        description = "An EPNix TOP project";
         welcomeText = ''
-          You have created a next-generation EPNix top.
+          You have created an EPNix top.
 
           Don't forget to run `makeBaseApp.pl` and `epicsConfigurePhase` inside the development shell before compiling it.
 
