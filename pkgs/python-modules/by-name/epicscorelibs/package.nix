@@ -9,14 +9,17 @@
 }:
 buildPythonPackage rec {
   pname = "epicscorelibs";
-  version = "7.0.7.99.1.2";
+  version = "7.0.10.99.0.1";
 
   pyproject = true;
 
   src = fetchPypi {
     inherit pname version;
-    hash = "sha256-KnSlO0OLu77vE8dGQKTTBg013njOiYnzFYFI84U0zUM=";
+    hash = "sha256-6MjZcw+u999V9NMpw1mg5MBE8DpSTdLkWH6QEyhz7f0=";
   };
+
+  # https://github.com/epics-base/epicscorelibs/pull/55
+  patches = [ ./use-typed-things.patch ];
 
   dontConfigure = true;
 
