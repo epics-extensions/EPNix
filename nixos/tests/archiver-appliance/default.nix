@@ -43,6 +43,8 @@
       };
 
       networking.firewall.allowedTCPPorts = [ 8080 ];
+
+      virtualisation.diskSize = 2048;
     };
   };
 

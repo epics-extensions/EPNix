@@ -14,13 +14,13 @@
 }:
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "archiver-appliance";
-  version = "2.1.2";
+  version = "2.4.1";
 
   src = fetchFromGitHub {
     owner = "archiver-appliance";
     repo = "epicsarchiverap";
     rev = finalAttrs.version;
-    hash = "sha256-Pxm3454xp3Gs7zXmAvUS3c5tcKQ30QmYA3SXCkBJQXY=";
+    hash = "sha256-9PvwS6T4WmY+pSBu4IzR65kLnsY4BCMeDW/i8i8Vdlg=";
   };
 
   patches = [
@@ -30,7 +30,9 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     # Messes up the shebang auto-patching
     ./fix-policies-shebang.patch
 
-    ./fix-docs-build-script.patch
+    # https://github.com/archiver-appliance/epicsarchiverap/pull/531
+    ./dont-install-docs-dependencies.patch
+
     ./offline-javadoc.patch
   ];
 
@@ -39,14 +41,19 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     gradle
     sphinx
     python3Packages.myst-parser
+    python3Packages.sphinx-copybutton
     python3Packages.sphinx-rtd-theme
     python3Packages.sphinxcontrib-mermaid
+    python3Packages.sphinxcontrib-openapi
+    python3Packages.sphinxext-opengraph
+    python3Packages.sphinxext-rediraffe
   ];
   buildInputs = [ python3 ];
 
   gradleBuildTask = "buildRelease";
   gradleFlags = [
     "-PprojVersion=${finalAttrs.version}"
+    "-PinstallDocsDependencies=false"
     "-Dorg.gradle.java.home=${jdk21_headless}"
   ];
 
