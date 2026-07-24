@@ -723,7 +723,7 @@ with a call to `pkg-config --cflags`:
 # Replace these kinds of lines:
 USR_INCLUDES_Linux += -I/usr/include/tirpc
 # With:
-USR_INCLUDES_Linux += `pkg-config --cflags libtirpc`
+USR_INCLUDES_Linux += $(shell pkg-config --cflags libtirpc)
 ```
 
 ### Creating the patch

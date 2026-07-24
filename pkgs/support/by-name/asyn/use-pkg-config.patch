@@ -7,7 +7,7 @@ index 7ce295c8..4774be2b 100644
  # Define TIRPC in configure/CONFIG_SITE in this case
  ifeq ($(TIRPC),YES)
 -  USR_INCLUDES_Linux += -I/usr/include/tirpc
-+  USR_INCLUDES += `pkg-config --cflags libtirpc`
++  USR_INCLUDES += $(shell pkg-config --cflags libtirpc)
    asyn_SYS_LIBS_Linux += tirpc
  endif
  
@@ -20,7 +20,7 @@ index 20957003..e619dc28 100644
  testGpib_LIBS += testSupport asyn
  ifeq ($(TIRPC),YES)
 -  USR_INCLUDES += -I/usr/include/tirpc
-+  USR_INCLUDES += `pkg-config --cflags libtirpc`
++  USR_INCLUDES += $(shell pkg-config --cflags libtirpc)
    testGpib_SYS_LIBS += tirpc
  endif
  SYS_PROD_LIBS_cygwin32 += $(CYGWIN_RPC_LIB)
