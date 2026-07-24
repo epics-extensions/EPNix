@@ -7,7 +7,7 @@ index 3f803f48..20974179 100644
  USR_CPPFLAGS += -DUSE_TYPED_RSET -DUSE_TYPED_DSET -DUSE_TYPED_DRVET
  
 -USR_INCLUDES_cygwin32 += -I/usr/include/tirpc
-+USR_INCLUDES_cygwin32 += `pkg-config --cflags libtirpc`
++USR_INCLUDES_cygwin32 += $(shell pkg-config --cflags libtirpc)
  
  # The following gets rid of the -fno-implicit-templates flag on vxWorks, 
  # so we get automatic template instantiation.
@@ -16,7 +16,7 @@ index 3f803f48..20974179 100644
  # Define TIRPC in configure/CONFIG_SITE in this case
  ifeq ($(TIRPC),YES)
 -  USR_INCLUDES_Linux += -I/usr/include/tirpc
-+  USR_INCLUDES_Linux += `pkg-config --cflags libtirpc`
++  USR_INCLUDES_Linux += $(shell pkg-config --cflags libtirpc)
    asyn_SYS_LIBS_Linux += tirpc
  endif
  
@@ -29,7 +29,7 @@ index 20957003..e619dc28 100644
  testGpib_LIBS += testSupport asyn
  ifeq ($(TIRPC),YES)
 -  USR_INCLUDES += -I/usr/include/tirpc
-+  USR_INCLUDES += `pkg-config --cflags libtirpc`
++  USR_INCLUDES += $(shell pkg-config --cflags libtirpc)
    testGpib_SYS_LIBS += tirpc
  endif
  SYS_PROD_LIBS_cygwin32 += $(CYGWIN_RPC_LIB)
