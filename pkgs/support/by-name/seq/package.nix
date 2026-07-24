@@ -1,19 +1,21 @@
 {
+  lib,
   epnixLib,
   mkEpicsPackage,
-  fetchdarcs,
+  fetchFromGitHub,
   fetchpatch2,
   re2c,
 }:
-mkEpicsPackage {
+mkEpicsPackage (finalAttrs: {
   pname = "seq";
   version = "2.2.9";
   varname = "SNCSEQ";
 
-  src = fetchdarcs {
-    url = "https://hub.darcs.net/bf/seq-branch-2-2";
-    rev = "R2-2-9";
-    sha256 = "sha256-LAqR5Mrph6CNrhpyt/uP5qbaWN0y7sJk6mfxnCk2Jx0=";
+  src = fetchFromGitHub {
+    owner = "epics-modules";
+    repo = "sequencer";
+    tag = "R${lib.replaceString "." "-" finalAttrs.version}";
+    sha256 = "sha256-FVwj6puPEGYW23X0JlpgHpAKszdVuHp9bQ7B8lNhGu4=";
   };
 
   patches = [
@@ -43,4 +45,4 @@ mkEpicsPackage {
     license = epnixLib.licenses.epics;
     maintainers = with epnixLib.maintainers; [ minijackson ];
   };
-}
+})
