@@ -394,7 +394,7 @@ machine.wait_for_open_port(9999)
 ```
 :::
 
-:::{py:function} retry(fn: Callable, timeout: int = 900)
+:::{py:function} retry(fn: Callable, timeout_seconds: int = 900)
 Call the given function repeatedly, with 1-second intervals,
 until it returns `True` or a timeout is reached.
 
@@ -406,7 +406,7 @@ def check_value(_last_call: bool) -> bool:
     value = float(machine.succeed("caget -t VOLT-RB"))
     return value == 42.
 
-retry(check_value, timeout=10)
+retry(check_value, 10)
 ```
 :::
 
@@ -462,7 +462,7 @@ with subtest("check voltage"):
         value = float(machine.succeed("caget -t VOLT-RB"))
         return value == 42.
 
-    retry(check_value, timeout=10)
+    retry(check_value, 10)
 ```
 
 Note that the script uses the `wait_until_succeeds` method and the `retry` function.

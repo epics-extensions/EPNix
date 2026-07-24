@@ -43,7 +43,7 @@ in
         status, _output = machine.execute(f"caget -t '{pv}' | grep -qxF '{value}'")
         return status == 0
 
-      retry(do_caput, timeout=10)
+      retry(do_caput, 10)
 
     with subtest("getting initial values"):
       assert_caget("UCmd", "0")
