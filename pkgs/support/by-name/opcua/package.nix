@@ -2,6 +2,7 @@
   epnixLib,
   mkEpicsPackage,
   fetchFromGitHub,
+  fetchpatch2,
   pkg-config,
   open62541_1_3,
   openssl,
@@ -30,7 +31,14 @@ mkEpicsPackage (finalAttrs: {
     OPEN62541_USE_XMLPARSER = "YES";
   };
 
-  patches = [ ./dir_xml2.patch ];
+  patches = [
+    ./dir_xml2.patch
+    (fetchpatch2 {
+      name = "fix-gcc-15-problem.patch";
+      url = "https://github.com/epics-modules/opcua/commit/485922c1e9b5bcce34d87be7bc5a6545209f8986.patch?full_index=1";
+      hash = "sha256-UnqAGbMCSZ3anvPiWE0LFRBx2Z0cTeI8W+rXfCxV4sI=";
+    })
+  ];
 
   depsBuildBuild = [ pkg-config ];
   nativeBuildInputs = [
