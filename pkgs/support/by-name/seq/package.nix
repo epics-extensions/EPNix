@@ -10,7 +10,11 @@ mkEpicsPackage {
   version = "2.2.9";
   varname = "SNCSEQ";
 
-  nativeBuildInputs = [ re2c ];
+  src = fetchdarcs {
+    url = "https://hub.darcs.net/bf/seq-branch-2-2";
+    rev = "R2-2-9";
+    sha256 = "sha256-LAqR5Mrph6CNrhpyt/uP5qbaWN0y7sJk6mfxnCk2Jx0=";
+  };
 
   patches = [
     ./remove-date.patch
@@ -24,15 +28,11 @@ mkEpicsPackage {
     })
   ];
 
+  nativeBuildInputs = [ re2c ];
+
   preBuild = ''
     echo 'include $(TOP)/configure/RELEASE.local' >> configure/RELEASE
   '';
-
-  src = fetchdarcs {
-    url = "https://hub.darcs.net/bf/seq-branch-2-2";
-    rev = "R2-2-9";
-    sha256 = "sha256-LAqR5Mrph6CNrhpyt/uP5qbaWN0y7sJk6mfxnCk2Jx0=";
-  };
 
   # TODO: Some tests fail
   doCheck = false;
