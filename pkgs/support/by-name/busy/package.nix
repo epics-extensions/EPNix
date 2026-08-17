@@ -2,6 +2,7 @@
   epnixLib,
   mkEpicsPackage,
   fetchFromGitHub,
+  fetchpatch2,
   asyn,
   autosave,
   calc,
@@ -18,7 +19,14 @@ mkEpicsPackage (finalAttrs: {
     hash = "sha256-mSzFLj42iXkyWGWaxplfLehoQcULLpf745trYMd1XT4=";
   };
 
-  patches = [ ./fix-release.patch ];
+  patches = [
+    ./fix-release.patch
+    (fetchpatch2 {
+      name = "used-typed_dset-and-rset.patch";
+      url = "https://patch-diff.githubusercontent.com/raw/epics-modules/busy/pull/17.patch?full_index=1";
+      hash = "sha256-EbZ6TixBN1Z+Yqu7LpatolPzONPbRDvrGxLabMakpqE=";
+    })
+  ];
 
   buildInputs = [
     calc
