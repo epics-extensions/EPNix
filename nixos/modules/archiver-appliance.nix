@@ -110,7 +110,7 @@ in
 
         See the [appliances.xml documentation] for more details.
 
-        [appliances.xml documentation]: https://epicsarchiver.readthedocs.io/en/latest/sysadmin/installguide.html#appliances-xml
+        [appliances.xml documentation]: https://epicsarchiver.readthedocs.io/en/latest/sysadmin/explanations/configuration.html#appliances-xml
       '';
       type = lib.types.str;
       default = defaultAppliancesXml;
