@@ -6,7 +6,8 @@
 SPHINXOPTS    ?= -j auto
 SPHINXBUILD   ?= sphinx-build
 SOURCEDIR     = .
-BUILDDIR      = _build
+BUILDDIR      ?= _build
+TYPST         ?= typst
 
 CHEATSHEETDIR = "$(BUILDDIR)/typst/cheatsheet"
 
@@ -15,7 +16,7 @@ help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
 cheatsheet: typst
-	typst compile --root "$(SOURCEDIR)" "$(CHEATSHEETDIR)/cheatsheet.typ"
+	$(TYPST) compile "$(CHEATSHEETDIR)/cheatsheet.typ"
 	cp "$(CHEATSHEETDIR)/cheatsheet.pdf" "$(SOURCEDIR)/"
 
 html: cheatsheet

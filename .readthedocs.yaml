@@ -9,6 +9,7 @@ build:
   apt_packages:
     - curl
     - proot
+    - make
     - plantuml
     - graphviz
   jobs:
@@ -20,6 +21,12 @@ build:
       # This line assumes the variable `NIXDOMAIN_OBJECTS="/tmp/nix-objects.json"`
       # was configured in the ReadTheDocs project settings
       - ./nix-portable nix store cat $(readlink result) > /tmp/nix-objects.json
+
+      - curl -LO "https://github.com/typst/typst/releases/latest/download/typst-x86_64-unknown-linux-musl.tar.xz" --output-dir /tmp
+      - tar -C /tmp -xf /tmp/typst-x86_64-unknown-linux-musl.tar.xz
+    build:
+      html:
+        - make -C docs html "BUILDDIR=$READTHEDOCS_OUTPUT" TYPST=/tmp/typst-x86_64-unknown-linux-musl/typst
 
 python:
   install:
