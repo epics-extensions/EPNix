@@ -20,6 +20,7 @@ NixOps
 Olog
 OpenLDAP
 procServ
+QEMU
 RecCaster
 RecCeiver
 SELinux
@@ -28,3 +29,4 @@ StreamDevice
 systemd
 RedHat
 [Uu]ntracked
+VirtualBox

@@ -107,6 +107,7 @@ ioc/faq
 :hidden:
 :titlesonly:
 
+pkgs/user-guides/index
 pkgs/packages
 ```
 

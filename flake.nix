@@ -98,16 +98,22 @@
         in
         epnixLib;
 
-      nixosModules.default = self.nixosModules.nixos;
-      nixosModules.nixos =
-        { lib, ... }:
-        {
-          imports = import ./nixos/module-list.nix;
-          # use mkBefore so that end users can be sure
-          # that their overlay can override EPNix packages
-          nixpkgs.overlays = lib.mkBefore [ self.overlays.default ];
-          _module.args.epnixLib = self.lib;
-        };
+      nixosModules = {
+        default = self.nixosModules.nixos;
+        nixos =
+          { lib, ... }:
+          {
+            imports = import ./nixos/module-list.nix;
+            # use mkBefore so that end users can be sure
+            # that their overlay can override EPNix packages
+            nixpkgs.overlays = lib.mkBefore [ self.overlays.default ];
+            _module.args.epnixLib = self.lib;
+          };
+
+        phoebus-ecosystem.imports = [
+          ./nixos/phoebus-ecosystem/configuration.nix
+        ];
+      };
 
       templates.default = self.templates.top;
       templates.top = {

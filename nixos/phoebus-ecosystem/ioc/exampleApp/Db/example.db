@@ -1,0 +1,64 @@
+# Adapted from: https://github.com/epics-base/epics-base/blob/524f81b8bd147bb714c9ea7b7462b8912a134246/modules/database/src/template/top/exampleApp/Db/dbExample1.db
+
+# To test regularly changing records
+record(ai, "aiExample")
+{
+	field(DESC, "Analog input")
+	field(INP, "calcExample.VAL  NPP NMS")
+	field(EGUF, "10")
+	field(EGU, "Counts")
+	field(HOPR, "10")
+	field(LOPR, "0")
+	field(HIHI, "8")
+	field(HIGH, "6")
+	field(LOW, "4")
+	field(LOLO, "2")
+	field(HHSV, "MAJOR")
+	field(HSV, "MINOR")
+	field(LSV, "MINOR")
+	field(LLSV, "MAJOR")
+}
+
+record(calc, "calcExample") {
+	field(DESC, "Counter")
+	field(SCAN, "1 second")
+	field(FLNK, "aiExample")
+	field(CALC, "(A<B)?(A+C):D")
+	field(INPA, "calcExample.VAL NPP NMS")
+	field(INPB, "9")
+	field(INPC, "1")
+	field(INPD, "0")
+	field(EGU, "Counts")
+	field(HOPR, "10")
+	field(HIHI, "8")
+	field(HIGH, "6")
+	field(LOW, "4")
+	field(LOLO, "2")
+	field(HHSV, "MAJOR")
+	field(HSV, "MINOR")
+	field(LSV, "MINOR")
+	field(LLSV, "MAJOR")
+}
+
+# To test "static" records
+record(ai, "static") {
+	field(VAL, "1")
+}
+
+# To test the ADEL field
+record(ai, "staticDeadband") {
+	field(VAL, 0)
+	field(ADEL, 5)
+}
+
+# To test "static", but regularly processed records
+record(ai, "staticProcessed") {
+	field(VAL, 0)
+	field(SCAN, "1 second")
+	field(ADEL, -1)
+}
+
+# To test waveforms
+record(waveform, "waveform") {
+	field(NELM, 10)
+}

@@ -17,8 +17,11 @@ outputs
 # Created by running NixOS tests in interactive mode
 .nixos-test-history
 
-#VScode extra files
+# VScode extra files
 *.code-workspace
 
-#Python cache
-**/__pycache__/
+# Python cache
+__pycache__
+
+# VM disks
+*.qcow2
