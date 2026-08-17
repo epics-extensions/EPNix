@@ -26,6 +26,10 @@ jobs:
           # Credentials are needed to push to a remote branch,
           # before creating a pull request
           persist-credentials: true
+          # No need to checkout the whole tree
+          sparse-checkout: .
+          # See the WARNING above, no user input should be evaluated
+          allow-unsafe-pr-checkout: true
       - name: Create backport PRs
         uses: korthout/backport-action@2e830a1d0b8269505846ddd407a70876913ad1f8 # v4.6.0
         with:
