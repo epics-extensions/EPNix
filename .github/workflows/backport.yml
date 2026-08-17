@@ -20,12 +20,16 @@ jobs:
     if: github.repository_owner == 'epics-extensions' && github.event.pull_request.merged == true && (github.event_name != 'labeled' || startsWith('backport', github.event.label.name))
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           # Credentials are needed to push to a remote branch,
           # before creating a pull request
           persist-credentials: true
+          # No need to checkout the whole tree
+          sparse-checkout: .
+          # See the WARNING above, no user input should be evaluated
+          allow-unsafe-pr-checkout: true
       - name: Create backport PRs
         uses: korthout/backport-action@2e830a1d0b8269505846ddd407a70876913ad1f8 # v4.6.0
         with:
