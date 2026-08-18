@@ -10,6 +10,8 @@
 private-repo-setup
 flake-registry
 dependencies
+specifying-flake-inputs
+dependency-updates
 developing-modules
 reccaster
 mrf-devices
