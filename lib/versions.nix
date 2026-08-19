@@ -3,9 +3,10 @@ let
 
   self = {
     current = "dev";
-    stable = "nixos-25.11";
+    stable = "nixos-26.05";
     all = [
       "dev"
+      "nixos-26.05"
       "nixos-25.11"
       "nixos-25.05"
       "nixos-24.11"
