@@ -8,13 +8,13 @@
 }:
 maven.buildMavenPackage rec {
   pname = "ChannelFinderService";
-  version = "5.0.0";
+  version = "5.1.0";
 
   src = fetchFromGitHub {
     owner = "ChannelFinder";
-    repo = pname;
+    repo = "ChannelFinderService";
     tag = "ChannelFinder-${version}";
-    hash = "sha256-ID9XfHAomdVAKodUAOuMngWy/dDlFYhnDjpbDt7Uzig=";
+    hash = "sha256-O5BUxj4TQan5vEaMxB/OYc0Cr88lPtqAtSBfsnc/RvA=";
   };
 
   patches = [
@@ -24,15 +24,15 @@ maven.buildMavenPackage rec {
 
   buildOffline = true;
   mvnJdk = jdk25_headless;
-  mvnHash = "sha256-gE2Xql1gKEBMzjYndwK3A4FI3Fv4uV6xrN35O6P0BeY=";
-  mvnParameters = "-Dproject.build.outputTimestamp=1980-01-01T00:00:02Z";
+  mvnHash = "sha256-zd03/FAGS8LtdEDjgD7JZjgCaMso/akuUfjlR7wQM7k=";
+  # Tests require setting up ElasticSearch and Docker
+  mvnParameters = "-Dproject.build.outputTimestamp=1980-01-01T00:00:02Z -DskipTests";
 
   # Dynamic test dependencies
   # which aren't picked up by go-offline-maven-plugin
   manualMvnArtifacts = [
     "org.apache.maven.surefire:surefire-junit-platform:3.1.2"
-    "org.junit.platform:junit-platform-launcher:1.12.2"
-    "org.jacoco:org.jacoco.agent:0.8.14:jar:runtime"
+    "org.junit.platform:junit-platform-launcher:6.0.3"
   ];
 
   nativeBuildInputs = [ makeWrapper ];
