@@ -64,3 +64,8 @@ git switch -c add-asyn-support
 
   [EPNix GitHub repository]: https://github.com/epics-extensions/EPNix/
   [Working with forks]: https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks
+
+## Contributing policy
+
+Make sure to read the contributing policies
+in the {doc}`../explanations/index` section.
