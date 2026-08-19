@@ -45,7 +45,7 @@ so a major Nixpkgs upgrade might cause those hashes to change.
 Build the packages that have Maven hashes in them:
 
 ```bash
-nix build -L \
+nix build -L --keep-going \
   '.#channel-finder-service' \
   '.#phoebus-olog' \
   '.#phoebus-deps'
@@ -112,11 +112,11 @@ Create a commit for each resolved TODO.
 ### Run the tests
 
 Run the EPNix checks.
-This can be done by pushing your branch to DRF's GitLab
+This can be done by opening a PR on GitHub with your changes
 and waiting for the CI to complete.
 
-If you don't have access to DRF's GitLab,
-run `nix flake check -L`.
+You can also run the tests locally
+by running `nix flake check -L`.
 
 :::{caution}
 Running all EPNix checks can take a lot of resources.

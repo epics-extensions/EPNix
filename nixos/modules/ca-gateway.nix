@@ -9,16 +9,17 @@ let
   cfg = config.services.ca-gateway;
   pkg = pkgs.epnix.ca-gateway;
 
-  # the CA gateway doesn't use the long/short options conventions
-  mkOptionName = k: "-${k}";
-  # List are for IP address lists
-  mkList = k: v: [
-    (mkOptionName k)
-    (lib.concatStringsSep " " v)
-  ];
-  toCommandLine = lib.cli.toGNUCommandLine { inherit mkOptionName mkList; };
+  optionFormat = optionName: {
+    # the CA gateway doesn't use the long/short options conventions
+    option = "-${optionName}";
+    sep = null;
+    explicitBool = false;
+  };
 
-  commandLine = lib.escapeShellArgs (toCommandLine cfg.settings);
+  # List are for IP address lists, separated by spaces -> toString
+  processLists = lib.mapAttrs (_: v: if lib.isList v then toString v else v);
+
+  commandLine = lib.escapeShellArgs (lib.cli.toCommandLine optionFormat (processLists cfg.settings));
 
   firewallOpt = options.services.ca-gateway.openFirewall;
 in

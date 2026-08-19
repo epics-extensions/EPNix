@@ -1,0 +1,13 @@
+diff --git i/sscanApp/src/writeXDR.h w/sscanApp/src/writeXDR.h
+index 9ac3a1f..e9e338b 100644
+--- i/sscanApp/src/writeXDR.h
++++ w/sscanApp/src/writeXDR.h
+@@ -2,7 +2,7 @@
+ #include <stdio.h>
+ #include <epicsTypes.h>
+ 
+-typedef int (*xdrproc_t)();
++typedef int (*xdrproc_t)(FILE*, char*);
+ 
+ extern int write_XDR_Init();
+ extern int writeXDR_char(FILE *fd, char *cp);

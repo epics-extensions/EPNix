@@ -16,6 +16,11 @@ mkEpicsPackage (finalAttrs: {
     hash = "sha256-AWwpv5JbnFwLMp/wku0lgI7TL0O0hqC+ycP/ypzwGbU=";
   };
 
+  patches = [
+    # https://github.com/epics-modules/mrfioc2/pull/226
+    ./fix-c23-build.patch
+  ];
+
   propagatedBuildInputs = [ devlib2 ];
 
   meta = {

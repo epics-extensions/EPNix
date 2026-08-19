@@ -2,6 +2,7 @@
   epnixLib,
   mkEpicsPackage,
   fetchFromGitHub,
+  fetchpatch2,
   pkg-config,
   rpcsvc-proto,
   libtirpc,
@@ -20,7 +21,19 @@ mkEpicsPackage (finalAttrs: {
     hash = "sha256-VOHgDuRSj3dUmCWX+nyCf/i+VNGpC0ZsyIP0qBUG0vw=";
   };
 
-  patches = [ ./use-pkg-config.patch ];
+  patches = [
+    ./use-pkg-config.patch
+    (fetchpatch2 {
+      name = "fix-number-of-devsupfun-entries.patch";
+      url = "https://github.com/epics-modules/asyn/commit/b0340d83a903095f3a89163f90b2a48690d5021d.patch?full_index=1";
+      hash = "sha256-jRBj+7mWkhV8ma2p+FvwTvM+zmdSUuJ7sTgfGGiBJhI=";
+    })
+    (fetchpatch2 {
+      name = "explicitly-cast-function-pointers.patch";
+      url = "https://github.com/epics-modules/asyn/commit/8f3c8f651d12651908c845370431943ec4ef6d5c.patch?full_index=1";
+      hash = "sha256-34tyVhvvmmMhZ9UP9K/aexWla5Ni4bB7ozDINQUrKv8=";
+    })
+  ];
 
   local_config_site = {
     TIRPC = "YES";

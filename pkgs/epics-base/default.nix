@@ -5,18 +5,19 @@
   epnixLib,
   buildPackages,
   fetchFromGitHub,
+  fetchpatch2,
   version,
   hash,
 }:
 let
-  older = lib.versionOlder version;
-
   generateConf = (epnixLib.formats.make { }).generate;
 
   # "build" as in Nix terminology (the build machine)
   build_arch = epnixLib.toEpicsArch stdenv.buildPlatform;
   # "host" as in Nix terminology (the machine which will run the generated code)
   host_arch = epnixLib.toEpicsArch stdenv.hostPlatform;
+
+  is3 = (lib.versions.major version) == "3";
 in
 mkEpicsPackage {
   pname = "epics-base";
@@ -33,10 +34,16 @@ mkEpicsPackage {
     fetchSubmodules = true;
   };
 
-  patches = lib.optionals (older "7.0.5") [
+  patches = lib.optionals is3 [
     # Support "undefine MYVAR" in convertRelease.pl
     # Fixed by commit 79d7ac931502e1c25b247a43b7c4454353ac13a6
     ./handle-make-undefine-variable.patch
+
+    (fetchpatch2 {
+      name = "fix-compile-error-in-tssllist.patch";
+      url = "https://github.com/epics-base/epics-base/commit/a509aa660d9f3ca3d2123fe16b89234065997fe6.patch?full_index=1";
+      hash = "sha256-g+PGW5cGIA4X5i0KNjX7ykZVKJ5/FI5dBNar5EatNDk=";
+    })
   ];
 
   # Configuration file for how to compile for the build machine.
@@ -89,6 +96,10 @@ mkEpicsPackage {
         CMPLR_CLASS = "clang";
       }
     );
+
+  local_config_site = lib.optionalAttrs is3 {
+    USR_CFLAGS = "-std=c11";
+  };
 
   postConfigure = ''
     echo "$build_config_site" > configure/os/CONFIG_SITE.${build_arch}.${build_arch}

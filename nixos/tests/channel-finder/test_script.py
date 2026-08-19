@@ -61,7 +61,7 @@ with subtest("RecCeiver sent all properties"):
         property_names = {prop["name"] for prop in properties}
         return all_properties.issubset(property_names)
 
-    retry(has_all_properties, timeout=30)
+    retry(has_all_properties, 30)
 
 with subtest("RecCeiver sent all channels"):
 
@@ -107,7 +107,7 @@ with subtest("RecCeiver sent all channels"):
 
         return True
 
-    retry(has_all_channels, timeout=30)
+    retry(has_all_channels, 30)
 
 with subtest("Client considers itself synchronized"):
     client.succeed("caget -t Msg-I | grep -qxF Synchronized")

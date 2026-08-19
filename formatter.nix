@@ -1,7 +1,7 @@
 {
   treefmt,
   clang-tools,
-  nixfmt-rfc-style,
+  nixfmt,
   ruff,
   shfmt,
   taplo,
@@ -65,7 +65,7 @@ treefmt.withConfig {
   };
   runtimeInputs = [
     clang-tools
-    nixfmt-rfc-style
+    nixfmt
     ruff
     shfmt
     taplo

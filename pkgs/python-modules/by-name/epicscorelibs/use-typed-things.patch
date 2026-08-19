@@ -1,0 +1,13 @@
+diff --git i/setup.py w/setup.py
+index 74840be0e..f4e251a51 100755
+--- i/setup.py
++++ w/setup.py
+@@ -443,7 +443,7 @@ def readlists(name, prefix):
+ modules = []
+ headers = ['epicsVersion.h']
+ 
+-local_defs = [('USE_TYPED_RSET', None)]
++local_defs = [('USE_TYPED_RSET', None), ('USE_TYPED_DSET', None), ('USE_TYPED_DRVET', None)]
+ 
+ def build_module(name, srcdir, defs=[], deps=[], srcs=[], soversion=None):
+     #print("Include EPICS module %s in %s"%(name, srcdir))

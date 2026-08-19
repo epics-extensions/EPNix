@@ -1,0 +1,31 @@
+diff --git i/evrApp/src/devWfMailbox.c w/evrApp/src/devWfMailbox.c
+index 2ce264ec..ce05267b 100644
+--- i/evrApp/src/devWfMailbox.c
++++ w/evrApp/src/devWfMailbox.c
+@@ -88,8 +88,8 @@ struct {
+     5,
+     NULL,
+     NULL,
+-    init_record,
++    (DEVSUPFUN)init_record,
+     NULL,
+-    read_wf
++    (DEVSUPFUN)read_wf
+ };
+ epicsExportAddress(dset, devWfMailbox);
+diff --git i/mrfCommon/src/devMbboDirectSoft.c w/mrfCommon/src/devMbboDirectSoft.c
+index af569a06..ef2255d4 100644
+--- i/mrfCommon/src/devMbboDirectSoft.c
++++ w/mrfCommon/src/devMbboDirectSoft.c
+@@ -43,9 +43,9 @@ struct {
+ 	5,
+ 	NULL,
+ 	NULL,
+-	init_record,
++	(DEVSUPFUN)init_record,
+ 	NULL,
+-	write_mbbo
++	(DEVSUPFUN)write_mbbo
+ };
+ epicsExportAddress(dset,devMbboDirectRestore);
+ 

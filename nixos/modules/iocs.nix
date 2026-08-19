@@ -200,7 +200,7 @@ let
                 procServ = lib.getExe pkgs.epnix.procServ;
               in
               ''
-                ${procServ} ${lib.cli.toGNUCommandLineShell { } config.procServ.options} \
+                ${procServ} ${lib.cli.toCommandLineShellGNU { } config.procServ.options} \
                   ${toString config.procServ.port} \
                   ${config.startupScript}
               '';
