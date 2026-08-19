@@ -8,6 +8,7 @@
 :maxdepth: 2
 
 prerequisites
+contributing-docs
 release-process
 ```
 
