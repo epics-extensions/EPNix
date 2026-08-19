@@ -31,6 +31,11 @@ mkEpicsPackage (finalAttrs: {
       url = "https://github.com/paulscherrerinstitute/StreamDevice/commit/929204cb13f122e2ff3beb64ab86d8bdb6a21d70.patch?full_index=1";
       hash = "sha256-X9b/EicpzMXGMhSvgMrUjTvB7QW1lXJvc/zzlZPdYho=";
     })
+    (fetchpatch2 {
+      name = "in-recent-asyn-versions-vxi11-is-optional.patch";
+      url = "https://github.com/paulscherrerinstitute/StreamDevice/commit/e87e093c846ca19383462036d2f85ca5369b17b3.patch?full_index=1";
+      hash = "sha256-kwxIfKfAQtdmV5Y6uYsS+P4OFWf4q4Uez0qvK/7NApA=";
+    })
   ];
 
   nativeBuildInputs = [ pcre ];
