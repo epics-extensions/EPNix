@@ -61,6 +61,7 @@ where breaking changes are forbidden.
 
 Backporting changes to older release branches is done on a "best-effort" basis.
 
+(getting-help)=
 ## Getting help
 
 You can get help by:
