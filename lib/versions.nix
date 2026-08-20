@@ -2,7 +2,7 @@ let
   toBranch = version: if version == "dev" then "master" else version;
 
   self = {
-    current = "dev";
+    current = "nixos-26.05";
     stable = "nixos-26.05";
     all = [
       "dev"
