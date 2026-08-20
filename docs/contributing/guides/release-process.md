@@ -320,5 +320,6 @@ No breaking change were introduced in this EPNix release.
 ``````
 
 [branches view]: https://github.com/epics-extensions/EPNix/branches
+[labels view]: https://github.com/epics-extensions/EPNix/labels
 [nixos release notes]: https://nixos.org/manual/nixos/stable/release-notes
 [nixpkgs]: https://github.com/NixOS/nixpkgs
