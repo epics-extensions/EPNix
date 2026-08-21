@@ -5,17 +5,15 @@
 }:
 mkEpicsPackage (finalAttrs: {
   pname = "RecCaster";
-  version = "1.9.2";
+  version = "1.9.7";
   varname = "RECCASTER";
 
   src = fetchFromGitHub {
     owner = "ChannelFinder";
-    repo = "recsync";
+    repo = "reccaster";
     tag = finalAttrs.version;
-    hash = "sha256-Iq+w0QV02tVsaVIQu+mWU4h8L0c7QXi9pB8P0nQmVmg=";
+    hash = "sha256-IuK65PCsxzxQxL4CJvI8WE2eOI3dHPuUfalAxS7wDTI=";
   };
-
-  sourceRoot = "${finalAttrs.src.name}/client";
 
   patches = [ ./fix-example-shebang.patch ];
 
