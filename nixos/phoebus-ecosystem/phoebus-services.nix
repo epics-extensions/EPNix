@@ -1,9 +1,4 @@
-{
-  lib,
-  pkgs,
-  ports,
-  ...
-}:
+{ pkgs, ports, ... }:
 {
   services = {
     # Phoebus services
@@ -86,9 +81,10 @@
     ports.olog.port
   ];
 
-  nixpkgs.config.allowUnfreePredicate =
-    pkg:
-    builtins.elem (lib.getName pkg) [
-      "elasticsearch"
-    ];
+  # Elasticsearch can be used as an SSPL-licensed software, which is
+  # not open-source. But as we're using it run tests, not exposing
+  # any service, this should be fine.
+  nixpkgs.config.allowUnfreePackages = [ "elasticsearch" ];
+  # While waiting for Nixpkgs' packaging of Elasticsearch 8 / 9.
+  nixpkgs.config.permittedInsecurePackages = [ pkgs.elasticsearch7.name ];
 }
