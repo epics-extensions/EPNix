@@ -20,14 +20,14 @@ Make sure to follow the NixOS {doc}`prerequisites`.
 
 To enable the ChannelFinder service,
 use {nix:option}`services.channel-finder.enable` and related options.
-You will also need to enable ElasticSearch.
+You will also need to enable Elasticsearch.
 
 For example:
 
 ```{code-block} nix
 :caption: {file}`channel-finder.nix` --- ChannelFinder configuration example
 
-{lib, pkgs, ...}: {
+{ pkgs, ... }: {
   services.channel-finder = {
     enable = true;
     openFirewall = true;
@@ -50,12 +50,12 @@ For example:
     package = pkgs.elasticsearch7;
   };
 
-  # Elasticsearch, needed by ChannelFinder, is not free software (SSPL | Elastic License).
-  # To accept the license, add the code below:
-  nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [
-      "elasticsearch"
-    ];
+  # Elasticsearch can be used as an SSPL-licensed software, which is
+  # not open-source. But as we're using it run tests, not exposing
+  # any service, this should be fine.
+  nixpkgs.config.allowUnfreePackages = [ "elasticsearch" ];
+  # While waiting for Nixpkgs' packaging of Elasticsearch 8 / 9.
+  nixpkgs.config.permittedInsecurePackages = [ pkgs.elasticsearch7.name ];
 }
 ```
 
@@ -65,6 +65,12 @@ You can open your browser at <http://localhost:8082/> to see the ChannelFinder a
 For more settings,
 examine the [ChannelFinder configuration] reference
 and the {nix:option}`services.channel-finder.settings` option.
+
+:::{caution}
+Elasticsearch 7 is end-of-life and considered insecure,
+but currently the only available Elasticsearch package in Nixpkgs.
+Make sure to deploy it on a trusted network.
+:::
 
 ### Authentication
 
@@ -173,7 +179,7 @@ For example:
 :caption: {file}`channel-finder.nix` --- RecCeiver configuration example
 :name: recceiver-configuration-example
 
-{lib, pkgs, ...}: {
+{ pkgs, ... }: {
   # Other previous options...
 
   services.recceiver = {
@@ -193,7 +199,10 @@ For example:
         # When receiving metadata,
         # print it on the command-line (show),
         # and send it to ChannelFinder (cf).
-        procs = ["show" "cf"];
+        procs = [
+          "show"
+          "cf"
+        ];
       };
       cf = {
         # PV metadata to send to ChannelFinder
@@ -204,7 +213,7 @@ For example:
     };
   };
 
-  networking.firewall.allowedTCPPorts = [5050];
+  networking.firewall.allowedTCPPorts = [ 5050 ];
 }
 ```
 
@@ -249,7 +258,7 @@ See {ref}`recceiver-firewall`.
 ```{code-block} nix
 :caption: {file}`channel-finder.nix` --- changing the RecCeiver address list
 
-{lib, pkgs, ...}: {
+{ pkgs, ... }: {
   # ...
 
   services.recceiver = {
@@ -260,7 +269,7 @@ See {ref}`recceiver-firewall`.
 
         # If you change the port,
         # make sure to also change it in the IOC firewall rules
-        addrlist = ["192.168.1.255:5049"];
+        addrlist = [ "192.168.1.255:5049" ];
       };
       # ...
     };
@@ -280,7 +289,7 @@ for example:
 ```{code-block} nix
 :caption: {file}`channel-finder.nix` --- adding custom metadata to ChannelFinder
 
-{lib, pkgs, ...}: {
+{ pkgs, ... }: {
   # ...
 
   services.recceiver = {
@@ -300,7 +309,7 @@ for example:
       };
     };
   };
-};
+}
 ```
 
 ### External ChannelFinder server

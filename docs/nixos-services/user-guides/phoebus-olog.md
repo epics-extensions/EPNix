@@ -32,6 +32,7 @@ add this to your configuration.
 ```{code-block} nix
 :caption: {file}`phoebus-olog.nix`
 
+{ pkgs, ... }:
 {
   services.phoebus-olog = {
     enable = true;
@@ -43,7 +44,7 @@ add this to your configuration.
     settings.authenticationProviders = [ "XXX" ];
   };
 
-  # Phoebus Olog needs ElasticSearch.
+  # Phoebus Olog needs Elasticsearch.
   # If not already enabled elsewhere in your configuration,
   # Enable it with the code below:
   services.elasticsearch = {
@@ -51,18 +52,24 @@ add this to your configuration.
     package = pkgs.elasticsearch7;
   };
 
-  # Elasticsearch, needed by Phoebus Olog, is not free software (SSPL | Elastic License).
-  # To accept the license, add the code below:
-  nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [
-      "elasticsearch"
-    ];
+  # Elasticsearch can be used as an SSPL-licensed software, which is
+  # not open-source. But as we're using it run tests, not exposing
+  # any service, this should be fine.
+  nixpkgs.config.allowUnfreePackages = [ "elasticsearch" ];
+  # While waiting for Nixpkgs' packaging of Elasticsearch 8 / 9.
+  nixpkgs.config.permittedInsecurePackages = [ pkgs.elasticsearch7.name ];
 }
 ```
 
 :::{seealso}
 For a complete list of options related to Phoebus Olog,
 see {nix:option}`services.phoebus-olog`.
+:::
+
+:::{caution}
+Elasticsearch 7 is end-of-life and considered insecure,
+but currently the only available Elasticsearch package in Nixpkgs.
+Make sure to deploy it on a trusted network.
 :::
 
 ## Custom port
@@ -73,6 +80,7 @@ set the {nix:option}`services.phoebus-olog.settings."server.port"` option:
 ```{code-block} nix
 :caption: {file}`phoebus-olog.nix` --- Set custom HTTP port
 
+{ pkgs, ... }:
 {
   services.phoebus-olog = {
     enable = true;
@@ -127,6 +135,7 @@ To use it, set {nix:option}`services.phoebus-olog.settings.authenticationProvide
 ```{code-block} nix
 :caption: {file}`phoebus-olog.nix` --- Default values for in memory authentication
 
+{ pkgs, ... }:
 {
   services.phoebus-olog = {
     enable = true;
@@ -211,6 +220,7 @@ Here is an example configuration:
 ```{code-block} nix
 :caption: {file}`phoebus-olog.nix` --- Configure the external LDAP authentication
 
+{ pkgs, ... }:
 {
   services.phoebus-olog = {
     enable = true;

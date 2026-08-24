@@ -47,7 +47,7 @@ Make sure to follow the NixOS {doc}`prerequisites`.
 
 ## Single server Phoebus Alarm setup
 
-To configure Phoebus Alarm, Phoebus Alarm Logger, Apache Kafka, and ElasticSearch on a single server,
+To configure Phoebus Alarm, Phoebus Alarm Logger, Apache Kafka, and Elasticsearch on a single server,
 add this to your configuration,
 while taking care of replacing the IP address
 and Kafka's `clusterId`:
@@ -55,7 +55,7 @@ and Kafka's `clusterId`:
 ```{code-block} nix
 :caption: {file}`phoebus-alarm.nix`
 
-{ lib, pkgs, ... }:
+{ pkgs, ... }:
 let
   # Replace this with your machine's external IP address
   # or DNS domain name
@@ -121,7 +121,7 @@ in
   # Open kafka to the outside world
   networking.firewall.allowedTCPPorts = [ 9092 ];
 
-  # Phoebus alarm needs ElasticSearch.
+  # Phoebus alarm needs Elasticsearch.
   # If not already enabled elsewhere in your configuration,
   # Enable it with the code below:
   services.elasticsearch = {
@@ -129,13 +129,12 @@ in
     package = pkgs.elasticsearch7;
   };
 
-  # Elasticsearch, needed by Phoebus Alarm Logger, is not free software (SSPL | Elastic License).
-  # To accept the license, add the code below:
-  nixpkgs.config.allowUnfreePredicate =
-    pkg:
-    builtins.elem (lib.getName pkg) [
-      "elasticsearch"
-    ];
+  # Elasticsearch can be used as an SSPL-licensed software, which is
+  # not open-source. But as we're using it run tests, not exposing
+  # any service, this should be fine.
+  nixpkgs.config.allowUnfreePackages = [ "elasticsearch" ];
+  # While waiting for Nixpkgs' packaging of Elasticsearch 8 / 9.
+  nixpkgs.config.permittedInsecurePackages = [ pkgs.elasticsearch7.name ];
 }
 ```
 
@@ -157,6 +156,12 @@ org.phoebus.applications.alarm.logging.ui/service_uri=http://192.168.1.42:8080
 :::{seealso}
 For more information about configuring the firewall for EPICS,
 see the {doc}`epics-firewall` guide.
+:::
+
+:::{caution}
+Elasticsearch 7 is end-of-life and considered insecure,
+but currently the only available Elasticsearch package in Nixpkgs.
+Make sure to deploy it on a trusted network.
 :::
 
 ## Configuring topics
@@ -182,9 +187,11 @@ add this configuration to the server:
 ```{code-block} nix
 :caption: {file}`phoebus-alarm.nix`
 
-{config, lib, ...}: let
-  topics = ["Project"];
-in {
+{ pkgs, ... }:
+let
+  topics = [ "Project" ];
+in
+{
   services.phoebus-alarm-server = {
     # ...
     settings = {
@@ -223,6 +230,7 @@ Here is a list of options you might want to set:
 ```{code-block} nix
 :caption: {file}`phoebus-alarm.nix`
 
+{ pkgs, ... }:
 {
   services.phoebus-alarm-server = {
     # ...
@@ -277,8 +285,7 @@ to send an alert through an HTTP API:
 ```{code-block} nix
 :caption: {file}`phoebus-alarm.nix` --- {program}`curl` example
 
-{ lib, pkgs, ... }:
-
+{ pkgs, ... }:
 {
   services.phoebus-alarm-server = {
     # ...
