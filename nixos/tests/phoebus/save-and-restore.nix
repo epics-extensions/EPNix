@@ -1,8 +1,4 @@
-{
-  lib,
-  epnixLib,
-  ...
-}:
+{ epnixLib, ... }:
 {
   name = "phoebus-save-and-restore-simple-check";
   meta.maintainers = with epnixLib.maintainers; [ minijackson ];
@@ -26,14 +22,12 @@
           package = pkgs.elasticsearch7;
         };
 
-        nixpkgs.config.allowUnfreePredicate =
-          pkg:
-          builtins.elem (lib.getName pkg) [
-            # Elasticsearch can be used as an SSPL-licensed software, which is
-            # not open-source. But as we're using it run tests, not exposing
-            # any service, this should be fine.
-            "elasticsearch"
-          ];
+        # Elasticsearch can be used as an SSPL-licensed software, which is
+        # not open-source. But as we're using it run tests, not exposing
+        # any service, this should be fine.
+        nixpkgs.config.allowUnfreePackages = [ "elasticsearch" ];
+        # While waiting for Nixpkgs' packaging of Elasticsearch 8 / 9.
+        nixpkgs.config.permittedInsecurePackages = [ pkgs.elasticsearch7.name ];
 
         # Else OOM
         virtualisation.memorySize = 2047;

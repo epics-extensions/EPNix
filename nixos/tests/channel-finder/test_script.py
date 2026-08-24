@@ -21,7 +21,7 @@ def get(uri: str) -> Any:
     return json.loads(result)
 
 
-with subtest("ChannelFinder connected to ElasticSearch"):
+with subtest("ChannelFinder connected to Elasticsearch"):
     status = get("")
     assert status["elastic"]["status"] == "Connected"
 
