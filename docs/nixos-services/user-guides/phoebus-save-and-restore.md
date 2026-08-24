@@ -21,7 +21,8 @@ add this to your configuration:
 ```{code-block} nix
 :caption: {file}`phoebus-save-and-restore.nix`
 
-{lib, ...}: {
+{ pkgs, ... }:
+{
   services.phoebus-save-and-restore = {
     enable = true;
     openFirewall = true;
@@ -31,7 +32,7 @@ add this to your configuration:
     settings."auth.impl" = "XXX";
   };
 
-  # Phoebus save-and-restore needs ElasticSearch.
+  # Phoebus save-and-restore needs Elasticsearch.
   # If not already enabled elsewhere in your configuration,
   # Enable it with the code below:
   services.elasticsearch = {
@@ -39,12 +40,12 @@ add this to your configuration:
     package = pkgs.elasticsearch7;
   };
 
-  # Elasticsearch, needed by Phoebus Save-and-restore, is not free software (SSPL | Elastic License).
-  # To accept the license, add the code below:
-  nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [
-      "elasticsearch"
-    ];
+  # Elasticsearch can be used as an SSPL-licensed software, which is
+  # not open-source. But as we're using it run tests, not exposing
+  # any service, this should be fine.
+  nixpkgs.config.allowUnfreePackages = [ "elasticsearch" ];
+  # While waiting for Nixpkgs' packaging of Elasticsearch 8 / 9.
+  nixpkgs.config.permittedInsecurePackages = [ pkgs.elasticsearch7.name ];
 }
 ```
 
@@ -63,6 +64,12 @@ add this configuration
 org.phoebus.applications.saveandrestore.client/jmasar.service.url=http://192.168.1.42:8080/save-restore
 ```
 
+:::{caution}
+Elasticsearch 7 is end-of-life and considered insecure,
+but currently the only available Elasticsearch package in Nixpkgs.
+Make sure to deploy it on a trusted network.
+:::
+
 ## Custom port
 
 To use a custom HTTP port,
@@ -73,6 +80,7 @@ For example:
 ```{code-block} nix
 :caption: {file}`phoebus-save-and-restore.nix` --- Set custom HTTP port
 
+{ pkgs, ... }:
 {
   services.phoebus-save-and-restore = {
     enable = true;
@@ -126,6 +134,7 @@ and their default values:
 ```{code-block} nix
 :caption: {file}`phoebus-save-and-restore.nix` --- Default values for demo authentication
 
+{ pkgs, ... }:
 {
   services.phoebus-save-and-restore = {
     enable = true;
@@ -181,6 +190,7 @@ Configure Phoebus save-and-restore to use your LDIF file:
 ```{code-block} nix
 :caption: {file}`phoebus-save-and-restore.nix` --- Configure the embedded LDAP authentication
 
+{ pkgs, ... }:
 {
   services.phoebus-save-and-restore = {
     enable = true;
@@ -321,6 +331,7 @@ Here is an example configuration:
 ```{code-block} nix
 :caption: {file}`phoebus-save-and-restore.nix` --- Configure the external LDAP authentication
 
+{ pkgs, ... }:
 {
   services.phoebus-save-and-restore = {
     enable = true;

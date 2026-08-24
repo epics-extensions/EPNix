@@ -25,7 +25,7 @@ maven.buildMavenPackage rec {
   buildOffline = true;
   mvnJdk = jdk25_headless;
   mvnHash = "sha256-zd03/FAGS8LtdEDjgD7JZjgCaMso/akuUfjlR7wQM7k=";
-  # Tests require setting up ElasticSearch and Docker
+  # Tests require setting up Elasticsearch and Docker
   mvnParameters = "-Dproject.build.outputTimestamp=1980-01-01T00:00:02Z -DskipTests";
 
   # Dynamic test dependencies
