@@ -264,6 +264,18 @@ let
         };
       };
     };
+
+  # Check that the specified `workingDirectory` does exist
+  # before allowing deployment
+  checkWorkingDirectory =
+    cfg:
+    pkgs.runCommand "check-ioc-${cfg.name}-has-working-directory" { } ''
+      if [ ! -d "${cfg.package}/${cfg.workingDirectory}/" ]; then
+        echo "The package of IOC service '${cfg.name}': '${cfg.package}' doesn't have the specified working directory '${cfg.workingDirectory}'."
+        exit 1
+      fi
+      touch $out
+    '';
 in
 {
   options.services.iocs = lib.mkOption {
@@ -300,5 +312,7 @@ in
       # The generated telnet scripts
       (lib.mapAttrsToList (_name: config: config.generatedTelnetScript) cfg)
     ];
+
+    system.checks = lib.mapAttrsToList (_name: iocCfg: checkWorkingDirectory iocCfg) cfg;
   };
 }
