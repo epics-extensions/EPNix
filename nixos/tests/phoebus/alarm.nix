@@ -34,11 +34,7 @@
       };
 
     server =
-      {
-        lib,
-        pkgs,
-        ...
-      }:
+      { pkgs, ... }:
       let
         serverAddr = "192.168.1.3";
         kafkaListenSockAddr = "${serverAddr}:9092";
@@ -123,14 +119,12 @@
           '';
         };
 
-        nixpkgs.config.allowUnfreePredicate =
-          pkg:
-          builtins.elem (lib.getName pkg) [
-            # Elasticsearch can be used as an SSPL-licensed software, which is
-            # not open-source. But as we're using it run tests, not exposing
-            # any service, this should be fine.
-            "elasticsearch"
-          ];
+        # Elasticsearch can be used as an SSPL-licensed software, which is
+        # not open-source. But as we're using it run tests, not exposing
+        # any service, this should be fine.
+        nixpkgs.config.allowUnfreePackages = [ "elasticsearch" ];
+        # While waiting for Nixpkgs' packaging of Elasticsearch 8 / 9.
+        nixpkgs.config.permittedInsecurePackages = [ pkgs.elasticsearch7.name ];
 
         virtualisation.memorySize = 3072;
       };

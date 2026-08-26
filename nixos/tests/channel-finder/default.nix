@@ -1,9 +1,4 @@
-{
-  lib,
-  epnixLib,
-  pkgs,
-  ...
-}:
+{ epnixLib, pkgs, ... }:
 let
   ioc = pkgs.epnix.support.callPackage ./ioc.nix { };
 in
@@ -23,7 +18,7 @@ in
           environment.systemPackages = [ pkgs.epnix.epics-base ];
 
           services.recceiver = {
-            enable = lib.mkDefault true;
+            enable = true;
 
             channelfinderapi.DEFAULT = {
               BaseURL = "http://localhost:8082/ChannelFinder";
@@ -72,14 +67,12 @@ in
             package = pkgs.elasticsearch7;
           };
 
-          nixpkgs.config.allowUnfreePredicate =
-            pkg:
-            builtins.elem (lib.getName pkg) [
-              # Elasticsearch can be used as an SSPL-licensed software, which is
-              # not open-source. But as we're using it run tests, not exposing
-              # any service, this should be fine.
-              "elasticsearch"
-            ];
+          # Elasticsearch can be used as an SSPL-licensed software, which is
+          # not open-source. But as we're using it run tests, not exposing
+          # any service, this should be fine.
+          nixpkgs.config.allowUnfreePackages = [ "elasticsearch" ];
+          # While waiting for Nixpkgs' packaging of Elasticsearch 8 / 9.
+          nixpkgs.config.permittedInsecurePackages = [ pkgs.elasticsearch7.name ];
 
           # Else some applications might get killed by the OOM killer
           virtualisation.memorySize = 2047;
