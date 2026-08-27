@@ -100,6 +100,7 @@
     start_all()
 
     server.wait_for_unit("p4p-server.service")
+    server.wait_until_succeeds("pvget test")
 
     commands = ["pvput test $TEST_VAL && pvget test | grep $TEST_VAL", "p4p-client"]
     machines = [client, server]
