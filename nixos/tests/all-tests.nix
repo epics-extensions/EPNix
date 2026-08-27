@@ -23,6 +23,7 @@ in
   dbwr = handleTest ./dbwr { };
   firewall = handleTest ./firewall.nix { };
   p4p = handleTest ./p4p.nix { };
+  pcaspy = handleTest ./pcaspy.nix { };
   phoebus-alarm = handleTest ./phoebus/alarm.nix { };
   phoebus-olog = handleTest ./phoebus/olog.nix { };
   phoebus-save-and-restore = handleTest ./phoebus/save-and-restore.nix { };
