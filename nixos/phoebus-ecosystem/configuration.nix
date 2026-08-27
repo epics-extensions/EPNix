@@ -97,12 +97,9 @@
         https://epics-extensions.github.io/EPNix/${epnixLib.versions.current}/pkgs/user-guides/phoebus-ecosystem-vm.html'';
   };
 
-  system.nixos.label =
-    let
-      inherit (epnixLib.inputs) self;
-      rev = self.dirtyShortRev or self.shortRev or "unknown";
-    in
-    "${config.system.nixos.release}-${rev}";
+  # Set to something stable, to avoid having to rebuild it on every Nixpkgs or EPNix commit,
+  # since it's pretty expensive to build.
+  system.nixos.label = "${config.system.nixos.release}";
 
   system.stateVersion = lib.trivial.release;
 }
