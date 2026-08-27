@@ -8,6 +8,7 @@
   setuptools-scm,
   json-rpc,
   mock,
+  pcaspy,
   pytest,
   pyyaml,
   pyzmq,
@@ -33,6 +34,7 @@ buildPythonPackage rec {
 
   dependencies = [
     json-rpc
+    pcaspy
     pyyaml
     pyzmq
     scanf
