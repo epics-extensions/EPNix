@@ -2,14 +2,13 @@
   lib,
   epnixLib,
   buildPythonPackage,
-  pythonAtLeast,
   fetchFromGitHub,
   approvaltests,
   setuptools,
   setuptools-scm,
   json-rpc,
   mock,
-  pyasynchat,
+  pcaspy,
   pytest,
   pyyaml,
   pyzmq,
@@ -18,14 +17,14 @@
 }:
 buildPythonPackage rec {
   pname = "lewis";
-  version = "1.3.5";
+  version = "1.4.0";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "ISISComputingGroup";
     repo = "lewis";
     tag = "v${version}";
-    hash = "sha256-VXZE+j/shlz1mLbDYECDNmLEeFGd2pl6+LEOGVHe0Zs=";
+    hash = "sha256-P5R+PrAVkoJtre2cwbt2/UgbE1E8KACoxsmEd6RlYtI=";
   };
 
   build-system = [
@@ -35,12 +34,12 @@ buildPythonPackage rec {
 
   dependencies = [
     json-rpc
+    pcaspy
     pyyaml
     pyzmq
     scanf
     semantic-version
-  ]
-  ++ (lib.optional (pythonAtLeast "3.12") pyasynchat);
+  ];
 
   checkInputs = [
     approvaltests
