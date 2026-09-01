@@ -14,6 +14,7 @@
   pyzmq,
   scanf,
   semantic-version,
+  callPackage,
 }:
 buildPythonPackage rec {
   pname = "lewis";
@@ -48,6 +49,8 @@ buildPythonPackage rec {
   ];
 
   pythonImportsCheck = [ "lewis" ];
+
+  passthru = callPackage ./lib.nix { };
 
   meta = {
     description = "Let's write intricate simulators";

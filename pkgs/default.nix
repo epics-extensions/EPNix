@@ -64,7 +64,12 @@ lib.recurseIntoAttrs {
           pythonSoftIOC = final.python3Packages.softioc;
 
           # Reexported functions
-          inherit (epnixFinal.callPackage ./python-modules/by-name/lewis/lib.nix { }) mkLewisSimulator;
+          # TODO: remove in release 27.05
+          mkLewisSimulator =
+            arg:
+            lib.warn "epnix.mkLewisSimulator was renamed to epnix.lewis.mkSimulator and will be removed in release nixos-27.05" (
+              epnixFinal.lewis.passthru.mkSimulator arg
+            );
         }
       )
   );
