@@ -33,6 +33,9 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     # https://github.com/archiver-appliance/epicsarchiverap/pull/531
     ./dont-install-docs-dependencies.patch
 
+    # https://github.com/archiver-appliance/epicsarchiverap/pull/539
+    ./exclude-docs-doctrees.patch
+
     ./offline-javadoc.patch
   ];
 
