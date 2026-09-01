@@ -1,4 +1,4 @@
-epnixLib: inputs: final: prev:
+epnixLib: final: prev:
 let
   inherit (final) callPackage;
   # From prev, else it somehow causes an infinite recursion

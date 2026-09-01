@@ -27,7 +27,7 @@
       ...
     }@inputs:
     let
-      overlay = import ./pkgs self.lib inputs;
+      overlay = import ./pkgs self.lib;
 
       systemDependentOutputs =
         system:
