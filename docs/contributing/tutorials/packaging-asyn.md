@@ -28,7 +28,7 @@ which covers forking EPNix and creating branches.
 
 ## Create the package definition
 
-Create a new directory under <source:pkgs/support/by-name/>,
+Create a new directory under <source:pkgs/by-name/support/>,
 called `my-asyn` for this tutorial.
 
 In this directory,
@@ -36,7 +36,7 @@ create a {file}`package.nix` file
 with the following template content:
 
 ```{code-block} nix
-:caption: {file}`pkgs/support/by-name/{my-asyn}/package.nix` --- EPNix support module template
+:caption: {file}`pkgs/by-name/support/{my-asyn}/package.nix` --- EPNix support module template
 
 {
   epnixLib,
@@ -135,7 +135,7 @@ you must fill it in.
 After completing these fields,
 your package file should look like this:
 ```{code-block} nix
-:caption: {file}`pkgs/support/by-name/{my-asyn}/package.nix` --- Filling out the metadata
+:caption: {file}`pkgs/by-name/support/{my-asyn}/package.nix` --- Filling out the metadata
 
 {
   epnixLib,
@@ -180,7 +180,7 @@ Nixpkgs provides a `fetchFromGitHub` function,
 which you can use like this:
 
 ```{code-block} nix
-:caption: {file}`pkgs/support/by-name/{my-asyn}/package.nix` --- Fetching the source code
+:caption: {file}`pkgs/by-name/support/{my-asyn}/package.nix` --- Fetching the source code
 :emphasize-lines: 4,13-18
 
 {
@@ -269,7 +269,7 @@ Nix tells you the correct hash,
 so you can update your package:
 
 ```{code-block} nix
-:caption: {file}`pkgs/support/by-name/{my-asyn}/package.nix` --- Updating the source hash
+:caption: {file}`pkgs/by-name/support/{my-asyn}/package.nix` --- Updating the source hash
 :emphasize-lines: 7
 
   # ...
@@ -339,7 +339,7 @@ Since EPICS dependencies go into `propagatedBuildInputs`,
 edit your package file as follows:
 
 ```{code-block} nix
-:caption: {file}`pkgs/support/by-name/{my-asyn}/package.nix` --- Adding EPICS dependencies
+:caption: {file}`pkgs/by-name/support/{my-asyn}/package.nix` --- Adding EPICS dependencies
 :emphasize-lines: 5-7,14-18
 
 {
@@ -430,7 +430,7 @@ build tools go into `nativeBuildInputs`.
 Edit your package as follows:
 
 ```{code-block} nix
-:caption: {file}`pkgs/support/by-name/{my-asyn}/package.nix` --- Adding the `rpcsvc-proto` build tool
+:caption: {file}`pkgs/by-name/support/{my-asyn}/package.nix` --- Adding the `rpcsvc-proto` build tool
 :emphasize-lines: 5,15
 
 {
@@ -589,7 +589,7 @@ for EPICS packages
 native libraries go into both `nativeBuildInputs` and `buildInputs`.
 
 ```{code-block} nix
-:caption: {file}`pkgs/support/by-name/{my-asyn}/package.nix` --- Adding the `libtirpc` library
+:caption: {file}`pkgs/by-name/support/{my-asyn}/package.nix` --- Adding the `libtirpc` library
 :emphasize-lines: 6,16-17
 
 {
@@ -637,7 +637,7 @@ we'll write `TIRPC=YES` to {file}`configure/CONFIG_SITE.local`
 using the special `local_config_site` argument of `mkEpicsPackage`:
 
 ```{code-block} nix
-:caption: {file}`pkgs/support/by-name/{my-asyn}/package.nix` --- Setting `TIRPC=YES` in `asyn`'s {file}`configure/CONFIG_SITE.local`
+:caption: {file}`pkgs/by-name/support/{my-asyn}/package.nix` --- Setting `TIRPC=YES` in `asyn`'s {file}`configure/CONFIG_SITE.local`
 :emphasize-lines: 6-8
 
 # ...
@@ -740,7 +740,7 @@ git diff --patch > use-pkg-config.patch
 
 Copy this file into EPNix,
 in the same directory as your package,
-at {file}`pkgs/support/by-name/my-asyn/use-pkg-config.patch`.
+at {file}`pkgs/by-name/support/my-asyn/use-pkg-config.patch`.
 
 Remember to `git add` this file.
 
@@ -754,7 +754,7 @@ Since `pkg-config` is a tool run during the build process,
 it goes into `nativeBuildInputs`.
 
 ```{code-block} nix
-:caption: {file}`pkgs/support/by-name/{my-asyn}/package.nix` --- Importing the patch
+:caption: {file}`pkgs/by-name/support/{my-asyn}/package.nix` --- Importing the patch
 :emphasize-lines: 5,19,23
 
 {
@@ -802,12 +802,12 @@ pkg-config --cflags libtirpc
 ## Complete example
 
 ```{literalinclude} ./packaging-asyn/my-asyn/package.nix
-:caption: {file}`pkgs/support/by-name/{my-asyn}/package.nix` --- Complete example
+:caption: {file}`pkgs/by-name/support/{my-asyn}/package.nix` --- Complete example
 :language: nix
 ```
 
 ```{literalinclude} ./packaging-asyn/my-asyn/use-pkg-config.patch
-:caption: {file}`pkgs/support/by-name/{my-asyn}/use-pkg-config.patch` --- Complete example
+:caption: {file}`pkgs/by-name/support/{my-asyn}/use-pkg-config.patch` --- Complete example
 :language: diff
 ```
 
@@ -817,7 +817,7 @@ Here are some resources
 to learn more about Nix packaging:
 
 - Other support modules in EPNix,
-  in the <source:pkgs/support/by-name> folder.
+  in the <source:pkgs/by-name/support/> folder.
 - The [Nix.dev Packaging existing software] tutorial
 - The [Nixpkgs manual]
 
