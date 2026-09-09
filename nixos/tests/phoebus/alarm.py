@@ -91,7 +91,7 @@ with subtest("Can monitor a PV"):
 
 with subtest("Alarm logger is aware of the config"):
 
-    def logger_has_config(_):
+    def logger_has_config(_) -> bool:
         logger_alarms = get_logger("/search/alarm")
         return any(alarm["config"] == alarm_config for alarm in logger_alarms)
 
@@ -209,7 +209,7 @@ with subtest("The data is still here after a server reboot"):
         assert alarm["current_severity"] == "OK", "wrong current severity"
         assert alarm["severity"] == "OK", "wrong severity"
 
-    def test_reboot_data(_):
+    def test_reboot_data(_) -> bool:
         logger_alarms = get_logger("/search/alarm/pv/ALARM_TEST")
         logger_alarms.sort(key=lambda event: event.get("time", ""), reverse=True)
         alarm_states = [
@@ -228,8 +228,15 @@ with subtest("The data is still here after a server reboot"):
         retry(test_reboot_data)
 
 with subtest("Can export alarm configuration"):
-    server.succeed(
-        "phoebus-alarm-server -settings /etc/phoebus/alarm-server/application.properties -export export.xml"
-    )
-    server.succeed("grep ALARM_TEST export.xml")
-    server.copy_from_vm("export.xml")
+
+    def test_export(_) -> bool:
+        server.succeed(
+            "phoebus-alarm-server -settings /etc/phoebus/alarm-server/application.properties -export export.xml"
+        )
+        (status, stdout) = server.execute("grep ALARM_TEST export.xml")
+        if status != 0:
+            return False
+        server.copy_from_vm("export.xml")
+        return True
+
+    retry(test_export)
