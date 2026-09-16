@@ -13,18 +13,22 @@ in
         Whether to configure EPICS-related environment variables.
 
         :::{seealso}
-        [EPICS environment variables] in the Channel Access Reference Manual.
+        - [EPICS environment variables] in the Channel Access Reference Manual.
+        - [PVA Network Configuration] in the PVXS Manual.
         :::
 
-          [EPICS environment variables]: https://epics.anl.gov/base/R7-0/8-docs/CAref.html#EPICS
+          [EPICS environment variables]: https://docs.epics-controls.org/en/latest/ca-ref/configuration.html#ca-client-env-vars
+          [PVA Network Configuration]: https://epics-base.github.io/pvxs/netconfig.html
       '';
       type = lib.types.bool;
       default = true;
     };
 
+    # --- CA ---
+
     ca_auto_addr_list = lib.mkOption {
       description = ''
-        Set the `EPICS_CA_AUTO_ADDR_LIST` environment variable.
+        Set the {envvar}`EPICS_CA_AUTO_ADDR_LIST` environment variable.
 
         This will also set this configuration for related services,
         for example IOCs, ChannelFinder, and Phoebus services.
@@ -39,7 +43,7 @@ in
 
     ca_addr_list = lib.mkOption {
       description = ''
-        Set the `EPICS_CA_ADDR_LIST` environment variable.
+        Set the {envvar}`EPICS_CA_ADDR_LIST` environment variable.
 
         This will also set this configuration for related services,
         for example IOCs, ChannelFinder, and Phoebus services.
@@ -77,6 +81,57 @@ in
       default = false;
     };
 
+    allowCABroadcastDiscovery = lib.mkOption {
+      description = ''
+        This option allows the broadcast discovery of Channel Access IOCs on the default port.
+
+        :::{danger}
+        This option is a security issue
+        and attackers crafting a malicious packet from source port 5064
+        will be able to access any [Ephemeral port]
+        of this machine.
+        :::
+
+        :::{warning}
+        This opens the firewall on all network interfaces.
+        :::
+      '';
+      type = lib.types.bool;
+      default = false;
+    };
+
+    # --- PVA ---
+
+    pva_auto_addr_list = lib.mkOption {
+      description = ''
+        Set the {envvar}`EPICS_PVA_AUTO_ADDR_LIST` environment variable.
+
+        This will also set this configuration for related services,
+        for example IOCs, ChannelFinder, and Phoebus services.
+
+        :::{seealso}
+        [PVA Network Configuration] in the PVXS Manual.
+        :::
+      '';
+      type = lib.types.bool;
+      default = true;
+    };
+
+    pva_addr_list = lib.mkOption {
+      description = ''
+        Set the {envvar}`EPICS_PVA_ADDR_LIST` environment variable.
+
+        This will also set this configuration for related services,
+        for example IOCs, ChannelFinder, and Phoebus services.
+
+        :::{seealso}
+        [PVA Network Configuration] in the PVXS Manual.
+        :::
+      '';
+      type = with lib.types; listOf str;
+      default = [ ];
+    };
+
     openPVAFirewall = lib.mkOption {
       description = ''
         Open the default ports of the pvAccess protocol.
@@ -96,25 +151,6 @@ in
         open these ports in the firewall manually
         by using `networking.firewall.allowedTCPPorts`
         and `networking.firewall.allowedUDPPorts`.
-        :::
-      '';
-      type = lib.types.bool;
-      default = false;
-    };
-
-    allowCABroadcastDiscovery = lib.mkOption {
-      description = ''
-        This option allows the broadcast discovery of Channel Access IOCs on the default port.
-
-        :::{danger}
-        This option is a security issue
-        and attackers crafting a malicious packet from source port 5064
-        will be able to access any [Ephemeral port]
-        of this machine.
-        :::
-
-        :::{warning}
-        This opens the firewall on all network interfaces.
         :::
       '';
       type = lib.types.bool;
@@ -152,6 +188,8 @@ in
     environment.sessionVariables = {
       EPICS_CA_AUTO_ADDR_LIST = if cfg.ca_auto_addr_list then "YES" else "NO";
       EPICS_CA_ADDR_LIST = lib.concatStringsSep " " cfg.ca_addr_list;
+      EPICS_PVA_AUTO_ADDR_LIST = if cfg.pva_auto_addr_list then "YES" else "NO";
+      EPICS_PVA_ADDR_LIST = lib.concatStringsSep " " cfg.pva_addr_list;
     };
 
     networking.firewall = lib.mkMerge [
