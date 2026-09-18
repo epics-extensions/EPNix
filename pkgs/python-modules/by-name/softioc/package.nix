@@ -11,7 +11,7 @@
 }:
 buildPythonPackage rec {
   pname = "softioc";
-  version = "4.7.1";
+  version = "4.7.2";
 
   pyproject = true;
 
@@ -20,7 +20,7 @@ buildPythonPackage rec {
     repo = "pythonSoftIOC";
     tag = version;
     fetchSubmodules = true;
-    hash = "sha256-uuDKDGhDlSW3Euh1++1CTCztickUQ29Pik983PIU4IM=";
+    hash = "sha256-Zp8XcQLxvkqCAcKR2/3dbfHgWSzzFOFVM9ddqKkj6OU=";
   };
 
   # Set correct version instead of automatically detected version:
