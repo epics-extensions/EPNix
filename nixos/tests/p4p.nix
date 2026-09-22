@@ -48,10 +48,7 @@
       server = {
         imports = [ common ];
 
-        networking.firewall = {
-          allowedTCPPorts = [ 5075 ];
-          allowedUDPPorts = [ 5076 ];
-        };
+        environment.epics.openPVAFirewall = true;
 
         environment.variables = {
           TEST_VAL = "6789";
