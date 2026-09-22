@@ -199,6 +199,35 @@ in
             '';
           };
 
+          "org.phoebus.pv.pva/epics_pva_addr_list" = lib.mkOption {
+            description = ''
+              pvAccess address list.
+
+              Use `lib.mkForce` to override values from {nix:option}`environment.epics.pva_addr_list`.
+            '';
+            # Separated by spaces -> toString
+            type = with lib.types; coercedTo (listOf str) toString str;
+            defaultText = lib.literalExpression ''
+              if config.environment.epics.enable
+              then config.environment.epics.pva_addr_list
+              else [];
+            '';
+          };
+
+          "org.phoebus.pv.pva/epics_pva_auto_addr_list" = lib.mkOption {
+            description = ''
+              Derive the pvAccess address list from the available network interfaces.
+
+              Use `lib.mkForce` to override values from {nix:option}`environment.epics.pva_auto_addr_list`.
+            '';
+            type = with lib.types; coercedTo bool lib.boolToString str;
+            defaultText = lib.literalExpression ''
+              if config.environment.epics.enable
+              then config.environment.epics.pva_auto_addr_list
+              else [];
+            '';
+          };
+
           "org.csstudio.display.builder.model/color_files" = lib.mkOption {
             description = ''
               Named colors definition files.
@@ -325,6 +354,10 @@ in
         if config.environment.epics.enable then config.environment.epics.ca_addr_list else [ ];
       "org.phoebus.pv.ca/auto_addr_list" =
         if config.environment.epics.enable then config.environment.epics.ca_auto_addr_list else true;
+      "org.phoebus.pv.pva/epics_pva_addr_list" =
+        if config.environment.epics.enable then config.environment.epics.pva_addr_list else [ ];
+      "org.phoebus.pv.pva/epics_pva_auto_addr_list" =
+        if config.environment.epics.enable then config.environment.epics.pva_auto_addr_list else true;
     };
     environment.systemPackages = [ cfg.finalPackage ];
   };
