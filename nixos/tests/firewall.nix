@@ -1,8 +1,4 @@
-{
-  epnixLib,
-  pkgs,
-  ...
-}:
+{ pkgs, ... }:
 {
   name = "firewall-epics-check";
 
@@ -131,11 +127,10 @@
           systemPackages = [
             pkgs.epnix.epics-base
           ];
-          variables = {
-            EPICS_PVA_ADDR_LIST = "192.168.1.255";
+          epics = {
+            pva_addr_list = [ "192.168.1.255" ];
+            allowPVABroadcastDiscovery = true;
           };
-          epics.allowPVABroadcastDiscovery = true;
-
         };
       };
       clientPVAWithoutAutoAddr = {
@@ -144,9 +139,9 @@
           systemPackages = [
             pkgs.epnix.epics-base
           ];
-          variables = {
-            EPICS_PVA_ADDR_LIST = "iocPVAOpen";
-            EPICS_PVA_AUTO_ADDR_LIST = "NO";
+          epics = {
+            pva_addr_list = [ "iocPVAOpen" ];
+            pva_auto_addr_list = false;
           };
         };
       };

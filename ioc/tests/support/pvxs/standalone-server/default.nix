@@ -14,8 +14,7 @@ in
         pkgs.epnix.epics-base
         pkgs.epnix.support.pvxs
       ];
-      networking.firewall.allowedTCPPorts = [ 5075 ];
-      networking.firewall.allowedUDPPorts = [ 5076 ];
+      environment.epics.openPVAFirewall = true;
     };
     ioc = {
       systemd.services.ioc = {
@@ -30,8 +29,7 @@ in
           Restart = "always";
         };
       };
-      networking.firewall.allowedTCPPorts = [ 5075 ];
-      networking.firewall.allowedUDPPorts = [ 5076 ];
+      environment.epics.openPVAFirewall = true;
     };
   };
 

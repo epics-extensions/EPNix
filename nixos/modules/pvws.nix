@@ -127,6 +127,39 @@ in
             '';
           };
 
+          EPICS_PVA_ADDR_LIST = lib.mkOption {
+            description = ''
+              List of pvAccess destination IP addresses.
+
+              Each IP address can be a unicast address,
+              or a broadcast address.
+
+              Use `lib.mkForce` to override values from {nix:option}`environment.epics.pva_addr_list`.
+            '';
+            # Separated by spaces -> toString
+            type = with lib.types; coercedTo (listOf str) toString str;
+            defaultText = lib.literalExpression ''
+              if config.environment.epics.enable
+              then config.environment.epics.pva_addr_list
+              else [];
+            '';
+          };
+
+          EPICS_PVA_AUTO_ADDR_LIST = lib.mkOption {
+            description = ''
+              If set,
+              behave as if every broadcast address of every network interface is added to `EPICS_PVA_ADDR_LIST`.
+
+              Use `lib.mkForce` to override values from {nix:option}`environment.epics.pva_auto_addr_list`.
+            '';
+            type = with lib.types; coercedTo bool lib.boolToYesNo str;
+            defaultText = lib.literalExpression ''
+              if config.environment.epics.enable
+              then config.environment.epics.pva_auto_addr_list
+              else [];
+            '';
+          };
+
           PV_DEFAULT_TYPE = lib.mkOption {
             description = "Default PV type.";
             type = lib.types.str;
@@ -166,6 +199,10 @@ in
         if config.environment.epics.enable then config.environment.epics.ca_addr_list else [ ];
       EPICS_CA_AUTO_ADDR_LIST =
         if config.environment.epics.enable then config.environment.epics.ca_auto_addr_list else true;
+      EPICS_PVA_ADDR_LIST =
+        if config.environment.epics.enable then config.environment.epics.pva_addr_list else [ ];
+      EPICS_PVA_AUTO_ADDR_LIST =
+        if config.environment.epics.enable then config.environment.epics.pva_auto_addr_list else true;
     };
 
     services.tomcat = {

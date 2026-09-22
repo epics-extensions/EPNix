@@ -167,6 +167,8 @@ let
             inherit (globalCfg.environment.variables)
               EPICS_CA_AUTO_ADDR_LIST
               EPICS_CA_ADDR_LIST
+              EPICS_PVA_AUTO_ADDR_LIST
+              EPICS_PVA_ADDR_LIST
               ;
           })
         ];

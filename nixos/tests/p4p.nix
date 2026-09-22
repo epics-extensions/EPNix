@@ -39,19 +39,16 @@
       client = {
         imports = [ common ];
 
-        environment.variables = {
-          EPICS_PVA_ADDR_LIST = "server";
-          TEST_VAL = "1234";
+        environment = {
+          epics.pva_addr_list = [ "server" ];
+          variables.TEST_VAL = "1234";
         };
       };
 
       server = {
         imports = [ common ];
 
-        networking.firewall = {
-          allowedTCPPorts = [ 5075 ];
-          allowedUDPPorts = [ 5076 ];
-        };
+        environment.epics.openPVAFirewall = true;
 
         environment.variables = {
           TEST_VAL = "6789";

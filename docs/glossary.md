@@ -465,7 +465,7 @@ CA
   :::{seealso}
 
   - <https://docs.epics-controls.org/en/latest/specs/ca_protocol.html>
-  - <https://epics.anl.gov/base/R7-0/6-docs/CAref.html>
+  - <https://docs.epics-controls.org/en/latest/ca-ref/configuration.html>
 
   :::
 
