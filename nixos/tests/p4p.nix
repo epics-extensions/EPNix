@@ -39,9 +39,9 @@
       client = {
         imports = [ common ];
 
-        environment.variables = {
-          EPICS_PVA_ADDR_LIST = "server";
-          TEST_VAL = "1234";
+        environment = {
+          epics.pva_addr_list = [ "server" ];
+          variables.TEST_VAL = "1234";
         };
       };
 
