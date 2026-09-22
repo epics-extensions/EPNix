@@ -14,16 +14,14 @@ in
         pkgs.epnix.epics-base
         pkgs.epnix.support.pvxs
       ];
-      networking.firewall.allowedTCPPorts = [ 5075 ];
-      networking.firewall.allowedUDPPorts = [ 5076 ];
+      environment.epics.openPVAFirewall = true;
     };
     ioc = {
       services.iocs.ioc = {
         package = ioc;
         workingDirectory = "iocBoot/iocSimple";
       };
-      networking.firewall.allowedTCPPorts = [ 5075 ];
-      networking.firewall.allowedUDPPorts = [ 5076 ];
+      environment.epics.openPVAFirewall = true;
     };
   };
 
