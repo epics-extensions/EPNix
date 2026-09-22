@@ -1,8 +1,9 @@
-# Channel Access gateway setup
+# Channel Access gateway
 
 The Channel Access (CA) gateway is a program
 that acts as gateway,
-which enables client from a network to access IOCs on another network.
+which enables CA clients from a network
+to access CA IOCs on another network.
 
 Setting up a CA gateway also enables you
 to add extra access security rules on top of IOCs.
@@ -155,7 +156,7 @@ For example:
     enable = true;
     # These PVs get exposed by the gateway
     # This list implements an "allowlist":
-    # DENY by default, some PVs explicitely ALLOW
+    # DENY by default, some PVs explicitly ALLOW
     settings.pvlist = pkgs.writeText "gateway.pvlist" ''
       EVALUATION ORDER DENY, ALLOW
 
@@ -199,7 +200,8 @@ And in your configuration:
 {
   services.ca-gateway = {
     enable = true;
-    # Make sure that the value is *not* quoted
+    # Make sure that the value is *not* quoted,
+    # and make sure to `git add` the file.
     settings.pvlist = ./gateway.pvlist;
   };
 }
