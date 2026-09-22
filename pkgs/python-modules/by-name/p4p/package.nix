@@ -24,6 +24,8 @@ buildPythonPackage rec {
     hash = "sha256-9STSSfao7RkAXJsdzx+nrvndx4tV4eE+olgTOZ0owX8=";
   };
 
+  patches = [ ./gateway-ignore-nulls.patch ];
+
   # Configure exists as a directory, which nix assumes it has to execute...
   dontConfigure = true;
 
@@ -36,11 +38,11 @@ buildPythonPackage rec {
     setuptools
     numpy
     epicscorelibs
+    ply
     pvxslibs
   ];
   checkInputs = [
     nose2
-    ply
   ];
 
   meta = {
