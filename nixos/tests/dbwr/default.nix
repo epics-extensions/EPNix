@@ -75,8 +75,8 @@ in
   meta.maintainers = with epnixLib.maintainers; [ minijackson ];
 
   nodes = {
-    ioc.imports = [
-      (epnixLib.testing.softIoc ''
+    ioc = {
+      services.softIocs.ioc.dbText = ''
         record(calc, "calcExample") {
             field(DESC, "Counter")
             field(SCAN, "1 second")
@@ -96,8 +96,9 @@ in
             field(LSV, "MINOR")
             field(LLSV, "MAJOR")
         }
-      '')
-    ];
+      '';
+      environment.epics.openCAFirewall = true;
+    };
 
     server = {
       services.dbwr.enable = true;

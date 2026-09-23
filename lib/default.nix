@@ -12,7 +12,6 @@ let
     formats = import ./formats.nix args;
     licenses = import ./licenses.nix args;
     maintainers = import ./maintainers/maintainer-list.nix;
-    testing = import ./testing.nix;
     versions = import ./versions.nix;
 
     # The epnix nixosModules.nixos flake output,

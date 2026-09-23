@@ -13,4 +13,5 @@
   ./modules/phoebus/save-and-restore.nix
   ./modules/pva-gateway.nix
   ./modules/pvws.nix
+  ./modules/softiocs.nix
 ]

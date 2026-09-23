@@ -120,7 +120,7 @@ let
             );
           default = { };
           example = {
-            EPICS_CA_MAX_ARRAY_BYTES = 10000;
+            EPICS_CA_MAX_ARRAY_BYTES = "10000";
             AUTOSAVE_DIRECTORY = "/var/lib/epics/myIoc/autosave";
           };
         };
@@ -207,6 +207,7 @@ let
                   ${config.startupScript}
               '';
             Type = "exec";
+            SyslogIdentifier = "${name}";
             Restart = lib.mkDefault "always";
             RestartSec = lib.mkDefault "1s";
             StateDirectory = [ "epics/${name}" ];

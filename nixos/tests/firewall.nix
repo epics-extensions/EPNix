@@ -2,158 +2,103 @@
 {
   name = "firewall-epics-check";
 
-  nodes =
-    let
-      # Don't use the EPNix testing lib to remove the firewall configuration
-      softIoc = db: {
+  nodes = {
+    iocCAOpen = {
+      environment.epics.openCAFirewall = true;
+      services.softIocs.ioc.dbText = ''record(ai, "TEST_FW_TRUE") {}'';
+      environment.systemPackages = [ pkgs.epnix.epics-base ];
+    };
 
-        systemd.services.ioc = {
-          wantedBy = [ "multi-user.target" ];
-          wants = [ "network-online.target" ];
-          after = [ "network-online.target" ];
+    iocCAClosed = {
+      environment.epics.openCAFirewall = false;
+      services.softIocs.ioc.dbText = ''record(ai, "TEST_FW_FALSE") {}'';
+      environment.systemPackages = [ pkgs.epnix.epics-base ];
+    };
 
-          serviceConfig = {
-            ExecStart = "${pkgs.epnix.epics-base}/bin/softIoc -S -d ${pkgs.writeText "softIoc.db" db}";
-            DynamicUser = true;
-          };
-        };
-        environment.systemPackages = [ pkgs.epnix.epics-base ];
+    iocCADiscover = {
+      environment.epics.openCAFirewall = true;
+      services.softIocs.ioc.dbText = ''record(ai, "TEST_FW_DISCOVER") {}'';
+      environment.systemPackages = [ pkgs.epnix.epics-base ];
+    };
+
+    iocPVAOpen = {
+      environment.epics.openPVAFirewall = true;
+      services.softIocs.ioc = {
+        dbText = ''record(ai, "TEST_FW_TRUE") {}'';
+        pvAccess.enable = true;
       };
-      softIocPVA = dbPVA: {
+      environment.systemPackages = [ pkgs.epnix.epics-base ];
+    };
 
-        systemd.services.ioc = {
-          wantedBy = [ "multi-user.target" ];
-          wants = [ "network-online.target" ];
-          after = [ "network-online.target" ];
-
-          serviceConfig = {
-            ExecStart = "${pkgs.epnix.support.pvxs}/bin/softIocPVX -S -d ${pkgs.writeText "softIocPVA.db" dbPVA}";
-            DynamicUser = true;
-          };
-        };
-        environment.systemPackages = [ pkgs.epnix.epics-base ];
+    iocPVAClosed = {
+      environment.epics.openPVAFirewall = false;
+      services.softIocs.ioc = {
+        dbText = ''record(ai, "TEST_FW_FALSE") {}'';
+        pvAccess.enable = true;
       };
+      environment.systemPackages = [ pkgs.epnix.epics-base ];
+    };
 
-    in
-    {
-      iocCAOpen = {
-        networking.firewall.enable = true;
+    iocPVADiscover = {
+      environment.epics.openPVAFirewall = true;
+      services.softIocs.ioc = {
+        dbText = ''record(ai, "TEST_FW_DISCOVER") {}'';
+        pvAccess.enable = true;
+      };
+      environment.systemPackages = [ pkgs.epnix.epics-base ];
+    };
 
-        environment.epics.openCAFirewall = true;
-        imports = [
-          (softIoc ''
-            record(ai, "TEST_FW_TRUE") {}
-          '')
-        ];
-      };
-      iocCAClose = {
-
-        networking.firewall.enable = true;
-
-        environment.epics.openCAFirewall = false;
-        imports = [
-          (softIoc ''
-            record(ai, "TEST_FW_FALSE") {}
-          '')
-        ];
-      };
-
-      iocCADiscover = {
-        networking.firewall.enable = true;
-
-        environment.epics.openCAFirewall = true;
-        imports = [
-          (softIoc ''
-            record(ai, "TEST_FW_DISCOVER") {}
-          '')
-        ];
-      };
-      iocPVAOpen = {
-        networking.firewall.enable = true;
-        environment.epics.openPVAFirewall = true;
-        imports = [
-          (softIocPVA ''
-            record(ai, "TEST_FW_TRUE") {}
-          '')
-        ];
-      };
-      iocPVAClose = {
-        networking.firewall.enable = true;
-        environment.epics.openPVAFirewall = false;
-        imports = [
-          (softIocPVA ''
-            record(ai, "TEST_FW_FALSE") {}
-          '')
-        ];
-      };
-      iocPVADiscover = {
-        networking.firewall.enable = true;
-        environment.epics.openPVAFirewall = true;
-        imports = [
-          (softIocPVA ''
-            record(ai, "TEST_FW_DISCOVER") {}
-          '')
-        ];
-      };
-      clientCAWithoutAutoAddr = {
-        networking.firewall.enable = true;
-        environment = {
-          epics = {
-            ca_auto_addr_list = false;
-            ca_addr_list = [
-              "iocCAOpen"
-              "iocCAClose"
-            ];
-          };
-          systemPackages = [
-            pkgs.epnix.epics-base
+    clientCAWithoutAutoAddr = {
+      environment = {
+        epics = {
+          ca_auto_addr_list = false;
+          ca_addr_list = [
+            "iocCAOpen"
+            "iocCAClosed"
           ];
         };
+        systemPackages = [ pkgs.epnix.epics-base ];
       };
-      clientCAWithAutoAddr = {
-        networking.firewall.enable = true;
-        environment = {
-          epics = {
-            ca_addr_list = [ "192.168.1.255" ];
-            allowCABroadcastDiscovery = true;
-          };
+    };
 
-          systemPackages = [ pkgs.epnix.epics-base ];
+    clientCAWithAutoAddr = {
+      environment = {
+        epics = {
+          ca_addr_list = [ "192.168.1.255" ];
+          allowCABroadcastDiscovery = true;
         };
+        systemPackages = [ pkgs.epnix.epics-base ];
       };
-      clientPVAWithAutoAddr = {
-        networking.firewall.enable = true;
-        environment = {
-          systemPackages = [
-            pkgs.epnix.epics-base
-          ];
-          epics = {
-            pva_addr_list = [ "192.168.1.255" ];
-            allowPVABroadcastDiscovery = true;
-          };
-        };
-      };
-      clientPVAWithoutAutoAddr = {
-        networking.firewall.enable = true;
-        environment = {
-          systemPackages = [
-            pkgs.epnix.epics-base
-          ];
-          epics = {
-            pva_addr_list = [ "iocPVAOpen" ];
-            pva_auto_addr_list = false;
-          };
+    };
+
+    clientPVAWithAutoAddr = {
+      environment = {
+        systemPackages = [ pkgs.epnix.epics-base ];
+        epics = {
+          pva_addr_list = [ "192.168.1.255" ];
+          allowPVABroadcastDiscovery = true;
         };
       };
     };
+
+    clientPVAWithoutAutoAddr = {
+      environment = {
+        systemPackages = [ pkgs.epnix.epics-base ];
+        epics = {
+          pva_addr_list = [ "iocPVAOpen" ];
+          pva_auto_addr_list = false;
+        };
+      };
+    };
+  };
 
   testScript = ''
     start_all()
 
     iocCAOpen.wait_for_unit("ioc.service")
-    iocCAClose.wait_for_unit("ioc.service")
+    iocCAClosed.wait_for_unit("ioc.service")
     iocCADiscover.wait_for_unit("ioc.service")
-    iocPVAClose.wait_for_unit("ioc.service")
+    iocPVAClosed.wait_for_unit("ioc.service")
     iocPVAOpen.wait_for_unit("ioc.service")
     clientCAWithoutAutoAddr.wait_for_unit("multi-user.target")
     clientCAWithAutoAddr.wait_for_unit("multi-user.target")

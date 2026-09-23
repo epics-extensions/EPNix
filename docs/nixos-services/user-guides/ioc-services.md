@@ -3,10 +3,15 @@
 This guide covers how to install EPICS IOCs as a systemd service
 on a NixOS machine.
 
+:::{tip}
+If you want to deploy a SoftIOC
+that doesn't depend on any EPICS support module,
+read {doc}`softioc-services` instead.
+:::
+
 :::{important}
 Make sure to follow the NixOS {doc}`prerequisites`.
 :::
-
 
 ## Exposing a service from your IOC
 
