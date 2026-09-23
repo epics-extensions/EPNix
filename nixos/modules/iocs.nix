@@ -207,6 +207,7 @@ let
                   ${config.startupScript}
               '';
             Type = "exec";
+            SyslogIdentifier = "${name}";
             Restart = lib.mkDefault "always";
             RestartSec = lib.mkDefault "1s";
             StateDirectory = [ "epics/${name}" ];
