@@ -1,6 +1,6 @@
 # PVA gateway
 
-List of NixOS option for deploying the pvAccess PVA Gateway.
+List of NixOS option for deploying the pvAccess Gateway.
 
 :::{seealso}
 The {doc}`../user-guides/pva-gateway` user guide
