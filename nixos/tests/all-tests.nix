@@ -27,5 +27,6 @@ in
   phoebus-alarm = handleTest ./phoebus/alarm.nix { };
   phoebus-olog = handleTest ./phoebus/olog.nix { };
   phoebus-save-and-restore = handleTest ./phoebus/save-and-restore.nix { };
+  pva-gateway = handleTest ./pva-gateway.nix { };
   softIocs = handleTest ./softIocs.nix { };
 }
