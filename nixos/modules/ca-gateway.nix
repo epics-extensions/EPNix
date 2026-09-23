@@ -152,7 +152,7 @@ in
 
               See the CA reference manual.
 
-              This sets environment variables `EPICS_CA_AUTO_LIST=NO` and `EPICS_CA_ADDR_LIST`.
+              This sets environment variables `EPICS_CA_AUTO_ADDR_LIST=NO` and `EPICS_CA_ADDR_LIST`.
 
               :::{note}
               If you intend to broadcast on a port other than 5064,
