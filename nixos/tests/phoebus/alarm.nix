@@ -17,21 +17,10 @@
         };
       };
 
-    ioc =
-      { pkgs, ... }:
-      {
-        systemd.services.ioc = {
-          description = "Test IOC to be monitored with the Phoebus Alarm server";
-          serviceConfig.ExecStart = "${pkgs.epnix.epics-base}/bin/softIoc -S -d ${./ioc.db}";
-          wantedBy = [ "multi-user.target" ];
-          after = [ "network.target" ];
-        };
-
-        networking.firewall = {
-          allowedTCPPorts = [ 5064 ];
-          allowedUDPPorts = [ 5064 ];
-        };
-      };
+    ioc = {
+      services.softIocs.ioc.dbFiles = [ ./ioc.db ];
+      environment.epics.openCAFirewall = true;
+    };
 
     server =
       { pkgs, ... }:

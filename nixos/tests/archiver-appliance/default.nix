@@ -9,22 +9,13 @@
 
   nodes = {
     ioc = {
-      systemd.services.ioc = {
-        wantedBy = [ "multi-user.target" ];
-        wants = [ "network-online.target" ];
-        after = [ "network-online.target" ];
-
-        serviceConfig.ExecStart = "${pkgs.epnix.epics-base}/bin/softIoc -S -d ${./test.db}";
-      };
-
+      services.softIocs.ioc.dbFiles = [ ./test.db ];
       environment.systemPackages = [ pkgs.epnix.epics-base ];
       environment.epics = {
         ca_addr_list = [ "localhost" ];
         ca_auto_addr_list = false;
+        openCAFirewall = true;
       };
-
-      networking.firewall.allowedTCPPorts = [ 5064 ];
-      networking.firewall.allowedUDPPorts = [ 5064 ];
     };
 
     server = {
