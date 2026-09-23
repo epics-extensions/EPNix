@@ -10,12 +10,10 @@ in
   skipTypeCheck = true;
 
   nodes.ioc = {
-    imports = [
-      (epnixLib.testing.softIoc ''
-        record(ai, "AI") { }
-        record(stringout, "STRINGOUT") { }
-      '')
-    ];
+    services.softIocs.ioc.dbText = ''
+      record(ai, "AI") { }
+      record(stringout, "STRINGOUT") { }
+    '';
   };
 
   testScript =
