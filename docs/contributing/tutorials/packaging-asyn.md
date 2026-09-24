@@ -416,11 +416,11 @@ you can use the `nix-index` tool to find it:
 
 ```{code-block} bash
 # Install the 'nix-index' tool for your current user
-nix-env -iA nixpkgs.nix-index
+nix profile add nixpkgs#nix-index
 # Update the index database
 nix-index
 # Search for the given file
-nix-locate --top-level /bin/rpcgen
+nix-locate /bin/rpcgen
 ```
 
 The `nix-locate` command returns only one result: `rpcsvc-proto`.
@@ -488,7 +488,7 @@ You can again use the `nix-index` tool
 to search for files contained in Nixpkgs packages:
 
 ```{code-block} bash
-nix-locate --top-level /rpc/rpc.h
+nix-locate /rpc/rpc.h
 ```
 
 The `nix-locate` command returns several packages.
