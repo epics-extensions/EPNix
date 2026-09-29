@@ -1,11 +1,11 @@
 {
-  nixosTest,
+  testers,
   epnix,
   epnixLib,
   iocService,
   ...
 }:
-nixosTest {
+testers.nixosTest {
   name = "simple";
 
   nodes.machine = {
