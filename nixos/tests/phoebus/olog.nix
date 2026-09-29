@@ -35,7 +35,11 @@
         virtualisation.memorySize = 2047;
       };
 
-    client = { };
+    client = { pkgs, ... }: {
+      # XXX: needed while the curl cookie-jar issue isn't fixed:
+      # https://github.com/curl/curl/issues/23261
+      environment.systemPackages = [ pkgs.wget ];
+    };
   };
 
   testScript = ''
@@ -83,7 +87,8 @@
             f"-H 'Content-Type: application/json' -d {repr(json.dumps(credentials))} "
             "--cookie-jar cjar"
         )
-        user_str = client.succeed("curl -sSfL -k 'http://server:8181/Olog/user' --cookie cjar")
+        # XXX: use wget while waiting for the curl cookie-jar issue
+        user_str = client.succeed("wget -q -O- 'http://server:8181/Olog/user' --load-cookies cjar")
         user = json.loads(user_str)
         assert user["userName"] == "admin"
 
@@ -94,7 +99,8 @@
             f"-H 'Content-Type: application/json' -d {repr(json.dumps(credentials))} "
             "--cookie-jar cjar"
         )
-        user_str = client.succeed("curl -sSfL -k 'http://server:8181/Olog/user' --cookie cjar")
+        # XXX: use wget while waiting for the curl cookie-jar issue
+        user_str = client.succeed("wget -q -O- 'http://server:8181/Olog/user' --load-cookies cjar")
         user = json.loads(user_str)
         assert user["userName"] == "ext-user"
 
