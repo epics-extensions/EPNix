@@ -50,9 +50,9 @@ The {file}`./checks/simple.nix` file should contain a NixOS test such as this:
 ```{code-block} nix
 :caption: {file}`checks/simple.nix`: structure of a test
 
-{ nixosTest, epnix, ... }:
+{ testers, epnix, ... }:
 
-nixosTest {
+testers.nixosTest {
   name = "simple";
 
   nodes.machine = {
