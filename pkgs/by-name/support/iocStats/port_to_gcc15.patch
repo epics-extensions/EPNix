@@ -1,0 +1,54 @@
+diff --git a/devIocStats/devIocStatsAnalog.c b/devIocStats/devIocStatsAnalog.c
+index 62d3c53..5ea0174 100644
+--- a/devIocStats/devIocStatsAnalog.c
++++ b/devIocStats/devIocStatsAnalog.c
+@@ -283,13 +283,13 @@ static validGetParms statsGetParms[] = {
+     {"cbHighQueueOverruns", statsCbHighQOverruns, QUEUE_TYPE},
+     {NULL, NULL, 0}};
+ 
+-aStats devAiStats = {6,       NULL, ai_init, ai_init_record, ai_ioint_info,
+-                     ai_read, NULL};
++aStats devAiStats = {6,       NULL, (DEVSUPFUN)ai_init, (DEVSUPFUN)ai_init_record, (DEVSUPFUN)ai_ioint_info,
++                     (DEVSUPFUN)ai_read, NULL};
+ epicsExportAddress(dset, devAiStats);
+-aStats devAoStats = {6, NULL, NULL, ao_init_record, NULL, ao_write, NULL};
++aStats devAoStats = {6, NULL, NULL, (DEVSUPFUN)ao_init_record, NULL, (DEVSUPFUN)ao_write, NULL};
+ epicsExportAddress(dset, devAoStats);
+ aStats devAiClusts = {
+-    6, NULL, ai_clusts_init, ai_clusts_init_record, NULL, ai_clusts_read, NULL};
++  6, NULL, (DEVSUPFUN)ai_clusts_init, (DEVSUPFUN)ai_clusts_init_record, NULL, (DEVSUPFUN)ai_clusts_read, NULL};
+ epicsExportAddress(dset, devAiClusts);
+ 
+ static memInfo meminfo = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+diff --git a/devIocStats/devIocStatsString.c b/devIocStats/devIocStatsString.c
+index 188ca63..4eeaf0b 100644
+--- a/devIocStats/devIocStatsString.c
++++ b/devIocStats/devIocStatsString.c
+@@ -186,10 +186,10 @@ static validGetStrParms statsGetStrParms[] = {
+     {NULL, NULL, 0}};
+ 
+ sStats devStringinStats = {
+-    5, NULL, stringin_init, stringin_init_record, NULL, stringin_read};
+-sStats devStringinEnvVar = {5,    NULL,       NULL, envvar_init_record,
+-                            NULL, envvar_read};
+-sStats devStringinEpics = {5, NULL, NULL, epics_init_record, NULL, epics_read};
++  5, NULL, (DEVSUPFUN)stringin_init, (DEVSUPFUN)stringin_init_record, NULL, (DEVSUPFUN)stringin_read};
++sStats devStringinEnvVar = {5,    NULL,       NULL, (DEVSUPFUN)envvar_init_record,
++                            NULL, (DEVSUPFUN)envvar_read};
++sStats devStringinEpics = {5, NULL, NULL, (DEVSUPFUN)epics_init_record, NULL, (DEVSUPFUN)epics_read};
+ epicsExportAddress(dset, devStringinStats);
+ epicsExportAddress(dset, devStringinEnvVar);
+ epicsExportAddress(dset, devStringinEpics);
+diff --git a/devIocStats/devIocStatsWaveform.c b/devIocStats/devIocStatsWaveform.c
+index e349e6b..6890a61 100644
+--- a/devIocStats/devIocStatsWaveform.c
++++ b/devIocStats/devIocStatsWaveform.c
+@@ -117,7 +117,7 @@ static validGetWfmParms statsGetWfmParms[] = {
+     {NULL, NULL, 0}};
+ 
+ wStats devWaveformStats = {
+-    5, NULL, waveform_init, waveform_init_record, NULL, waveform_read};
++  5, NULL, (DEVSUPFUN)waveform_init, (DEVSUPFUN)waveform_init_record, NULL, (DEVSUPFUN)waveform_read};
+ epicsExportAddress(dset, devWaveformStats);
+ 
+ /* ---------------------------------------------------------------------- */
