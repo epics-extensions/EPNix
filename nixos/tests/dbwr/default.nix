@@ -102,6 +102,7 @@ in
 
     server = {
       services.dbwr.enable = true;
+      services.tomcat.package = pkgs.tomcat10;
       environment.epics = {
         ca_addr_list = [ "ioc" ];
         ca_auto_addr_list = false;

@@ -72,8 +72,8 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    assertions =
-      (map
+    assertions = (
+      map
         (setting: {
           assertion = cfg.settings.${setting} == null;
           message = "The option `services.dbwr.settings.${setting}` has been renamed to `services.pvws.settings.${setting}`.";
@@ -84,20 +84,7 @@ in
           "PV_DEFAULT_TYPE"
           "PV_WRITE_SUPPORT"
         ]
-      )
-      ++ [
-        {
-          assertion = (lib.versions.major tomcatPkgVersion) == "9";
-          message = ''
-            DBWR requires Tomcat 9, but Tomcat was set to version '${tomcatPkgVersion}' in ${lib.showFiles tomcatPkgOpt.files}.
-            ${lib.optionalString config.services.archiver-appliance.enable ''
-              Note: enabling both DBWR and Archiver Appliance in the same NixOS configuration is not possible,
-              see the 26.05 release notes:
-
-                  https://epics-extensions.github.io/EPNix/${epnixLib.versions.current}/release-notes/2605.html
-            ''}'';
-        }
-      ];
+    );
 
     services.dbwr.settings.CATALINA_OUT_CMD = "cat";
 
@@ -107,7 +94,7 @@ in
       enable = true;
       # See comment in archiver-appliance.nix
       purifyOnStart = true;
-      webapps = [ cfg.package ];
+      tomcat9webapps = [ cfg.package ];
     };
 
     systemd.services.tomcat.environment = lib.filterAttrs (_: val: val != null) cfg.settings;
