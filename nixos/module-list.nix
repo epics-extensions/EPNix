@@ -12,4 +12,5 @@
   ./modules/phoebus/olog.nix
   ./modules/phoebus/save-and-restore.nix
   ./modules/pvws.nix
+  ./modules/tomcat9-10-compat.nix
 ]
