@@ -35,7 +35,11 @@
         virtualisation.memorySize = 2047;
       };
 
-    client = { };
+    client = { pkgs, ... }: {
+      # XXX: needed while the curl cookie-jar issue isn't fixed:
+      # https://github.com/curl/curl/issues/23261
+      environment.systemPackages = [ pkgs.wget ];
+    };
   };
 
   testScript = ''
@@ -50,7 +54,7 @@
     client.wait_for_unit("multi-user.target")
 
     # TODO: properly configure certificates
-    status_str = client.succeed("curl -sSfL -k http://server:8181/Olog")
+    status_str = client.succeed("curl -sSfL http://server:8181/Olog")
     status = json.loads(status_str)
 
     with subtest("Olog connected to Elasticsearch"):
@@ -60,12 +64,12 @@
         assert "state=CONNECTED" in status["mongoDB"]
 
     def get(uri: str) -> Any:
-        result = client.succeed(f"curl -sSfL -k http://server:8181/Olog{uri}")
+        result = client.succeed(f"curl -sSfL http://server:8181/Olog{uri}")
         return json.loads(result)
 
     def put(uri: str, data: Any) -> Any:
         result = client.succeed(
-            "curl -sSfL -k -X PUT -u admin:adminPass "
+            "curl -sSfL -X PUT -u admin:adminPass "
             f"'http://server:8181/Olog{uri}' "
             "-H 'Content-Type: application/json' "
             f"-d {repr(json.dumps(data))}"
@@ -79,22 +83,24 @@
     with subtest("can login using inMemory auth provider"):
         credentials = {"username": "admin", "password": "adminPass"}
         client.succeed(
-            "curl -sSfL -k -X POST 'http://server:8181/Olog/login' "
+            "curl -sSfL -X POST 'http://server:8181/Olog/login' "
             f"-H 'Content-Type: application/json' -d {repr(json.dumps(credentials))} "
             "--cookie-jar cjar"
         )
-        user_str = client.succeed("curl -sSfL -k 'http://server:8181/Olog/user' --cookie cjar")
+        # XXX: use wget while waiting for the curl cookie-jar issue
+        user_str = client.succeed("wget -q -O- 'http://server:8181/Olog/user' --load-cookies cjar")
         user = json.loads(user_str)
         assert user["userName"] == "admin"
 
     with subtest("can login using embeddedLdap auth provider"):
         credentials = {"username": "ext-user", "password": "ext-user-pass"}
         client.succeed(
-            "curl -sSfL -k -X POST 'http://server:8181/Olog/login' "
+            "curl -sSfL -X POST 'http://server:8181/Olog/login' "
             f"-H 'Content-Type: application/json' -d {repr(json.dumps(credentials))} "
             "--cookie-jar cjar"
         )
-        user_str = client.succeed("curl -sSfL -k 'http://server:8181/Olog/user' --cookie cjar")
+        # XXX: use wget while waiting for the curl cookie-jar issue
+        user_str = client.succeed("wget -q -O- 'http://server:8181/Olog/user' --load-cookies cjar")
         user = json.loads(user_str)
         assert user["userName"] == "ext-user"
 
