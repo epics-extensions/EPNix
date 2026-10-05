@@ -7,14 +7,14 @@
 }:
 mkEpicsPackage (finalAttrs: {
   pname = "pvxs";
-  version = "1.5.0";
+  version = "1.5.3";
   varname = "PVXS";
 
   src = fetchFromGitHub {
     owner = "epics-base";
     repo = "pvxs";
     tag = finalAttrs.version;
-    hash = "sha256-aG/rm/ycSyViJ94vDnXMnd7WKdKQieYBb0z/QknGXc4=";
+    hash = "sha256-dZA0TFfpc90PVL0rUMsz+H33Hfh3nsx9axfddfBsYOs=";
     fetchSubmodules = true;
   };
 
