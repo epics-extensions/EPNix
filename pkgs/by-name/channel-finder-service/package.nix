@@ -2,6 +2,7 @@
   lib,
   epnixLib,
   fetchFromGitHub,
+  fetchpatch2,
   jdk25_headless,
   maven,
   makeWrapper,
@@ -18,13 +19,26 @@ maven.buildMavenPackage rec {
   };
 
   patches = [
-    ./support-github-archive.patch
-    ./fix-maven-plugin-versions.patch
+    (fetchpatch2 {
+      name = "support-github-archive.patch";
+      url = "https://github.com/ChannelFinder/ChannelFinderService/commit/07d0b07764090d4cb593064511f45682d7eba6bb.patch?full_index=1";
+      hash = "sha256-ZLf0LO+ytaJ5tqOSgIZ6LC3Fl3xn5BlDQaC6Zkfi4bU=";
+    })
+    (fetchpatch2 {
+      name = "fix-maven-plugin-versions.patch";
+      url = "https://github.com/ChannelFinder/ChannelFinderService/commit/216f5fa70f53ea66a8228378e2c667fba9b13292.patch?full_index=1";
+      hash = "sha256-RPzxJsvdQ5JrnDbZPmbHWflmzSrRsl3naqvOG0QW93k=";
+    })
+    (fetchpatch2 {
+      name = "fix-default-maven-plugin-versions.patch";
+      url = "https://github.com/ChannelFinder/ChannelFinderService/commit/0823890a86d2a4e7094cef22b3b3e572f495aca7.patch?full_index=1";
+      hash = "sha256-K2QtG7qedf6abegxVHi4AJ2+lJlOnN6LnyXnEzgATuI=";
+    })
   ];
 
   buildOffline = true;
   mvnJdk = jdk25_headless;
-  mvnHash = "sha256-N0RDCfBcKpD37JQu+vwp2Nze0YsozF/fHTLn2MyRbLI=";
+  mvnHash = "sha256-q4zeziySBlAFOIZJmWuvoOdKdBgVgn+pAMhcMFz6nWU=";
   # Tests require setting up Elasticsearch and Docker
   mvnParameters = "-Dproject.build.outputTimestamp=1980-01-01T00:00:02Z -DskipTests";
 
