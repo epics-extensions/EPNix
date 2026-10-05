@@ -179,20 +179,6 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    assertions = [
-      {
-        assertion = (lib.versions.major tomcatPkgVersion) == "9";
-        message = ''
-          PVWS requires Tomcat 9, but Tomcat was set to version '${tomcatPkgVersion}' in ${lib.showFiles tomcatPkgOpt.files}.
-          ${lib.optionalString config.services.archiver-appliance.enable ''
-            Note: enabling both PVWS and Archiver Appliance in the same NixOS configuration is not possible,
-            see the 26.05 release notes:
-
-                https://epics-extensions.github.io/EPNix/${epnixLib.versions.current}/release-notes/2605.html
-          ''}'';
-      }
-    ];
-
     services.pvws.settings = {
       CATALINA_OUT_CMD = "cat";
       EPICS_CA_ADDR_LIST =
@@ -209,7 +195,7 @@ in
       enable = true;
       # See comment in archiver-appliance.nix
       purifyOnStart = true;
-      webapps = [ cfg.package ];
+      tomcat9webapps = [ cfg.package ];
     };
 
     systemd.services.tomcat = {
