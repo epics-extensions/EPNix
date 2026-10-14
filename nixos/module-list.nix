@@ -14,4 +14,5 @@
   ./modules/pva-gateway.nix
   ./modules/pvws.nix
   ./modules/softiocs.nix
+  ./modules/tomcat9-10-compat.nix
 ]
