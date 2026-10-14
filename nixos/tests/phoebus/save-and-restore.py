@@ -1,9 +1,12 @@
 import json
+import unittest
 from typing import Any, Dict, List
 
 # Use Any here, instead of the recursive "JSON",
 # because recursion is not yet supported
 JSON = str | int | float | bool | None | Dict[str, Any] | List[Any]
+
+t = unittest.TestCase()
 
 root_node_id = "44bef5de-e8e6-4014-af37-b8f6c8a939a2"
 user = "myself"
@@ -52,7 +55,7 @@ client.wait_for_unit("multi-user.target")
 
 with subtest("Default root node is created"):
     node = get("/node/root")
-    assert node["uniqueId"] == root_node_id
+    t.assertEqual(node["uniqueId"], root_node_id)
 
 subnode_id: str
 
@@ -70,7 +73,7 @@ with subtest("We can create a subnode"):
     # Check that it is really added
     node = get(f"/node/{subnode_id}")
     parent_node = get(f"/node/{subnode_id}/parent")
-    assert parent_node["uniqueId"] == root_node_id
+    t.assertEqual(parent_node["uniqueId"], root_node_id)
 
 config_id: str
 
@@ -109,7 +112,7 @@ with subtest("We can create a config"):
     )
     config_id = result["configurationNode"]["uniqueId"]
     config = get(f"/config/{config_id}")
-    assert config["uniqueId"] == config_id
+    t.assertEqual(config["uniqueId"], config_id)
 
 
 def vtype(name: str, typ: str, value: Any) -> Dict[str, Any]:
@@ -162,7 +165,7 @@ with subtest("We can create a snapshot"):
     )
     snapshot_id = result["snapshotNode"]["uniqueId"]
     snapshot = get(f"/snapshot/{snapshot_id}")
-    assert config["uniqueId"] == config_id
+    t.assertEqual(config["uniqueId"], config_id)
 
 with subtest("We can delete a node"):
     print(delete(f"/node/{subnode_id}"))
