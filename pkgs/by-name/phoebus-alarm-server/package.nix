@@ -12,7 +12,7 @@ let
 in
 stdenv.mkDerivation {
   pname = "phoebus-alarm-server";
-  inherit (phoebus-deps) version src;
+  inherit (phoebus-deps) version src patches;
 
   # Use larger heap size, necessary for building the alarm server
   MAVEN_OPTS = "-Xmx1G";

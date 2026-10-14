@@ -51,7 +51,7 @@ server.wait_for_open_port(8080)
 client.wait_for_unit("multi-user.target")
 
 with subtest("Default root node is created"):
-    node = get(f"/node/{root_node_id}")
+    node = get("/node/root")
     assert node["uniqueId"] == root_node_id
 
 subnode_id: str

@@ -12,7 +12,7 @@ let
 in
 stdenv.mkDerivation {
   pname = "phoebus-alarm-logger";
-  inherit (phoebus-deps) version src;
+  inherit (phoebus-deps) version src patches;
 
   nativeBuildInputs = [
     maven
