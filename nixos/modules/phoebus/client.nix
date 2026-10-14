@@ -332,9 +332,18 @@ in
     };
 
     java_opts = lib.mkOption {
-      type = lib.types.str;
-      default = "-XX:MinHeapSize=128m -XX:MaxHeapSize=4g -XX:InitialHeapSize=1g -XX:MaxHeapFreeRatio=10 -XX:MinHeapFreeRatio=5 -XX:-ShrinkHeapInSteps -XX:NativeMemoryTracking=detail";
-      example = "-XX:MinHeapSize=128m -XX:MaxHeapSize=4g -XX:InitialHeapSize=1g";
+      # Separated by spaces -> toString
+      type = with lib.types; coercedTo (listOf str) toString str;
+      default = [
+        "-XX:MinHeapSize=128m"
+        "-XX:MaxHeapSize=4g"
+        "-XX:InitialHeapSize=1g"
+        "-XX:MaxHeapFreeRatio=10"
+        "-XX:MinHeapFreeRatio=5"
+        "-XX:-ShrinkHeapInSteps"
+        "-XX:NativeMemoryTracking=detail"
+      ];
+      example = [ "-Dphoebus.user=/path/to/phoebus/user/dir" ];
       description = ''
         Set Java options for the Phoebus client.
 
