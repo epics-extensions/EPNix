@@ -17,9 +17,14 @@ maven.buildMavenPackage rec {
     hash = "sha256-k5bkHKe5g8EFq9L1KMPrBZL9i27CPdW0U4nWHT5YhQ8=";
   };
 
+  patches = [
+    # https://github.com/Olog/phoebus-olog/pull/275
+    ./fix-maven-plugin-versions.patch
+  ];
+
   buildOffline = true;
   mvnJdk = jdk25_headless;
-  mvnHash = "sha256-qFMhryq0dcPdSZFtzpoPV2Os+DMFAZkQTnwFwP4adCk=";
+  mvnHash = "sha256-1kgRE69ZPehj6kTU5wAVBVk0xztW60ObVO3uR+vfv48=";
   mvnParameters = "-Dmaven.javadoc.skip=true -Dmaven.source.skip=true -Pdeployable-jar";
 
   # Dynamic test dependencies
