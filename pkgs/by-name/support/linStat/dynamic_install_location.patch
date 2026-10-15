@@ -1,0 +1,33 @@
+diff --git a/test/testLSIOC.cpp b/test/testLSIOC.cpp
+index 1c9b386..b8e3b5c 100644
+--- a/test/testLSIOC.cpp
++++ b/test/testLSIOC.cpp
+@@ -15,6 +15,7 @@
+ #include <vector>
+ 
+ #include <string.h>
++#include <stdlib.h>
+ 
+ #include <epicsUnitTest.h>
+ #include <envDefs.h>
+@@ -175,10 +176,16 @@ MAIN(testLSIOC)
+     epicsEnvSet("ENGINEER", "Someone");
+     testdbReadDatabase("testioc.dbd", nullptr, nullptr);
+     testioc_registerRecordDeviceDriver(pdbbase);
+-    testdbReadDatabase("linStatHost.db", "../../db", "IOC=LOCALHOST");
+-    testdbReadDatabase("linStatProc.db", "../../db", "IOC=LOCALHOST");
+-    testdbReadDatabase("linStatNIC.db", "../../db", "IOC=LOCALHOST,NIC=lo");
+-    testdbReadDatabase("linStatFS.db", "../../db", "P=LOCALHOST:ROOT,DIR=/");
++    char * dbPath = getenv("INSTALL_LOCATION");
++    if (dbPath == NULL)
++    {
++      dbPath = "../..";
++    }
++    strcat(dbPath,"/db");
++    testdbReadDatabase("linStatHost.db", dbPath, "IOC=LOCALHOST");
++    testdbReadDatabase("linStatProc.db", dbPath, "IOC=LOCALHOST");
++    testdbReadDatabase("linStatNIC.db", dbPath, "IOC=LOCALHOST,NIC=lo");
++    testdbReadDatabase("linStatFS.db", dbPath, "P=LOCALHOST:ROOT,DIR=/");
+     testdbReadDatabase("caparr.db", "..:.", "IOC=TST");
+     iocshCmd("var linStatDebug 5");
+     testIocInitOk();
