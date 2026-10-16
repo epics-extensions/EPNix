@@ -1,0 +1,60 @@
+diff --git i/pom.xml w/pom.xml
+index c9f053f2b..778b77c34 100644
+--- i/pom.xml
++++ w/pom.xml
+@@ -101,6 +101,24 @@
+   </properties>
+   <build>
+     <plugins>
++      <plugin>
++        <groupId>org.apache.maven.plugins</groupId>
++        <artifactId>maven-enforcer-plugin</artifactId>
++        <version>3.6.3</version>
++        <executions>
++          <execution>
++            <id>enforce-plugin-versions</id>
++            <goals>
++              <goal>enforce</goal>
++            </goals>
++            <configuration>
++              <rules>
++                <requirePluginVersions />
++              </rules>
++            </configuration>
++          </execution>
++        </executions>
++      </plugin>
+       <plugin>
+         <artifactId>maven-compiler-plugin</artifactId>
+         <version>3.6.2</version>
+@@ -122,6 +140,30 @@
+           </compilerArgs>
+         </configuration>
+       </plugin>
++      <plugin>
++        <artifactId>maven-clean-plugin</artifactId>
++        <version>3.5.0</version>
++      </plugin>
++      <plugin>
++        <artifactId>maven-install-plugin</artifactId>
++        <version>3.2.0</version>
++      </plugin>
++      <plugin>
++        <artifactId>maven-site-plugin</artifactId>
++        <version>3.22.0</version>
++      </plugin>
++      <plugin>
++        <artifactId>maven-deploy-plugin</artifactId>
++        <version>3.1.2</version>
++      </plugin>
++      <plugin>
++        <artifactId>maven-resources-plugin</artifactId>
++        <version>3.5.0</version>
++      </plugin>
++      <plugin>
++        <artifactId>maven-dependency-plugin</artifactId>
++        <version>3.11.0</version>
++      </plugin>
+       <plugin>
+         <groupId>org.apache.maven.plugins</groupId>
+         <artifactId>maven-surefire-plugin</artifactId>

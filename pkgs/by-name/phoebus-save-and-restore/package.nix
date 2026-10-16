@@ -12,7 +12,7 @@ let
 in
 stdenv.mkDerivation {
   pname = "phoebus-save-and-restore";
-  inherit (phoebus-deps) version src;
+  inherit (phoebus-deps) version src patches;
 
   nativeBuildInputs = [
     maven
