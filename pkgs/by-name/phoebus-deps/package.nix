@@ -8,14 +8,16 @@
 }:
 stdenv.mkDerivation (final: {
   pname = "phoebus-deps";
-  version = "5.0.5";
+  version = "6.0.0";
 
   src = fetchFromGitHub {
     owner = "ControlSystemStudio";
     repo = "phoebus";
     rev = "v${final.version}";
-    hash = "sha256-X2KP3bRood8iYsZbtO1njFm/o+AXuT0aXoYFivy8LAY=";
+    hash = "sha256-WYhODgjHEzdP0nAv4arGt/nLY5PVocnJjtQjs5XZO+w=";
   };
+
+  patches = [ ./fix-maven-plugin-versions.patch ];
 
   nativeBuildInputs = [
     jdk21
@@ -61,7 +63,7 @@ stdenv.mkDerivation (final: {
 
   outputHashAlgo = "sha256";
   outputHashMode = "recursive";
-  outputHash = "sha256-ZufZ+hZ0LqAwCTX/MDJQYsLu66p0Mwiud3XBVLcqO5A=";
+  outputHash = "sha256-Hbb6lvBstGuFg9u9XmxdsUVFTYBq9II1bANt1eIqiVM=";
 
   doCheck = false;
 

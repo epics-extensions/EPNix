@@ -22,7 +22,8 @@ stdenv.mkDerivation {
     (replaceVars ./fix-python-path.patch {
       python = lib.getExe python3;
     })
-  ];
+  ]
+  ++ phoebus-deps.patches;
 
   nativeBuildInputs = [
     maven
