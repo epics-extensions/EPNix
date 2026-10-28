@@ -50,8 +50,8 @@ lib.recurseIntoAttrs {
       (
         epnixFinal: _epnixPrev: {
           epics-base7 = epnixFinal.callPackage ./epics-base {
-            version = "7.0.10";
-            hash = "sha256-78XAznaU4gxIc13GKrtpil96OPhQ/JTuJm8aVIfUSho=";
+            version = "7.0.11";
+            hash = "sha256-rrJbjDjTjd+jaHIfVaYO29zjvD5CIH2pYjDMNft27Ts=";
           };
           epics-base3 = epnixFinal.callPackage ./epics-base {
             version = "3.15.9";
