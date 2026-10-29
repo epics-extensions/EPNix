@@ -36,6 +36,11 @@ mkEpicsPackage (finalAttrs: {
       url = "https://github.com/paulscherrerinstitute/StreamDevice/commit/e87e093c846ca19383462036d2f85ca5369b17b3.patch?full_index=1";
       hash = "sha256-kwxIfKfAQtdmV5Y6uYsS+P4OFWf4q4Uez0qvK/7NApA=";
     })
+    (fetchpatch2 {
+      name = "fix-wrong-non-tab-indent-in-makefile.patch";
+      url = "https://github.com/paulscherrerinstitute/StreamDevice/commit/f473f4d6deeb2e956258b3f1b9858f8607c96591.patch?full_index=1";
+      hash = "sha256-Wt5MCu6qW3/pfXbffsuzx8/v74pwLzkkcvsVw/sk8lc=";
+    })
   ];
 
   nativeBuildInputs = [ pcre ];
