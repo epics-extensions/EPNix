@@ -19,16 +19,16 @@ epicsConfigurePhase() {
 	# reproducibility, EPICS fallsback to either the GENVERSIONDEFAULT variable
 	# if set (not the default), or the current date/time, which isn't
 	# reproducible.
-	echo 'GENVERSIONDEFAULT="EPNix"' >configure/CONFIG_SITE.local
+	echo 'GENVERSIONDEFAULT=EPNix' >configure/CONFIG_SITE.local
 
 	# This prevents EPICS from detecting installed libraries on the host
 	# system, for when Nix is compiling without sandbox (e.g.: WSL2)
-	echo 'GNU_DIR="/var/empty"' >>configure/CONFIG_SITE.local
+	echo 'GNU_DIR=/var/empty' >>configure/CONFIG_SITE.local
 
 	if [[ "@build_arch@" != "@host_arch@" ]]; then
 		# Tell EPICS we are compiling to the given architecture.
 		# "host" as in Nix terminology (the machine which will run the generated code)
-		echo 'CROSS_COMPILER_TARGET_ARCHS="@host_arch@"' >>configure/CONFIG_SITE.local
+		echo 'CROSS_COMPILER_TARGET_ARCHS=@host_arch@' >>configure/CONFIG_SITE.local
 	fi
 
 	echo "${local_config_site_text-}" >>configure/CONFIG_SITE.local
@@ -40,7 +40,7 @@ epicsConfigurePhase() {
 	echo "${local_release_text-}" >>configure/RELEASE.local
 
 	# set to empty if unset
-	: "''${EPICS_COMPONENTS=}"
+	: "${EPICS_COMPONENTS=}"
 
 	# For each EPICS-specific package (e.g. asyn, StreamDevice),
 	# add it to the 'configure/RELEASE.local' file
