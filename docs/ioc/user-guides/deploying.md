@@ -117,7 +117,7 @@ taking care to replace `myIoc` and `myTop`:
 Description=My super IOC
 Wants=network-online.target
 After=network-online.target
-StartlimitIntervalSec=0
+StartLimitIntervalSec=0
 
 [Service]
 ExecStart=procServ \
