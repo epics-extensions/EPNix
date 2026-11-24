@@ -24,7 +24,7 @@ let
         def main():
             t = unittest.TestCase()
 
-            with connect("ws://localhost:8080/pvws/pv") as websocket:
+            with connect("ws://localhost:8081/pvws/pv") as websocket:
                 ping = {"type": "ping"}
                 websocket.send(json.dumps(ping))
 
@@ -103,6 +103,7 @@ in
     server = {
       services.dbwr.enable = true;
       services.tomcat.package = pkgs.tomcat10;
+      services.pvws.settings."server.port" = 8081;
       environment.epics = {
         ca_addr_list = [ "ioc" ];
         ca_auto_addr_list = false;
@@ -124,7 +125,9 @@ in
     server.wait_for_open_port(80)
 
     server.wait_for_unit("tomcat.service")
+    server.wait_for_unit("pvws.service")
     server.wait_for_open_port(8080)
+    server.wait_for_open_port(8081)
 
     server.succeed("pvwsTestClient")
     server.succeed("curl -sSf 'http://localhost/bob.bob'")
