@@ -8,40 +8,9 @@
 }:
 let
   cfg = config.services.pvws;
-
-  # An XSLT file to transform the `/var/tomcat/conf/context.xml` file,
-  # to add our parameters.
-  transformContext = pkgs.writeText "pvws-transform-context.xslt" ''
-    <xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-      <xsl:output method="xml" />
-        <!-- Identity template, copies everything as is -->
-        <xsl:template match="@*|node()">
-          <xsl:copy>
-            <xsl:apply-templates select="@*|node()"/>
-          </xsl:copy>
-        </xsl:template>
-        <!-- Override for the <Context> block -->
-        <xsl:template match="Context">
-          <!-- Copy the element -->
-          <xsl:copy>
-            <xsl:apply-templates select="@*|node()"/>
-
-            <!-- And append our elements -->
-            <xsl:comment> Configuration added by the PVWS EPNix NixOS module </xsl:comment>
-            <Parameter
-              name="org.apache.tomcat.websocket.textBufferSize"
-              value="${toString cfg.websocketBufferSize}" />
-
-          </xsl:copy>
-        </xsl:template>
-    </xsl:stylesheet>
-  '';
-
-  xsltproc = "${lib.getBin pkgs.libxslt}/bin/xsltproc";
-  xmllint = "${lib.getBin pkgs.libxml2}/bin/xmllint";
-
-  tomcatPkgVersion = config.services.tomcat.package.version;
-  tomcatPkgOpt = options.services.tomcat.package;
+  opt = options.services.pvws;
+  settingsFormat = pkgs.formats.javaProperties { };
+  configFile = settingsFormat.generate "pvws.properties" cfg.settings;
 in
 {
   options.services.pvws = {
@@ -83,7 +52,10 @@ in
       description = ''
         Configuration for PVWS.
 
-        These options will be passed as environment variables.
+        These options will be passed in a properties file.
+
+        See the [default `application.properties` of PVWS](https://github.com/ControlSystemStudio/pvws/blob/master/src/main/resources/application.properties)
+        for a complete list of options and default values.
       '';
       default = { };
       type = lib.types.submodule {
@@ -94,37 +66,10 @@ in
             path
           ]);
         options = {
-          EPICS_CA_ADDR_LIST = lib.mkOption {
-            description = ''
-              List of Channel Access destination IP addresses.
-
-              Each IP address can be a unicast address,
-              or a broadcast address.
-
-              Use `lib.mkForce` to override values from {nix:option}`environment.epics.ca_addr_list`.
-            '';
-            # Separated by spaces -> toString
-            type = with lib.types; coercedTo (listOf str) toString str;
-            defaultText = lib.literalExpression ''
-              if config.environment.epics.enable
-              then config.environment.epics.ca_addr_list
-              else [];
-            '';
-          };
-
-          EPICS_CA_AUTO_ADDR_LIST = lib.mkOption {
-            description = ''
-              If set,
-              behave as if every broadcast address of every network interface is added to `EPICS_CA_ADDR_LIST`.
-
-              Use `lib.mkForce` to override values from {nix:option}`environment.epics.ca_auto_addr_list`.
-            '';
-            type = with lib.types; coercedTo bool lib.boolToYesNo str;
-            defaultText = lib.literalExpression ''
-              if config.environment.epics.enable
-              then config.environment.epics.ca_auto_addr_list
-              else [];
-            '';
+          "server.port" = lib.mkOption {
+            type = with lib.types; coercedTo port toString str;
+            default = 8080;
+            description = "The HTTP server port for PVWS.";
           };
 
           EPICS_PVA_ADDR_LIST = lib.mkOption {
@@ -176,39 +121,141 @@ in
         };
       };
     };
+
+    environment = lib.mkOption {
+      description = ''
+        Environment variables passed to PVWS.
+
+        :::{seealso}
+        If enabled,
+        which is the default,
+        it will inherit environment variables from {nix:option}`environment.epics`.
+
+        If you want to configure the CA address list,
+        prefer using the {nix:option}`environment.epics` options.
+        :::
+      '';
+      type =
+        with lib.types;
+        attrsOf (
+          nullOr (oneOf [
+            str
+            path
+            package
+          ])
+        );
+      defaultText = lib.literalExpression ''
+        {
+          EPICS_CA_ADDR_LIST =
+            if config.environment.epics.enable then toString config.environment.epics.ca_addr_list else "";
+          EPICS_CA_AUTO_ADDR_LIST =
+            if config.environment.epics.enable then lib.boolToString config.environment.epics.ca_auto_addr_list else "true";
+        }
+      '';
+    };
   };
 
   config = lib.mkIf cfg.enable {
-    services.pvws.settings = {
-      CATALINA_OUT_CMD = "cat";
-      EPICS_CA_ADDR_LIST =
-        if config.environment.epics.enable then config.environment.epics.ca_addr_list else [ ];
-      EPICS_CA_AUTO_ADDR_LIST =
-        if config.environment.epics.enable then config.environment.epics.ca_auto_addr_list else true;
-      EPICS_PVA_ADDR_LIST =
-        if config.environment.epics.enable then config.environment.epics.pva_addr_list else [ ];
-      EPICS_PVA_AUTO_ADDR_LIST =
-        if config.environment.epics.enable then config.environment.epics.pva_auto_addr_list else true;
+    assertions = [
+      {
+        assertion = !(cfg.settings ? EPICS_CA_ADDR_LIST || cfg.settings ? EPICS_CA_AUTO_ADDR_LIST);
+        message = ''
+          pvws: `settings.EPICS_CA_ADDR_LIST` and `settings.EPICS_CA_AUTO_ADDR_LIST` defined in ${lib.showFiles opt.settings.files}
+          cannot be specified in `settings`, they must be defined in `environment`.'';
+      }
+    ];
+
+    services.pvws = {
+      environment = {
+        EPICS_CA_ADDR_LIST =
+          if config.environment.epics.enable then toString config.environment.epics.ca_addr_list else "";
+        EPICS_CA_AUTO_ADDR_LIST =
+          if config.environment.epics.enable then
+            lib.boolToString config.environment.epics.ca_auto_addr_list
+          else
+            "true";
+      };
+      settings = {
+        EPICS_PVA_ADDR_LIST =
+          if config.environment.epics.enable then config.environment.epics.pva_addr_list else [ ];
+        EPICS_PVA_AUTO_ADDR_LIST =
+          if config.environment.epics.enable then config.environment.epics.pva_auto_addr_list else true;
+      };
     };
 
-    services.tomcat = {
-      enable = true;
-      # See comment in archiver-appliance.nix
-      purifyOnStart = true;
-      tomcat9webapps = [ cfg.package ];
+    systemd.services.pvws = {
+      description = "PV Web Socket";
+
+      wantedBy = [ "multi-user.target" ];
+      after = [ "network-online.target" ];
+      wants = [ "network-online.target" ];
+
+      inherit (cfg) environment;
+
+      serviceConfig = {
+        ExecStart = "${lib.getExe pkgs.epnix.pvws} --spring.config.location=classpath:/application.properties,file://${configFile}";
+        Type = "exec";
+        Restart = "on-failure";
+        DynamicUser = true;
+
+        # Security options:
+        # ---
+
+        RestrictAddressFamilies = [
+          "AF_INET"
+          "AF_INET6"
+          "AF_NETLINK"
+        ];
+        # Service may not create new namespaces
+        RestrictNamespaces = true;
+
+        # Service does not have access to other users
+        PrivateUsers = true;
+        # Service has no access to hardware devices
+        PrivateDevices = true;
+
+        # Service cannot write to the hardware clock or system clock
+        ProtectClock = true;
+        # Service cannot modify the control group file system
+        ProtectControlGroups = true;
+        # Service has no access to home directories
+        ProtectHome = true;
+        # Service cannot change system host/domainname
+        ProtectHostname = true;
+        # Service cannot read from or write to the kernel log ring buffer
+        ProtectKernelLogs = true;
+        # Service cannot load or read kernel modules
+        ProtectKernelModules = true;
+        # Service cannot alter kernel tunables (/proc/sys, …)
+        ProtectKernelTunables = true;
+        # Service has restricted access to process tree (/proc hidepid=)
+        ProtectProc = "invisible";
+
+        # Service may not acquire new capabilities
+        CapabilityBoundingSet = "";
+        # Service cannot change ABI personality
+        LockPersonality = true;
+        # Service has no access to non-process /proc files (/proc subset=)
+        ProcSubset = "pid";
+        # Service may execute system calls only with native ABI
+        SystemCallArchitectures = "native";
+        # Access write directories
+        UMask = "0077";
+        # Service may create writable executable memory mappings
+        # This option isn't set due to the JVM marking some memory pages as executable
+        #MemoryDenyWriteExecute = true;
+
+        # Service can only use a reasonable set of system calls,
+        # used by common system services
+        SystemCallFilter = [ "@system-service" ];
+        # Disallowed system calls return EPERM instead of terminating the service
+        SystemCallErrorNumber = "EPERM";
+      };
     };
 
-    systemd.services.tomcat = {
-      environment = cfg.settings;
-      preStart = ''
-        # Apply PVWS transformations to context.xml
-        ${xsltproc} ${transformContext} /var/tomcat/conf/context.xml | \
-          ${xmllint} --format - > /var/tomcat/conf/context.xml.new
-        mv /var/tomcat/conf/context.xml.new /var/tomcat/conf/context.xml
-      '';
-    };
-
-    networking.firewall.allowedTCPPorts = lib.mkIf cfg.openFirewall [ config.services.tomcat.port ];
+    networking.firewall.allowedTCPPorts = lib.mkIf cfg.openFirewall [
+      (lib.toInt cfg.settings."server.port")
+    ];
   };
 
   meta.maintainers = with epnixLib.maintainers; [ minijackson ];

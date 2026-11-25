@@ -7,6 +7,7 @@ over a WebSocket.
 - the {nix:option}`services.pvws` NixOS options
 - the {doc}`dbwr` guide to serve Phoebus `.bob` files over HTTP
 - the [PVWS README]
+- the [default `application.properties` of PVWS]
 :::
 
 ## Enabling PVWS
@@ -31,9 +32,8 @@ add this to your configuration:
 }
 ```
 
-This configuration starts a Tomcat server
-on port 8080 by default,
-with the PV Web Socket (PVWS) web apps configured.
+This configuration starts the PVWS server
+on port 8080 by default.
 
 The {nix:option}`services.pvws` NixOS module makes those applications available at:
 
@@ -47,11 +47,31 @@ See the {doc}`epics-environment` guide for more information.
 
 ## Configuring PVWS
 
-PVWS is configured through environment variables,
-which you can pass through the {nix:option}`services.pvws.settings` option.
+You can configure PVWS
+through the {nix:option}`services.pvws.settings` option,
+which will generate PVWS' configuration file.
 
-For more information about available environment variables,
-see the [PVWS README].
+For more information about available settings,
+see the [default `application.properties` of PVWS].
+
+### Custom port
+
+By default,
+PVWS listens on HTTP port 8080.
+To change it,
+set the {nix:option}`services.pvws.settings."server.port"` option:
+
+```{code-block} nix
+:caption: {file}`pvws.nix` --- Set custom HTTP port
+:emphasize-lines: 4
+
+{
+  services.pvws = {
+    # ...
+    settings."server.port" = 1234;
+  };
+}
+```
 
 (pvws-write-access)=
 ### Enabling write access
@@ -62,7 +82,7 @@ it's recommended to put PVWS and related services behind authentication
 via a reverse proxy.
 
 Since the PVWS service handles PV writes,
-the user seen by access security rules will be the Tomcat user.
+the user seen by access security rules will be the PVWS user.
 :::
 
 To enable write access from the web interface,
@@ -81,3 +101,4 @@ set the `PV_WRITE_SUPPORT` setting to `true`:
 ```
 
   [PVWS README]: https://github.com/ornl-epics/pvws
+  [default `application.properties` of PVWS]: https://github.com/ControlSystemStudio/pvws/blob/master/src/main/resources/application.properties
