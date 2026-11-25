@@ -2,19 +2,23 @@
   lib,
   epnixLib,
   mkEpicsPackage,
-  fetchzip,
+  fetchFromGitHub,
   net-snmp,
   openssl,
 }:
 mkEpicsPackage (finalAttrs: {
   pname = "snmp";
-  version = "1.1.0.4";
+  version = "1.1.0.7";
   varname = "SNMP";
 
-  src = fetchzip {
-    url = "https://groups.nscl.msu.edu/controls/files/epics-snmp-${finalAttrs.version}.zip";
-    hash = "sha256-POIFlyAUNh99213ez5WPe1SQjEpk43QmDLy0dX8SakM=";
-    stripRoot = false;
+  # XXX: we use our own mirror, while waiting for upstream to release it to GitHub.
+  # The current official site has a bot protection which prevents us
+  # from downloading the release using curl.
+  src = fetchFromGitHub {
+    owner = "minijackson";
+    repo = "epics-snmp";
+    tag = "v${finalAttrs.version}";
+    hash = "sha256-guQNYMfAcRWwZ26Qqwml7GdB+hXzOsFL5jhHvJ1NIa4=";
   };
 
   buildInputs = [
